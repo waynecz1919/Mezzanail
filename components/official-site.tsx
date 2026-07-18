@@ -4,12 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, useSyncExternalStore } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useTheme } from "next-themes";
 import {
   ArrowRight, CalendarCheck, Check, ChevronDown, ChevronLeft, ChevronRight, ExternalLink, Facebook, Gift,
   Globe2, Home, Instagram, MapPin, Menu, MessageCircle, Moon, Phone, ShieldCheck,
-  Sparkles, Star, Sun, X,
+  Sparkles, Sun, X,
 } from "lucide-react";
 import { IconBandage, IconBottle, IconFootsteps, IconHandFinger, IconRazor } from "@tabler/icons-react";
 import { HoverCard, Reveal } from "@/components/hyperframe/motion";
@@ -127,7 +127,7 @@ function SiteFooter() {
     <div><h3>{t.footer.explore}</h3><Link href="/about">{t.nav.story}</Link><Link href="/services">{t.nav.services}</Link><Link href="/rewards">{t.nav.rewards}</Link><Link href="/#app">{downloadNav[locale]}</Link></div>
     <div><h3>{t.footer.connect}</h3><ExternalOrPending href={siteConfig.instagramUrl} ariaLabel={`${siteConfig.brandName} Instagram`}>Instagram</ExternalOrPending><ExternalOrPending href={siteConfig.facebookUrl} ariaLabel={`${siteConfig.brandName} Facebook`}>Facebook</ExternalOrPending><ExternalOrPending href={siteConfig.xiaohongshuUrl} ariaLabel={`${siteConfig.brandName} Xiaohongshu`}>Xiaohongshu</ExternalOrPending></div>
     <div><h3>{t.footer.studio}</h3><Link href="/contact">{t.nav.contact}</Link><a href={siteConfig.googleMapsDirectionsUrl} target="_blank" rel="noopener noreferrer">Google Maps</a><a href={whatsapp} target="_blank" rel="noopener noreferrer">WhatsApp</a><a href={siteConfig.phoneLink}>{siteConfig.phoneDisplay}</a></div>
-  </div><div className="flex flex-col gap-4 py-7 text-[11px] text-white/42 sm:flex-row sm:items-center sm:justify-between"><span>© 2026 {siteConfig.brandName}. All rights reserved.</span><div className="flex gap-5"><span>{t.footer.privacy}</span><span>{t.footer.terms}</span></div></div></div></footer>;
+  </div><div className="flex flex-col gap-4 py-7 text-[11px] text-white/42 sm:flex-row sm:items-center sm:justify-between"><span>© 2026 {siteConfig.brandName}. All rights reserved.</span><div className="flex gap-5"><Link href="/privacy">{t.footer.privacy}</Link><Link href="/terms">{t.footer.terms}</Link></div></div></div></footer>;
 }
 
 function MobileNav() {
@@ -143,15 +143,16 @@ function Frame({ children }: {children: React.ReactNode}) {
 function Hero() {
   const { t } = useOfficial();
   const [active, setActive] = useState(0);
+  const reducedMotion = useReducedMotion();
   const slides = [
     { image:"/gallery/signature-white.jpg", eyebrow:t.hero.eyebrow, title:t.hero.title, body:t.hero.body, label:t.hero.primary, href:siteConfig.bookingUrl, external:true },
     { image:"/gallery/signature-campaign.jpg", eyebrow:t.campaign.eyebrow, title:t.campaign.title, body:t.campaign.body, label:t.campaign.secondary, href:"/rewards", external:false },
     { image:"/gallery/chrome-neutral.jpg", eyebrow:t.services.eyebrow, title:t.services.title, body:t.services.body, label:t.services.viewAll, href:"/services", external:false },
   ];
-  useEffect(() => { const timer = window.setInterval(() => setActive(value => (value + 1) % slides.length), 6500); return () => window.clearInterval(timer); }, [slides.length]);
+  useEffect(() => { if (reducedMotion) return; const timer = window.setInterval(() => setActive(value => (value + 1) % slides.length), 6500); return () => window.clearInterval(timer); }, [reducedMotion, slides.length]);
   const slide = slides[active];
   return <section className="official-hero">
-    <AnimatePresence mode="wait"><motion.div key={slide.image} initial={{opacity:.3,scale:1.02}} animate={{opacity:1,scale:1}} exit={{opacity:.25}} transition={{duration:.65}} className="absolute inset-0"><Image src={slide.image} alt={`${siteConfig.brandName} nail studio campaign`} fill loading="eager" sizes="100vw" className="object-cover object-center"/></motion.div></AnimatePresence>
+    <AnimatePresence mode="wait"><motion.div key={slide.image} initial={reducedMotion?false:{opacity:.3,scale:1.02}} animate={{opacity:1,scale:1}} exit={reducedMotion?undefined:{opacity:.25}} transition={{duration:reducedMotion?0:.65}} className="absolute inset-0"><Image src={slide.image} alt={`${siteConfig.brandName} ${slide.eyebrow} campaign`} fill priority={active===0} loading={active===0?"eager":"lazy"} sizes="100vw" className="object-cover object-center"/></motion.div></AnimatePresence>
     <div className="hero-scrim"/>
     <div className="shell relative flex min-h-[620px] items-center py-16"><AnimatePresence mode="wait"><motion.div key={`${active}-${slide.title}`} initial={{opacity:0,y:18}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-12}} transition={{duration:.5,ease:[.22,1,.36,1]}} className="hero-copy max-w-2xl"><div className="eyebrow">{slide.eyebrow}</div><h1 className="display mt-5">{slide.title}</h1><p className="mt-6 max-w-xl text-base leading-7">{slide.body}</p><div className="mt-8 flex flex-wrap gap-3">{slide.external?<a href={slide.href} target="_blank" rel="noopener noreferrer" className="btn btn-gold">{slide.label}<ArrowRight size={16}/></a>:<Link href={slide.href} className="btn btn-gold">{slide.label}<ArrowRight size={16}/></Link>}<Link href="/services" className="btn hero-secondary">{t.hero.secondary}</Link></div></motion.div></AnimatePresence></div>
     <button className="hero-arrow hero-prev" onClick={()=>setActive((active-1+slides.length)%slides.length)} aria-label="Previous slide"><ChevronLeft size={24}/></button><button className="hero-arrow hero-next" onClick={()=>setActive((active+1)%slides.length)} aria-label="Next slide"><ChevronRight size={24}/></button>
@@ -213,7 +214,7 @@ function Gallery() {
 
 function Reviews() {
   const { t } = useOfficial();
-  return <section id="reviews" className="section"><div className="shell"><Reveal><div className="eyebrow">{t.reviews.eyebrow}</div><h2 className="h2 mt-5 max-w-3xl">{t.reviews.title}</h2><p className="lead mt-6 max-w-xl">{t.reviews.body}</p></Reveal>{isConfiguredUrl(siteConfig.googleReviewsEmbedUrl) ? <iframe src={siteConfig.googleReviewsEmbedUrl} title={`${siteConfig.brandName} Google Reviews`} loading="lazy" className="mt-12 h-[420px] w-full rounded-[20px] border border-[var(--line)]"/> : <div className="mt-12 grid gap-4 lg:grid-cols-3">{t.reviews.cards.map(([quote,name])=><HoverCard key={name} className="card flex min-h-64 flex-col p-7"><div className="flex gap-1 text-[#c8a96b]">{[1,2,3,4,5].map(i=><Star key={i} size={13} fill="currentColor"/>)}</div><blockquote className="mt-8 text-base leading-7">“{quote}”</blockquote><div className="mt-auto pt-8 text-xs font-bold">{name}</div></HoverCard>)}</div>}<div className="mt-8"><ExternalOrPending href={siteConfig.googleReviewUrl} className="btn btn-dark" ariaLabel={`${siteConfig.brandName} Google Reviews`}>{t.reviews.cta}<ExternalLink size={15}/></ExternalOrPending></div></div></section>;
+  return <section id="reviews" className="section"><div className="shell"><Reveal className="card p-8 sm:p-12"><div className="eyebrow">{t.reviews.eyebrow}</div><h2 className="h2 mt-5 max-w-3xl">{t.reviews.title}</h2><p className="lead mt-6 max-w-2xl">{t.reviews.body}</p><div className="mt-8"><ExternalOrPending href={siteConfig.googleReviewUrl} className="btn btn-dark" ariaLabel={`${siteConfig.brandName} Google Reviews`}>{t.reviews.cta}<ExternalLink size={15}/></ExternalOrPending></div></Reveal></div></section>;
 }
 
 function StoryPreview() {
@@ -247,4 +248,5 @@ function ContactVisitSection() {
 export function OfficialHome() { return <Frame><Hero/><ServicesPreview/><Philosophy/><AnniversaryCampaign/><Gallery/><StoryPreview/><AppPromo/><Reviews/><ContactPanel/></Frame>; }
 export function ServicesPage() { const {t}=useOfficial(); return <Frame><PageHero eyebrow={t.pages.services.eyebrow} title={t.pages.services.title} body={t.pages.services.body}/><ServicesCatalog/><ContactPanel/></Frame>; }
 export function AboutPage() { const {t}=useOfficial(); return <Frame><PageHero eyebrow={`${siteConfig.brandName} · Malaysia`} title={t.pages.about.title} body={t.pages.about.body}/><section className="section surface"><div className="shell grid gap-5 lg:grid-cols-3">{t.pages.about.values.map(([title,body],i)=><Reveal key={title} delay={i*.08} className="card min-h-72 p-8"><span className="numbers text-xs font-bold gold-text">0{i+1}</span><h2 className="mt-20 text-2xl font-bold">{title}</h2><p className="mt-4 text-sm leading-7 text-[var(--muted)]">{body}</p></Reveal>)}</div></section><StoryPreview/><ContactPanel/></Frame>; }
-export function ContactPage() { const {t}=useOfficial(); return <Frame><PageHero eyebrow={t.pages.contact.eyebrow} title={t.pages.contact.title} body={t.pages.contact.body}/><ContactVisitSection/><ContactPanel/></Frame>; }
+export function ContactPage() { const {t}=useOfficial(); return <Frame><PageHero eyebrow={t.pages.contact.eyebrow} title={t.pages.contact.title} body={t.pages.contact.body}/><ContactVisitSection/></Frame>; }
+export function LegalPage({ kind }: { kind: "privacy" | "terms" }) { const title=kind==="privacy"?"Privacy Policy":"Terms of Use"; return <Frame><section className="page-hero"><div className="shell"><div className="eyebrow">LEGAL</div><h1 className="display mt-6">{title}</h1><p className="lead mt-7 max-w-2xl">Draft placeholder for final business and legal review.</p></div></section><section className="section surface"><div className="shell"><div className="card max-w-3xl p-8 sm:p-12"><h2 className="text-2xl font-semibold">Business review required</h2><p className="mt-5 leading-7 text-[var(--muted)]">This page intentionally does not state any legal commitments yet. Mezzanail Nail Studio should approve the final wording before publication.</p><Link href="/contact" className="btn btn-dark mt-8">Contact the studio</Link></div></div></section></Frame>; }

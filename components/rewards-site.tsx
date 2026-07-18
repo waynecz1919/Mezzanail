@@ -6,12 +6,12 @@ import { useState } from "react";
 import { useTheme } from "next-themes";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  ArrowRight, Award, CalendarDays, Check, ChevronDown, Clock3, Copy, Crown, Gift,
-  Globe2, Home, MapPin, Menu, MessageCircle, Moon, ShieldCheck, Sparkles, Star,
-  Sun, User, Users, WalletCards, X, Zap
+  ArrowRight, CalendarDays, ChevronDown, Clock3, Crown, Gift,
+  Globe2, Home, MapPin, Menu, MessageCircle, Moon, ShieldCheck, Sparkles,
+  Sun, User, Users, WalletCards, X
 } from "lucide-react";
 import { useLanguage } from "@/components/providers";
-import { HoverCard, Reveal, RippleButton } from "@/components/hyperframe/motion";
+import { HoverCard, Reveal } from "@/components/hyperframe/motion";
 import { Locale } from "@/lib/i18n";
 import { getWhatsappUrl, siteConfig } from "@/lib/site";
 
@@ -60,6 +60,7 @@ function MemberCard() {
   const { dict } = useLanguage();
   return (
     <motion.div initial={false} animate={{ opacity: 1, scale: 1 }} transition={{ duration: .65 }} className="relative aspect-[1.58/1] overflow-hidden rounded-[20px] bg-[#080808] p-7 text-white shadow-2xl sm:p-9">
+      <span className="absolute bottom-3 right-3 z-10 rounded-full border border-white/20 bg-black/45 px-3 py-1 text-[9px] font-bold tracking-[.14em] text-white/70">UI PREVIEW</span>
       <div className="absolute -right-16 -top-20 h-56 w-56 rounded-full border border-[#c8a96b]/30" /><div className="absolute -right-7 -top-10 h-40 w-40 rounded-full border border-[#c8a96b]/18" />
       <div className="relative flex h-full flex-col justify-between"><div className="flex items-start justify-between"><div><div className="text-[10px] font-bold tracking-[.2em] text-[#c8a96b]">{dict.card.label}</div><div className="mt-2 text-xl font-medium tracking-tight">{dict.card.tier}</div></div><div className="flex items-center gap-1.5 rounded-full border border-[#c8a96b]/45 px-3 py-1.5 text-[9px] font-bold tracking-[.12em] text-[#ddc17e]"><Crown size={12} /> VIP</div></div><div><div className="numbers text-4xl font-light tracking-tight">{dict.card.points}</div><div className="mt-1 text-[9px] font-bold tracking-[.18em] text-white/48">{dict.card.pointsLabel}</div><div className="mt-5 flex items-center justify-between text-[10px] text-white/52"><span>{dict.card.member}</span><span className="flex items-center gap-1.5 text-[#d8ba75]"><span className="h-1.5 w-1.5 rounded-full bg-[#d8ba75]" />{dict.card.status}</span></div></div></div>
     </motion.div>
@@ -80,8 +81,8 @@ function Hero() {
 
 function Stats() {
   const { dict } = useLanguage();
-  const data = [["3,200+", dict.stats.members], ["18K", dict.stats.rewards], ["4.9/5", dict.stats.rating], ["92%", dict.stats.retention]];
-  return <section className="border-y border-[var(--line)]"><div className="shell grid grid-cols-2 divide-x divide-y divide-[var(--line)] md:grid-cols-4 md:divide-y-0">{data.map(([value,label]) => <div key={label} className="px-5 py-8 text-center"><div className="numbers text-3xl font-light tracking-tight sm:text-4xl">{value}</div><div className="mt-2 text-[11px] font-bold uppercase tracking-[.12em] text-[var(--muted)]">{label}</div></div>)}</div></section>;
+  const data = dict.benefits.items.slice(0,4);
+  return <section className="border-y border-[var(--line)]" aria-label="Membership benefits"><div className="shell grid grid-cols-2 divide-x divide-y divide-[var(--line)] md:grid-cols-4 md:divide-y-0">{data.map(([title,body]) => <div key={title} className="px-5 py-8"><div className="text-sm font-bold">{title}</div><div className="mt-2 text-xs leading-5 text-[var(--muted)]">{body}</div></div>)}</div></section>;
 }
 
 function Benefits() {
@@ -90,8 +91,9 @@ function Benefits() {
 }
 
 function Rewards() {
-  const { dict } = useLanguage();
-  return <section id="rewards" className="section"><div className="shell"><Reveal className="max-w-3xl"><div className="eyebrow">{dict.rewards.eyebrow}</div><h2 className="h2 mt-5">{dict.rewards.title}</h2><p className="lead mt-6">{dict.rewards.body}</p></Reveal><div className="mt-12 grid gap-5 lg:grid-cols-[.8fr_1.2fr]"><div className="rounded-[20px] bg-[#070707] p-8 text-white"><div className="flex items-center justify-between"><span className="text-xs font-bold tracking-[.13em] text-white/55">{dict.rewards.available}</span><Award className="text-[#c8a96b]" size={22}/></div><div className="numbers mt-20 text-6xl font-light">2,480</div><div className="mt-3 text-xs text-white/52">{dict.card.pointsLabel}</div><div className="mt-12 h-1.5 overflow-hidden rounded-full bg-white/10"><motion.div initial={{ width: 0 }} whileInView={{ width: "72%" }} viewport={{ once: true }} transition={{ duration: .9 }} className="h-full rounded-full bg-[#c8a96b]" /></div></div><div className="grid gap-4">{dict.rewards.cards.map(([title,points,cta]) => <HoverCard key={title} className="card flex items-center gap-4 p-5"><div className="grid h-12 w-12 flex-none place-items-center rounded-2xl bg-[var(--surface)]"><Gift size={20} className="gold-text"/></div><div className="min-w-0 flex-1"><h3 className="font-bold">{title}</h3><p className="mt-1 text-xs text-[var(--muted)]">{points}</p></div><button className="rounded-xl border border-[var(--line)] px-4 py-2 text-xs font-bold">{cta}</button></HoverCard>)}</div></div></div></section>;
+  const { dict, locale } = useLanguage();
+  const preview = locale === "zh" ? "会员界面预览，不是已登录账户。请通过会员 App 查看实际积分与可用礼遇。" : locale === "ms" ? "Pratonton antara muka sahaja, bukan akaun yang telah log masuk. Semak aplikasi keahlian untuk baki dan ganjaran sebenar." : "Interface preview only, not a signed-in member account. Open the membership app to view your real balance and available rewards.";
+  return <section id="rewards" className="section"><div className="shell"><Reveal className="max-w-3xl"><div className="eyebrow">{dict.rewards.eyebrow}</div><h2 className="h2 mt-5">{dict.rewards.title}</h2><p className="lead mt-6">{dict.rewards.body}</p><p className="mt-5 rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-4 text-sm leading-6 text-[var(--muted)]">{preview}</p></Reveal><div className="mt-12 grid gap-4 md:grid-cols-3">{dict.rewards.cards.map(([title,points]) => <article key={title} className="card p-6"><div className="grid h-12 w-12 place-items-center rounded-2xl bg-[var(--surface)]"><Gift size={20} className="gold-text"/></div><h3 className="mt-6 font-bold">{title}</h3><p className="mt-2 text-xs text-[var(--muted)]">{points}</p><span className="mt-5 inline-flex min-h-11 items-center rounded-xl border border-[var(--line)] px-4 text-xs font-bold text-[var(--muted)]" aria-disabled="true">Preview only</span></article>)}</div></div></section>;
 }
 
 function Timeline() {
@@ -105,15 +107,14 @@ function EditorialOffers() {
 }
 
 function Referral() {
-  const { dict } = useLanguage();
-  const [copied,setCopied] = useState(false);
-  const copy = async () => { await navigator.clipboard.writeText("https://rewards.mezzanail.com/join?ref=member"); setCopied(true); setTimeout(()=>setCopied(false),1800); };
-  return <section id="referral" className="section surface"><div className="shell"><Reveal className="grid items-center gap-12 lg:grid-cols-2"><div><div className="eyebrow">{dict.referral.eyebrow}</div><h2 className="h2 mt-5">{dict.referral.title}</h2><p className="lead mt-6 max-w-xl">{dict.referral.body}</p><RippleButton className="btn btn-dark mt-8" onClick={copy}>{copied ? <Check size={16}/> : <Copy size={16}/>} {copied ? dict.referral.copied : dict.referral.cta}</RippleButton></div><div className="card relative min-h-80 overflow-hidden p-9"><div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(200,169,107,.22),transparent_36%)]"/><div className="relative"><Users size={30} className="gold-text"/><div className="mt-20 text-[11px] font-bold tracking-[.16em] text-[var(--muted)]">MEMBER REFERRAL</div><div className="mt-3 flex items-end justify-between"><div><div className="numbers text-5xl font-light">RM25</div><div className="mt-2 text-xs text-[var(--muted)]">REWARD CREDIT EACH</div></div><Zap className="gold-text" size={28}/></div></div></div></Reveal></div></section>;
+  const { dict, locale } = useLanguage();
+  const note = locale === "zh" ? "推荐礼遇可能随活动调整，请向门店确认当前有效方案。" : locale === "ms" ? "Ganjaran rujukan boleh berubah mengikut kempen. Sila sahkan tawaran semasa dengan studio." : "Referral benefits may change by campaign. Please confirm the current offer with the studio.";
+  return <section id="referral" className="section surface"><div className="shell"><Reveal className="card p-8 sm:p-12"><div className="eyebrow">{dict.referral.eyebrow}</div><h2 className="h2 mt-5">{dict.referral.title}</h2><p className="lead mt-6 max-w-2xl">{dict.referral.body}</p><p className="mt-5 text-sm leading-6 text-[var(--muted)]">{note}</p><a href={getWhatsappUrl(locale)} target="_blank" rel="noopener noreferrer" className="btn btn-dark mt-8"><MessageCircle size={16}/>Ask the studio</a></Reveal></div></section>;
 }
 
 function Testimonials() {
   const { dict } = useLanguage();
-  return <section className="section"><div className="shell"><Reveal><div className="eyebrow">{dict.testimonials.eyebrow}</div><h2 className="h2 mt-5 max-w-4xl">{dict.testimonials.title}</h2></Reveal><div className="mt-12 grid gap-4 lg:grid-cols-3">{dict.testimonials.cards.map(([quote,name,tier])=><HoverCard key={name} className="card p-7"><div className="flex gap-1 text-[#c8a96b]" aria-label="5 out of 5 stars">{[0,1,2,3,4].map(i=><Star key={i} size={14} fill="currentColor"/>)}</div><blockquote className="mt-8 min-h-24 text-lg leading-8">“{quote}”</blockquote><div className="mt-8 border-t border-[var(--line)] pt-5"><div className="text-sm font-bold">{name}</div><div className="mt-1 text-xs text-[var(--muted)]">{tier}</div></div></HoverCard>)}</div></div></section>;
+  return <section className="section"><div className="shell"><Reveal className="card p-8 sm:p-12"><div className="eyebrow">{dict.testimonials.eyebrow}</div><h2 className="h2 mt-5 max-w-4xl">{dict.testimonials.title}</h2><p className="lead mt-6 max-w-2xl">Read confirmed customer feedback directly on our official Google listing.</p><a href={siteConfig.googleReviewUrl} target="_blank" rel="noopener noreferrer" className="btn btn-dark mt-8">Read our Google reviews</a></Reveal></div></section>;
 }
 
 function FAQ() {
@@ -129,7 +130,7 @@ function FinalCTA() {
 
 function Footer() {
   const { dict, locale } = useLanguage();
-  return <footer className="border-t border-[var(--line)] pb-26 pt-14 md:pb-10"><div className="shell grid gap-10 md:grid-cols-2 lg:grid-cols-4"><div className="lg:col-span-2"><div className="flex items-center gap-3"><Image src={siteConfig.logoPath} alt={`${siteConfig.brandName} official logo`} width={3456} height={1152} className="official-wordmark h-auto w-[190px] object-contain"/><span className="text-xs font-extrabold tracking-[.14em]">REWARDS</span></div><p className="mt-5 max-w-sm text-sm leading-6 text-[var(--muted)]">{dict.footer.statement}</p></div><div><div className="text-xs font-bold uppercase tracking-[.15em]">{dict.footer.platform}</div><div className="mt-5 grid gap-3 text-sm text-[var(--muted)]"><a href="#rewards">{dict.nav.rewards}</a><a href="#benefits">{dict.nav.benefits}</a><Link href="/login">{dict.nav.login}</Link></div></div><div><div className="text-xs font-bold uppercase tracking-[.15em]">{dict.footer.support}</div><div className="mt-5 grid gap-3 text-sm text-[var(--muted)]"><a href={getWhatsappUrl(locale)} target="_blank" rel="noopener noreferrer">{dict.footer.contact}</a><a href={siteConfig.googleMapsDirectionsUrl} target="_blank" rel="noopener noreferrer">{dict.footer.location}</a><Link href="/contact">{dict.footer.legal}</Link><Link href="/contact">{dict.footer.terms}</Link></div></div></div><div className="shell mt-12 border-t border-[var(--line)] pt-6 text-xs text-[var(--muted)]">© 2026 {siteConfig.brandName}. All rights reserved.</div></footer>;
+  return <footer className="border-t border-[var(--line)] pb-26 pt-14 md:pb-10"><div className="shell grid gap-10 md:grid-cols-2 lg:grid-cols-4"><div className="lg:col-span-2"><div className="flex items-center gap-3"><Image src={siteConfig.logoPath} alt={`${siteConfig.brandName} official logo`} width={3456} height={1152} className="official-wordmark h-auto w-[190px] object-contain"/><span className="text-xs font-extrabold tracking-[.14em]">REWARDS</span></div><p className="mt-5 max-w-sm text-sm leading-6 text-[var(--muted)]">{dict.footer.statement}</p></div><div><div className="text-xs font-bold uppercase tracking-[.15em]">{dict.footer.platform}</div><div className="mt-5 grid gap-3 text-sm text-[var(--muted)]"><a href="#rewards">{dict.nav.rewards}</a><a href="#benefits">{dict.nav.benefits}</a><Link href="/login">{dict.nav.login}</Link></div></div><div><div className="text-xs font-bold uppercase tracking-[.15em]">{dict.footer.support}</div><div className="mt-5 grid gap-3 text-sm text-[var(--muted)]"><a href={getWhatsappUrl(locale)} target="_blank" rel="noopener noreferrer">{dict.footer.contact}</a><a href={siteConfig.googleMapsDirectionsUrl} target="_blank" rel="noopener noreferrer">{dict.footer.location}</a><Link href="/privacy">{dict.footer.legal}</Link><Link href="/terms">{dict.footer.terms}</Link></div></div></div><div className="shell mt-12 border-t border-[var(--line)] pt-6 text-xs text-[var(--muted)]">© 2026 {siteConfig.brandName}. All rights reserved.</div></footer>;
 }
 
 function MobileNav() {
