@@ -8,7 +8,7 @@ export const siteConfig = {
   whatsappQrPath: "/brand/mezzanail-whatsapp-qr.png",
   xiaohongshuProfileImagePath: "/brand/mezzanail-xiaohongshu-profile.jpeg",
 
-  bookingUrl: "https://mezzanail.emerchant.tunai.io",
+  bookingUrl: "https://booking.tunai.io/mezzanail",
   appStoreUrl: "https://apps.apple.com/my/app/tunaiapp/id6446320035",
   googlePlayUrl: "https://play.google.com/store/apps/details?id=io.tunai.userapp",
 
