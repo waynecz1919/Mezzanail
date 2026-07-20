@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Bodoni_Moda, Manrope } from "next/font/google";
-import Script from "next/script";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { Providers } from "@/components/providers";
 import { isConfiguredUrl, siteConfig } from "@/lib/site";
 import "./globals.css";
@@ -35,10 +35,5 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     openingHours: "Mo-Su 10:30-19:00",
     sameAs,
   };
-  return <html lang="en" suppressHydrationWarning><body className={`${manrope.variable} ${beautyDisplay.variable}`}><Providers>{children}</Providers><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}/><Script src="https://www.googletagmanager.com/gtag/js?id=G-PB4LV7T1PB" strategy="afterInteractive"/><Script id="google-analytics" strategy="afterInteractive">{`
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-PB4LV7T1PB');
-  `}</Script></body></html>;
+  return <html lang="en" suppressHydrationWarning><body className={`${manrope.variable} ${beautyDisplay.variable}`}><Providers>{children}</Providers><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}/><GoogleAnalytics gaId="G-DXWYYRT6QX" /></body></html>;
 }
