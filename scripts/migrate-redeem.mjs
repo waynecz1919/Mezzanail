@@ -28,8 +28,8 @@ const rows = await sql.query(`
    ORDER BY ordinal_position
 `);
 
-if (rows.length !== 15) {
-  throw new Error(`Migration verification failed: expected 15 columns, found ${rows.length}.`);
+if (rows.length !== 14) {
+  throw new Error(`Migration verification failed: expected 14 columns, found ${rows.length}.`);
 }
 
-console.log("Redeem migration complete: public.redeem_codes (15 columns).");
+console.log("Redeem migration complete: public.redeem_codes (14 columns).");
