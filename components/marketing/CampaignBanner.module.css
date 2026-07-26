@@ -1,0 +1,46 @@
+.section {
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+.section + :global(.service-showcase) {
+  padding-top: 32px;
+}
+
+.link,
+.picture,
+.image {
+  display: block;
+  width: 100%;
+}
+
+.link {
+  transition: filter 180ms ease;
+}
+
+.link:hover {
+  filter: brightness(1.02);
+}
+
+.link:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: -3px;
+}
+
+.image {
+  height: auto;
+  object-fit: contain;
+}
+
+@media (max-width: 767px) {
+  .section + :global(.service-showcase) {
+    padding-top: 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link {
+    transition: none;
+  }
+}

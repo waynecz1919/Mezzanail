@@ -4,18 +4,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, useSyncExternalStore } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useTheme } from "next-themes";
 import {
-  ArrowRight, CalendarCheck, Check, ChevronDown, ChevronLeft, ChevronRight, ExternalLink, Facebook, Gift,
+  ArrowRight, CalendarCheck, Check, ChevronDown, ExternalLink, Facebook, Gift,
   Globe2, Home, Instagram, MapPin, Menu, MessageCircle, Moon, Phone, ShieldCheck,
   Sparkles, Sun, X,
 } from "lucide-react";
 import { IconBandage, IconBottle, IconFootsteps, IconHandFinger, IconRazor } from "@tabler/icons-react";
 import { HoverCard, Reveal } from "@/components/hyperframe/motion";
-import { AnniversaryHomeIntro } from "@/components/anniversary-home-intro";
+import { CampaignBanner } from "@/components/marketing/CampaignBanner";
 import { useLanguage } from "@/components/providers";
 import { ServicesCatalog } from "@/components/services-catalog";
+import { currentCampaign } from "@/config/current-campaign";
 import type { Locale } from "@/lib/i18n";
 import {
   officialCampaignMessages,
@@ -151,26 +152,6 @@ function Frame({ children }: {children: React.ReactNode}) {
   return <><SiteHeader/><main>{children}</main><SiteFooter/><MobileNav/><a href={getWhatsappUrl(locale)} target="_blank" rel="noopener noreferrer" className="whatsapp-float" aria-label={`WhatsApp ${siteConfig.brandName}`}><MessageCircle size={22}/></a></>;
 }
 
-function Hero() {
-  const { t } = useOfficial();
-  const [active, setActive] = useState(0);
-  const reducedMotion = useReducedMotion();
-  const slides = [
-    { image:"/gallery/signature-white.jpg", eyebrow:t.hero.eyebrow, title:t.hero.title, body:t.hero.body, label:t.hero.primary, href:siteConfig.bookingUrl, external:true },
-    { image:"/images/promotion/mezzanail-7th-anniversary-banner-v2.png", eyebrow:t.campaign.eyebrow, title:t.campaign.title, body:t.campaign.body, label:t.campaign.secondary, href:"/promotion", external:false },
-    { image:"/gallery/chrome-neutral.jpg", eyebrow:t.services.eyebrow, title:t.services.title, body:t.services.body, label:t.services.viewAll, href:"/services", external:false },
-  ];
-  useEffect(() => { if (reducedMotion) return; const timer = window.setInterval(() => setActive(value => (value + 1) % slides.length), 6500); return () => window.clearInterval(timer); }, [reducedMotion, slides.length]);
-  const slide = slides[active];
-  return <section className="official-hero">
-    <AnimatePresence mode="wait"><motion.div key={slide.image} initial={reducedMotion?false:{opacity:.3,scale:1.02}} animate={{opacity:1,scale:1}} exit={reducedMotion?undefined:{opacity:.25}} transition={{duration:reducedMotion?0:.65}} className="absolute inset-0"><Image src={slide.image} alt={`${siteConfig.brandName} ${slide.eyebrow} campaign`} fill priority={active===0} loading={active===0?"eager":"lazy"} sizes="100vw" className="object-cover object-center"/></motion.div></AnimatePresence>
-    <div className="hero-scrim"/>
-    <div className="shell relative flex min-h-[620px] items-center py-16"><AnimatePresence mode="wait"><motion.div key={`${active}-${slide.title}`} initial={{opacity:0,y:18}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-12}} transition={{duration:.5,ease:[.22,1,.36,1]}} className="hero-copy max-w-2xl"><div className="eyebrow">{slide.eyebrow}</div><h1 className="display mt-5">{slide.title}</h1><p className="mt-6 max-w-xl text-base leading-7">{slide.body}</p><div className="mt-8 flex flex-wrap gap-3">{slide.external?<a href={slide.href} target="_blank" rel="noopener noreferrer" className="btn btn-gold">{slide.label}<ArrowRight size={16}/></a>:<Link href={slide.href} className="btn btn-gold">{slide.label}<ArrowRight size={16}/></Link>}<Link href="/services" className="btn hero-secondary">{t.hero.secondary}</Link></div></motion.div></AnimatePresence></div>
-    <button className="hero-arrow hero-prev" onClick={()=>setActive((active-1+slides.length)%slides.length)} aria-label="Previous slide"><ChevronLeft size={24}/></button><button className="hero-arrow hero-next" onClick={()=>setActive((active+1)%slides.length)} aria-label="Next slide"><ChevronRight size={24}/></button>
-    <div className="hero-dots" aria-label="Campaign slides">{slides.map((item,index)=><button key={item.image} className={index===active?"is-active":""} onClick={()=>setActive(index)} aria-label={`Show slide ${index+1}`}/>)}</div>
-  </section>;
-}
-
 function AnniversaryCampaign() {
   const { t } = useOfficial();
   return <section id="anniversary" className="anniversary-campaign"><div className="anniversary-seven" aria-hidden="true">7</div><div className="shell relative flex min-h-[720px] items-center justify-center py-20 text-center"><Reveal className="max-w-4xl"><div className="eyebrow text-[#dec27e]">{t.campaign.eyebrow}</div><h2 className="mt-7 text-5xl font-light leading-[.98] tracking-[-.055em] text-white sm:text-8xl">{t.campaign.title}</h2><p className="mx-auto mt-7 max-w-2xl text-base leading-7 text-white/58">{t.campaign.body}</p><div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row"><a href={siteConfig.bookingUrl} target="_blank" rel="noopener noreferrer" className="btn btn-gold">{t.campaign.primary}<ArrowRight size={16}/></a><Link href="/promotion" className="btn border-white/20 bg-white/5 text-white">{t.campaign.secondary}</Link></div></Reveal></div></section>;
@@ -256,7 +237,23 @@ function ContactVisitSection() {
   </div></section>;
 }
 
-export function OfficialHome() { return <Frame><AnniversaryHomeIntro/><Hero/><ServicesPreview/><Philosophy/><AnniversaryCampaign/><Gallery/><StoryPreview/><AppPromo/><Reviews/><ContactPanel/></Frame>; }
+export function OfficialHome() {
+  return <Frame>
+    {currentCampaign.enabled ? <CampaignBanner
+      desktopSrc={currentCampaign.desktopSrc}
+      mobileSrc={currentCampaign.mobileSrc}
+      alt={currentCampaign.alt}
+      href={currentCampaign.href}
+      openInNewTab={currentCampaign.openInNewTab}
+      priority={currentCampaign.priority}
+      width={currentCampaign.width}
+      height={currentCampaign.height}
+      campaignId={currentCampaign.id}
+      campaignName={currentCampaign.name}
+    /> : null}
+    <ServicesPreview/><Philosophy/><AnniversaryCampaign/><Gallery/><StoryPreview/><AppPromo/><Reviews/><ContactPanel/>
+  </Frame>;
+}
 export function ServicesPage() { const {t}=useOfficial(); return <Frame><PageHero eyebrow={t.pages.services.eyebrow} title={t.pages.services.title} body={t.pages.services.body}/><ServicesCatalog/><ContactPanel/></Frame>; }
 export function AboutPage() { const {t}=useOfficial(); return <Frame><PageHero eyebrow={`${siteConfig.brandName} · Malaysia`} title={t.pages.about.title} body={t.pages.about.body}/><section className="section surface"><div className="shell grid gap-5 lg:grid-cols-3">{t.pages.about.values.map(([title,body],i)=><Reveal key={title} delay={i*.08} className="card min-h-72 p-8"><span className="numbers text-xs font-bold gold-text">0{i+1}</span><h2 className="mt-20 text-2xl font-bold">{title}</h2><p className="mt-4 text-sm leading-7 text-[var(--muted)]">{body}</p></Reveal>)}</div></section><StoryPreview/><ContactPanel/></Frame>; }
 export function ContactPage() { const {t}=useOfficial(); return <Frame><PageHero eyebrow={t.pages.contact.eyebrow} title={t.pages.contact.title} body={t.pages.contact.body}/><ContactVisitSection/></Frame>; }

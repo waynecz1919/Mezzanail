@@ -11,6 +11,8 @@ const page = read("app/promotion/page.tsx");
 const termsPage = read("app/promotion/terms/page.tsx");
 const experience = read("components/promotion/promotion-experience.tsx");
 const officialSite = read("components/official-site.tsx");
+const campaignBanner = read("components/marketing/CampaignBanner.tsx");
+const currentCampaign = read("config/current-campaign.ts");
 const site = read("lib/site.ts");
 
 test("campaign uses the official promotion and booking URLs", () => {
@@ -65,13 +67,35 @@ test("the full campaign supports English, Chinese and Bahasa Melayu", () => {
 });
 
 test("the official homepage routes every anniversary entry to promotion", () => {
-  assert.match(officialSite, /<AnniversaryHomeIntro\/>/);
+  assert.match(officialSite, /<CampaignBanner/);
+  assert.match(officialSite, /currentCampaign\.enabled/);
   assert.match(officialSite, /\["\/promotion",t\.nav\.promo\]/);
-  assert.match(
-    officialSite,
-    /mezzanail-7th-anniversary-banner-v2\.png/,
-  );
+  assert.match(currentCampaign, /enabled: true/);
+  assert.match(currentCampaign, /href: "\/promotion"/);
+  assert.match(currentCampaign, /banner-desktop\.webp/);
   assert.doesNotMatch(officialSite, /href="\/#anniversary"/);
+  assert.doesNotMatch(officialSite, /function Hero\(/);
+  assert.doesNotMatch(officialSite, /AnniversaryHomeIntro/);
+});
+
+test("the campaign banner is a complete responsive image without overlays", () => {
+  assert.match(campaignBanner, /<picture/);
+  assert.match(campaignBanner, /mobileSrc \?/);
+  assert.match(campaignBanner, /sizes="100vw"/);
+  assert.match(campaignBanner, /width=\{width\}/);
+  assert.match(campaignBanner, /height=\{height\}/);
+  assert.match(campaignBanner, /priority=\{priority\}/);
+  assert.doesNotMatch(campaignBanner, /object-cover/);
+  assert.doesNotMatch(campaignBanner, /Seven years of beauty/);
+  assert.doesNotMatch(campaignBanner, /Book an Appointment/);
+});
+
+test("the full campaign banner click is tracked without customer data", () => {
+  assert.match(campaignBanner, /campaign_banner_click/);
+  assert.match(campaignBanner, /campaign_id: campaignId/);
+  assert.match(campaignBanner, /campaign_name: campaignName/);
+  assert.match(campaignBanner, /destination: href/);
+  assert.doesNotMatch(campaignBanner, /phone|email|customer/i);
 });
 
 test("referral and source validation are allow-listed", () => {
