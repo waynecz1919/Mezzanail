@@ -24,6 +24,7 @@ type VerifyResult = { outcome: VerifyOutcome; record: RedeemCodeRecord | null };
 const filters: Array<"all" | RedeemStatus> = [
   "all", "pending", "sent", "redeemed", "expired", "cancelled",
 ];
+const WAKE_UP_DESCRIPTION = "Buy 1 Classic Pedicure, Free 1 Basic Manicure Voucher(B1F1)";
 
 function dateOnly(value: string | null) {
   if (!value) return "—";
@@ -136,6 +137,8 @@ export function RedeemCenter({ staffId }: { staffId: string }) {
 
 function SendCodePanel({ onOpenRecords }: { onOpenRecords: () => void }) {
   const [record, setRecord] = useState<RedeemCodeRecord | null>(null);
+  const [voucherType, setVoucherType] = useState("Wake Up");
+  const [voucherDescription, setVoucherDescription] = useState(WAKE_UP_DESCRIPTION);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [sendError, setSendError] = useState("");
@@ -143,6 +146,14 @@ function SendCodePanel({ onOpenRecords }: { onOpenRecords: () => void }) {
   const defaultExpiry = dateInputValue(
     new Date(today.getFullYear(), today.getMonth() + 1, today.getDate()),
   );
+
+  function changeVoucherType(nextType: string) {
+    setVoucherType(nextType);
+    setVoucherDescription((current) => {
+      if (current && current !== WAKE_UP_DESCRIPTION) return current;
+      return nextType === "Wake Up" ? WAKE_UP_DESCRIPTION : "";
+    });
+  }
 
   async function generate(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -230,10 +241,10 @@ function SendCodePanel({ onOpenRecords }: { onOpenRecords: () => void }) {
         <label><span>Customer Group *</span><input name="customerGroup" required maxLength={80} list="customer-groups" placeholder="Select or type group" />
           <datalist id="customer-groups"><option value="Member" /><option value="VIP" /><option value="Inactive Member" /><option value="New Customer" /></datalist>
         </label>
-        <label><span>Voucher Type *</span><select name="voucherType" required defaultValue="Wake Up">
+        <label><span>Voucher Type *</span><select name="voucherType" required value={voucherType} onChange={(event) => changeVoucherType(event.target.value)}>
           <option>Wake Up</option><option>Birthday</option><option>Loyalty</option><option>Service Recovery</option><option>Gift</option><option>Other</option>
         </select></label>
-        <label className="is-wide"><span>Voucher Description *</span><textarea name="voucherDescription" required maxLength={500} rows={3} placeholder="Describe the exact voucher benefit" /></label>
+        <label className="is-wide"><span>Voucher Description *</span><textarea name="voucherDescription" required maxLength={500} rows={3} value={voucherDescription} onChange={(event) => setVoucherDescription(event.target.value)} placeholder="Describe the exact voucher benefit" /></label>
         <label><span>Expiry Date *</span><input name="expiryDate" type="date" required min={dateInputValue(today)} defaultValue={defaultExpiry} /></label>
         <label className="is-wide"><span>Notes</span><textarea name="notes" maxLength={1000} rows={3} placeholder="Internal notes (optional)" /></label>
         {error && <p className="redeem-error is-wide" role="alert">{error}</p>}
