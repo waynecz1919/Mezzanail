@@ -12,6 +12,138 @@ export const promotionLanguageShortLabels: Record<PromotionLanguage, string> = {
   ms: "BM",
 };
 
+type PromotionCampaignDetails = {
+  steps: Array<{ title: string; description: string }>;
+  prizes: Array<{ name: string; description: string }>;
+};
+
+export const promotionCampaignDetails: Record<
+  PromotionLanguage,
+  PromotionCampaignDetails
+> = {
+  en: {
+    steps: [
+      {
+        title: "Join Our Membership",
+        description:
+          "Become a Mezzanail member to take part in our anniversary celebration.",
+      },
+      {
+        title: "Scan & Share With 3 Friends",
+        description:
+          "Scan the campaign QR and share the celebration with three friends.",
+      },
+      {
+        title: "Join the 7th Anniversary Lucky Draw",
+        description: "Complete the campaign steps for your chance to win.",
+      },
+    ],
+    prizes: [
+      {
+        name: "Dyson Supersonic™ Travel Hair Dryer",
+        description:
+          "A premium travel hair dryer for beautiful styling wherever you go.",
+      },
+      {
+        name: "HUAWEI Watch Fit 5",
+        description:
+          "A stylish smartwatch designed for everyday wellbeing.",
+      },
+      {
+        name: "Xiaomi Robot Vacuum",
+        description:
+          "A smart home helper that keeps daily cleaning effortless.",
+      },
+      {
+        name: "Beauty Vouchers & Weekly Rewards",
+        description:
+          "Enjoy beauty treats, member surprises and more chances to celebrate.",
+      },
+    ],
+  },
+  zh: {
+    steps: [
+      {
+        title: "加入会员",
+        description: "成为 Mezzanail 会员，参加我们的周年庆典。",
+      },
+      {
+        title: "扫码并分享给3位朋友",
+        description: "扫描活动二维码，并把周年庆典分享给三位朋友。",
+      },
+      {
+        title: "参加七周年幸运抽奖",
+        description: "完成活动步骤，即有机会赢取周年好礼。",
+      },
+    ],
+    prizes: [
+      {
+        name: "Dyson Supersonic™ 旅行吹风机",
+        description: "随时随地享受高级、便捷的美发体验。",
+      },
+      {
+        name: "HUAWEI Watch Fit 5",
+        description: "兼具时尚设计与日常健康功能的智能手表。",
+      },
+      {
+        name: "Xiaomi 扫地机器人",
+        description: "让日常家居清洁更轻松的智能好帮手。",
+      },
+      {
+        name: "美容礼券与每周奖励",
+        description: "享受美容好礼、会员惊喜和更多中奖机会。",
+      },
+    ],
+  },
+  ms: {
+    steps: [
+      {
+        title: "Sertai Keahlian Kami",
+        description:
+          "Jadi ahli Mezzanail untuk menyertai sambutan ulang tahun kami.",
+      },
+      {
+        title: "Imbas & Kongsi Dengan 3 Rakan",
+        description:
+          "Imbas kod QR kempen dan kongsi sambutan ini dengan tiga rakan.",
+      },
+      {
+        title: "Sertai Cabutan Bertuah Ulang Tahun Ke-7",
+        description:
+          "Lengkapkan langkah kempen untuk peluang memenangi hadiah.",
+      },
+    ],
+    prizes: [
+      {
+        name: "Dyson Supersonic™ Travel Hair Dryer",
+        description:
+          "Pengering rambut perjalanan premium untuk gaya cantik di mana sahaja.",
+      },
+      {
+        name: "HUAWEI Watch Fit 5",
+        description:
+          "Jam pintar bergaya yang direka untuk kesejahteraan harian.",
+      },
+      {
+        name: "Xiaomi Robot Vacuum",
+        description:
+          "Pembantu rumah pintar yang memudahkan pembersihan harian.",
+      },
+      {
+        name: "Baucar Kecantikan & Ganjaran Mingguan",
+        description:
+          "Nikmati hadiah kecantikan, kejutan ahli dan lebih banyak peluang untuk menang.",
+      },
+    ],
+  },
+};
+
+export const promotionPrizeTerms: Record<PromotionLanguage, string> = {
+  en: "Campaign prizes include one Dyson Supersonic™ Travel Hair Dryer, one HUAWEI Watch Fit 5, one Xiaomi Robot Vacuum, beauty vouchers and weekly rewards. Prizes are non-transferable and cannot be exchanged for cash unless Mezzanail states otherwise.",
+  zh: "活动奖品包括一台 Dyson Supersonic™ 旅行吹风机、一只 HUAWEI Watch Fit 5、一台 Xiaomi 扫地机器人、美容礼券及每周奖励。除非 Mezzanail 另有说明，奖品不可转让，也不可兑换现金。",
+  ms: "Hadiah kempen termasuk satu Dyson Supersonic™ Travel Hair Dryer, satu HUAWEI Watch Fit 5, satu Xiaomi Robot Vacuum, baucar kecantikan dan ganjaran mingguan. Hadiah tidak boleh dipindah milik atau ditukar dengan wang tunai kecuali dinyatakan sebaliknya oleh Mezzanail.",
+};
+
 export const promotionCopy = {
   en: {
     bookAppointment: "Book Appointment",

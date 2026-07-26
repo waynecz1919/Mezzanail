@@ -22,6 +22,7 @@ import {
   type PromotionSource,
 } from "@/lib/promotion/campaign-config";
 import {
+  promotionCampaignDetails,
   promotionCopy,
   promotionLanguageLabels,
   promotionLanguageShortLabels,
@@ -51,6 +52,7 @@ export function PromotionExperience() {
   const pageViewTracked = useRef(false);
   const qrViewTracked = useRef(false);
   const copy = promotionCopy[language];
+  const campaignDetails = promotionCampaignDetails[language];
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -217,7 +219,7 @@ export function PromotionExperience() {
         <Image
           className="promotion-hero-image"
           src={anniversaryCampaign.banner.png}
-          alt="Mezzanail 7th Anniversary Lucky Draw Campaign from 26 July to 30 September 2026, featuring Apple Watch and Dyson hair dryer prizes"
+          alt="Mezzanail 7th Anniversary Lucky Draw Campaign from 26 July to 30 September 2026, featuring Dyson, HUAWEI and Xiaomi grand prizes"
           fill
           priority
           sizes="100vw"
@@ -301,7 +303,7 @@ export function PromotionExperience() {
             {anniversaryCampaign.prizes.map((prize, index) => {
               const Icon =
                 prizeIcons[prize.icon as keyof typeof prizeIcons] ?? Gift;
-              const localizedPrize = copy.prizes[index];
+              const localizedPrize = campaignDetails.prizes[index];
               return (
                 <article
                   className={`promotion-prize-card promotion-prize-${index + 1}`}
@@ -335,14 +337,14 @@ export function PromotionExperience() {
             </div>
           </div>
           <div className="promotion-steps">
-            {copy.steps.map((step, index) => (
+            {campaignDetails.steps.map((step, index) => (
               <article className="promotion-step" key={step.title}>
                 <span className="promotion-step-number">{index + 1}</span>
                 <div>
                   <h3>{step.title}</h3>
                   <p>{step.description}</p>
                 </div>
-                {index < copy.steps.length - 1 && (
+                {index < campaignDetails.steps.length - 1 && (
                   <span className="promotion-step-line" aria-hidden="true" />
                 )}
               </article>

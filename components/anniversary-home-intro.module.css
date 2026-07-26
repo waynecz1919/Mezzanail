@@ -1,0 +1,168 @@
+.section {
+  position: relative;
+  min-height: min(780px, 78vh);
+  overflow: hidden;
+  isolation: isolate;
+  background: #1a0f11;
+}
+
+.background {
+  z-index: -3;
+  object-fit: cover;
+  object-position: center;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background:
+    linear-gradient(90deg, rgba(28, 11, 15, .94) 0%, rgba(57, 24, 31, .78) 42%, rgba(93, 47, 56, .18) 76%, rgba(0, 0, 0, .05) 100%),
+    linear-gradient(0deg, rgba(13, 5, 7, .74), transparent 55%);
+}
+
+.sparkles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  color: #f3d29a;
+}
+
+.sparkles svg {
+  position: absolute;
+  filter: drop-shadow(0 0 12px rgba(243, 210, 154, .55));
+  animation: anniversaryTwinkle 3.2s ease-in-out infinite;
+}
+
+.sparkles svg:nth-child(1) { top: 14%; left: 7%; }
+.sparkles svg:nth-child(2) { top: 26%; right: 12%; animation-delay: .8s; }
+.sparkles svg:nth-child(3) { bottom: 16%; right: 34%; animation-delay: 1.6s; }
+
+.content {
+  width: min(1180px, calc(100% - 40px));
+  min-height: min(780px, 78vh);
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 88px 0;
+  color: #fff;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  border: 1px solid rgba(238, 203, 142, .5);
+  border-radius: 999px;
+  background: rgba(58, 26, 32, .5);
+  padding: 0 15px;
+  color: #f1d5a3;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .16em;
+  backdrop-filter: blur(12px);
+}
+
+.kicker {
+  margin: 28px 0 0;
+  color: #e8c88f;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .22em;
+}
+
+.content h1 {
+  max-width: 760px;
+  margin: 16px 0 0;
+  font-family: var(--font-beauty), Georgia, serif;
+  font-size: clamp(54px, 7.2vw, 106px);
+  font-weight: 400;
+  line-height: .94;
+  letter-spacing: -.055em;
+  text-wrap: balance;
+}
+
+.lead {
+  max-width: 600px;
+  margin: 28px 0 0;
+  color: rgba(255, 255, 255, .72);
+  font-size: clamp(16px, 1.6vw, 19px);
+  line-height: 1.75;
+}
+
+.date {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 26px;
+  color: #f2d8aa;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 36px;
+}
+
+.primary,
+.secondary {
+  min-height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border-radius: 999px;
+  padding: 0 24px;
+  font-size: 13px;
+  font-weight: 800;
+  transition: transform .2s ease, border-color .2s ease, background .2s ease;
+}
+
+.primary {
+  background: linear-gradient(135deg, #d2a65d, #f1d39b);
+  color: #2c1519;
+}
+
+.secondary {
+  border: 1px solid rgba(255, 255, 255, .32);
+  background: rgba(255, 255, 255, .08);
+  color: #fff;
+  backdrop-filter: blur(10px);
+}
+
+.primary:hover,
+.secondary:hover { transform: translateY(-2px); }
+
+@keyframes anniversaryTwinkle {
+  0%, 100% { opacity: .35; transform: scale(.9) rotate(0); }
+  50% { opacity: 1; transform: scale(1.12) rotate(8deg); }
+}
+
+@media (max-width: 767px) {
+  .section,
+  .content { min-height: 650px; }
+
+  .content {
+    width: min(100% - 28px, 540px);
+    padding: 70px 0;
+  }
+
+  .overlay {
+    background:
+      linear-gradient(0deg, rgba(28, 11, 15, .96) 0%, rgba(49, 21, 27, .82) 58%, rgba(64, 30, 37, .38) 100%);
+  }
+
+  .content h1 { font-size: 52px; }
+  .actions { width: 100%; }
+  .primary, .secondary { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sparkles svg { animation: none; }
+}

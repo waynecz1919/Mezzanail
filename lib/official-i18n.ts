@@ -1,5 +1,35 @@
 import type { Locale } from "@/lib/i18n";
 
+export const officialCampaignMessages = {
+  en: {
+    eyebrow: "26 JULY — 30 SEPTEMBER 2026",
+    title: "Seven years of beauty, shared with you.",
+    body: "Join our 7th Anniversary Lucky Draw, discover member rewards and win weekly treats and grand prizes.",
+    primary: "Book the anniversary edit",
+    secondary: "Explore the lucky draw",
+  },
+  zh: {
+    eyebrow: "2026年7月26日 — 9月30日",
+    title: "七年美丽，与您一同分享。",
+    body: "参加我们的七周年幸运抽奖，探索会员奖励，并赢取每周奖品与大奖。",
+    primary: "预约周年美甲",
+    secondary: "探索幸运抽奖",
+  },
+  ms: {
+    eyebrow: "26 JULAI — 30 SEPTEMBER 2026",
+    title: "Tujuh tahun keindahan, dikongsi bersama anda.",
+    body: "Sertai Cabutan Bertuah Ulang Tahun Ke-7 kami, nikmati ganjaran ahli dan menangi hadiah mingguan serta hadiah utama.",
+    primary: "Tempah pilihan ulang tahun",
+    secondary: "Terokai cabutan bertuah",
+  },
+} as const satisfies Record<Locale, {
+  eyebrow: string;
+  title: string;
+  body: string;
+  primary: string;
+  secondary: string;
+}>;
+
 export const officialMessages = {
   en: {
     nav: { home: "Home", services: "Services", work: "Our work", story: "Our story", reviews: "Reviews", contact: "Contact", rewards: "Rewards", promo: "Offers", book: "Book now" },

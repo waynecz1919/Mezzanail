@@ -7,6 +7,7 @@ import {
 import {
   promotionLanguageLabels,
   promotionLanguageShortLabels,
+  promotionPrizeTerms,
   termsCopy,
 } from "@/lib/promotion/campaign-copy";
 
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
   description:
     "Terms and conditions for the Mezzanail 7th Anniversary Lucky Draw Campaign.",
   alternates: {
-    canonical: `${anniversaryCampaign.promotionUrl}/promotion/terms`,
+    canonical: `${anniversaryCampaign.promotionUrl}/terms`,
   },
 };
 
@@ -77,7 +78,11 @@ export default async function PromotionTermsPage({
             <span>{String(index + 1).padStart(2, "0")}</span>
             <div>
               <h2>{section.title}</h2>
-              <p>{section.body}</p>
+              <p>
+                {index === 2
+                  ? promotionPrizeTerms[language]
+                  : section.body}
+              </p>
             </div>
           </section>
         ))}

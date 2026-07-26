@@ -13,10 +13,14 @@ import {
 } from "lucide-react";
 import { IconBandage, IconBottle, IconFootsteps, IconHandFinger, IconRazor } from "@tabler/icons-react";
 import { HoverCard, Reveal } from "@/components/hyperframe/motion";
+import { AnniversaryHomeIntro } from "@/components/anniversary-home-intro";
 import { useLanguage } from "@/components/providers";
 import { ServicesCatalog } from "@/components/services-catalog";
 import type { Locale } from "@/lib/i18n";
-import { officialMessages } from "@/lib/official-i18n";
+import {
+  officialCampaignMessages,
+  officialMessages,
+} from "@/lib/official-i18n";
 import { getWhatsappUrl, isConfiguredUrl, siteConfig } from "@/lib/site";
 
 const galleryImages = [
@@ -67,7 +71,14 @@ const philosophyCopy = {
 
 function useOfficial() {
   const { locale, setLocale } = useLanguage();
-  return { locale, setLocale, t: officialMessages[locale] };
+  return {
+    locale,
+    setLocale,
+    t: {
+      ...officialMessages[locale],
+      campaign: officialCampaignMessages[locale],
+    },
+  };
 }
 
 function BrandLogo({ compact = false, inverse = false }: { compact?: boolean; inverse?: boolean }) {
@@ -104,9 +115,9 @@ function SiteHeader() {
   const { locale, t } = useOfficial();
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const nav = [["/",t.nav.home],["/about",t.nav.story],["/services",t.nav.services],["/rewards",t.nav.rewards],["/#app",downloadNav[locale]],["/contact",t.nav.contact]];
+  const nav = [["/",t.nav.home],["/about",t.nav.story],["/services",t.nav.services],["/rewards",t.nav.rewards],["/promotion",t.nav.promo],["/#app",downloadNav[locale]],["/contact",t.nav.contact]];
   return <>
-    {siteConfig.announcement.enabled && <div className="announcement"><span>{t.announcement.label}</span><span className="announcement-date">{siteConfig.announcement.dates}</span><Link href="/#anniversary">{t.announcement.action}<ArrowRight size={13}/></Link></div>}
+    {siteConfig.announcement.enabled && <div className="announcement"><span>{t.announcement.label}</span><span className="announcement-date">{siteConfig.announcement.dates}</span><Link href="/promotion">{t.announcement.action}<ArrowRight size={13}/></Link></div>}
     <header className="official-header">
       <div className="official-header-main shell">
         <div className="official-header-left"><a href={siteConfig.bookingUrl} className="header-book" target="_blank" rel="noopener noreferrer">{t.nav.book}</a><button className="utility-button icon-only official-mobile-menu" onClick={() => setOpen(!open)} aria-label="Open menu">{open?<X size={17}/>:<Menu size={17}/>}</button></div>
@@ -132,7 +143,7 @@ function SiteFooter() {
 
 function MobileNav() {
   const { t } = useOfficial();
-  return <nav className="mobile-official-nav" aria-label="Mobile quick navigation"><Link href="/"><Home size={18}/><span>{t.nav.home}</span></Link><Link href="/services"><Sparkles size={18}/><span>{t.nav.services}</span></Link><Link href="/#anniversary"><Gift size={18}/><span>{t.nav.promo}</span></Link><a href={siteConfig.bookingUrl} target="_blank" rel="noopener noreferrer" className="mobile-book"><CalendarCheck size={18}/><span>{t.nav.book}</span></a></nav>;
+  return <nav className="mobile-official-nav" aria-label="Mobile quick navigation"><Link href="/"><Home size={18}/><span>{t.nav.home}</span></Link><Link href="/services"><Sparkles size={18}/><span>{t.nav.services}</span></Link><Link href="/promotion"><Gift size={18}/><span>{t.nav.promo}</span></Link><a href={siteConfig.bookingUrl} target="_blank" rel="noopener noreferrer" className="mobile-book"><CalendarCheck size={18}/><span>{t.nav.book}</span></a></nav>;
 }
 
 function Frame({ children }: {children: React.ReactNode}) {
@@ -146,7 +157,7 @@ function Hero() {
   const reducedMotion = useReducedMotion();
   const slides = [
     { image:"/gallery/signature-white.jpg", eyebrow:t.hero.eyebrow, title:t.hero.title, body:t.hero.body, label:t.hero.primary, href:siteConfig.bookingUrl, external:true },
-    { image:"/gallery/signature-campaign.jpg", eyebrow:t.campaign.eyebrow, title:t.campaign.title, body:t.campaign.body, label:t.campaign.secondary, href:"/rewards", external:false },
+    { image:"/images/promotion/mezzanail-7th-anniversary-banner-v2.png", eyebrow:t.campaign.eyebrow, title:t.campaign.title, body:t.campaign.body, label:t.campaign.secondary, href:"/promotion", external:false },
     { image:"/gallery/chrome-neutral.jpg", eyebrow:t.services.eyebrow, title:t.services.title, body:t.services.body, label:t.services.viewAll, href:"/services", external:false },
   ];
   useEffect(() => { if (reducedMotion) return; const timer = window.setInterval(() => setActive(value => (value + 1) % slides.length), 6500); return () => window.clearInterval(timer); }, [reducedMotion, slides.length]);
@@ -162,7 +173,7 @@ function Hero() {
 
 function AnniversaryCampaign() {
   const { t } = useOfficial();
-  return <section id="anniversary" className="anniversary-campaign"><div className="anniversary-seven" aria-hidden="true">7</div><div className="shell relative flex min-h-[720px] items-center justify-center py-20 text-center"><Reveal className="max-w-4xl"><div className="eyebrow text-[#dec27e]">{t.campaign.eyebrow}</div><h2 className="mt-7 text-5xl font-light leading-[.98] tracking-[-.055em] text-white sm:text-8xl">{t.campaign.title}</h2><p className="mx-auto mt-7 max-w-2xl text-base leading-7 text-white/58">{t.campaign.body}</p><div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row"><a href={siteConfig.bookingUrl} target="_blank" rel="noopener noreferrer" className="btn btn-gold">{t.campaign.primary}<ArrowRight size={16}/></a><Link href="/rewards" className="btn border-white/20 bg-white/5 text-white">{t.campaign.secondary}</Link></div></Reveal></div></section>;
+  return <section id="anniversary" className="anniversary-campaign"><div className="anniversary-seven" aria-hidden="true">7</div><div className="shell relative flex min-h-[720px] items-center justify-center py-20 text-center"><Reveal className="max-w-4xl"><div className="eyebrow text-[#dec27e]">{t.campaign.eyebrow}</div><h2 className="mt-7 text-5xl font-light leading-[.98] tracking-[-.055em] text-white sm:text-8xl">{t.campaign.title}</h2><p className="mx-auto mt-7 max-w-2xl text-base leading-7 text-white/58">{t.campaign.body}</p><div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row"><a href={siteConfig.bookingUrl} target="_blank" rel="noopener noreferrer" className="btn btn-gold">{t.campaign.primary}<ArrowRight size={16}/></a><Link href="/promotion" className="btn border-white/20 bg-white/5 text-white">{t.campaign.secondary}</Link></div></Reveal></div></section>;
 }
 
 function BookingSection() {
@@ -245,7 +256,7 @@ function ContactVisitSection() {
   </div></section>;
 }
 
-export function OfficialHome() { return <Frame><Hero/><ServicesPreview/><Philosophy/><AnniversaryCampaign/><Gallery/><StoryPreview/><AppPromo/><Reviews/><ContactPanel/></Frame>; }
+export function OfficialHome() { return <Frame><AnniversaryHomeIntro/><Hero/><ServicesPreview/><Philosophy/><AnniversaryCampaign/><Gallery/><StoryPreview/><AppPromo/><Reviews/><ContactPanel/></Frame>; }
 export function ServicesPage() { const {t}=useOfficial(); return <Frame><PageHero eyebrow={t.pages.services.eyebrow} title={t.pages.services.title} body={t.pages.services.body}/><ServicesCatalog/><ContactPanel/></Frame>; }
 export function AboutPage() { const {t}=useOfficial(); return <Frame><PageHero eyebrow={`${siteConfig.brandName} · Malaysia`} title={t.pages.about.title} body={t.pages.about.body}/><section className="section surface"><div className="shell grid gap-5 lg:grid-cols-3">{t.pages.about.values.map(([title,body],i)=><Reveal key={title} delay={i*.08} className="card min-h-72 p-8"><span className="numbers text-xs font-bold gold-text">0{i+1}</span><h2 className="mt-20 text-2xl font-bold">{title}</h2><p className="mt-4 text-sm leading-7 text-[var(--muted)]">{body}</p></Reveal>)}</div></section><StoryPreview/><ContactPanel/></Frame>; }
 export function ContactPage() { const {t}=useOfficial(); return <Frame><PageHero eyebrow={t.pages.contact.eyebrow} title={t.pages.contact.title} body={t.pages.contact.body}/><ContactVisitSection/></Frame>; }

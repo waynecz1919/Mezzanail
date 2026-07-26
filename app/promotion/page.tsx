@@ -3,7 +3,7 @@ import { PromotionExperience } from "@/components/promotion/promotion-experience
 import { anniversaryCampaign } from "@/lib/promotion/campaign-config";
 
 const promotionDescription =
-  "Celebrate Mezzanail's 7th Anniversary from 26 July to 30 September 2026. Book your appointment and discover our anniversary lucky draw.";
+  "Celebrate Mezzanail's 7th Anniversary from 26 July to 30 September 2026. Join our membership, share with three friends and enter the lucky draw.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(anniversaryCampaign.promotionUrl),
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Mezzanail 7th Anniversary Celebration",
     description:
-      "Book your appointment and celebrate 7 wonderful years with Mezzanail.",
+      "Join Mezzanail's 7th Anniversary Lucky Draw for Dyson, HUAWEI, Xiaomi and weekly rewards.",
     url: anniversaryCampaign.promotionUrl,
     siteName: "Mezzanail",
     images: [
@@ -30,7 +30,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Mezzanail 7th Anniversary Celebration",
-    description: "Book your appointment and join our anniversary celebration.",
+    description:
+      "Join our membership, share with three friends and enter the 7th Anniversary Lucky Draw.",
     images: [anniversaryCampaign.banner.og],
   },
   robots: { index: true, follow: true },

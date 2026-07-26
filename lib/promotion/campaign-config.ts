@@ -9,7 +9,7 @@ export const anniversaryCampaign = {
   startDate: "2026-07-26",
   endDate: "2026-09-30",
   displayDates: "26 July – 30 September 2026",
-  promotionUrl: "https://promotion.mezzanail.com",
+  promotionUrl: "https://www.mezzanail.com/promotion",
   bookingUrl:
     "https://booking.tunai.io/booking/mezzanail?outletID=4188#contact",
   whatsappContact: "60162121332",
@@ -19,51 +19,51 @@ export const anniversaryCampaign = {
     og: "/images/promotion/mezzanail-7th-anniversary-og-v2.jpg",
   },
   qr: {
-    png: "/qr/mezzanail-7th-anniversary-qr.png",
-    svg: "/qr/mezzanail-7th-anniversary-qr.svg",
+    png: "/qr/mezzanail-7th-anniversary-qr-v2.png",
+    svg: "/qr/mezzanail-7th-anniversary-qr-v2.svg",
   },
   prizes: [
     {
-      name: "Apple Watch SE 3",
-      description: "A stylish everyday smartwatch for one lucky winner.",
-      winnerCount: 1,
-      icon: "watch",
-    },
-    {
       name: "Dyson Supersonic™ Travel Hair Dryer",
       description:
-        "Compact, premium and designed for beautiful hair wherever you go.",
+        "A premium travel hair dryer for beautiful styling wherever you go.",
       winnerCount: 1,
       icon: "dryer",
     },
     {
-      name: "Exclusive Member Rewards",
-      description:
-        "Enjoy anniversary rewards, member benefits and special surprises.",
+      name: "HUAWEI Watch Fit 5",
+      description: "A stylish smartwatch designed for everyday wellbeing.",
+      winnerCount: 1,
+      icon: "watch",
+    },
+    {
+      name: "Xiaomi Robot Vacuum",
+      description: "A smart home helper that keeps daily cleaning effortless.",
+      winnerCount: 1,
       icon: "sparkles",
     },
     {
-      name: "Lucky Draw Prizes",
+      name: "Beauty Vouchers & Weekly Rewards",
       description:
-        "Every eligible participation brings another chance to celebrate and win.",
+        "Enjoy beauty treats, member surprises and more chances to celebrate.",
       icon: "gift",
     },
   ],
   steps: [
     {
-      title: "Book Your Appointment",
-      description:
-        "Choose your preferred service, date and appointment time.",
-    },
-    {
       title: "Join Our Membership",
       description:
-        "Become a Mezzanail member and enjoy exclusive member benefits and anniversary rewards.",
+        "Become a Mezzanail member to take part in our anniversary celebration.",
     },
     {
-      title: "Like & Share Our Page",
+      title: "Scan & Share With 3 Friends",
       description:
-        "Like and share our page with friends to spread the anniversary celebration.",
+        "Scan the campaign QR and share the celebration with three friends.",
+    },
+    {
+      title: "Join the 7th Anniversary Lucky Draw",
+      description:
+        "Complete the campaign steps for your chance to win.",
     },
   ],
   policy:
@@ -81,7 +81,7 @@ export const anniversaryCampaign = {
       },
       {
         title: "Prizes",
-        body: "Campaign prizes include one Apple Watch SE 3, one Dyson Supersonic™ Travel Hair Dryer, exclusive member rewards and other lucky draw prizes. Prizes are non-transferable and cannot be exchanged for cash unless Mezzanail states otherwise.",
+        body: "Campaign prizes include one Dyson Supersonic™ Travel Hair Dryer, one HUAWEI Watch Fit 5, one Xiaomi Robot Vacuum, beauty vouchers and weekly rewards. Prizes are non-transferable and cannot be exchanged for cash unless Mezzanail states otherwise.",
       },
       {
         title: "Winner selection",

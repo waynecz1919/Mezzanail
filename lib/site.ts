@@ -43,7 +43,7 @@ export const siteConfig = {
   announcement: {
     enabled: true,
     campaign: "7th Anniversary",
-    dates: "20th July — 15th September 2026",
+    dates: "26th July — 30th September 2026",
   },
 } as const;
 
