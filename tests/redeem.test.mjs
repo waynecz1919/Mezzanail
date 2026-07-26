@@ -50,6 +50,8 @@ test("redeem codes and WhatsApp copy follow the approved format", () => {
 test("redeem subdomain routes into the existing app and is not indexed", () => {
   assert.match(proxy, /redeem\.mezzanail\.com/);
   assert.match(proxy, /destination\.pathname = "\/redeem"/);
+  assert.match(proxy, /X-Robots-Tag", "noindex, nofollow, noarchive"/);
+  assert.match(proxy, /rewritePrivateRoute\(destination\)/);
   assert.match(read("app/redeem/layout.tsx"), /index: false/);
   assert.match(read("next.config.ts"), /noindex, nofollow, noarchive/);
 });
