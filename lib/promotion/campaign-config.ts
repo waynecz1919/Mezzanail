@@ -14,9 +14,9 @@ export const anniversaryCampaign = {
     "https://booking.tunai.io/booking/mezzanail?outletID=4188#contact",
   whatsappContact: "60162121332",
   banner: {
-    webp: "/images/promotion/mezzanail-7th-anniversary-banner.webp",
-    png: "/images/promotion/mezzanail-7th-anniversary-banner.png",
-    og: "/images/promotion/mezzanail-7th-anniversary-og.jpg",
+    webp: "/images/promotion/mezzanail-7th-anniversary-banner-v2.webp",
+    png: "/images/promotion/mezzanail-7th-anniversary-banner-v2.png",
+    og: "/images/promotion/mezzanail-7th-anniversary-og-v2.jpg",
   },
   qr: {
     png: "/qr/mezzanail-7th-anniversary-qr.png",
@@ -56,14 +56,14 @@ export const anniversaryCampaign = {
         "Choose your preferred service, date and appointment time.",
     },
     {
-      title: "Visit Mezzanail",
+      title: "Join Our Membership",
       description:
-        "Enjoy your nail appointment and participate in our anniversary celebration.",
+        "Become a Mezzanail member and enjoy exclusive member benefits and anniversary rewards.",
     },
     {
-      title: "Share With Friends",
+      title: "Like & Share Our Page",
       description:
-        "Share this celebration through WhatsApp and invite your friends to discover Mezzanail.",
+        "Like and share our page with friends to spread the anniversary celebration.",
     },
   ],
   policy:

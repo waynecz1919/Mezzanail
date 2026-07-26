@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { anniversaryCampaign } from "@/lib/promotion/campaign-config";
+import {
+  anniversaryCampaign,
+  type PromotionLanguage,
+} from "@/lib/promotion/campaign-config";
+import {
+  promotionLanguageLabels,
+  promotionLanguageShortLabels,
+  termsCopy,
+} from "@/lib/promotion/campaign-copy";
 
 export const metadata: Metadata = {
   title: "7th Anniversary Campaign Terms",
@@ -11,24 +19,60 @@ export const metadata: Metadata = {
   },
 };
 
-export default function PromotionTermsPage() {
+export default async function PromotionTermsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ lang?: string }>;
+}) {
+  const requestedLanguage = (await searchParams).lang;
+  const language = (
+    ["en", "zh", "ms"].includes(requestedLanguage ?? "")
+      ? requestedLanguage
+      : "en"
+  ) as PromotionLanguage;
+  const copy = termsCopy[language];
+
   return (
-    <main className="promotion-site promotion-terms-page">
+    <main
+      className="promotion-site promotion-terms-page"
+      lang={language === "zh" ? "zh-CN" : language}
+    >
       <header className="promotion-terms-header">
         <div className="promotion-shell">
-          <Link href="/promotion">← Back to celebration</Link>
-          <p className="promotion-eyebrow">Mezzanail 7th Anniversary</p>
-          <h1>Campaign Terms &amp; Conditions</h1>
-          <p>Last updated {anniversaryCampaign.terms.lastUpdated}</p>
+          <div className="promotion-terms-topbar">
+            <Link href={`/promotion?lang=${language}`}>← {copy.back}</Link>
+            <nav
+              className="promotion-header-languages"
+              aria-label="Language"
+            >
+              {(
+                Object.keys(
+                  promotionLanguageShortLabels,
+                ) as PromotionLanguage[]
+              ).map((languageCode) => (
+                <Link
+                  key={languageCode}
+                  href={`/promotion/terms?lang=${languageCode}`}
+                  aria-current={
+                    language === languageCode ? "page" : undefined
+                  }
+                  aria-label={promotionLanguageLabels[languageCode]}
+                >
+                  {promotionLanguageShortLabels[languageCode]}
+                </Link>
+              ))}
+            </nav>
+          </div>
+          <p className="promotion-eyebrow">{copy.eyebrow}</p>
+          <h1>{copy.title}</h1>
+          <p>
+            {copy.updated} {copy.lastUpdatedDate}
+          </p>
         </div>
       </header>
       <div className="promotion-shell promotion-terms-content">
-        <p className="promotion-terms-intro">
-          These concise terms explain the main conditions for the Mezzanail 7th
-          Anniversary Lucky Draw Campaign. Mezzanail may publish further
-          operational details when required.
-        </p>
-        {anniversaryCampaign.terms.sections.map((section, index) => (
+        <p className="promotion-terms-intro">{copy.intro}</p>
+        {copy.sections.map((section, index) => (
           <section key={section.title}>
             <span>{String(index + 1).padStart(2, "0")}</span>
             <div>
@@ -40,16 +84,16 @@ export default function PromotionTermsPage() {
         <div className="promotion-terms-actions">
           <Link
             className="promotion-button promotion-button-primary"
-            href="/promotion"
+            href={`/promotion?lang=${language}`}
           >
-            Return to Campaign
+            {copy.returnCampaign}
           </Link>
           <a
             href={`https://wa.me/${anniversaryCampaign.whatsappContact}`}
             target="_blank"
             rel="noopener noreferrer"
           >
-            Contact Mezzanail
+            {copy.contact}
           </a>
         </div>
       </div>

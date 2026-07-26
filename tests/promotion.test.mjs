@@ -6,6 +6,7 @@ const read = (path) => readFileSync(path, "utf8");
 const config = read("lib/promotion/campaign-config.ts");
 const share = read("lib/promotion/share-message.ts");
 const referral = read("lib/promotion/referral.ts");
+const campaignCopy = read("lib/promotion/campaign-copy.ts");
 const page = read("app/promotion/page.tsx");
 const experience = read("components/promotion/promotion-experience.tsx");
 
@@ -17,12 +18,27 @@ test("campaign uses the approved promotion and booking URLs", () => {
   );
 });
 
-test("all three WhatsApp languages and URL encoding are implemented", () => {
-  assert.match(share, /en:/);
-  assert.match(share, /zh:/);
-  assert.match(share, /ms:/);
+test("the WhatsApp message includes English and Chinese in one share", () => {
+  assert.match(share, /MEZZANAIL 7th Anniversary Celebration/);
+  assert.match(share, /MEZZANAIL 七周年庆典/);
+  assert.match(share, /Book your appointment and discover the celebration here/);
+  assert.match(share, /立即预约并查看周年庆典详情/);
+  assert.match(share, /https:\/\/www\.mezzanail\.com\/promotion/);
   assert.match(share, /encodeURIComponent/);
   assert.match(share, /https:\/\/wa\.me\/\?text=/);
+});
+
+test("the full campaign supports English, Chinese and Bahasa Melayu", () => {
+  assert.match(campaignCopy, /Book Your Appointment/);
+  assert.match(campaignCopy, /预约您的服务/);
+  assert.match(campaignCopy, /Buat Tempahan Anda/);
+  assert.match(campaignCopy, /Join Our Membership/);
+  assert.match(campaignCopy, /加入我们的会员计划/);
+  assert.match(campaignCopy, /Sertai Keahlian Kami/);
+  assert.match(campaignCopy, /Like & Share Our Page/);
+  assert.match(campaignCopy, /点赞并分享我们的页面/);
+  assert.match(campaignCopy, /Suka & Kongsi Halaman Kami/);
+  assert.match(experience, /promotionLanguageShortLabels/);
 });
 
 test("referral and source validation are allow-listed", () => {

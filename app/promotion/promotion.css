@@ -64,6 +64,43 @@
   justify-content: space-between;
 }
 
+.promotion-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.promotion-header-languages {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  border: 1px solid rgba(158, 79, 92, 0.2);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  padding: 4px;
+  backdrop-filter: blur(12px);
+}
+
+.promotion-header-languages button,
+.promotion-header-languages a {
+  display: grid;
+  height: 34px;
+  min-width: 34px;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--promotion-muted);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.promotion-header-languages button[aria-pressed="true"],
+.promotion-header-languages a[aria-current="page"] {
+  background: var(--promotion-rose-dark);
+  color: #fff;
+}
+
 .promotion-brand {
   display: grid;
   height: 50px;
@@ -105,7 +142,11 @@
 
 .promotion-hero-image {
   object-fit: cover;
-  object-position: right center;
+  object-position: center;
+}
+
+.promotion-hero-banner-link {
+  display: none;
 }
 
 .promotion-hero-scrim {
@@ -132,6 +173,30 @@
   align-items: flex-start;
   justify-content: center;
   padding-top: 82px;
+}
+
+@media (min-width: 901px) {
+  .promotion-header {
+    position: relative;
+    background: rgba(255, 248, 248, 0.96);
+  }
+
+  .promotion-hero {
+    aspect-ratio: 1774 / 887;
+    min-height: 0;
+  }
+
+  .promotion-hero-banner-link {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: block;
+  }
+
+  .promotion-hero-scrim,
+  .promotion-hero-content {
+    display: none;
+  }
 }
 
 .promotion-status {
@@ -696,10 +761,30 @@
 
 .promotion-terms-header a {
   display: inline-block;
-  margin-bottom: 62px;
   color: var(--promotion-rose-dark);
   font-size: 13px;
   font-weight: 750;
+}
+
+.promotion-terms-header .promotion-header-languages a {
+  display: grid;
+  margin: 0;
+  color: var(--promotion-muted);
+  font-size: 10px;
+}
+
+.promotion-terms-header
+  .promotion-header-languages
+  a[aria-current="page"] {
+  color: #fff;
+}
+
+.promotion-terms-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 62px;
 }
 
 .promotion-terms-header h1 {
@@ -808,6 +893,10 @@
     min-height: 72px;
   }
 
+  .promotion-header-actions {
+    gap: 8px;
+  }
+
   .promotion-brand {
     height: 44px;
     width: 151px;
@@ -816,6 +905,12 @@
 
   .promotion-brand img {
     width: 125px;
+  }
+
+  .promotion-header-languages button,
+  .promotion-header-languages a {
+    height: 32px;
+    min-width: 32px;
   }
 
   .promotion-header-book {
@@ -1040,6 +1135,10 @@
   }
 
   .promotion-terms-header a {
+    margin-bottom: 0;
+  }
+
+  .promotion-terms-topbar {
     margin-bottom: 46px;
   }
 
@@ -1055,6 +1154,16 @@
   .promotion-terms-actions {
     align-items: stretch;
     flex-direction: column;
+  }
+}
+
+.promotion-site:lang(ms) .promotion-hero h1 {
+  font-size: clamp(54px, 6.2vw, 88px);
+}
+
+@media (max-width: 900px) {
+  .promotion-site:lang(ms) .promotion-hero h1 {
+    font-size: clamp(46px, 11.5vw, 64px);
   }
 }
 

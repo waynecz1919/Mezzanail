@@ -21,6 +21,11 @@ import {
   type PromotionLanguage,
   type PromotionSource,
 } from "@/lib/promotion/campaign-config";
+import {
+  promotionCopy,
+  promotionLanguageLabels,
+  promotionLanguageShortLabels,
+} from "@/lib/promotion/campaign-copy";
 import { trackPromotionEvent } from "@/lib/promotion/analytics";
 import {
   REFERRAL_STORAGE_KEY,
@@ -29,11 +34,7 @@ import {
 } from "@/lib/promotion/referral";
 import { getWhatsAppShareUrl } from "@/lib/promotion/share-message";
 
-const languageLabels: Record<PromotionLanguage, string> = {
-  en: "English",
-  zh: "中文",
-  ms: "Bahasa Melayu",
-};
+const PROMOTION_LANGUAGE_STORAGE_KEY = "mezzanail_promotion_language";
 
 const prizeIcons = {
   watch: Watch,
@@ -49,6 +50,7 @@ export function PromotionExperience() {
   const [ready, setReady] = useState(false);
   const pageViewTracked = useRef(false);
   const qrViewTracked = useRef(false);
+  const copy = promotionCopy[language];
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -57,12 +59,24 @@ export function PromotionExperience() {
       window.localStorage.getItem(REFERRAL_STORAGE_KEY),
     );
     const activeReferral = incomingReferral ?? storedReferral;
+    const requestedLanguage = params.get("lang");
+    const storedLanguage = window.localStorage.getItem(
+      PROMOTION_LANGUAGE_STORAGE_KEY,
+    );
+    const activeLanguage = (
+      ["en", "zh", "ms"].includes(requestedLanguage ?? "")
+        ? requestedLanguage
+        : ["en", "zh", "ms"].includes(storedLanguage ?? "")
+          ? storedLanguage
+          : "en"
+    ) as PromotionLanguage;
 
     if (incomingReferral) {
       window.localStorage.setItem(REFERRAL_STORAGE_KEY, incomingReferral);
     }
 
     const frame = window.requestAnimationFrame(() => {
+      setLanguage(activeLanguage);
       setReferralCode(activeReferral);
       setSource(validatePromotionSource(params.get("source")));
       setReady(true);
@@ -80,6 +94,10 @@ export function PromotionExperience() {
       source,
     });
   }, [language, ready, referralCode, source]);
+
+  useEffect(() => {
+    document.documentElement.lang = language === "zh" ? "zh-CN" : language;
+  }, [language]);
 
   useEffect(() => {
     if (!ready) return;
@@ -106,6 +124,10 @@ export function PromotionExperience() {
 
   function handleLanguageChange(nextLanguage: PromotionLanguage) {
     setLanguage(nextLanguage);
+    window.localStorage.setItem(
+      PROMOTION_LANGUAGE_STORAGE_KEY,
+      nextLanguage,
+    );
     trackPromotionEvent("promotion_language_change", {
       language: nextLanguage,
       referralCode,
@@ -122,7 +144,7 @@ export function PromotionExperience() {
   }
 
   function handleShareClick() {
-    const whatsappShareUrl = getWhatsAppShareUrl(language, referralCode);
+    const whatsappShareUrl = getWhatsAppShareUrl(referralCode);
 
     void fetch("/api/promotion/share", {
       method: "POST",
@@ -159,41 +181,70 @@ export function PromotionExperience() {
               priority
             />
           </Link>
-          <a
-            className="promotion-header-book"
-            href={anniversaryCampaign.bookingUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={handleBookingClick}
-          >
-            Book Appointment
-          </a>
+          <div className="promotion-header-actions">
+            <div
+              className="promotion-header-languages"
+              aria-label={copy.languageLegend}
+            >
+              {(Object.keys(promotionLanguageShortLabels) as PromotionLanguage[]).map(
+                (languageCode) => (
+                  <button
+                    key={languageCode}
+                    type="button"
+                    aria-label={promotionLanguageLabels[languageCode]}
+                    aria-pressed={language === languageCode}
+                    onClick={() => handleLanguageChange(languageCode)}
+                  >
+                    {promotionLanguageShortLabels[languageCode]}
+                  </button>
+                ),
+              )}
+            </div>
+            <a
+              className="promotion-header-book"
+              href={anniversaryCampaign.bookingUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={handleBookingClick}
+            >
+              {copy.bookAppointment}
+            </a>
+          </div>
         </div>
       </header>
 
       <section className="promotion-hero" aria-labelledby="promotion-title">
         <Image
           className="promotion-hero-image"
-          src={anniversaryCampaign.banner.webp}
-          alt="Rose-gold seventh anniversary display with smartwatch and premium hair dryer prizes"
+          src={anniversaryCampaign.banner.png}
+          alt="Mezzanail 7th Anniversary Lucky Draw Campaign from 26 July to 30 September 2026, featuring Apple Watch and Dyson hair dryer prizes"
           fill
           priority
           sizes="100vw"
+          unoptimized
+        />
+        <a
+          className="promotion-hero-banner-link"
+          href={anniversaryCampaign.bookingUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={handleBookingClick}
+          aria-label={copy.bookAppointment}
         />
         <div className="promotion-hero-scrim" aria-hidden="true" />
         <div className="promotion-shell promotion-hero-content">
           <span className="promotion-status">
             <Sparkles size={15} aria-hidden="true" />
-            7th Anniversary Celebration
+            {copy.status}
           </span>
-          <p className="promotion-kicker">Mezzanail Nail Studio</p>
+          <p className="promotion-kicker">{copy.brandKicker}</p>
           <h1 id="promotion-title">
-            7th Anniversary
-            <span>Lucky Draw Campaign</span>
+            {copy.heroTitle}
+            <span>{copy.heroSubtitle}</span>
           </h1>
           <p className="promotion-date">
             <CalendarDays size={18} aria-hidden="true" />
-            {anniversaryCampaign.displayDates}
+            {copy.displayDates}
           </p>
           <div className="promotion-hero-actions">
             <a
@@ -203,16 +254,16 @@ export function PromotionExperience() {
               rel="noopener noreferrer"
               onClick={handleBookingClick}
             >
-              Book Appointment
+              {copy.bookAppointment}
             </a>
             <button
               className="promotion-button promotion-button-whatsapp"
               type="button"
               onClick={handleShareClick}
-              aria-label="Share the Mezzanail anniversary campaign via WhatsApp"
+              aria-label={copy.shareAccessibleName}
             >
               <MessageCircle size={19} aria-hidden="true" />
-              Share via WhatsApp
+              {copy.shareViaWhatsApp}
             </button>
           </div>
         </div>
@@ -221,19 +272,16 @@ export function PromotionExperience() {
       <section className="promotion-section promotion-intro">
         <div className="promotion-shell promotion-intro-grid">
           <div>
-            <p className="promotion-eyebrow">Seven wonderful years</p>
-            <h2>Celebrate 7 Wonderful Years With Us</h2>
+            <p className="promotion-eyebrow">{copy.introEyebrow}</p>
+            <h2>{copy.introTitle}</h2>
           </div>
           <div>
-            <p className="promotion-lead">
-              Book your appointment, enjoy our anniversary celebration and
-              stand a chance to win exciting prizes.
-            </p>
+            <p className="promotion-lead">{copy.introLead}</p>
             <div className="promotion-date-card">
               <CalendarDays size={22} aria-hidden="true" />
               <span>
-                Campaign period
-                <strong>{anniversaryCampaign.displayDates}</strong>
+                {copy.campaignPeriod}
+                <strong>{copy.displayDates}</strong>
               </span>
             </div>
           </div>
@@ -244,18 +292,16 @@ export function PromotionExperience() {
         <div className="promotion-shell">
           <div className="promotion-section-heading">
             <div>
-              <p className="promotion-eyebrow">Anniversary lucky draw</p>
-              <h2>Beautiful Reasons to Celebrate</h2>
+              <p className="promotion-eyebrow">{copy.prizeEyebrow}</p>
+              <h2>{copy.prizeTitle}</h2>
             </div>
-            <p>
-              Every prize is part of our thank-you to the community that has
-              grown with Mezzanail.
-            </p>
+            <p>{copy.prizeLead}</p>
           </div>
           <div className="promotion-prize-grid">
             {anniversaryCampaign.prizes.map((prize, index) => {
               const Icon =
                 prizeIcons[prize.icon as keyof typeof prizeIcons] ?? Gift;
+              const localizedPrize = copy.prizes[index];
               return (
                 <article
                   className={`promotion-prize-card promotion-prize-${index + 1}`}
@@ -267,19 +313,16 @@ export function PromotionExperience() {
                   </div>
                   {"winnerCount" in prize && (
                     <span className="promotion-winner-tag">
-                      {prize.winnerCount} Winner
+                      {prize.winnerCount} {copy.winner}
                     </span>
                   )}
-                  <h3>{prize.name}</h3>
-                  <p>{prize.description}</p>
+                  <h3>{localizedPrize.name}</h3>
+                  <p>{localizedPrize.description}</p>
                 </article>
               );
             })}
           </div>
-          <p className="promotion-disclaimer">
-            Prize eligibility is subject to the official campaign terms.
-            Participation does not guarantee a prize.
-          </p>
+          <p className="promotion-disclaimer">{copy.prizeDisclaimer}</p>
         </div>
       </section>
 
@@ -287,19 +330,19 @@ export function PromotionExperience() {
         <div className="promotion-shell">
           <div className="promotion-section-heading promotion-section-heading-centered">
             <div>
-              <p className="promotion-eyebrow">How it works</p>
-              <h2>Three Simple Steps</h2>
+              <p className="promotion-eyebrow">{copy.howEyebrow}</p>
+              <h2>{copy.howTitle}</h2>
             </div>
           </div>
           <div className="promotion-steps">
-            {anniversaryCampaign.steps.map((step, index) => (
+            {copy.steps.map((step, index) => (
               <article className="promotion-step" key={step.title}>
                 <span className="promotion-step-number">{index + 1}</span>
                 <div>
                   <h3>{step.title}</h3>
                   <p>{step.description}</p>
                 </div>
-                {index < anniversaryCampaign.steps.length - 1 && (
+                {index < copy.steps.length - 1 && (
                   <span className="promotion-step-line" aria-hidden="true" />
                 )}
               </article>
@@ -311,45 +354,42 @@ export function PromotionExperience() {
       <section className="promotion-section promotion-share" id="share">
         <div className="promotion-shell promotion-share-grid">
           <div className="promotion-share-copy">
-            <p className="promotion-eyebrow">Pass the celebration on</p>
-            <h2>Share With Someone Special</h2>
-            <p className="promotion-lead">
-              Choose your language, then send the campaign directly through
-              WhatsApp. Any valid referral code in your link stays attached.
-            </p>
+            <p className="promotion-eyebrow">{copy.shareEyebrow}</p>
+            <h2>{copy.shareTitle}</h2>
+            <p className="promotion-lead">{copy.shareLead}</p>
             <fieldset className="promotion-languages">
-              <legend>WhatsApp message language</legend>
+              <legend>{copy.languageLegend}</legend>
               <div>
-                {(Object.keys(languageLabels) as PromotionLanguage[]).map(
-                  (languageCode) => (
-                    <button
-                      key={languageCode}
-                      type="button"
-                      aria-pressed={language === languageCode}
-                      className={
-                        language === languageCode ? "is-selected" : undefined
-                      }
-                      onClick={() => handleLanguageChange(languageCode)}
-                    >
-                      {languageLabels[languageCode]}
-                    </button>
-                  ),
-                )}
+                {(
+                  Object.keys(promotionLanguageLabels) as PromotionLanguage[]
+                ).map((languageCode) => (
+                  <button
+                    key={languageCode}
+                    type="button"
+                    aria-pressed={language === languageCode}
+                    className={
+                      language === languageCode ? "is-selected" : undefined
+                    }
+                    onClick={() => handleLanguageChange(languageCode)}
+                  >
+                    {promotionLanguageLabels[languageCode]}
+                  </button>
+                ))}
               </div>
             </fieldset>
             <button
               className="promotion-button promotion-button-whatsapp promotion-share-button"
               type="button"
               onClick={handleShareClick}
-              aria-label={`Share via WhatsApp in ${languageLabels[language]}`}
+              aria-label={`${copy.shareViaWhatsApp} — ${promotionLanguageLabels[language]}`}
             >
               <MessageCircle size={20} aria-hidden="true" />
-              Share via WhatsApp
+              {copy.shareViaWhatsApp}
             </button>
             {ready && referralCode && (
               <p className="promotion-referral-note" role="status">
                 <Check size={15} aria-hidden="true" />
-                Referral code {referralCode} will be preserved in your share.
+                {copy.referralPrefix} {referralCode} {copy.referralSuffix}
               </p>
             )}
           </div>
@@ -360,8 +400,8 @@ export function PromotionExperience() {
               <QrCode size={26} />
               <MessageCircle size={26} />
             </div>
-            <p className="promotion-eyebrow">Share the celebration</p>
-            <h3>Tap, scan or share this page with your friends.</h3>
+            <p className="promotion-eyebrow">{copy.qrEyebrow}</p>
+            <h3>{copy.qrTitle}</h3>
             <div className="promotion-qr-frame">
               <Image
                 src={anniversaryCampaign.qr.png}
@@ -373,10 +413,10 @@ export function PromotionExperience() {
             </div>
             <div className="promotion-qr-downloads">
               <a href={anniversaryCampaign.qr.png} download>
-                Download PNG
+                {copy.downloadPng}
               </a>
               <a href={anniversaryCampaign.qr.svg} download>
-                Download SVG
+                {copy.downloadSvg}
               </a>
             </div>
           </div>
@@ -386,9 +426,9 @@ export function PromotionExperience() {
       <section className="promotion-section promotion-final-cta">
         <div className="promotion-shell promotion-final-card">
           <Heart size={36} aria-hidden="true" />
-          <p className="promotion-eyebrow">Celebrate with Mezzanail</p>
-          <h2>Your Next Beautiful Appointment Awaits</h2>
-          <p>{anniversaryCampaign.policy}</p>
+          <p className="promotion-eyebrow">{copy.finalEyebrow}</p>
+          <h2>{copy.finalTitle}</h2>
+          <p>{copy.policy}</p>
           <div className="promotion-final-actions">
             <a
               className="promotion-button promotion-button-primary"
@@ -397,9 +437,11 @@ export function PromotionExperience() {
               rel="noopener noreferrer"
               onClick={handleBookingClick}
             >
-              Book Appointment
+              {copy.bookAppointment}
             </a>
-            <Link href="/promotion/terms">View Terms &amp; Conditions</Link>
+            <Link href={`/promotion/terms?lang=${language}`}>
+              {copy.viewTerms}
+            </Link>
           </div>
         </div>
       </section>
@@ -408,7 +450,7 @@ export function PromotionExperience() {
         <div className="promotion-shell promotion-footer-inner">
           <div>
             <strong>MEZZANAIL</strong>
-            <span>7th Anniversary Celebration</span>
+            <span>{copy.footerCampaign}</span>
           </div>
           <p>© 2026 Mezzanail Nail Studio. All rights reserved.</p>
         </div>
@@ -422,15 +464,15 @@ export function PromotionExperience() {
           onClick={handleBookingClick}
         >
           <CalendarDays size={19} aria-hidden="true" />
-          Book Now
+          {copy.bookNow}
         </a>
         <button
           type="button"
           onClick={handleShareClick}
-          aria-label="Share the anniversary campaign via WhatsApp"
+          aria-label={copy.shareAccessibleName}
         >
           <Share2 size={19} aria-hidden="true" />
-          Share
+          {copy.share}
         </button>
       </nav>
     </main>
