@@ -7,9 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "test": "node --test tests/promotion.test.mjs"
+    "test": "node --test tests/*.test.mjs",
+    "db:migrate:redeem": "node scripts/migrate-redeem.mjs",
+    "auth:create:redeem": "node scripts/generate-redeem-staff.mjs"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.1.0",
     "@next/third-parties": "^16.2.10",
     "@tabler/icons-react": "3.45.0",
     "framer-motion": "12.42.2",
