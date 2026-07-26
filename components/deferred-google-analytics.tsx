@@ -1,11 +1,15 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 const SCRIPT_ID = "mezzanail-google-analytics";
 
 export function DeferredGoogleAnalytics({ gaId }: { gaId: string }) {
+  const pathname = usePathname();
+
   useEffect(() => {
+    if (pathname.startsWith("/redeem")) return;
     let timeoutId: number | undefined;
 
     function loadAnalytics() {
@@ -34,7 +38,7 @@ export function DeferredGoogleAnalytics({ gaId }: { gaId: string }) {
       window.removeEventListener("keydown", loadAnalytics);
       if (timeoutId) window.clearTimeout(timeoutId);
     };
-  }, [gaId]);
+  }, [gaId, pathname]);
 
   return null;
 }
