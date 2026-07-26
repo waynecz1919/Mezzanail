@@ -1,10 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import { Bodoni_Moda, Manrope } from "next/font/google";
-import { GoogleAnalytics } from "@next/third-parties/google";
 import { Providers } from "@/components/providers";
+import { DeferredGoogleAnalytics } from "@/components/deferred-google-analytics";
 import { isConfiguredUrl, siteConfig } from "@/lib/site";
 import "./globals.css";
 
+const GOOGLE_ANALYTICS_ID = "G-DXWYYRT6QX";
 const manrope = Manrope({ subsets: ["latin"], display: "swap", variable: "--font-manrope", preload: true });
 const beautyDisplay = Bodoni_Moda({ subsets: ["latin"], display: "swap", variable: "--font-beauty", weight: ["400", "500"], preload: true });
 
@@ -35,5 +36,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     openingHours: "Mo-Su 10:30-19:00",
     sameAs,
   };
-  return <html lang="en" suppressHydrationWarning><body className={`${manrope.variable} ${beautyDisplay.variable}`}><Providers>{children}</Providers><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}/><GoogleAnalytics gaId="G-DXWYYRT6QX" /></body></html>;
+  const analyticsBootstrap = `
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = window.gtag || function(){window.dataLayer.push(arguments);};
+    window.gtag("js", new Date());
+    window.gtag("config", "${GOOGLE_ANALYTICS_ID}");
+  `;
+
+  return <html lang="en" suppressHydrationWarning><body className={`${manrope.variable} ${beautyDisplay.variable}`}><script dangerouslySetInnerHTML={{ __html: analyticsBootstrap }}/><Providers>{children}</Providers><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}/><DeferredGoogleAnalytics gaId={GOOGLE_ANALYTICS_ID} /></body></html>;
 }
