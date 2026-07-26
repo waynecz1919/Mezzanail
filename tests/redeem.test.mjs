@@ -41,7 +41,8 @@ test("redeem codes and WhatsApp copy follow the approved format", () => {
   assert.match(core, /Please show this code to our staff when you visit Mezzanail/);
   assert.match(page, /Send via WhatsApp/);
   assert.match(page, /Buy 1 Classic Pedicure, Free 1 Basic Manicure Voucher\(B1F1\)/);
-  assert.match(page, /nextType === "Wake Up" \? WAKE_UP_DESCRIPTION : ""/);
+  assert.match(page, /nextType === "B1F1" \? B1F1_DESCRIPTION : ""/);
+  assert.match(page, /useState\("B1F1"\)/);
 });
 
 test("redeem subdomain routes into the existing app and is not indexed", () => {
