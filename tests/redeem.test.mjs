@@ -39,6 +39,8 @@ test("redeem codes and WhatsApp copy follow the approved format", () => {
   assert.match(core, /\^MN-\[A-Z0-9\]\{2,8\}-\[A-Z0-9\]\{4\}\$/);
   assert.match(core, /this is your exclusive Mezzanail Redeem Voucher/);
   assert.match(core, /Please show this code to our staff when you visit Mezzanail/);
+  assert.match(core, /\*Term & Conditions Apply/);
+  assert.match(core, /"\",\s+"Thank you\."/);
   assert.match(page, /Send via WhatsApp/);
   assert.match(page, /Buy 1 Classic Pedicure, Free 1 Basic Manicure Voucher\(B1F1\)/);
   assert.match(page, /nextType === "B1F1" \? B1F1_DESCRIPTION : ""/);

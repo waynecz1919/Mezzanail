@@ -39,10 +39,17 @@ export function buildWhatsAppMessage(input: {
   const name = input.customerName.trim();
   return [
     `Hi ${name}, this is your exclusive Mezzanail Redeem Voucher.`,
+    "",
     `Voucher: ${input.voucherDescription.trim()}.`,
+    "",
     `Redeem Code: ${normalizeRedeemCode(input.redeemCode)}.`,
+    "",
     `Valid until: ${input.expiryDate}.`,
+    "",
     "Please show this code to our staff when you visit Mezzanail.",
+    "",
+    "*Term & Conditions Apply",
+    "",
     "Thank you.",
   ].join("\n");
 }
