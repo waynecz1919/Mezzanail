@@ -392,33 +392,53 @@ export const termsCopy = {
     eyebrow: "Mezzanail 7th Anniversary",
     title: "Campaign Terms & Conditions",
     updated: "Last updated",
-    lastUpdatedDate: "26 July 2026",
+    lastUpdatedDate: "27 July 2026",
     intro:
-      "These concise terms explain the main conditions for the Mezzanail 7th Anniversary Lucky Draw Campaign. Mezzanail may publish further operational details when required.",
+      "These terms govern the Mezzanail 7th Anniversary Lucky Draw Campaign. By submitting an entry, a participant confirms that the entry is accurate and agrees to these terms.",
     sections: [
       {
-        title: "Campaign period",
-        body: "The Mezzanail 7th Anniversary Lucky Draw Campaign runs from 26 July to 30 September 2026, inclusive, unless Mezzanail announces an amendment.",
+        title: "Organiser and contact",
+        body: "The organiser is Mezzanail Nail Studio, 36-1, Jalan Seri 7, Taman Cheng Baru, 75260 Melaka, Malaysia. Campaign enquiries may be sent through WhatsApp to +60 16-2121 332.",
       },
       {
-        title: "Participation",
-        body: "Participation is available to eligible Mezzanail customers during the campaign period. Appointment availability remains subject to confirmation. A booking alone does not guarantee a prize.",
+        title: "Campaign period",
+        body: "The campaign runs from 26 July to 30 September 2026, inclusive, based on Malaysia time. Entries received outside that period are not eligible unless Mezzanail publishes an extension.",
+      },
+      {
+        title: "Eligibility and entry steps",
+        body: "Eligible Mezzanail customers must join the Mezzanail membership, scan the official campaign QR or open the official campaign link, share the campaign with three friends, and complete the lucky draw entry requested by the studio. Appointment availability is subject to confirmation. A booking or share alone does not guarantee an entry or prize.",
+      },
+      {
+        title: "Valid entries",
+        body: "An entry must be complete, genuine, verifiable and linked to the participant’s own contact details. Duplicate, automated, altered, incomplete or fraudulent entries may be rejected. Referral codes are used for campaign attribution and do not automatically create bonus credit, rewards or extra entries.",
       },
       {
         title: "Prizes",
-        body: "Campaign prizes include one Apple Watch SE 3, one Dyson Supersonic™ Travel Hair Dryer, exclusive member rewards and other lucky draw prizes. Prizes are non-transferable and cannot be exchanged for cash unless Mezzanail states otherwise.",
+        body: "Prizes include one Dyson Supersonic™ Travel Hair Dryer, one HUAWEI Watch Fit 5, one Xiaomi Robot Vacuum, beauty vouchers and weekly rewards. A prize is subject to availability, is non-transferable and cannot be exchanged for cash unless Mezzanail confirms otherwise in writing. If a stated prize becomes unavailable for reasons beyond Mezzanail’s reasonable control, a replacement of reasonably comparable value may be provided.",
       },
       {
-        title: "Winner selection",
-        body: "Eligible winners will be selected and contacted using the details available to Mezzanail. Mezzanail may request reasonable proof of identity or participation before releasing a prize.",
+        title: "Winner selection and notification",
+        body: "Winners will be selected by a random draw from verified eligible entries after the campaign closes. Mezzanail will contact a selected winner using the submitted or membership contact details and may request reasonable proof of identity, membership and participation. A winner who does not respond within seven days may forfeit the prize and a replacement winner may be drawn.",
       },
       {
-        title: "Referral links",
-        body: "Referral codes in shared links are recorded only for campaign attribution at this stage. They do not automatically grant bonus credit, rewards or additional entries.",
+        title: "Collection and disqualification",
+        body: "Prize collection or delivery arrangements will be confirmed directly. Mezzanail may disqualify an entry for fraud, manipulation, abuse, breach of these terms or failure to provide reasonable verification. The organiser’s decision on verification and prize administration is final, subject to applicable law.",
       },
       {
-        title: "Changes and enquiries",
-        body: "Mezzanail may update these terms when reasonably necessary. Material updates will be published on this page. For campaign enquiries, contact Mezzanail through WhatsApp.",
+        title: "Personal data and announcements",
+        body: "Personal data is used to verify entries, administer the draw, contact winners, fulfil prizes and maintain an accountable campaign record under the Mezzanail Privacy Policy. Any public winner announcement will use limited information, such as a first name and initial, unless further consent is obtained.",
+      },
+      {
+        title: "Changes, suspension or cancellation",
+        body: "Mezzanail may make a reasonably necessary change, suspend or cancel the campaign where fraud, technical failure, legal requirements or events outside reasonable control affect fair operation. Material changes will be published on the campaign or terms page.",
+      },
+      {
+        title: "Liability and prize brands",
+        body: "Nothing in these terms excludes rights or liability that cannot lawfully be excluded. To the extent permitted by law, Mezzanail is not responsible for indirect loss or a third-party platform failure outside its reasonable control. Prize brand names and trade marks belong to their owners; the campaign is not sponsored or endorsed by those brands unless expressly stated.",
+      },
+      {
+        title: "Language and governing law",
+        body: "These terms are governed by Malaysian law. The English, Chinese and Bahasa Melayu versions are intended to communicate the same conditions; if an inconsistency cannot be resolved, the English version prevails to the extent permitted by law.",
       },
     ],
     returnCampaign: "Return to Campaign",
@@ -429,33 +449,53 @@ export const termsCopy = {
     eyebrow: "Mezzanail 七周年",
     title: "活动条款与细则",
     updated: "最后更新",
-    lastUpdatedDate: "2026年7月26日",
+    lastUpdatedDate: "2026年7月27日",
     intro:
-      "以下简要条款说明 Mezzanail 七周年幸运抽奖活动的主要条件。Mezzanail 可在需要时公布进一步的活动细则。",
+      "本条款适用于 Mezzanail 七周年幸运抽奖活动。提交参与资料即表示参加者确认资料准确，并同意遵守本条款。",
     sections: [
       {
-        title: "活动日期",
-        body: "除非 Mezzanail 另行公布更改，本次七周年幸运抽奖活动从2026年7月26日至9月30日举行，包括首尾两日。",
+        title: "主办方与联系方式",
+        body: "主办方为 Mezzanail Nail Studio，地址：36-1, Jalan Seri 7, Taman Cheng Baru, 75260 Melaka, Malaysia。活动咨询可通过 WhatsApp 联系 +60 16-2121 332。",
       },
       {
-        title: "参与资格",
-        body: "符合资格的 Mezzanail 顾客可在活动期间参与。预约时段仍须经确认，单独完成预约并不保证一定获奖。",
+        title: "活动期间",
+        body: "活动时间为2026年7月26日至9月30日（含首尾两日），以马来西亚时间为准。除非 Mezzanail 公布延长活动，活动期外收到的参与资料不符合资格。",
+      },
+      {
+        title: "参与资格与步骤",
+        body: "符合资格的 Mezzanail 顾客须加入 Mezzanail 会员、扫描官方活动二维码或打开官方活动链接、把活动分享给三位朋友，并完成门店指定的幸运抽奖登记。预约时段仍须确认；仅预约或分享并不自动保证获得抽奖资格或奖品。",
+      },
+      {
+        title: "有效参与资料",
+        body: "参与资料必须完整、真实、可核实，并使用参加者本人的联系方式。重复、自动生成、篡改、不完整或欺诈性资料可被拒绝。推荐码仅用于记录活动来源，不会自动产生额外积分、奖励或抽奖次数。",
       },
       {
         title: "活动奖品",
-        body: "奖品包括一份 Apple Watch SE 3、一份 Dyson Supersonic™ 旅行吹风机、会员专属奖励及其他幸运抽奖奖品。除非 Mezzanail 另有说明，奖品不可转让或兑换现金。",
+        body: "奖品包括一台 Dyson Supersonic™ 旅行吹风机、一只 HUAWEI Watch Fit 5、一台 Xiaomi 扫地机器人、美容礼券及每周奖励。奖品须视供应情况而定，不可转让或兑换现金，除非 Mezzanail 另行书面确认。若因合理控制范围外的原因无法提供指定奖品，可提供合理相近价值的替代奖品。",
       },
       {
-        title: "得主选出与联系",
-        body: "符合资格的得主将根据 Mezzanail 所持有的联系资料接获通知。发放奖品前，Mezzanail 可要求合理的身份证明或参与证明。",
+        title: "抽选与通知得主",
+        body: "活动结束后，将从经核实且符合资格的参与资料中随机抽选得主。Mezzanail 会使用提交或会员资料中的联系方式通知得主，并可要求合理的身份、会员及参与证明。得主如在七天内没有回应，可能失去领奖资格，主办方可重新抽选得主。",
       },
       {
-        title: "推荐链接",
-        body: "现阶段，分享链接中的推荐码仅用于活动来源记录，不会自动发放奖金、奖励或额外抽奖机会。",
+        title: "领奖与取消资格",
+        body: "奖品领取或送达安排将直接确认。如发现欺诈、操纵、滥用、违反条款或无法提供合理核实资料，Mezzanail 可取消参与资格。在适用法律允许的范围内，主办方对核实及奖品管理的决定为最终决定。",
       },
       {
-        title: "更改与咨询",
-        body: "Mezzanail 可在合理需要时更新条款，重要更新会公布在本页面。如有活动疑问，请通过 WhatsApp 联系 Mezzanail。",
+        title: "个人资料与公布",
+        body: "个人资料将根据 Mezzanail 隐私政策，用于核实参与资格、管理抽奖、联系得主、发放奖品及保存可追溯的活动记录。公开公布得主时，仅会使用有限资料，例如名字与姓氏首字母，除非另行取得同意。",
+      },
+      {
+        title: "更改、暂停或取消",
+        body: "如欺诈、技术故障、法律要求或合理控制范围外的事件影响活动公平进行，Mezzanail 可作出合理必要的更改、暂停或取消活动。重要更改会公布在活动或条款页面。",
+      },
+      {
+        title: "责任与奖品品牌",
+        body: "本条款不排除依法不可排除的权利或责任。在法律允许的范围内，Mezzanail 不对间接损失或其合理控制范围外的第三方平台故障负责。奖品品牌名称与商标属于各自权利人；除非明确说明，本活动并非由这些品牌赞助或认可。",
+      },
+      {
+        title: "语言与适用法律",
+        body: "本条款受马来西亚法律管辖。英文、中文及马来文版本旨在表达相同条件；若出现无法解决的不一致，在法律允许的范围内以英文版本为准。",
       },
     ],
     returnCampaign: "返回活动页面",
@@ -466,33 +506,53 @@ export const termsCopy = {
     eyebrow: "Ulang Tahun Ke-7 Mezzanail",
     title: "Terma & Syarat Kempen",
     updated: "Kemas kini terakhir",
-    lastUpdatedDate: "26 Julai 2026",
+    lastUpdatedDate: "27 Julai 2026",
     intro:
-      "Terma ringkas ini menerangkan syarat utama Kempen Cabutan Bertuah Ulang Tahun Ke-7 Mezzanail. Mezzanail boleh menerbitkan butiran operasi tambahan apabila diperlukan.",
+      "Terma ini mengawal Kempen Cabutan Bertuah Ulang Tahun Ke-7 Mezzanail. Dengan menghantar penyertaan, peserta mengesahkan maklumat adalah tepat dan bersetuju dengan terma ini.",
     sections: [
       {
-        title: "Tempoh kempen",
-        body: "Kempen Cabutan Bertuah Ulang Tahun Ke-7 Mezzanail berlangsung dari 26 Julai hingga 30 September 2026, termasuk kedua-dua tarikh, kecuali pindaan diumumkan oleh Mezzanail.",
+        title: "Penganjur dan hubungan",
+        body: "Penganjur ialah Mezzanail Nail Studio, 36-1, Jalan Seri 7, Taman Cheng Baru, 75260 Melaka, Malaysia. Pertanyaan kempen boleh dihantar melalui WhatsApp ke +60 16-2121 332.",
       },
       {
-        title: "Penyertaan",
-        body: "Pelanggan Mezzanail yang layak boleh menyertai sepanjang tempoh kempen. Ketersediaan janji temu tertakluk pada pengesahan. Tempahan sahaja tidak menjamin hadiah.",
+        title: "Tempoh kempen",
+        body: "Kempen berlangsung dari 26 Julai hingga 30 September 2026, termasuk kedua-dua tarikh, berdasarkan waktu Malaysia. Penyertaan di luar tempoh tidak layak melainkan Mezzanail menerbitkan lanjutan.",
+      },
+      {
+        title: "Kelayakan dan langkah penyertaan",
+        body: "Pelanggan Mezzanail yang layak mesti menyertai keahlian Mezzanail, mengimbas QR rasmi atau membuka pautan rasmi kempen, berkongsi kempen dengan tiga rakan, dan melengkapkan penyertaan cabutan bertuah yang diminta studio. Janji temu tertakluk pada pengesahan. Tempahan atau perkongsian sahaja tidak menjamin penyertaan atau hadiah.",
+      },
+      {
+        title: "Penyertaan sah",
+        body: "Penyertaan mesti lengkap, tulen, boleh disahkan dan dipautkan kepada butiran hubungan peserta sendiri. Penyertaan berganda, automatik, diubah, tidak lengkap atau menipu boleh ditolak. Kod rujukan digunakan untuk atribusi kempen dan tidak menghasilkan kredit bonus, ganjaran atau penyertaan tambahan secara automatik.",
       },
       {
         title: "Hadiah",
-        body: "Hadiah termasuk satu Apple Watch SE 3, satu Dyson Supersonic™ Travel Hair Dryer, ganjaran eksklusif ahli dan hadiah cabutan bertuah lain. Hadiah tidak boleh dipindah milik atau ditukar dengan wang tunai kecuali dinyatakan sebaliknya.",
+        body: "Hadiah termasuk satu Dyson Supersonic™ Travel Hair Dryer, satu HUAWEI Watch Fit 5, satu Xiaomi Robot Vacuum, baucar kecantikan dan ganjaran mingguan. Hadiah tertakluk pada ketersediaan, tidak boleh dipindah milik atau ditukar dengan wang tunai kecuali disahkan secara bertulis. Jika hadiah tidak tersedia atas sebab di luar kawalan munasabah, hadiah gantian bernilai munasabah setanding boleh diberikan.",
       },
       {
-        title: "Pemilihan pemenang",
-        body: "Pemenang yang layak akan dipilih dan dihubungi menggunakan maklumat yang tersedia kepada Mezzanail. Bukti identiti atau penyertaan yang munasabah mungkin diperlukan sebelum hadiah diberikan.",
+        title: "Pemilihan dan pemberitahuan pemenang",
+        body: "Pemenang akan dipilih melalui cabutan rawak daripada penyertaan layak yang disahkan selepas kempen tamat. Mezzanail akan menghubungi pemenang menggunakan butiran yang dihantar atau direkodkan dalam keahlian dan boleh meminta bukti identiti, keahlian serta penyertaan yang munasabah. Pemenang yang tidak menjawab dalam tujuh hari boleh kehilangan hadiah dan pemenang gantian boleh dipilih.",
       },
       {
-        title: "Pautan rujukan",
-        body: "Kod rujukan dalam pautan perkongsian hanya direkodkan untuk atribusi kempen pada peringkat ini. Ia tidak memberikan kredit bonus, ganjaran atau penyertaan tambahan secara automatik.",
+        title: "Pengambilan dan pembatalan kelayakan",
+        body: "Aturan pengambilan atau penghantaran hadiah akan disahkan secara langsung. Mezzanail boleh membatalkan penyertaan kerana penipuan, manipulasi, penyalahgunaan, pelanggaran terma atau kegagalan memberikan pengesahan munasabah. Keputusan penganjur mengenai pengesahan dan pentadbiran hadiah adalah muktamad tertakluk pada undang-undang.",
       },
       {
-        title: "Perubahan dan pertanyaan",
-        body: "Mezzanail boleh mengemas kini terma ini apabila diperlukan. Perubahan penting akan diterbitkan di halaman ini. Hubungi Mezzanail melalui WhatsApp untuk pertanyaan kempen.",
+        title: "Data peribadi dan pengumuman",
+        body: "Data peribadi digunakan untuk mengesahkan penyertaan, mentadbir cabutan, menghubungi pemenang, menyerahkan hadiah dan menyimpan rekod kempen di bawah Notis Privasi Mezzanail. Pengumuman awam pemenang hanya menggunakan maklumat terhad seperti nama pertama dan huruf awal, melainkan persetujuan lanjut diperoleh.",
+      },
+      {
+        title: "Perubahan, penggantungan atau pembatalan",
+        body: "Mezzanail boleh membuat perubahan yang munasabah perlu, menggantung atau membatalkan kempen jika penipuan, kegagalan teknikal, keperluan undang-undang atau peristiwa di luar kawalan munasabah menjejaskan operasi adil. Perubahan penting akan diterbitkan pada halaman kempen atau terma.",
+      },
+      {
+        title: "Liabiliti dan jenama hadiah",
+        body: "Tiada apa-apa dalam terma ini mengecualikan hak atau liabiliti yang tidak boleh dikecualikan secara sah. Setakat dibenarkan undang-undang, Mezzanail tidak bertanggungjawab atas kerugian tidak langsung atau kegagalan platform pihak ketiga di luar kawalan munasabah. Nama dan tanda dagangan jenama hadiah milik pemilik masing-masing; kempen tidak ditaja atau disokong oleh jenama tersebut melainkan dinyatakan.",
+      },
+      {
+        title: "Bahasa dan undang-undang",
+        body: "Terma ini dikawal oleh undang-undang Malaysia. Versi Inggeris, Cina dan Bahasa Melayu bertujuan menyampaikan syarat yang sama; jika percanggahan tidak dapat diselesaikan, versi Inggeris terpakai setakat dibenarkan undang-undang.",
       },
     ],
     returnCampaign: "Kembali ke Kempen",

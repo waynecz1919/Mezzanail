@@ -7,7 +7,6 @@ import {
 import {
   promotionLanguageLabels,
   promotionLanguageShortLabels,
-  promotionPrizeTerms,
   termsCopy,
 } from "@/lib/promotion/campaign-copy";
 
@@ -78,11 +77,7 @@ export default async function PromotionTermsPage({
             <span>{String(index + 1).padStart(2, "0")}</span>
             <div>
               <h2>{section.title}</h2>
-              <p>
-                {index === 2
-                  ? promotionPrizeTerms[language]
-                  : section.body}
-              </p>
+              <p>{section.body}</p>
             </div>
           </section>
         ))}
@@ -100,6 +95,8 @@ export default async function PromotionTermsPage({
           >
             {copy.contact}
           </a>
+          <Link href="/privacy">Privacy / Privasi</Link>
+          <Link href="/cookies">Cookies & Analytics</Link>
         </div>
       </div>
     </main>

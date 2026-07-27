@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
-import { LegalPage } from "@/components/official-site";
+import { LegalDocumentPage } from "@/components/legal-document";
 
-export const metadata: Metadata = { title: "Terms of Use | Mezzanail Nail Studio" };
+export const metadata: Metadata = {
+  title: "Terms of Use",
+  description:
+    "Terms governing use of the Mezzanail Nail Studio website, external booking links, content and services information.",
+  alternates: { canonical: "https://www.mezzanail.com/terms" },
+};
 
-export default function Page() { return <LegalPage kind="terms" />; }
+export default function Page() { return <LegalDocumentPage kind="terms" />; }

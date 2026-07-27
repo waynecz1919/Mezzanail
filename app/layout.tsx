@@ -37,12 +37,5 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     openingHours: "Mo-Su 10:30-19:00",
     sameAs,
   };
-  const analyticsBootstrap = `
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = window.gtag || function(){window.dataLayer.push(arguments);};
-    window.gtag("js", new Date());
-    window.gtag("config", "${GOOGLE_ANALYTICS_ID}");
-  `;
-
-  return <html lang="en" suppressHydrationWarning><body className={`${manrope.variable} ${beautyDisplay.variable} ${chineseSans.variable}`}><script dangerouslySetInnerHTML={{ __html: analyticsBootstrap }}/><Providers>{children}</Providers><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}/><DeferredGoogleAnalytics gaId={GOOGLE_ANALYTICS_ID} /></body></html>;
+  return <html lang="en" suppressHydrationWarning><body className={`${manrope.variable} ${beautyDisplay.variable} ${chineseSans.variable}`}><Providers>{children}</Providers><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}/><DeferredGoogleAnalytics gaId={GOOGLE_ANALYTICS_ID} /></body></html>;
 }

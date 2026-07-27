@@ -233,3 +233,50 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
 @media(prefers-reduced-motion:reduce){
   .signature-service-image img,.selected-work-item img,.selected-work-item>span,.mn-button,.mn-button--text svg{transition:none}
 }
+
+/* Public legal documents and analytics choice */
+.legal-document{background:var(--bg)}
+.legal-document .page-hero{padding-bottom:clamp(58px,7vw,92px)}
+.legal-ms-title{margin-top:12px;color:var(--gold);font-family:var(--font-manrope),sans-serif;font-size:clamp(18px,2vw,25px);font-weight:600}
+.legal-shell{display:grid;gap:24px}
+.legal-related-links{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:14px}
+.legal-related-links a{display:inline-flex;min-height:42px;align-items:center;border:1px solid var(--line);border-radius:999px;background:var(--bg);padding:8px 14px;color:var(--muted);font-size:11px;font-weight:700}
+.legal-related-links a:hover{border-color:var(--gold);color:var(--ink)}
+.legal-intro,.legal-section{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;overflow:hidden;border:1px solid var(--line);border-radius:18px;background:var(--bg)}
+.legal-intro>div,.legal-section>div{padding:clamp(24px,3.2vw,42px)}
+.legal-intro>div+div,.legal-section>div+div{border-left:1px solid var(--line)}
+.legal-intro p{margin:12px 0 0;color:var(--ink);font-family:var(--font-beauty),Georgia,serif;font-size:clamp(20px,2.1vw,27px);line-height:1.55}
+.legal-language-label{display:block;color:var(--gold);font-size:9px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+.legal-section h2,.legal-action-panel h2{margin:13px 0 0;color:var(--ink);font-family:var(--font-beauty),Georgia,serif;font-size:clamp(25px,2.5vw,34px);font-weight:500;line-height:1.15}
+.legal-section p,.legal-section li{color:var(--muted);font-size:14px;line-height:1.8}
+.legal-section p{margin:18px 0 0}
+.legal-section ul{display:grid;gap:10px;margin:18px 0 0;padding-left:20px}
+.legal-section li::marker{color:var(--gold)}
+.legal-action-panel{display:flex;align-items:center;justify-content:space-between;gap:28px;border:1px solid var(--line);border-radius:18px;background:var(--wine,#561729);padding:clamp(24px,3vw,38px);color:#fff}
+.legal-action-panel h2{margin:0;color:#fff}
+.legal-action-panel p{margin:8px 0 0;color:rgba(255,255,255,.66);font-size:13px;line-height:1.65}
+.legal-action-panel .btn{flex:none;border-color:#fff;background:#fff;color:var(--wine,#561729)}
+
+.analytics-consent{position:fixed;right:20px;bottom:20px;z-index:90;display:grid;width:min(560px,calc(100% - 40px));grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:24px;border:1px solid rgba(255,255,255,.15);border-radius:18px;background:#2d1119;padding:24px;color:#fff;box-shadow:0 22px 70px rgba(24,8,13,.3)}
+.analytics-consent>div>span{color:#dec27e;font-size:9px;font-weight:800;letter-spacing:.16em}
+.analytics-consent h2{margin:9px 0 0;font-family:var(--font-beauty),Georgia,serif;font-size:28px;font-weight:500}
+.analytics-consent p{margin:9px 0 0;color:rgba(255,255,255,.72);font-size:12px;line-height:1.6}
+.analytics-consent p small{display:block;margin-top:4px;color:rgba(255,255,255,.5);font-size:11px}
+.analytics-consent a{display:inline-flex;margin-top:10px;color:#dec27e;font-size:11px;text-decoration:underline;text-underline-offset:3px}
+.analytics-consent-actions{display:grid;gap:8px}
+.analytics-consent-actions .btn{min-height:44px;justify-content:center;white-space:nowrap}
+.analytics-consent-actions .btn-dark{border-color:#fff;background:#fff;color:#2d1119}
+.analytics-consent-actions .btn-ghost{border-color:rgba(255,255,255,.25);background:transparent;color:#fff}
+
+@media(max-width:767px){
+  .legal-related-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .legal-related-links a{min-width:0;justify-content:center;text-align:center}
+  .legal-intro,.legal-section{grid-template-columns:1fr}
+  .legal-intro>div+div,.legal-section>div+div{border-top:1px solid var(--line);border-left:0}
+  .legal-intro>div,.legal-section>div{padding:24px 20px}
+  .legal-action-panel{align-items:stretch;flex-direction:column}
+  .legal-action-panel .btn{width:100%}
+  .analytics-consent{right:12px;bottom:86px;width:calc(100% - 24px);grid-template-columns:1fr;gap:18px;padding:20px}
+  .analytics-consent-actions{grid-template-columns:1fr 1fr}
+  .analytics-consent-actions .btn{padding-inline:12px;font-size:12px}
+}

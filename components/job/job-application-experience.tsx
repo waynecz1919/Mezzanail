@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   ArrowRight,
@@ -766,8 +767,18 @@ export function JobApplicationExperience() {
                     onChange={(event) => update("privacyAccepted", event.target.checked)}
                   />
                   <span>
-                    I understand the recruitment privacy notice above.
-                    <small>我已阅读并了解上述招聘隐私说明。</small>
+                    I have read and understand the{" "}
+                    <Link href="/privacy/job-applicants" target="_blank">
+                      Job Applicant Privacy Notice
+                    </Link>
+                    .
+                    <small>
+                      我已阅读并了解
+                      <Link href="/privacy/job-applicants" target="_blank">
+                        招聘申请人隐私说明
+                      </Link>
+                      。
+                    </small>
                   </span>
                 </label>
                 {fieldErrors.privacyAccepted ? <em>{fieldErrors.privacyAccepted}</em> : null}
