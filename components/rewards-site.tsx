@@ -3,11 +3,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import { useTheme } from "next-themes";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowRight, CalendarDays, ChevronDown, Clock3, Crown, Gift,
-  Globe2, Home, MapPin, Menu, MessageCircle, Moon, ShieldCheck, Sparkles,
+  Globe2, Home, MapPin, Menu, MessageCircle, ShieldCheck, Sparkles,
   Sun, User, Users, WalletCards, X
 } from "lucide-react";
 import { useLanguage } from "@/components/providers";
@@ -35,8 +34,7 @@ function LanguageMenu() {
 }
 
 function ThemeToggle() {
-  const { resolvedTheme, setTheme } = useTheme();
-  return <button className="grid h-10 w-10 place-items-center rounded-xl border border-[var(--line)]" onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")} aria-label="Toggle colour mode">{resolvedTheme === "dark" ? <Sun size={16} /> : <Moon size={16} />}</button>;
+  return <button type="button" className="grid h-10 w-10 cursor-default place-items-center rounded-xl border border-[var(--line)]" aria-label="Light colour mode" title="Light mode" disabled><Sun size={16} /></button>;
 }
 
 function Navigation() {

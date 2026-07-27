@@ -7,7 +7,7 @@ Mobile-first, multilingual official website and rewards platform for Mezzanail N
 - Next.js 16 App Router and React 19
 - Tailwind CSS 4
 - Framer Motion and Lucide Icons
-- `next-themes` light/dark mode
+- `next-themes` forced light mode (system theme disabled)
 - HyperFrames-inspired Velvet Precision visual and motion system
 
 HyperFrames is a video-composition framework, so the site keeps interaction native to Next.js and Framer Motion while applying its visual-identity gate, modular composition discipline and restrained motion rules.

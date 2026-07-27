@@ -21,7 +21,12 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-export const viewport: Viewport = { width: "device-width", initialScale: 1, colorScheme: "light dark", themeColor: [{ media: "(prefers-color-scheme: light)", color: "#fbf7f4" }, { media: "(prefers-color-scheme: dark)", color: "#130b0e" }] };
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  colorScheme: "light",
+  themeColor: "#ffffff",
+};
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const sameAs = [siteConfig.facebookUrl, siteConfig.instagramUrl, siteConfig.xiaohongshuUrl].filter(isConfiguredUrl);
@@ -37,5 +42,5 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     openingHours: "Mo-Su 10:30-19:00",
     sameAs,
   };
-  return <html lang="en" suppressHydrationWarning><body className={`${manrope.variable} ${beautyDisplay.variable} ${chineseSans.variable}`}><Providers>{children}</Providers><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}/><DeferredGoogleAnalytics gaId={GOOGLE_ANALYTICS_ID} /></body></html>;
+  return <html lang="en" className="light" style={{ colorScheme: "light" }} suppressHydrationWarning><body className={`${manrope.variable} ${beautyDisplay.variable} ${chineseSans.variable}`}><Providers>{children}</Providers><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}/><DeferredGoogleAnalytics gaId={GOOGLE_ANALYTICS_ID} /></body></html>;
 }
