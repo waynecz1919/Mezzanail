@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Bodoni_Moda, Manrope } from "next/font/google";
+import { Cormorant_Garamond, Manrope, Noto_Sans_SC } from "next/font/google";
 import { Providers } from "@/components/providers";
 import { DeferredGoogleAnalytics } from "@/components/deferred-google-analytics";
 import { isConfiguredUrl, siteConfig } from "@/lib/site";
@@ -7,7 +7,8 @@ import "./globals.css";
 
 const GOOGLE_ANALYTICS_ID = "G-DXWYYRT6QX";
 const manrope = Manrope({ subsets: ["latin"], display: "swap", variable: "--font-manrope", preload: true });
-const beautyDisplay = Bodoni_Moda({ subsets: ["latin"], display: "swap", variable: "--font-beauty", weight: ["400", "500"], preload: true });
+const beautyDisplay = Cormorant_Garamond({ subsets: ["latin"], display: "swap", variable: "--font-beauty", weight: ["400", "500", "600"], preload: true });
+const chineseSans = Noto_Sans_SC({ subsets: ["latin"], display: "swap", variable: "--font-cjk", weight: ["400", "500", "600"], preload: false });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://mezzanail.com"),
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-export const viewport: Viewport = { width: "device-width", initialScale: 1, colorScheme: "light dark", themeColor: [{ media: "(prefers-color-scheme: light)", color: "#ffffff" }, { media: "(prefers-color-scheme: dark)", color: "#050505" }] };
+export const viewport: Viewport = { width: "device-width", initialScale: 1, colorScheme: "light dark", themeColor: [{ media: "(prefers-color-scheme: light)", color: "#fbf7f4" }, { media: "(prefers-color-scheme: dark)", color: "#130b0e" }] };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const sameAs = [siteConfig.facebookUrl, siteConfig.instagramUrl, siteConfig.xiaohongshuUrl].filter(isConfiguredUrl);
@@ -43,5 +44,5 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     window.gtag("config", "${GOOGLE_ANALYTICS_ID}");
   `;
 
-  return <html lang="en" suppressHydrationWarning><body className={`${manrope.variable} ${beautyDisplay.variable}`}><script dangerouslySetInnerHTML={{ __html: analyticsBootstrap }}/><Providers>{children}</Providers><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}/><DeferredGoogleAnalytics gaId={GOOGLE_ANALYTICS_ID} /></body></html>;
+  return <html lang="en" suppressHydrationWarning><body className={`${manrope.variable} ${beautyDisplay.variable} ${chineseSans.variable}`}><script dangerouslySetInnerHTML={{ __html: analyticsBootstrap }}/><Providers>{children}</Providers><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}/><DeferredGoogleAnalytics gaId={GOOGLE_ANALYTICS_ID} /></body></html>;
 }

@@ -3,37 +3,26 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useTheme } from "next-themes";
 import {
-  ArrowRight, CalendarCheck, Check, ChevronDown, ExternalLink, Facebook, Gift,
-  Globe2, Home, Instagram, MapPin, Menu, MessageCircle, Moon, Phone, ShieldCheck,
-  Sparkles, Sun, X,
+  ArrowRight, CalendarCheck, ChevronDown, ExternalLink, Facebook, Gift,
+  Globe2, Home, Instagram, MapPin, Menu, MessageCircle, Phone, Sparkles, X,
 } from "lucide-react";
-import { IconBandage, IconBottle, IconFootsteps, IconHandFinger, IconRazor } from "@tabler/icons-react";
-import { HoverCard, Reveal } from "@/components/hyperframe/motion";
-import { CampaignBanner } from "@/components/marketing/CampaignBanner";
+import { Reveal } from "@/components/hyperframe/motion";
+import { CurrentCampaignBanner } from "@/components/home/CurrentCampaignBanner";
+import { GoogleReviewsPreview } from "@/components/home/GoogleReviewsPreview";
+import { MembershipBanner } from "@/components/home/MembershipBanner";
+import { SelectedNailWork } from "@/components/home/SelectedNailWork";
+import { SignatureServices } from "@/components/home/SignatureServices";
+import { StudioLocationBooking } from "@/components/home/StudioLocationBooking";
+import { WhyMezzanail } from "@/components/home/WhyMezzanail";
 import { useLanguage } from "@/components/providers";
 import { ServicesCatalog } from "@/components/services-catalog";
-import { currentCampaign } from "@/config/current-campaign";
+import { primaryNavigation } from "@/config/navigation";
 import type { Locale } from "@/lib/i18n";
-import {
-  officialCampaignMessages,
-  officialMessages,
-} from "@/lib/official-i18n";
+import { officialMessages } from "@/lib/official-i18n";
 import { getWhatsappUrl, isConfiguredUrl, siteConfig } from "@/lib/site";
-
-const galleryImages = [
-  "/gallery/signature-white.jpg", "/gallery/extension-silver.jpg", "/gallery/editorial-black.jpg",
-  "/gallery/chrome-neutral.jpg", "/gallery/signature-campaign.jpg", "/gallery/minimal-manicure.jpg",
-];
-
-const appCopy = {
-  en: { eyebrow: "MEMBERSHIP APP", title: "Download Our Membership App", body: "Manage your membership, rewards and appointments conveniently from your phone.", pending: "Official link coming soon" },
-  zh: { eyebrow: "会员专属 APP", title: "下载会员专属 App", body: "通过手机轻松管理会员资料、奖励与预约。", pending: "官方链接即将提供" },
-  ms: { eyebrow: "APLIKASI KEAHLIAN", title: "Muat Turun Aplikasi Keahlian", body: "Urus keahlian, ganjaran dan janji temu dengan mudah melalui telefon anda.", pending: "Pautan rasmi akan datang" },
-} as const;
 
 const contactCopy = {
   en: { directions: "Get Directions", call: "Call Us", whatsapp: "WhatsApp Us", social: "Official channels", qr: "Scan to WhatsApp", xhs: "Xiaohongshu", account: "Account ID", pending: "Official profile link pending" },
@@ -41,44 +30,23 @@ const contactCopy = {
   ms: { directions: "Dapatkan Arah", call: "Hubungi Kami", whatsapp: "WhatsApp Kami", social: "Saluran rasmi", qr: "Imbas untuk WhatsApp", xhs: "Xiaohongshu", account: "ID akaun", pending: "Pautan profil rasmi belum tersedia" },
 } as const;
 
-const downloadNav = { en: "Download App", zh: "下载 App", ms: "Muat Turun App" } as const;
-
-const philosophyCopy = {
-  en: {
-    eyebrow: "OUR APPROACH",
-    items: [
-      ["Purpose", "To make professional nail care feel considered, trusted and genuinely personal."],
-      ["Vision", "To elevate modern nail care through precision, comfort and lasting confidence."],
-      ["Promise", "Thoughtful consultation, careful technique and a refined result at every visit."],
-    ],
-  },
-  zh: {
-    eyebrow: "我们的理念",
-    items: [
-      ["初心", "让专业美甲护理更细致、更值得信赖，也更贴近每位顾客。"],
-      ["愿景", "以精准技术、舒适体验与持久自信，提升现代美甲护理。"],
-      ["承诺", "每次到店都享有认真咨询、细致技术与精致完成效果。"],
-    ],
-  },
-  ms: {
-    eyebrow: "PENDEKATAN KAMI",
-    items: [
-      ["Tujuan", "Menjadikan penjagaan kuku profesional lebih teliti, dipercayai dan peribadi."],
-      ["Visi", "Meningkatkan penjagaan kuku moden melalui ketepatan, keselesaan dan keyakinan."],
-      ["Janji", "Konsultasi teliti, teknik cermat dan hasil kemas pada setiap kunjungan."],
-    ],
-  },
-} as const;
+function trackPublicAction(event: string, destination: string, contentLabel: string) {
+  if (typeof window === "undefined") return;
+  const analyticsWindow = window as Window & {
+    gtag?: (...args: unknown[]) => void;
+  };
+  analyticsWindow.gtag?.("event", event, {
+    destination,
+    content_label: contentLabel,
+  });
+}
 
 function useOfficial() {
   const { locale, setLocale } = useLanguage();
   return {
     locale,
     setLocale,
-    t: {
-      ...officialMessages[locale],
-      campaign: officialCampaignMessages[locale],
-    },
+    t: officialMessages[locale],
   };
 }
 
@@ -105,28 +73,27 @@ function LanguageMenu() {
   </div>;
 }
 
-function ThemeButton() {
-  const { resolvedTheme, setTheme } = useTheme();
-  const mounted = useSyncExternalStore(() => () => {}, () => true, () => false);
-  const isDark = mounted && resolvedTheme === "dark";
-  return <button className="utility-button icon-only" onClick={() => setTheme(isDark ? "light" : "dark")} aria-label="Toggle colour mode">{isDark ? <Sun size={16}/> : <Moon size={16}/>}</button>;
-}
-
 function SiteHeader() {
-  const { locale, t } = useOfficial();
+  const { t } = useOfficial();
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const nav = [["/",t.nav.home],["/about",t.nav.story],["/services",t.nav.services],["/job",t.nav.jobs],["/rewards",t.nav.rewards],["/promotion",t.nav.promo],["/#app",downloadNav[locale]],["/contact",t.nav.contact]];
+  const isHome = pathname === "/";
+  const nav = primaryNavigation.map((item) => ({
+    href: item.href,
+    label: item.labelKey === "rewards" ? (t.nav.rewards === "Rewards" ? "Membership" : t.nav.rewards) : t.nav[item.labelKey],
+  }));
   return <>
-    {siteConfig.announcement.enabled && <div className="announcement"><span>{t.announcement.label}</span><span className="announcement-date">{siteConfig.announcement.dates}</span><Link href="/promotion">{t.announcement.action}<ArrowRight size={13}/></Link></div>}
+    {!isHome && siteConfig.announcement.enabled && <div className="announcement"><span>{t.announcement.label}</span><span className="announcement-date">{siteConfig.announcement.dates}</span><Link href="/promotion">{t.announcement.action}<ArrowRight size={13}/></Link></div>}
     <header className="official-header">
       <div className="official-header-main shell">
-        <div className="official-header-left"><a href={siteConfig.bookingUrl} className="header-book" target="_blank" rel="noopener noreferrer">{t.nav.book}</a><button className="utility-button icon-only official-mobile-menu" onClick={() => setOpen(!open)} aria-label="Open menu">{open?<X size={17}/>:<Menu size={17}/>}</button></div>
-        <Link href="/" className="official-header-brand" aria-label={`${siteConfig.brandName} home`}><BrandLogo compact/></Link>
-        <div className="official-header-tools"><LanguageMenu/><ThemeButton/></div>
+        <button className="utility-button icon-only official-mobile-menu" onClick={() => setOpen(!open)} aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open}>{open?<X size={18}/>:<Menu size={18}/>}</button>
+        <Link href="/" className="official-header-brand" aria-label={`${siteConfig.brandName} home`}>
+          {isHome ? <h1><BrandLogo compact/></h1> : <BrandLogo compact/>}
+        </Link>
+        <nav className="official-desktop-nav" aria-label="Primary navigation">{nav.map(({href,label}) => <Link key={href} href={href} className={`nav-link ${pathname === href ? "is-current" : ""}`}>{label}</Link>)}</nav>
+        <div className="official-header-tools"><LanguageMenu/><a href={siteConfig.bookingUrl} className="header-book" target="_blank" rel="noopener noreferrer" onClick={() => trackPublicAction("book_appointment_click", siteConfig.bookingUrl, "header")}>{t.nav.book}</a></div>
       </div>
-      <nav className="official-desktop-nav" aria-label="Primary navigation">{nav.map(([href,label]) => <Link key={href} href={href} className={`nav-link ${pathname === href ? "is-current" : ""}`}>{label}</Link>)}</nav>
-      <AnimatePresence>{open && <motion.nav initial={{height:0,opacity:0}} animate={{height:"auto",opacity:1}} exit={{height:0,opacity:0}} className="official-mobile-drawer"><div className="shell grid gap-1 py-4">{nav.map(([href,label])=><Link key={href} href={href} className="rounded-xl px-3 py-3 text-sm" onClick={()=>setOpen(false)}>{label}</Link>)}<a href={siteConfig.bookingUrl} target="_blank" rel="noopener noreferrer" className="rounded-xl bg-[var(--gold)] px-3 py-3 text-sm font-bold text-white">{t.nav.book}</a><div className="px-3 pt-2"><ThemeButton/></div></div></motion.nav>}</AnimatePresence>
+      <AnimatePresence>{open && <motion.nav initial={{height:0,opacity:0}} animate={{height:"auto",opacity:1}} exit={{height:0,opacity:0}} className="official-mobile-drawer"><div className="shell grid gap-1 py-4"><a href={siteConfig.bookingUrl} target="_blank" rel="noopener noreferrer" className="mobile-drawer-book" onClick={()=>{trackPublicAction("book_appointment_click", siteConfig.bookingUrl, "mobile_drawer");setOpen(false)}}>{t.nav.book}<ArrowRight size={16}/></a>{nav.map(({href,label})=><Link key={href} href={href} className="mobile-drawer-link" onClick={()=>setOpen(false)}>{label}</Link>)}</div></motion.nav>}</AnimatePresence>
     </header>
   </>;
 }
@@ -136,7 +103,7 @@ function SiteFooter() {
   const whatsapp = getWhatsappUrl(locale);
   return <footer className="official-footer"><div className="shell"><div className="grid gap-12 border-b border-white/15 py-16 md:grid-cols-[1.4fr_repeat(3,1fr)]">
     <div><BrandLogo inverse/><p className="mt-5 max-w-xs text-sm leading-7 text-white/55">{t.footer.line}</p></div>
-    <div><h3>{t.footer.explore}</h3><Link href="/about">{t.nav.story}</Link><Link href="/services">{t.nav.services}</Link><Link href="/job">{t.nav.jobs}</Link><Link href="/rewards">{t.nav.rewards}</Link><Link href="/#app">{downloadNav[locale]}</Link></div>
+    <div><h3>{t.footer.explore}</h3><Link href="/about">{t.nav.story}</Link><Link href="/services">{t.nav.services}</Link><Link href="/promotion">{t.nav.promo}</Link><Link href="/rewards">{t.nav.rewards === "Rewards" ? "Membership" : t.nav.rewards}</Link><Link href="/job">{t.nav.jobs}</Link></div>
     <div><h3>{t.footer.connect}</h3><ExternalOrPending href={siteConfig.instagramUrl} ariaLabel={`${siteConfig.brandName} Instagram`}>Instagram</ExternalOrPending><ExternalOrPending href={siteConfig.facebookUrl} ariaLabel={`${siteConfig.brandName} Facebook`}>Facebook</ExternalOrPending><ExternalOrPending href={siteConfig.xiaohongshuUrl} ariaLabel={`${siteConfig.brandName} Xiaohongshu`}>Xiaohongshu</ExternalOrPending></div>
     <div><h3>{t.footer.studio}</h3><Link href="/contact">{t.nav.contact}</Link><a href={siteConfig.googleMapsDirectionsUrl} target="_blank" rel="noopener noreferrer">Google Maps</a><a href={whatsapp} target="_blank" rel="noopener noreferrer">WhatsApp</a><a href={siteConfig.phoneLink}>{siteConfig.phoneDisplay}</a></div>
   </div><div className="flex flex-col gap-4 py-7 text-[11px] text-white/42 sm:flex-row sm:items-center sm:justify-between"><span>© 2026 {siteConfig.brandName}. All rights reserved.</span><div className="flex gap-5"><Link href="/privacy">{t.footer.privacy}</Link><Link href="/terms">{t.footer.terms}</Link></div></div></div></footer>;
@@ -144,69 +111,13 @@ function SiteFooter() {
 
 function MobileNav() {
   const { t } = useOfficial();
-  return <nav className="mobile-official-nav" aria-label="Mobile quick navigation"><Link href="/"><Home size={18}/><span>{t.nav.home}</span></Link><Link href="/services"><Sparkles size={18}/><span>{t.nav.services}</span></Link><Link href="/promotion"><Gift size={18}/><span>{t.nav.promo}</span></Link><a href={siteConfig.bookingUrl} target="_blank" rel="noopener noreferrer" className="mobile-book"><CalendarCheck size={18}/><span>{t.nav.book}</span></a></nav>;
+  return <nav className="mobile-official-nav" aria-label="Mobile quick navigation"><Link href="/"><Home size={18}/><span>{t.nav.home}</span></Link><Link href="/services"><Sparkles size={18}/><span>{t.nav.services}</span></Link><Link href="/promotion"><Gift size={18}/><span>{t.nav.promo}</span></Link><a href={siteConfig.bookingUrl} target="_blank" rel="noopener noreferrer" className="mobile-book" onClick={() => trackPublicAction("book_appointment_click", siteConfig.bookingUrl, "mobile_quick_nav")}><CalendarCheck size={18}/><span>{t.nav.book}</span></a></nav>;
 }
 
 export function OfficialFrame({ children }: {children: React.ReactNode}) {
   const { locale } = useOfficial();
-  return <><SiteHeader/><main>{children}</main><SiteFooter/><MobileNav/><a href={getWhatsappUrl(locale)} target="_blank" rel="noopener noreferrer" className="whatsapp-float" aria-label={`WhatsApp ${siteConfig.brandName}`}><MessageCircle size={22}/></a></>;
-}
-
-function AnniversaryCampaign() {
-  const { t } = useOfficial();
-  return <section id="anniversary" className="anniversary-campaign"><div className="anniversary-seven" aria-hidden="true">7</div><div className="shell relative flex min-h-[720px] items-center justify-center py-20 text-center"><Reveal className="max-w-4xl"><div className="eyebrow text-[#dec27e]">{t.campaign.eyebrow}</div><h2 className="mt-7 text-5xl font-light leading-[.98] tracking-[-.055em] text-white sm:text-8xl">{t.campaign.title}</h2><p className="mx-auto mt-7 max-w-2xl text-base leading-7 text-white/58">{t.campaign.body}</p><div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row"><a href={siteConfig.bookingUrl} target="_blank" rel="noopener noreferrer" className="btn btn-gold">{t.campaign.primary}<ArrowRight size={16}/></a><Link href="/promotion" className="btn border-white/20 bg-white/5 text-white">{t.campaign.secondary}</Link></div></Reveal></div></section>;
-}
-
-function BookingSection() {
-  const { locale, t } = useOfficial();
-  return <section className="section"><div className="shell grid items-center gap-14 lg:grid-cols-[1fr_.82fr]"><Reveal><div className="eyebrow">{t.booking.eyebrow}</div><h2 className="h2 mt-5">{t.booking.title}</h2><p className="lead mt-6 max-w-2xl">{t.booking.body}</p><div className="mt-8 grid gap-3">{t.booking.points.map(point=><div key={point} className="flex items-center gap-3 text-sm"><span className="grid h-7 w-7 place-items-center rounded-full bg-[var(--surface)] gold-text"><Check size={14}/></span>{point}</div>)}</div><div className="mt-9 flex flex-wrap gap-3"><a href={siteConfig.bookingUrl} target="_blank" rel="noopener noreferrer" className="btn btn-gold">{t.booking.primary}<ArrowRight size={16}/></a><a href={getWhatsappUrl(locale)} target="_blank" rel="noopener noreferrer" className="btn btn-ghost">{t.booking.secondary}</a></div></Reveal><Reveal delay={.1} className="booking-card"><div className="eyebrow text-[#d7b873]">{siteConfig.brandName}</div><div className="mt-20 text-4xl font-light leading-tight tracking-[-.04em] text-white">Private care.<br/>Professional precision.</div><div className="mt-16 flex items-center justify-between border-t border-white/15 pt-6 text-xs text-white/50"><span>DIRECT BOOKING</span><CalendarCheck className="text-[#d7b873]" size={22}/></div></Reveal></div></section>;
-}
-
-function ServicesPreview() {
-  const { t } = useOfficial();
-  const icons = [IconBottle, IconFootsteps, IconHandFinger, IconBandage, IconRazor];
-  return <section className="service-showcase"><div className="shell"><Reveal className="service-showcase-heading"><div><div className="eyebrow">{t.services.eyebrow}</div><h2 className="h2 mt-4">{t.services.title}</h2></div><div><p className="lead max-w-xl">{t.services.body}</p><Link href="/services" className="mt-5 inline-flex items-center gap-2 text-sm font-bold gold-text">{t.services.viewAll}<ArrowRight size={16}/></Link></div></Reveal><div className="service-icon-grid">{t.services.items.map(([title,body],i)=>{const Icon=icons[i];return <Link href="/services" key={title} className="service-icon-item"><span className="service-icon-box"><Icon size={38} stroke={1.35}/></span><h3>{title}</h3><p>{body}</p></Link>})}</div></div></section>;
-}
-
-function Philosophy() {
-  const { locale } = useOfficial();
-  const copy = philosophyCopy[locale];
-  return <section className="philosophy-section"><div className="shell"><div className="eyebrow text-center text-[#d9bb75]">{copy.eyebrow}</div><div className="philosophy-grid">{copy.items.map(([title,body],i)=><Reveal key={title} delay={i*.07} className="philosophy-item"><h2>{title}</h2><p>{body}</p></Reveal>)}</div></div></section>;
-}
-
-function AppDownloadLinks({ locale }: { locale: Locale }) {
-  const [device, setDevice] = useState<"desktop"|"android"|"ios">("desktop");
-  useEffect(() => {
-    const frame = window.requestAnimationFrame(() => {
-      const agent = navigator.userAgent.toLowerCase();
-      setDevice(agent.includes("android") ? "android" : /iphone|ipad|ipod/.test(agent) ? "ios" : "desktop");
-    });
-    return () => window.cancelAnimationFrame(frame);
-  }, []);
-  const items = [
-    { id:"ios", href:siteConfig.appStoreUrl, src:"/badges/download-on-app-store.svg", alt:"Download on the App Store" },
-    { id:"android", href:siteConfig.googlePlayUrl, src:"/badges/get-it-on-google-play-trimmed.png", alt:"Get it on Google Play" },
-  ].sort((a,b) => device === "android" ? (a.id === "android" ? -1 : 1) : device === "ios" ? (a.id === "ios" ? -1 : 1) : 0);
-  return <div className="app-badges">{items.map(item => {
-    const imageSize = item.id === "ios" ? { width: 120, height: 40 } : { width: 168, height: 50 };
-    return isConfiguredUrl(item.href) ? <a key={item.id} href={item.href} target="_blank" rel="noopener noreferrer" aria-label={item.alt}><Image src={item.src} alt={item.alt} {...imageSize}/></a> : <span key={item.id} className="app-badge-pending" aria-disabled="true"><Image src={item.src} alt={item.alt} {...imageSize}/><small>{appCopy[locale].pending}</small></span>;
-  })}</div>;
-}
-
-function AppPromo() {
-  const { locale } = useOfficial();
-  const copy = appCopy[locale];
-  return <section id="app" className="section scroll-mt-24"><div className="shell"><Reveal className="app-promo"><div><div className="eyebrow text-[#ddc17e]">{copy.eyebrow}</div><h2 className="mt-6 max-w-3xl text-4xl font-light leading-tight tracking-[-.04em] text-white sm:text-6xl">{copy.title}</h2><p className="mt-6 max-w-xl text-base leading-7 text-white/60">{copy.body}</p></div><AppDownloadLinks locale={locale}/></Reveal></div></section>;
-}
-
-function Gallery() {
-  const { t } = useOfficial();
-  return <section id="work" className="section surface"><div className="shell"><Reveal className="grid gap-6 lg:grid-cols-2"><div><div className="eyebrow">{t.gallery.eyebrow}</div><h2 className="h2 mt-5">{t.gallery.title}</h2></div><div className="lg:justify-self-end"><p className="lead max-w-xl">{t.gallery.body}</p><ExternalOrPending href={siteConfig.instagramUrl} className="mt-7 inline-flex items-center gap-2 text-sm font-bold gold-text" ariaLabel={`${siteConfig.brandName} Instagram`}>{t.gallery.cta}<ExternalLink size={15}/></ExternalOrPending></div></Reveal><div className="gallery-grid mt-14">{galleryImages.map((src,i)=><Reveal key={src} delay={(i%3)*.06} className={`gallery-item gallery-${i+1}`}><Image src={src} alt={`${siteConfig.brandName} — ${t.gallery.alts[i]}`} fill sizes="(max-width: 767px) 100vw, 40vw" className="object-cover" loading="lazy"/></Reveal>)}</div></div></section>;
-}
-
-function Reviews() {
-  const { t } = useOfficial();
-  return <section id="reviews" className="section"><div className="shell"><Reveal className="card p-8 sm:p-12"><div className="eyebrow">{t.reviews.eyebrow}</div><h2 className="h2 mt-5 max-w-3xl">{t.reviews.title}</h2><p className="lead mt-6 max-w-2xl">{t.reviews.body}</p><div className="mt-8"><ExternalOrPending href={siteConfig.googleReviewUrl} className="btn btn-dark" ariaLabel={`${siteConfig.brandName} Google Reviews`}>{t.reviews.cta}<ExternalLink size={15}/></ExternalOrPending></div></Reveal></div></section>;
+  const whatsappUrl = getWhatsappUrl(locale);
+  return <><SiteHeader/><main>{children}</main><SiteFooter/><MobileNav/><a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="whatsapp-float" aria-label={`WhatsApp ${siteConfig.brandName}`} onClick={() => trackPublicAction("whatsapp_click", whatsappUrl, "floating_action")}><MessageCircle size={22}/></a></>;
 }
 
 function StoryPreview() {
@@ -238,21 +149,16 @@ function ContactVisitSection() {
 }
 
 export function OfficialHome() {
-  return <OfficialFrame>
-    {currentCampaign.enabled ? <CampaignBanner
-      desktopSrc={currentCampaign.desktopSrc}
-      mobileSrc={currentCampaign.mobileSrc}
-      alt={currentCampaign.alt}
-      href={currentCampaign.href}
-      openInNewTab={currentCampaign.openInNewTab}
-      priority={currentCampaign.priority}
-      width={currentCampaign.width}
-      height={currentCampaign.height}
-      campaignId={currentCampaign.id}
-      campaignName={currentCampaign.name}
-    /> : null}
-    <ServicesPreview/><Philosophy/><AnniversaryCampaign/><Gallery/><StoryPreview/><AppPromo/><Reviews/><ContactPanel/>
-  </OfficialFrame>;
+  const { locale } = useOfficial();
+  return <OfficialFrame><div className="homepage-quiet">
+    <CurrentCampaignBanner/>
+    <SignatureServices locale={locale}/>
+    <SelectedNailWork locale={locale}/>
+    <WhyMezzanail locale={locale}/>
+    <GoogleReviewsPreview locale={locale}/>
+    <MembershipBanner locale={locale}/>
+    <StudioLocationBooking locale={locale}/>
+  </div></OfficialFrame>;
 }
 export function ServicesPage() { const {t}=useOfficial(); return <OfficialFrame><PageHero eyebrow={t.pages.services.eyebrow} title={t.pages.services.title} body={t.pages.services.body}/><ServicesCatalog/><ContactPanel/></OfficialFrame>; }
 export function AboutPage() { const {t}=useOfficial(); return <OfficialFrame><PageHero eyebrow={`${siteConfig.brandName} · Malaysia`} title={t.pages.about.title} body={t.pages.about.body}/><section className="section surface"><div className="shell grid gap-5 lg:grid-cols-3">{t.pages.about.values.map(([title,body],i)=><Reveal key={title} delay={i*.08} className="card min-h-72 p-8"><span className="numbers text-xs font-bold gold-text">0{i+1}</span><h2 className="mt-20 text-2xl font-bold">{title}</h2><p className="mt-4 text-sm leading-7 text-[var(--muted)]">{body}</p></Reveal>)}</div></section><StoryPreview/><ContactPanel/></OfficialFrame>; }

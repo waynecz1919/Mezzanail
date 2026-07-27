@@ -11,8 +11,10 @@ const page = read("app/promotion/page.tsx");
 const termsPage = read("app/promotion/terms/page.tsx");
 const experience = read("components/promotion/promotion-experience.tsx");
 const officialSite = read("components/official-site.tsx");
+const currentCampaignBanner = read("components/home/CurrentCampaignBanner.tsx");
 const campaignBanner = read("components/marketing/CampaignBanner.tsx");
 const currentCampaign = read("config/current-campaign.ts");
+const navigation = read("config/navigation.ts");
 const site = read("lib/site.ts");
 
 test("campaign uses the official promotion and booking URLs", () => {
@@ -67,9 +69,10 @@ test("the full campaign supports English, Chinese and Bahasa Melayu", () => {
 });
 
 test("the official homepage routes every anniversary entry to promotion", () => {
-  assert.match(officialSite, /<CampaignBanner/);
-  assert.match(officialSite, /currentCampaign\.enabled/);
-  assert.match(officialSite, /\["\/promotion",t\.nav\.promo\]/);
+  assert.match(officialSite, /<CurrentCampaignBanner/);
+  assert.match(currentCampaignBanner, /<CampaignBanner/);
+  assert.match(currentCampaignBanner, /currentCampaign\.enabled/);
+  assert.match(navigation, /href: "\/promotion", labelKey: "promo"/);
   assert.match(currentCampaign, /enabled: true/);
   assert.match(currentCampaign, /href: "\/promotion"/);
   assert.match(currentCampaign, /banner-desktop\.webp/);

@@ -1,53 +1,55 @@
-# Design QA
+# Homepage Studio Campaign Image — Design QA
 
-## Evidence
+**Source visual truth**
 
-- Source visual truth: `C:\Users\mezza\AppData\Local\Temp\codex-clipboard-c721db09-4e7b-47a7-ae97-9bb27536887b.png`
-- Browser-rendered implementation:
-  - `C:\Users\mezza\OneDrive\Documents\NIllam\mezzanail-rewards\final-service-icons-desktop.png`
-  - `C:\Users\mezza\OneDrive\Documents\NIllam\mezzanail-rewards\final-service-icons-mobile.png`
-- Combined comparison: `C:\Users\mezza\OneDrive\Documents\NIllam\mezzanail-rewards\design-qa-service-icons-comparison.png`
-- Viewports: desktop 1223 x 620; mobile 390 x 844.
-- State: homepage service-category section, English locale, light theme.
+- `C:\Users\mezza\AppData\Local\Temp\codex-clipboard-0adb8384-d1ac-4101-93a2-94498a7ae686.png`
+- Source pixels: 1600 × 1600.
 
-## Full-view comparison evidence
+**Rendered implementation**
 
-- The five-column desktop grid retains the reference borders, card widths, cream background and centered editorial layout.
-- All five icon boxes share the same top coordinate; every title and body block begins on the same baseline.
-- Mobile collapses cleanly to one column with no horizontal overflow (`375px` body inside a `390px` viewport).
+- Full mobile capture: `C:\Users\mezza\Documents\Codex\2026-07-26\chon\work\Mezzanail\test-results\homepage-mobile.png`
+- Focused mobile region: `C:\Users\mezza\Documents\Codex\2026-07-26\chon\work\Mezzanail\test-results\homepage-mobile-bottom-check.png`
+- Side-by-side comparison: `C:\Users\mezza\Documents\Codex\2026-07-26\chon\work\Mezzanail\test-results\homepage-studio-comparison.png`
+- Browser viewport: 390 × 844 CSS pixels at device scale factor 1.
+- Full-page screenshot: 390 × 8829 pixels.
+- Focused implementation poster crop: 354 × 356 pixels; compared against a 354 × 354 normalized copy of the source.
+- State: homepage studio section, default state, English locale.
 
-## Focused comparison evidence
+**Full-view comparison evidence**
 
-- Fonts and typography: existing Georgia editorial headings and Manrope body copy remain unchanged. Fixed title and body rows prevent different copy lengths from shifting nearby content.
-- Spacing and layout rhythm: desktop cards use fixed `46px / 52px / 72px` icon-title-body rows, consistent 10px gaps and equal vertical centering.
-- Colors and tokens: icons continue using the existing champagne-gold token and borders use the existing line token.
-- Image/icon fidelity: icons now come from the MIT-licensed Tabler icon library rather than custom SVG/CSS drawings. Bottle, footsteps, finger, bandage and razor map directly to the five service categories.
-- Copy and content: all service titles and descriptions are preserved. The Xiaohongshu Account ID is removed from both Contact and Footer while the official profile link remains.
+- The campaign artwork replaces only the studio-section image; section order, copy, buttons, footer and mobile navigation remain unchanged.
+- The square artwork fits the available column without page-level horizontal overflow.
+- Desktop, tablet and mobile captures all report zero horizontal overflow and one H1.
 
-## Findings
+**Focused region comparison evidence**
 
-- No actionable P0, P1 or P2 differences remain.
-- P3: the new icons intentionally differ from the reference because the user requested a more title-appropriate set.
+- The supplied source and browser-rendered poster are shown together in `homepage-studio-comparison.png`.
+- The Mezzanail logo, 7th Anniversary title, date, prizes, nail art and lower benefit strip are all visible.
+- The image is not stretched or cropped. Rounded corners are applied only by the existing studio image container.
 
-## Comparison history
+**Required fidelity surfaces**
 
-1. Initial reference showed uneven visual alignment caused by content-driven vertical centering and several generic icons.
-2. Replaced the icon set with Tabler category-specific icons and converted each card to fixed icon, title and description rows.
-3. Post-fix browser measurements confirm identical desktop coordinates across all five cards: icon top `219.19px`, title top `275.19px`, body top `337.19px`.
+- Fonts and typography: campaign typography remains embedded in the supplied image; no HTML recreation or font substitution was introduced.
+- Spacing and layout rhythm: the image container now uses the source's 1:1 ratio on desktop, tablet and mobile.
+- Colors and visual tokens: the source pink/rose palette is preserved; the fallback surface uses the existing warm-neutral token.
+- Image quality and asset fidelity: the exact supplied 1600 × 1600 PNG is served through `next/image` with responsive sizing.
+- Copy and content: no campaign copy was altered, omitted or recreated.
 
-## Primary interactions tested
+**Findings**
 
-- All five service cards remain links to the Services page.
-- Desktop and mobile responsive layouts rendered successfully.
-- Xiaohongshu links remain active without showing the Account ID.
-- Browser console checked with no warnings or errors.
+- No actionable P0, P1 or P2 differences.
+- P3: fine campaign text is naturally smaller on a 390px phone screen because the complete square artwork is intentionally preserved instead of cropped.
 
-## Implementation checklist
+**Comparison history**
 
-- [x] Align icons, titles and descriptions to shared baselines.
-- [x] Replace the previous generic icon set.
-- [x] Preserve responsive behavior and link interactions.
-- [x] Remove Xiaohongshu Account ID from visible content and configuration.
-- [x] Pass lint, production build and browser verification.
+- Pass 1: no P0/P1/P2 findings. No visual correction loop was required after the first browser-rendered comparison.
+
+**Implementation checklist**
+
+- Exact supplied campaign image installed.
+- Localized alt text updated.
+- Square responsive container applied.
+- Desktop, tablet and mobile captures completed.
+- Lint, TypeScript, 28 tests and production build passed.
 
 final result: passed
