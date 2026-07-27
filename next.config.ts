@@ -4,16 +4,6 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   experimental: { optimizePackageImports: ["lucide-react", "framer-motion"] },
-  outputFileTracingIncludes: {
-    "/api/job/applications": [
-      "./node_modules/@expo-google-fonts/noto-sans-sc/400Regular/NotoSansSC_400Regular.ttf",
-      "./public/brand/mezzanail-circle-logo.png",
-    ],
-    "/api/job/applications/pdf": [
-      "./node_modules/@expo-google-fonts/noto-sans-sc/400Regular/NotoSansSC_400Regular.ttf",
-      "./public/brand/mezzanail-circle-logo.png",
-    ],
-  },
   async redirects() {
     return [
       {

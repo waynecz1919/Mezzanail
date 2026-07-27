@@ -6,7 +6,7 @@ import {
   reserveJobApplication,
   submitJobApplication,
 } from "@/lib/job/db";
-import { generateJobApplicationPdf } from "@/lib/job/pdf";
+import { generateJobApplicationPdf, pdfGenerationFailureCode } from "@/lib/job/pdf";
 import {
   auditJobApplication,
   hashApplicationPayload,
@@ -153,12 +153,12 @@ export async function POST(request: NextRequest) {
       applicationReference: record.application_reference,
       submittedAt,
     });
-  } catch {
+  } catch (error) {
     await failJobApplication(record.application_id, "PDF_GENERATION_FAILED").catch(() => undefined);
     auditJobApplication("pdf_generation_failed", {
       applicationReference: record.application_reference,
       phoneNumber: application.whatsappNumber,
-      errorCode: "PDF_GENERATION_FAILED",
+      errorCode: pdfGenerationFailureCode(error),
     });
     return jobApiFailure(
       {

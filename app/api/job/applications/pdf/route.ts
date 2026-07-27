@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { findJobApplicationStatus } from "@/lib/job/db";
 import { hasJobCsrfHeaders, jobApiFailure, jobPrivateHeaders, readLimitedJson } from "@/lib/job/http";
-import { generateJobApplicationPdf } from "@/lib/job/pdf";
+import { generateJobApplicationPdf, pdfGenerationFailureCode } from "@/lib/job/pdf";
 import {
   hashApplicationPayload,
   hashIdempotencyKey,
@@ -66,7 +66,15 @@ export async function POST(request: NextRequest) {
     });
     generated.bytes.fill(0);
     return response;
-  } catch {
+  } catch (error) {
+    console.info(
+      JSON.stringify({
+        scope: "job-application",
+        event: "pdf_download_failed",
+        errorCode: pdfGenerationFailureCode(error),
+        at: new Date().toISOString(),
+      }),
+    );
     return jobApiFailure(
       {
         success: false,

@@ -62,7 +62,14 @@ test("application reference and filename exclude applicant identity data", () =>
 
 test("PDF uses a real A4 bilingual layout and excludes internal assessment data", () => {
   assert.match(pdf, /const A4 = \{ width: 595\.28, height: 841\.89 \}/);
+  assert.match(pdf, /pdfkit\/js\/pdfkit\.standalone/);
   assert.match(pdf, /NotoSansSC_400Regular\.ttf/);
+  assert.match(pdf, /public", "pdf-assets/);
+  assert.match(pdf, /https:\/\/www\.mezzanail\.com/);
+  assert.match(pdf, /redirect: "error"/);
+  assert.match(pdf, /PDF_ASSET_FETCH_FAILED/);
+  assert.match(read("package.json"), /prepare-pdf-assets\.mjs/);
+  assert.match(route, /pdfGenerationFailureCode/);
   assert.match(pdf, /MEZZANAIL NAIL STUDIO/);
   for (const section of [
     "BASIC INFORMATION",

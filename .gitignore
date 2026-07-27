@@ -1,5 +1,7 @@
 node_modules/
 .next/
+.pdf-assets/
+public/pdf-assets/
 out/
 .vercel/
 *.log

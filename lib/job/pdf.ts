@@ -1,6 +1,6 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
-import PDFDocument from "pdfkit";
+import PDFDocument from "pdfkit/js/pdfkit.standalone";
 import type { JobApplicationInput } from "@/lib/job/types";
 import { jobApplicationFilename } from "@/lib/job/reference";
 
@@ -14,6 +14,12 @@ const INK = "#292629";
 const MUTED = "#665E5E";
 const LINE = "#D2C2B8";
 const FONT_NAME = "NotoSansSC";
+const FONT_FILE = "NotoSansSC_400Regular.ttf";
+const LOGO_FILE = "mezzanail-circle-logo.png";
+
+let pdfAssetSources:
+  | Promise<{ font: Uint8Array; logo: Uint8Array }>
+  | undefined;
 
 const skillLabels: Record<keyof JobApplicationInput["nailSkills"], string> = {
   manicure: "Manicure",
@@ -29,6 +35,63 @@ export type GeneratedJobApplicationPdf = {
   filename: string;
   submittedAtDisplay: string;
 };
+
+export function pdfGenerationFailureCode(error: unknown) {
+  const code =
+    error && typeof error === "object" && "code" in error
+      ? String((error as { code: unknown }).code)
+      : "";
+  if (code === "ENOENT") return "PDF_ASSET_MISSING";
+  if (code === "PDF_ASSET_FETCH_FAILED") return "PDF_ASSET_FETCH_FAILED";
+  if (code === "ENOMEM") return "PDF_MEMORY_EXHAUSTED";
+  if (error instanceof RangeError) return "PDF_RANGE_ERROR";
+  return "PDF_RENDER_FAILED";
+}
+
+function deploymentOrigin() {
+  return "https://www.mezzanail.com";
+}
+
+async function readPdfAsset(filename: string) {
+  try {
+    return await readFile(join(process.cwd(), "public", "pdf-assets", filename));
+  } catch (error) {
+    if (
+      !error ||
+      typeof error !== "object" ||
+      !("code" in error) ||
+      String((error as { code: unknown }).code) !== "ENOENT"
+    ) {
+      throw error;
+    }
+  }
+
+  const response = await fetch(`${deploymentOrigin()}/pdf-assets/${filename}`, {
+    cache: "force-cache",
+    redirect: "error",
+    signal: AbortSignal.timeout(15_000),
+  });
+  if (!response.ok) {
+    throw Object.assign(new Error("PDF runtime asset could not be loaded."), {
+      code: "PDF_ASSET_FETCH_FAILED",
+    });
+  }
+  return new Uint8Array(await response.arrayBuffer());
+}
+
+async function loadPdfAssets() {
+  pdfAssetSources ??= Promise.all([readPdfAsset(FONT_FILE), readPdfAsset(LOGO_FILE)])
+    .then(([font, logo]) => ({ font: new Uint8Array(font), logo: new Uint8Array(logo) }))
+    .catch((error) => {
+      pdfAssetSources = undefined;
+      throw error;
+    });
+  const sources = await pdfAssetSources;
+  return {
+    font: Buffer.from(sources.font),
+    logo: `data:image/png;base64,${Buffer.from(sources.logo).toString("base64")}`,
+  };
+}
 
 function formatSubmittedAt(date: Date) {
   return new Intl.DateTimeFormat("en-MY", {
@@ -55,19 +118,7 @@ export async function generateJobApplicationPdf({
   applicationReference: string;
   submittedAt?: Date;
 }): Promise<GeneratedJobApplicationPdf> {
-  const [fontBytes, logoBytes] = await Promise.all([
-    readFile(
-      join(
-        process.cwd(),
-        "node_modules",
-        "@expo-google-fonts",
-        "noto-sans-sc",
-        "400Regular",
-        "NotoSansSC_400Regular.ttf",
-      ),
-    ),
-    readFile(join(process.cwd(), "public", "brand", "mezzanail-circle-logo.png")),
-  ]);
+  const { font: fontBytes, logo: logoBytes } = await loadPdfAssets();
   const submittedAtDisplay = formatSubmittedAt(submittedAt);
   const document = new PDFDocument({
     autoFirstPage: false,
