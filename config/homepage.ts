@@ -1,10 +1,10 @@
 const sharedImages = {
   services: [
-    "/gallery/signature-white.jpg",
-    "/gallery/minimal-manicure.jpg",
+    "/services/homepage/hand-care.png",
+    "/services/homepage/foot-care.png",
     "/gallery/extension-silver.jpg",
-    "/gallery/chrome-neutral.jpg",
-    "/gallery/editorial-black.jpg",
+    "/services/homepage/callus-removal-before-after-4x3.png",
+    "/services/homepage/waxing-treatment.png",
   ],
   nailWork: [
     "/gallery/signature-white.jpg",
@@ -33,11 +33,11 @@ const english = {
     subtitle: "Selected nail artistry and considered care",
     action: "Explore Services",
     items: [
-      { title: "Hand Care", body: "Refined manicure rituals, gel colour and a precise finish.", href: "/services", image: sharedImages.services[0], alt: "Refined white manicure by Mezzanail Nail Studio", featured: true },
-      { title: "Foot Care", body: "Comfort-led pedicure care designed to restore and refresh.", href: "/services", image: sharedImages.services[1], alt: "Soft neutral nail care finish by Mezzanail Nail Studio", featured: true },
+      { title: "Hand Care", body: "Refined manicure rituals, gel colour and a precise finish.", href: "/services", image: sharedImages.services[0], alt: "Soft pink manicure on hands with dried lavender", featured: true },
+      { title: "Foot Care", body: "Comfort-led pedicure care designed to restore and refresh.", href: "/services", image: sharedImages.services[1], alt: "French pedicure with a white lily", featured: true },
       { title: "Nail Extensions", body: "Balanced structure and elegant length with a natural finish.", href: "/services", image: sharedImages.services[2], alt: "Silver nail extensions by Mezzanail Nail Studio", featured: false },
-      { title: "Callus Removal", body: "Professional callus and Footlogix care for smoother feet.", href: "/services", image: sharedImages.services[3], alt: "Glossy neutral care finish by Mezzanail Nail Studio", featured: false },
-      { title: "Waxing", body: "Considered waxing care delivered with comfort and precision.", href: "/services", image: sharedImages.services[4], alt: "Editorial beauty detail by Mezzanail Nail Studio", featured: false },
+      { title: "Callus Removal", body: "Professional callus and Footlogix care for smoother feet.", href: "/services", image: sharedImages.services[3], alt: "Before and after heel callus removal result", featured: false },
+      { title: "Waxing", body: "Considered waxing care delivered with comfort and precision.", href: "/services", image: sharedImages.services[4], alt: "Leg waxing treatment at a beauty studio", featured: false },
     ],
   },
   work: {

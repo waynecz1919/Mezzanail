@@ -32,7 +32,7 @@ export const officialCampaignMessages = {
 
 export const officialMessages = {
   en: {
-    nav: { home: "Home", services: "Services", work: "Our work", story: "Our story", reviews: "Reviews", contact: "Contact", rewards: "Rewards", promo: "Offers", jobs: "Jobs", book: "Book now" },
+    nav: { home: "Home", services: "Services", work: "Our work", story: "Our story", reviews: "Reviews", contact: "Contact", rewards: "Rewards", promo: "Offers", jobs: "Career", book: "Book now" },
     announcement: { label: "7TH ANNIVERSARY", action: "Discover the celebration" },
     hero: { eyebrow: "MEZZANAIL NAIL STUDIO · MALAYSIA", title: "Nail care, elevated to a modern ritual.", body: "Precision-led nail artistry and considered care in a calm, contemporary studio.", primary: "Book an appointment", secondary: "Explore our services", note: "Thoughtful service · Refined finish · Lasting confidence" },
     campaign: { eyebrow: "20TH JULY — 15TH SEPTEMBER 2026", title: "Seven years of beauty, shared with you.", body: "Discover anniversary-only privileges, member rewards and special surprises created to thank our Mezzanail Nail Studio community.", primary: "Book the anniversary edit", secondary: "View anniversary rewards" },
@@ -47,7 +47,7 @@ export const officialMessages = {
     ]},
     gallery: { eyebrow: "SELECTED WORK", title: "Quiet details. Distinct expression.", body: "A selection of Mezzanail Nail Studio finishes, from clean neutrals to editorial statement sets.", cta: "View more on Instagram", alts: ["White signature nail art", "Silver nail extensions", "Black editorial manicure", "Chrome neutral manicure", "Mezzanail Nail Studio signature campaign", "Minimal neutral manicure"] },
     reviews: { eyebrow: "GOOGLE REVIEWS", title: "See what clients share on Google.", body: "Open our official Google listing to read current, independently published customer feedback.", cta: "Read our Google reviews" },
-    story: { eyebrow: "OUR STORY", title: "Modern nail care, defined by restraint.", body: "Mezzanail Nail Studio was created in Malaysia around one belief: luxury is not excess, but attention. We pair technical discipline with a calm, personal experience so every client leaves feeling considered.", primary: "Discover our story", secondary: "Meet us in studio" },
+    story: { eyebrow: "ABOUT US", title: "Modern nail care, elevated above the noise.", body: "The name Mezzanail is inspired by the word Mezzanine—an elevated space between levels. Just like our salon, located upstairs, we believe beauty deserves a peaceful place above the noise. Every visit is an invitation to step away from the busy world and enjoy a refined nail experience.", primary: "Why Mezzanail?", secondary: "Meet us in studio" },
     contact: { eyebrow: "VISIT MEZZANAIL NAIL STUDIO", title: "Your next appointment begins here.", body: "Contact our studio team for service recommendations, appointment availability or membership support.", address: "Studio", hours: "Opening hours", phone: "Contact", map: "Open in Maps", book: "Book an appointment", whatsapp: "WhatsApp our team" },
     footer: { line: "Modern nail care, made personal.", explore: "Explore", connect: "Connect", studio: "Studio", privacy: "Privacy", terms: "Terms", copyright: "© 2026 Mezzanail Nail Studio. All rights reserved." },
     pages: {

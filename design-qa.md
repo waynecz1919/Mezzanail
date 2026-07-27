@@ -1,55 +1,59 @@
-# Homepage Studio Campaign Image — Design QA
+# Homepage Signature Service Images — Design QA
 
 **Source visual truth**
 
-- `C:\Users\mezza\AppData\Local\Temp\codex-clipboard-0adb8384-d1ac-4101-93a2-94498a7ae686.png`
-- Source pixels: 1600 × 1600.
+- Callus Removal: `D:\Downloads\Purple & Cream Minimalist Sales Report Graph (2).png`
+- Waxing: `C:\Users\mezza\AppData\Local\Temp\codex-clipboard-53726e9d-b6ce-471f-9589-83202ca5dd77.png`
+- Hand Care: `D:\Downloads\Purple & Cream Minimalist Sales Report Graph.png`
+- Foot Care: `D:\Downloads\Purple & Cream Minimalist Sales Report Graph (1).png`
 
 **Rendered implementation**
 
-- Full mobile capture: `C:\Users\mezza\Documents\Codex\2026-07-26\chon\work\Mezzanail\test-results\homepage-mobile.png`
-- Focused mobile region: `C:\Users\mezza\Documents\Codex\2026-07-26\chon\work\Mezzanail\test-results\homepage-mobile-bottom-check.png`
-- Side-by-side comparison: `C:\Users\mezza\Documents\Codex\2026-07-26\chon\work\Mezzanail\test-results\homepage-studio-comparison.png`
-- Browser viewport: 390 × 844 CSS pixels at device scale factor 1.
-- Full-page screenshot: 390 × 8829 pixels.
-- Focused implementation poster crop: 354 × 356 pixels; compared against a 354 × 354 normalized copy of the source.
-- State: homepage studio section, default state, English locale.
+- Desktop capture: `C:\Users\mezza\Documents\Codex\2026-07-27\files-mentioned-by-the-user-mezzanail\work\service-image-qa\test-results\homepage-desktop.png`
+- Mobile capture: `C:\Users\mezza\Documents\Codex\2026-07-27\files-mentioned-by-the-user-mezzanail\work\service-image-qa\test-results\homepage-mobile.png`
+- Focused desktop section: `C:\Users\mezza\Documents\Codex\2026-07-27\files-mentioned-by-the-user-mezzanail\work\service-image-qa\service-section-desktop.png`
+- Combined source/render comparison: `C:\Users\mezza\Documents\Codex\2026-07-27\files-mentioned-by-the-user-mezzanail\work\service-image-qa\service-images-comparison.png`
+- Viewports: desktop 1536 × 1024, tablet 1024 × 1366 and mobile 390 × 844 at device scale factor 1.
+- State: homepage Signature Services section, default state, English locale.
 
 **Full-view comparison evidence**
 
-- The campaign artwork replaces only the studio-section image; section order, copy, buttons, footer and mobile navigation remain unchanged.
-- The square artwork fits the available column without page-level horizontal overflow.
-- Desktop, tablet and mobile captures all report zero horizontal overflow and one H1.
+- The four supplied images appear in the requested service categories.
+- The existing asymmetric two-featured-plus-three-supporting service grid is unchanged.
+- Desktop, tablet and mobile captures have zero page-level horizontal overflow and CLS 0.
 
 **Focused region comparison evidence**
 
-- The supplied source and browser-rendered poster are shown together in `homepage-studio-comparison.png`.
-- The Mezzanail logo, 7th Anniversary title, date, prizes, nail art and lower benefit strip are all visible.
-- The image is not stretched or cropped. Rounded corners are applied only by the existing studio image container.
+- The source images and browser-rendered service section are shown together in `service-images-comparison.png`.
+- Hand Care and Foot Care retain their primary subjects within the featured 3:2 desktop crop.
+- Waxing retains the treatment action and client leg.
+- Callus Removal uses the new 4:3 source and fills the card while keeping both feet and the Before / After labels visible.
 
 **Required fidelity surfaces**
 
-- Fonts and typography: campaign typography remains embedded in the supplied image; no HTML recreation or font substitution was introduced.
-- Spacing and layout rhythm: the image container now uses the source's 1:1 ratio on desktop, tablet and mobile.
-- Colors and visual tokens: the source pink/rose palette is preserved; the fallback surface uses the existing warm-neutral token.
-- Image quality and asset fidelity: the exact supplied 1600 × 1600 PNG is served through `next/image` with responsive sizing.
-- Copy and content: no campaign copy was altered, omitted or recreated.
+- Fonts and typography: section headings, service titles and supporting copy are unchanged.
+- Spacing and layout rhythm: card dimensions, gaps, radii and content baselines remain consistent.
+- Colors and visual tokens: supplied warm-neutral imagery sits within the existing cream and wine design system.
+- Image quality and asset fidelity: exact supplied PNG files are served through `next/image`; no generated substitutes or text recreation were used.
+- Copy and content: service names, descriptions, links and ordering are unchanged.
 
 **Findings**
 
 - No actionable P0, P1 or P2 differences.
-- P3: fine campaign text is naturally smaller on a 390px phone screen because the complete square artwork is intentionally preserved instead of cropped.
+- No remaining P3 visual differences were identified.
 
 **Comparison history**
 
-- Pass 1: no P0/P1/P2 findings. No visual correction loop was required after the first browser-rendered comparison.
+- Pass 1: the earlier square Callus Removal image required side margins to retain its Before / After labels.
+- Fix: replaced it with the supplied 4:3 version and changed the card to `cover`.
+- Pass 2: desktop and mobile captures confirm a full-width image with both labels visible and no layout regression.
 
 **Implementation checklist**
 
-- Exact supplied campaign image installed.
-- Localized alt text updated.
-- Square responsive container applied.
-- Desktop, tablet and mobile captures completed.
+- Exact four supplied images installed.
+- Correct category mapping applied.
+- Accurate alt text added.
+- Responsive desktop, tablet and mobile captures completed.
 - Lint, TypeScript, 28 tests and production build passed.
 
 final result: passed
