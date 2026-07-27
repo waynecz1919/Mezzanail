@@ -18,8 +18,42 @@ HyperFrames is a video-composition framework, so the site keeps interaction nati
 - `/services` — searchable service catalogue with verified durations
 - `/about` — brand story and values
 - `/contact` — studio information and direct booking
+- `/job` — Nail Artist and Nail Apprentice vacancies with secure online application
 - `/rewards` — membership and rewards experience
 - `/login` — member sign-in
+
+`/vacancy` is a permanent redirect to `/job`. The private success route is
+`/job/application-received`; it is not indexed and only displays the application
+reference and submission state.
+
+## Job applications
+
+Job applications are validated and processed only by the Node.js server route at
+`POST /api/job/applications`. The server generates an
+`MN-JOB-{YYYYMMDD}-{4CHAR}` reference, builds a real A4 PDF in memory, and sends
+that PDF to `mezzanailstudio@gmail.com` through Resend. The PDF is not stored and
+no public PDF URL is created. A private same-origin POST endpoint can regenerate
+the same PDF for the applicant after a failed email attempt.
+
+The `job_applications` PostgreSQL table stores a minimized delivery/audit record.
+Idempotency tokens, request IPs and application payloads are stored only as keyed
+HMAC hashes. Apply the migration before enabling the form:
+
+```bash
+pnpm db:migrate:job
+```
+
+Required server-only environment variables:
+
+- `DATABASE_URL`
+- `EMAIL_PROVIDER=resend`
+- `EMAIL_PROVIDER_API_KEY` (use a sending-only provider key)
+- `EMAIL_FROM_ADDRESS` (must be a provider-verified sender)
+- `JOB_APPLICATION_RECIPIENT=mezzanailstudio@gmail.com`
+- `JOB_APPLICATION_HASH_SECRET` (at least 32 random characters)
+
+See `docs/job-application.md` for the submission, retry, privacy and manual QA
+runbook.
 
 ## Redeem Center
 

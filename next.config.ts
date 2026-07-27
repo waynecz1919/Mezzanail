@@ -4,6 +4,25 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   experimental: { optimizePackageImports: ["lucide-react", "framer-motion"] },
+  outputFileTracingIncludes: {
+    "/api/job/applications": [
+      "./node_modules/@expo-google-fonts/noto-sans-sc/400Regular/NotoSansSC_400Regular.ttf",
+      "./public/brand/mezzanail-circle-logo.png",
+    ],
+    "/api/job/applications/pdf": [
+      "./node_modules/@expo-google-fonts/noto-sans-sc/400Regular/NotoSansSC_400Regular.ttf",
+      "./public/brand/mezzanail-circle-logo.png",
+    ],
+  },
+  async redirects() {
+    return [
+      {
+        source: "/vacancy",
+        destination: "/job",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     const internalHeaders = [
       { key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" },
@@ -16,6 +35,21 @@ const nextConfig: NextConfig = {
     return [
       { source: "/redeem/:path*", headers: internalHeaders },
       { source: "/api/redeem/:path*", headers: internalHeaders },
+      {
+        source: "/api/job/:path*",
+        headers: [
+          { key: "Cache-Control", value: "private, no-store, max-age=0" },
+          { key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+        ],
+      },
+      {
+        source: "/job/application-received",
+        headers: [
+          { key: "Cache-Control", value: "private, no-store, max-age=0" },
+          { key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" },
+        ],
+      },
     ];
   },
 };

@@ -116,7 +116,7 @@ function SiteHeader() {
   const { locale, t } = useOfficial();
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const nav = [["/",t.nav.home],["/about",t.nav.story],["/services",t.nav.services],["/rewards",t.nav.rewards],["/promotion",t.nav.promo],["/#app",downloadNav[locale]],["/contact",t.nav.contact]];
+  const nav = [["/",t.nav.home],["/about",t.nav.story],["/services",t.nav.services],["/job",t.nav.jobs],["/rewards",t.nav.rewards],["/promotion",t.nav.promo],["/#app",downloadNav[locale]],["/contact",t.nav.contact]];
   return <>
     {siteConfig.announcement.enabled && <div className="announcement"><span>{t.announcement.label}</span><span className="announcement-date">{siteConfig.announcement.dates}</span><Link href="/promotion">{t.announcement.action}<ArrowRight size={13}/></Link></div>}
     <header className="official-header">
@@ -136,7 +136,7 @@ function SiteFooter() {
   const whatsapp = getWhatsappUrl(locale);
   return <footer className="official-footer"><div className="shell"><div className="grid gap-12 border-b border-white/15 py-16 md:grid-cols-[1.4fr_repeat(3,1fr)]">
     <div><BrandLogo inverse/><p className="mt-5 max-w-xs text-sm leading-7 text-white/55">{t.footer.line}</p></div>
-    <div><h3>{t.footer.explore}</h3><Link href="/about">{t.nav.story}</Link><Link href="/services">{t.nav.services}</Link><Link href="/rewards">{t.nav.rewards}</Link><Link href="/#app">{downloadNav[locale]}</Link></div>
+    <div><h3>{t.footer.explore}</h3><Link href="/about">{t.nav.story}</Link><Link href="/services">{t.nav.services}</Link><Link href="/job">{t.nav.jobs}</Link><Link href="/rewards">{t.nav.rewards}</Link><Link href="/#app">{downloadNav[locale]}</Link></div>
     <div><h3>{t.footer.connect}</h3><ExternalOrPending href={siteConfig.instagramUrl} ariaLabel={`${siteConfig.brandName} Instagram`}>Instagram</ExternalOrPending><ExternalOrPending href={siteConfig.facebookUrl} ariaLabel={`${siteConfig.brandName} Facebook`}>Facebook</ExternalOrPending><ExternalOrPending href={siteConfig.xiaohongshuUrl} ariaLabel={`${siteConfig.brandName} Xiaohongshu`}>Xiaohongshu</ExternalOrPending></div>
     <div><h3>{t.footer.studio}</h3><Link href="/contact">{t.nav.contact}</Link><a href={siteConfig.googleMapsDirectionsUrl} target="_blank" rel="noopener noreferrer">Google Maps</a><a href={whatsapp} target="_blank" rel="noopener noreferrer">WhatsApp</a><a href={siteConfig.phoneLink}>{siteConfig.phoneDisplay}</a></div>
   </div><div className="flex flex-col gap-4 py-7 text-[11px] text-white/42 sm:flex-row sm:items-center sm:justify-between"><span>© 2026 {siteConfig.brandName}. All rights reserved.</span><div className="flex gap-5"><Link href="/privacy">{t.footer.privacy}</Link><Link href="/terms">{t.footer.terms}</Link></div></div></div></footer>;
@@ -147,7 +147,7 @@ function MobileNav() {
   return <nav className="mobile-official-nav" aria-label="Mobile quick navigation"><Link href="/"><Home size={18}/><span>{t.nav.home}</span></Link><Link href="/services"><Sparkles size={18}/><span>{t.nav.services}</span></Link><Link href="/promotion"><Gift size={18}/><span>{t.nav.promo}</span></Link><a href={siteConfig.bookingUrl} target="_blank" rel="noopener noreferrer" className="mobile-book"><CalendarCheck size={18}/><span>{t.nav.book}</span></a></nav>;
 }
 
-function Frame({ children }: {children: React.ReactNode}) {
+export function OfficialFrame({ children }: {children: React.ReactNode}) {
   const { locale } = useOfficial();
   return <><SiteHeader/><main>{children}</main><SiteFooter/><MobileNav/><a href={getWhatsappUrl(locale)} target="_blank" rel="noopener noreferrer" className="whatsapp-float" aria-label={`WhatsApp ${siteConfig.brandName}`}><MessageCircle size={22}/></a></>;
 }
@@ -238,7 +238,7 @@ function ContactVisitSection() {
 }
 
 export function OfficialHome() {
-  return <Frame>
+  return <OfficialFrame>
     {currentCampaign.enabled ? <CampaignBanner
       desktopSrc={currentCampaign.desktopSrc}
       mobileSrc={currentCampaign.mobileSrc}
@@ -252,9 +252,9 @@ export function OfficialHome() {
       campaignName={currentCampaign.name}
     /> : null}
     <ServicesPreview/><Philosophy/><AnniversaryCampaign/><Gallery/><StoryPreview/><AppPromo/><Reviews/><ContactPanel/>
-  </Frame>;
+  </OfficialFrame>;
 }
-export function ServicesPage() { const {t}=useOfficial(); return <Frame><PageHero eyebrow={t.pages.services.eyebrow} title={t.pages.services.title} body={t.pages.services.body}/><ServicesCatalog/><ContactPanel/></Frame>; }
-export function AboutPage() { const {t}=useOfficial(); return <Frame><PageHero eyebrow={`${siteConfig.brandName} · Malaysia`} title={t.pages.about.title} body={t.pages.about.body}/><section className="section surface"><div className="shell grid gap-5 lg:grid-cols-3">{t.pages.about.values.map(([title,body],i)=><Reveal key={title} delay={i*.08} className="card min-h-72 p-8"><span className="numbers text-xs font-bold gold-text">0{i+1}</span><h2 className="mt-20 text-2xl font-bold">{title}</h2><p className="mt-4 text-sm leading-7 text-[var(--muted)]">{body}</p></Reveal>)}</div></section><StoryPreview/><ContactPanel/></Frame>; }
-export function ContactPage() { const {t}=useOfficial(); return <Frame><PageHero eyebrow={t.pages.contact.eyebrow} title={t.pages.contact.title} body={t.pages.contact.body}/><ContactVisitSection/></Frame>; }
-export function LegalPage({ kind }: { kind: "privacy" | "terms" }) { const title=kind==="privacy"?"Privacy Policy":"Terms of Use"; return <Frame><section className="page-hero"><div className="shell"><div className="eyebrow">LEGAL</div><h1 className="display mt-6">{title}</h1><p className="lead mt-7 max-w-2xl">Draft placeholder for final business and legal review.</p></div></section><section className="section surface"><div className="shell"><div className="card max-w-3xl p-8 sm:p-12"><h2 className="text-2xl font-semibold">Business review required</h2><p className="mt-5 leading-7 text-[var(--muted)]">This page intentionally does not state any legal commitments yet. Mezzanail Nail Studio should approve the final wording before publication.</p><Link href="/contact" className="btn btn-dark mt-8">Contact the studio</Link></div></div></section></Frame>; }
+export function ServicesPage() { const {t}=useOfficial(); return <OfficialFrame><PageHero eyebrow={t.pages.services.eyebrow} title={t.pages.services.title} body={t.pages.services.body}/><ServicesCatalog/><ContactPanel/></OfficialFrame>; }
+export function AboutPage() { const {t}=useOfficial(); return <OfficialFrame><PageHero eyebrow={`${siteConfig.brandName} · Malaysia`} title={t.pages.about.title} body={t.pages.about.body}/><section className="section surface"><div className="shell grid gap-5 lg:grid-cols-3">{t.pages.about.values.map(([title,body],i)=><Reveal key={title} delay={i*.08} className="card min-h-72 p-8"><span className="numbers text-xs font-bold gold-text">0{i+1}</span><h2 className="mt-20 text-2xl font-bold">{title}</h2><p className="mt-4 text-sm leading-7 text-[var(--muted)]">{body}</p></Reveal>)}</div></section><StoryPreview/><ContactPanel/></OfficialFrame>; }
+export function ContactPage() { const {t}=useOfficial(); return <OfficialFrame><PageHero eyebrow={t.pages.contact.eyebrow} title={t.pages.contact.title} body={t.pages.contact.body}/><ContactVisitSection/></OfficialFrame>; }
+export function LegalPage({ kind }: { kind: "privacy" | "terms" }) { const title=kind==="privacy"?"Privacy Policy":"Terms of Use"; return <OfficialFrame><section className="page-hero"><div className="shell"><div className="eyebrow">LEGAL</div><h1 className="display mt-6">{title}</h1><p className="lead mt-7 max-w-2xl">Draft placeholder for final business and legal review.</p></div></section><section className="section surface"><div className="shell"><div className="card max-w-3xl p-8 sm:p-12"><h2 className="text-2xl font-semibold">Business review required</h2><p className="mt-5 leading-7 text-[var(--muted)]">This page intentionally does not state any legal commitments yet. Mezzanail Nail Studio should approve the final wording before publication.</p><Link href="/contact" className="btn btn-dark mt-8">Contact the studio</Link></div></div></section></OfficialFrame>; }
