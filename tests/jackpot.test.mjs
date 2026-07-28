@@ -7,6 +7,7 @@ const migration = read("db/migrations/003_create_anniversary_jackpot.sql");
 const service = read("lib/jackpot/service.ts");
 const core = read("lib/jackpot/core.ts");
 const consolePage = read("components/jackpot/jackpot-console.tsx");
+const participantRoute = read("app/api/anniversary-jackpot/participants/route.ts");
 const importRoute = read("app/api/anniversary-jackpot/participants/import/route.ts");
 const lockRoute = read("app/api/anniversary-jackpot/participants/lock/route.ts");
 const drawRoute = read("app/api/anniversary-jackpot/draw/route.ts");
@@ -35,6 +36,18 @@ test("participant import consolidates tickets and reports invalid and duplicate 
   assert.match(importRoute, /participant_list_locked = FALSE/);
   assert.match(importRoute, /participant_list_imported/);
   assert.match(importRoute, /promotion_entries/);
+});
+
+test("admins can add one participant directly with validation and audit protection", () => {
+  assert.match(consolePage, /Add Participant/);
+  assert.match(consolePage, /\/api\/anniversary-jackpot\/participants/);
+  assert.match(participantRoute, /normalizePhone/);
+  assert.match(participantRoute, /isJackpotAdmin/);
+  assert.match(participantRoute, /participant_list_locked = FALSE/);
+  assert.match(participantRoute, /has_draws = FALSE/);
+  assert.match(participantRoute, /DUPLICATE_PARTICIPANT/);
+  assert.match(participantRoute, /participant_added/);
+  assert.match(participantRoute, /'manual'/);
 });
 
 test("locked participant lists cannot be imported or silently unlocked", () => {
@@ -115,6 +128,7 @@ test("live and winner views expose only masked identity data", () => {
 test("audit log covers required administrative events and exports are available", () => {
   for (const action of [
     "participant_list_imported",
+    "participant_added",
     "participant_list_locked",
     "participant_list_unlocked",
     "prize_created",
@@ -126,7 +140,7 @@ test("audit log covers required administrative events and exports are available"
     "redraw_performed",
     "export_performed",
   ]) {
-    assert.match(`${service}\n${importRoute}\n${lockRoute}\n${prizeRoute}\n${read("app/api/anniversary-jackpot/winners/export/route.ts")}`, new RegExp(action));
+    assert.match(`${service}\n${participantRoute}\n${importRoute}\n${lockRoute}\n${prizeRoute}\n${read("app/api/anniversary-jackpot/winners/export/route.ts")}`, new RegExp(action));
   }
   assert.match(consolePage, /winners\/export/);
   assert.match(consolePage, /winners\/pdf/);

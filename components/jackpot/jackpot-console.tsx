@@ -561,6 +561,34 @@ function ParticipantsPanel({
   previewMode: boolean;
 }) {
   const fileRef = useRef<HTMLInputElement>(null);
+  const [formOpen, setFormOpen] = useState(false);
+
+  async function saveParticipant(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    setBusy(true);
+    setError("");
+    try {
+      await api("/api/anniversary-jackpot/participants", {
+        method: "POST",
+        body: JSON.stringify({
+          customerName: form.get("customerName"),
+          memberId: form.get("memberId"),
+          phoneNumber: form.get("phoneNumber"),
+          ticketCount: Number(form.get("ticketCount")),
+          eligibilityStatus: form.get("eligibilityStatus"),
+          entryId: form.get("entryId"),
+        }),
+      });
+      setFormOpen(false);
+      setSummary(null);
+      await loadState();
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : "Unable to add participant.");
+    } finally {
+      setBusy(false);
+    }
+  }
 
   async function importCsv(file: File) {
     setBusy(true);
@@ -634,6 +662,14 @@ function ParticipantsPanel({
         <SummaryCard icon={<CircleAlert />} label="Ineligible" value={state.summary.invalidRecords} />
       </div>
       <div className="jackpot-admin-actions">
+        <button
+          type="button"
+          className="is-primary"
+          disabled={previewMode || busy || state.campaign.participant_list_locked || state.draws.length > 0}
+          onClick={() => setFormOpen(true)}
+        >
+          <Plus size={17} /> Add Participant
+        </button>
         <label className="jackpot-file-button">
           <Import size={17} /> Import CSV
           <input ref={fileRef} type="file" accept=".csv,text/csv" disabled={previewMode || busy || state.campaign.participant_list_locked} onChange={(event) => {
@@ -698,6 +734,50 @@ function ParticipantsPanel({
           </tbody>
         </table>
       </div>
+      {formOpen && (
+        <div className="jackpot-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="add-participant-title">
+          <form className="jackpot-modal jackpot-participant-form" onSubmit={saveParticipant}>
+            <button type="button" className="jackpot-modal-close" onClick={() => setFormOpen(false)} aria-label="Close"><X /></button>
+            <p>PARTICIPANT MANAGEMENT</p>
+            <h2 id="add-participant-title">Add participant</h2>
+            <span>Add one customer directly to the final draw pool. Phone numbers and member IDs must be unique.</span>
+            <label>
+              <strong>Customer Name</strong>
+              <input name="customerName" required maxLength={160} autoComplete="name" />
+            </label>
+            <div className="jackpot-form-row">
+              <label>
+                <strong>Member ID (optional)</strong>
+                <input name="memberId" maxLength={80} autoCapitalize="characters" />
+              </label>
+              <label>
+                <strong>Phone Number</strong>
+                <input name="phoneNumber" required inputMode="tel" autoComplete="tel" placeholder="0123456789" />
+              </label>
+            </div>
+            <div className="jackpot-form-row">
+              <label>
+                <strong>Draw Tickets</strong>
+                <input name="ticketCount" type="number" min="1" max="10000" required defaultValue={1} />
+              </label>
+              <label>
+                <strong>Eligibility</strong>
+                <select name="eligibilityStatus" defaultValue="eligible">
+                  <option value="eligible">Eligible</option>
+                  <option value="ineligible">Ineligible</option>
+                </select>
+              </label>
+            </div>
+            <label>
+              <strong>Entry ID (optional)</strong>
+              <input name="entryId" maxLength={100} placeholder="Campaign entry reference" />
+            </label>
+            <button className="jackpot-primary-button" type="submit" disabled={busy}>
+              <Check size={18} /> Add Participant
+            </button>
+          </form>
+        </div>
+      )}
     </section>
   );
 }
