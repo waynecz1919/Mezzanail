@@ -81,23 +81,27 @@ test("the official homepage routes every anniversary entry to promotion", () => 
   assert.doesNotMatch(officialSite, /AnniversaryHomeIntro/);
 });
 
-test("the campaign banner is a complete responsive image without overlays", () => {
+test("the campaign banner uses responsive art direction and accessible HTML content", () => {
   assert.match(campaignBanner, /<picture/);
   assert.match(campaignBanner, /mobileSrc \?/);
   assert.match(campaignBanner, /sizes="100vw"/);
   assert.match(campaignBanner, /width=\{width\}/);
   assert.match(campaignBanner, /height=\{height\}/);
-  assert.match(campaignBanner, /priority=\{priority\}/);
-  assert.doesNotMatch(campaignBanner, /object-cover/);
-  assert.doesNotMatch(campaignBanner, /Seven years of beauty/);
-  assert.doesNotMatch(campaignBanner, /Book an Appointment/);
+  assert.match(campaignBanner, /fetchPriority=\{priority \? "high" : undefined\}/);
+  assert.match(campaignBanner, /<h1 id="home-hero-title">\{heading\}<\/h1>/);
+  assert.match(campaignBanner, /\{campaignTitle\}/);
+  assert.match(campaignBanner, /\{dates\}/);
+  assert.match(campaignBanner, /\{invitation\}/);
+  assert.match(campaignBanner, /\{promotionLabel\}/);
+  assert.match(campaignBanner, /\{bookingLabel\}/);
+  assert.match(currentCampaign, /banner-mobile\.webp/);
 });
 
 test("the full campaign banner click is tracked without customer data", () => {
   assert.match(campaignBanner, /campaign_banner_click/);
   assert.match(campaignBanner, /campaign_id: campaignId/);
   assert.match(campaignBanner, /campaign_name: campaignName/);
-  assert.match(campaignBanner, /destination: href/);
+  assert.match(campaignBanner, /destination,/);
   assert.doesNotMatch(campaignBanner, /phone|email|customer/i);
 });
 

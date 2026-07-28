@@ -9,6 +9,7 @@ import {
   promotionLanguageShortLabels,
   termsCopy,
 } from "@/lib/promotion/campaign-copy";
+import { getWhatsappUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "7th Anniversary Campaign Terms",
@@ -89,7 +90,7 @@ export default async function PromotionTermsPage({
             {copy.returnCampaign}
           </Link>
           <a
-            href={`https://wa.me/${anniversaryCampaign.whatsappContact}`}
+            href={getWhatsappUrl(language, "promotion")}
             target="_blank"
             rel="noopener noreferrer"
           >

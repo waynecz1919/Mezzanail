@@ -11,6 +11,11 @@ const nextConfig: NextConfig = {
         destination: "/job",
         permanent: true,
       },
+      {
+        source: "/career",
+        destination: "/job",
+        permanent: true,
+      },
     ];
   },
   async headers() {
