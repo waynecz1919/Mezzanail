@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { CheckCircle2, MessageCircle } from "lucide-react";
+import { getWhatsappUrl } from "@/lib/site";
 
 const RESULT_KEY = "mezzanail-job-submission";
 
@@ -83,13 +84,7 @@ export function JobApplicationReceived() {
     );
   }
 
-  const whatsappMessage = [
-    "Hello Mezzanail Nail Studio, I would like to send my nail portfolio photos.",
-    "",
-    "Application Reference:",
-    result.applicationReference,
-  ].join("\n");
-  const whatsappUrl = `https://api.whatsapp.com/send?phone=60162121332&text=${encodeURIComponent(whatsappMessage)}`;
+  const whatsappUrl = getWhatsappUrl("en", "career");
 
   return (
     <main className="job-result-shell">

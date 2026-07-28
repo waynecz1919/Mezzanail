@@ -75,7 +75,7 @@ const service = (name: string, price: string, duration: string, content: Service
   ...(addOn ? { addOn: true } : {}),
 });
 
-const enquire = "Up to 90 mins";
+const enquire = "Duration varies";
 
 export const serviceCategories: ServiceCategory[] = [
   {

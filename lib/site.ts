@@ -1,5 +1,14 @@
 import type { Locale } from "@/lib/i18n";
 
+export const siteUrl = "https://www.mezzanail.com";
+
+export type WhatsappContext =
+  | "general"
+  | "services"
+  | "membership"
+  | "promotion"
+  | "career";
+
 export const siteConfig = {
   brandName: "Mezzanail Nail Studio",
   description: "Mezzanail Nail Studio is a modern luxury nail studio in Melaka, Malaysia.",
@@ -15,9 +24,31 @@ export const siteConfig = {
   whatsappNumber: "60162121332",
   whatsappUrl: "https://api.whatsapp.com/send?phone=60162121332",
   whatsappMessages: {
-    en: "Hello Mezzanail Nail Studio, I would like to enquire about your services and make an appointment.",
-    zh: "您好 Mezzanail Nail Studio，我想咨询服务并进行预约。",
-    ms: "Hello Mezzanail Nail Studio, saya ingin bertanya tentang servis dan membuat janji temu.",
+    general: {
+      en: "Hello Mezzanail Nail Studio, I would like to enquire about your services and make an appointment.",
+      zh: "您好 Mezzanail Nail Studio，我想咨询服务并进行预约。",
+      ms: "Hello Mezzanail Nail Studio, saya ingin bertanya tentang servis dan membuat janji temu.",
+    },
+    services: {
+      en: "Hello Mezzanail Nail Studio, I would like help choosing a service before I book.",
+      zh: "您好 Mezzanail Nail Studio，我想在预约前咨询适合我的服务。",
+      ms: "Hello Mezzanail Nail Studio, saya ingin bantuan memilih servis sebelum membuat tempahan.",
+    },
+    membership: {
+      en: "Hello Mezzanail Nail Studio, I would like to confirm the current membership options and benefits.",
+      zh: "您好 Mezzanail Nail Studio，我想确认目前的会员配套与礼遇。",
+      ms: "Hello Mezzanail Nail Studio, saya ingin mengesahkan pilihan dan manfaat keahlian semasa.",
+    },
+    promotion: {
+      en: "Hello Mezzanail Nail Studio, I would like to enquire about the 7th Anniversary Lucky Draw Campaign.",
+      zh: "您好 Mezzanail Nail Studio，我想咨询七周年幸运抽奖活动。",
+      ms: "Hello Mezzanail Nail Studio, saya ingin bertanya tentang Kempen Cabutan Bertuah Ulang Tahun Ke-7.",
+    },
+    career: {
+      en: "Hello Mezzanail Nail Studio, I would like to enquire about the current Nail Artist or Nail Apprentice opportunities.",
+      zh: "您好 Mezzanail Nail Studio，我想咨询目前的美甲师或美甲学徒职位。",
+      ms: "Hello Mezzanail Nail Studio, saya ingin bertanya tentang peluang Nail Artist atau Nail Apprentice semasa.",
+    },
   },
 
   phoneDisplay: "06 288 5267",
@@ -51,15 +82,18 @@ export function isConfiguredUrl(url: string) {
   return url.startsWith("https://") && !url.startsWith("https://REPLACE_WITH_") && !url.includes("REPLACE_WITH_");
 }
 
-export function getWhatsappUrl(locale: Locale = "en") {
-  return `${siteConfig.whatsappUrl}${siteConfig.whatsappUrl.includes("?") ? "&" : "?"}text=${encodeURIComponent(siteConfig.whatsappMessages[locale])}`;
+export function getWhatsappUrl(
+  locale: Locale = "en",
+  context: WhatsappContext = "general",
+) {
+  return `${siteConfig.whatsappUrl}${siteConfig.whatsappUrl.includes("?") ? "&" : "?"}text=${encodeURIComponent(siteConfig.whatsappMessages[context][locale])}`;
 }
 
 // Compatibility properties used by the existing membership experience.
 export const legacySiteConfig = {
   name: `${siteConfig.brandName} Rewards`,
-  description: "Malaysia's premium nail membership and rewards platform.",
-  whatsappUrl: getWhatsappUrl("en"),
+  description: "Mezzanail's membership experience, designed around meaningful beauty privileges.",
+  whatsappUrl: getWhatsappUrl("en", "membership"),
   instagramUrl: siteConfig.instagramUrl,
   locationUrl: siteConfig.googleMapsDirectionsUrl,
 };

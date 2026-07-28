@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -22,6 +22,7 @@ import {
   type NailSkillName,
 } from "@/lib/job/types";
 import { validateJobApplication } from "@/lib/job/validation";
+import { getWhatsappUrl } from "@/lib/site";
 
 const DRAFT_KEY = "mezzanail-job-draft";
 const PENDING_KEY = "mezzanail-job-pending";
@@ -358,21 +359,7 @@ export function JobApplicationExperience() {
     }
   }
 
-  const whatsappUrl = useMemo(() => {
-    const message = [
-      "Hello Mezzanail Nail Studio, I had difficulty submitting my job application through the website.",
-      "",
-      "Application Reference:",
-      applicationReference || "Not yet available",
-      "",
-      "Name:",
-      application.fullName || "Not provided",
-      "",
-      "Position:",
-      application.position,
-    ].join("\n");
-    return `https://api.whatsapp.com/send?phone=60162121332&text=${encodeURIComponent(message)}`;
-  }, [application.fullName, application.position, applicationReference]);
+  const whatsappUrl = getWhatsappUrl("en", "career");
 
   return (
     <main>
