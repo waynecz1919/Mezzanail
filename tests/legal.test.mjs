@@ -38,8 +38,10 @@ test("Google Analytics loads only after a stored consent choice", () => {
   assert.doesNotMatch(layout, /analyticsBootstrap|window\.gtag\("config"/);
   assert.match(analytics, /mezzanail-analytics-consent-v1/);
   assert.match(analytics, /current\?\.choice === "granted"/);
-  assert.match(analytics, />\s*Accept\s*</);
-  assert.match(analytics, />\s*Reject\s*</);
+  assert.match(analytics, /accept: "Accept"/);
+  assert.match(analytics, /reject: "Reject"/);
+  assert.match(analytics, /\{copy\.accept\}/);
+  assert.match(analytics, /\{copy\.reject\}/);
   assert.match(analytics, /allow_google_signals: false/);
   assert.match(analytics, /allow_ad_personalization_signals: false/);
 });

@@ -24,6 +24,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
     const saved = window.localStorage.getItem("mezzanail-rewards-locale") as Locale | null;
     if (saved && saved in messages) {
+      document.documentElement.lang =
+        saved === "zh" ? "zh-CN" : saved === "ms" ? "ms" : "en";
       const frame = window.requestAnimationFrame(() => setLocaleState(saved));
       return () => window.cancelAnimationFrame(frame);
     }

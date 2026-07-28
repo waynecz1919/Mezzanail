@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { useLanguage } from "@/components/providers";
 
 const SCRIPT_ID = "mezzanail-google-analytics";
 const CONSENT_KEY = "mezzanail-analytics-consent-v1";
@@ -15,8 +16,37 @@ type StoredConsent = {
   savedAt: number;
 };
 
+const consentCopy = {
+  en: {
+    eyebrow: "PRIVACY CHOICE",
+    title: "Cookies & Analytics",
+    body: "Optional analytics loads only if you accept.",
+    details: "Read cookie details",
+    accept: "Accept",
+    reject: "Reject",
+  },
+  zh: {
+    eyebrow: "隐私选择",
+    title: "Cookies 与数据分析",
+    body: "只有在您同意后，网站才会加载可选的数据分析。",
+    details: "查看 Cookie 详情",
+    accept: "接受",
+    reject: "拒绝",
+  },
+  ms: {
+    eyebrow: "PILIHAN PRIVASI",
+    title: "Kuki & Analitik",
+    body: "Analitik pilihan hanya dimuatkan jika anda menerima.",
+    details: "Baca butiran kuki",
+    accept: "Terima",
+    reject: "Tolak",
+  },
+} as const;
+
 export function DeferredGoogleAnalytics({ gaId }: { gaId: string }) {
   const pathname = usePathname();
+  const { locale } = useLanguage();
+  const copy = consentCopy[locale];
   const [showSettings, setShowSettings] = useState(false);
 
   useEffect(() => {
@@ -111,20 +141,17 @@ export function DeferredGoogleAnalytics({ gaId }: { gaId: string }) {
   return (
     <aside className="analytics-consent" role="dialog" aria-modal="false" aria-labelledby="analytics-consent-title">
       <div>
-        <span>PRIVACY CHOICE · PILIHAN PRIVASI</span>
-        <h2 id="analytics-consent-title">Cookies & Analytics</h2>
-        <p>
-          Optional analytics loads only if you accept.
-          <small>Analitik pilihan dimuatkan hanya jika anda menerima.</small>
-        </p>
-        <Link href="/cookies">Read details / Baca butiran</Link>
+        <span>{copy.eyebrow}</span>
+        <h2 id="analytics-consent-title">{copy.title}</h2>
+        <p>{copy.body}</p>
+        <Link href="/cookies">{copy.details}</Link>
       </div>
       <div className="analytics-consent-actions">
         <button type="button" className="btn btn-dark" onClick={() => saveChoice("granted")}>
-          Accept
+          {copy.accept}
         </button>
         <button type="button" className="btn btn-ghost" onClick={() => saveChoice("denied")}>
-          Reject
+          {copy.reject}
         </button>
       </div>
     </aside>

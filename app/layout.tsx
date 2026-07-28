@@ -62,5 +62,5 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       },
     ],
   };
-  return <html lang="en" className="light" style={{ colorScheme: "light" }} suppressHydrationWarning><body className={`${manrope.variable} ${beautyDisplay.variable} ${chineseSans.variable}`}><Providers>{children}</Providers><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}/><DeferredGoogleAnalytics gaId={GOOGLE_ANALYTICS_ID} /></body></html>;
+  return <html lang="en" className="light" style={{ colorScheme: "light" }} suppressHydrationWarning><body className={`${manrope.variable} ${beautyDisplay.variable} ${chineseSans.variable}`}><Providers>{children}<DeferredGoogleAnalytics gaId={GOOGLE_ANALYTICS_ID} /></Providers><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}/></body></html>;
 }

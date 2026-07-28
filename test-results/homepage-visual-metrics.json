@@ -37,22 +37,9 @@
       },
       "vitals": {
         "cls": 0,
-        "lcp": 296
+        "lcp": 900
       },
-      "smallTargets": [
-        {
-          "label": "06 288 5267",
-          "width": 80,
-          "height": 23,
-          "visible": true
-        },
-        {
-          "label": "016 2121 332",
-          "width": 79,
-          "height": 23,
-          "visible": true
-        }
-      ]
+      "smallTargets": []
     },
     {
       "viewport": {
@@ -62,7 +49,7 @@
         "mobile": false
       },
       "screenshot": "C:\\Users\\mezza\\Documents\\Codex\\2026-07-26\\chon\\work\\Mezzanail\\test-results\\homepage-tablet.png",
-      "screenshotHeight": 8557,
+      "screenshotHeight": 8599,
       "title": "Premium Nail Care in Melaka",
       "h1Count": 1,
       "sectionHeadings": [
@@ -76,7 +63,7 @@
       "viewportWidth": 1024,
       "pageWidth": 1024,
       "horizontalOverflow": 0,
-      "pageHeight": 8557,
+      "pageHeight": 8599,
       "bannerResources": [
         "http://127.0.0.1:3010/campaigns/7th-anniversary/banner-desktop.webp",
         "http://127.0.0.1:3010/_next/image?url=%2Fcampaigns%2F7th-anniversary%2Fbanner-desktop.webp&w=1080&q=75",
@@ -90,22 +77,9 @@
       },
       "vitals": {
         "cls": 0,
-        "lcp": 236
+        "lcp": 408
       },
-      "smallTargets": [
-        {
-          "label": "06 288 5267",
-          "width": 80,
-          "height": 23,
-          "visible": true
-        },
-        {
-          "label": "016 2121 332",
-          "width": 79,
-          "height": 23,
-          "visible": true
-        }
-      ]
+      "smallTargets": []
     },
     {
       "viewport": {
@@ -142,7 +116,7 @@
       },
       "vitals": {
         "cls": 0,
-        "lcp": 240
+        "lcp": 316
       },
       "smallTargets": []
     }
