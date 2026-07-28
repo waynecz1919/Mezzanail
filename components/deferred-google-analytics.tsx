@@ -114,17 +114,17 @@ export function DeferredGoogleAnalytics({ gaId }: { gaId: string }) {
         <span>PRIVACY CHOICE · PILIHAN PRIVASI</span>
         <h2 id="analytics-consent-title">Cookies & Analytics</h2>
         <p>
-          We use optional Google Analytics only with your permission. The public site works without it.
-          <small>Kami menggunakan Google Analytics pilihan hanya dengan kebenaran anda. Laman awam tetap berfungsi tanpanya.</small>
+          Optional analytics loads only if you accept.
+          <small>Analitik pilihan dimuatkan hanya jika anda menerima.</small>
         </p>
         <Link href="/cookies">Read details / Baca butiran</Link>
       </div>
       <div className="analytics-consent-actions">
         <button type="button" className="btn btn-dark" onClick={() => saveChoice("granted")}>
-          Accept analytics
+          Accept
         </button>
         <button type="button" className="btn btn-ghost" onClick={() => saveChoice("denied")}>
-          Reject non-essential
+          Reject
         </button>
       </div>
     </aside>

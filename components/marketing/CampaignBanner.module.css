@@ -1,46 +1,219 @@
 .section {
+  position: relative;
   width: 100%;
+  min-height: clamp(430px, 50vw, 720px);
   margin: 0;
   overflow: hidden;
+  background: #ead0c7;
+  isolation: isolate;
+}
+
+.media,
+.picture,
+.image {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.media {
+  position: absolute;
+  inset: 0;
+}
+
+.image {
+  object-fit: cover;
+}
+
+.overlay {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: clamp(430px, 50vw, 720px);
+  align-items: center;
+  padding: clamp(34px, 6vw, 88px) max(24px, calc((100vw - 1240px) / 2));
+  background: linear-gradient(90deg, rgba(31, 12, 17, .82) 0%, rgba(44, 18, 25, .65) 35%, rgba(44, 18, 25, .12) 70%, transparent 100%);
+}
+
+.content {
+  width: min(560px, 52vw);
+  color: #fff;
+  text-shadow: 0 2px 20px rgba(28, 8, 13, .18);
+}
+
+.campaignTitle {
+  margin: 0;
+  color: #f1d3a1;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+.content h1 {
+  max-width: 540px;
+  margin: 18px 0 0;
+  font-family: var(--font-beauty), Georgia, serif;
+  font-size: clamp(44px, 5.2vw, 76px);
+  font-weight: 500;
+  line-height: .98;
+  letter-spacing: -.045em;
+  text-wrap: balance;
+}
+
+.intro {
+  max-width: 510px;
+  margin: 22px 0 0;
+  color: rgba(255, 255, 255, .82);
+  font-size: clamp(14px, 1.25vw, 17px);
+  line-height: 1.7;
+}
+
+.date {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 22px 0 0;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.invitation {
+  margin: 8px 0 0;
+  color: #f1d3a1;
+  font-size: 15px;
+  font-weight: 750;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 11px;
+  margin-top: 28px;
+}
+
+.primary,
+.secondary {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid rgba(255, 255, 255, .42);
+  border-radius: 11px;
+  padding: 0 21px;
+  font-size: 13px;
+  font-weight: 800;
+  transition: background-color 180ms ease, border-color 180ms ease, transform 180ms ease;
+}
+
+.primary {
+  border-color: #fff;
+  background: #fff;
+  color: #4b1b28;
+}
+
+.secondary {
+  background: rgba(45, 17, 25, .26);
+  color: #fff;
+  backdrop-filter: blur(10px);
+}
+
+.primary:hover,
+.secondary:hover {
+  transform: translateY(-1px);
+}
+
+.primary:focus-visible,
+.secondary:focus-visible {
+  outline: 3px solid #f1d3a1;
+  outline-offset: 3px;
 }
 
 .section + :global(.service-showcase) {
   padding-top: 32px;
 }
 
-.link,
-.picture,
-.image {
-  display: block;
-  width: 100%;
-}
-
-.link {
-  transition: filter 180ms ease;
-}
-
-.link:hover {
-  filter: brightness(1.02);
-}
-
-.link:focus-visible {
-  outline: 3px solid var(--gold);
-  outline-offset: -3px;
-}
-
-.image {
-  height: auto;
-  object-fit: contain;
-}
-
 @media (max-width: 767px) {
+  .section,
+  .overlay {
+    min-height: min(146vw, 690px);
+  }
+
+  .image {
+    object-position: center;
+  }
+
+  .overlay {
+    align-items: flex-end;
+    padding: 34px 19px;
+    background: linear-gradient(180deg, rgba(41, 15, 22, .05) 20%, rgba(41, 15, 22, .45) 50%, rgba(41, 15, 22, .92) 100%);
+  }
+
+  .content {
+    width: 100%;
+    border-radius: 16px;
+    background: rgba(45, 17, 25, .7);
+    padding: 20px;
+    backdrop-filter: blur(12px);
+  }
+
+  .content h1 {
+    max-width: 360px;
+    margin-top: 10px;
+    font-size: clamp(36px, 11.5vw, 49px);
+  }
+
+  .intro {
+    margin-top: 13px;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .date {
+    margin-top: 14px;
+    font-size: 13px;
+  }
+
+  .actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 18px;
+  }
+
+  .primary,
+  .secondary {
+    min-height: 48px;
+    padding-inline: 13px;
+  }
+
   .section + :global(.service-showcase) {
     padding-top: 24px;
   }
 }
 
+@media (max-width: 359px) {
+  .section,
+  .overlay {
+    min-height: 620px;
+  }
+
+  .content {
+    padding: 17px;
+  }
+
+  .campaignTitle {
+    font-size: 10px;
+  }
+
+  .actions {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .link {
+  .primary,
+  .secondary {
     transition: none;
   }
 }

@@ -14,8 +14,16 @@ export function CurrentCampaignBanner() {
       priority={currentCampaign.priority}
       width={currentCampaign.width}
       height={currentCampaign.height}
+      mobileWidth={currentCampaign.mobileWidth}
+      mobileHeight={currentCampaign.mobileHeight}
       campaignId={currentCampaign.id}
       campaignName={currentCampaign.name}
+      heading={currentCampaign.heading}
+      campaignTitle={currentCampaign.campaignTitle}
+      dates={currentCampaign.dates}
+      invitation={currentCampaign.invitation}
+      promotionLabel={currentCampaign.promotionLabel}
+      bookingLabel={currentCampaign.bookingLabel}
     />
   );
 }

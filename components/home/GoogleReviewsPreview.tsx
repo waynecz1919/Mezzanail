@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowUpRight, Star } from "lucide-react";
+import { IconBrandGoogle } from "@tabler/icons-react";
 import { homepageContent } from "@/config/homepage";
 import { siteConfig } from "@/lib/site";
 import type { Locale } from "@/lib/i18n";
@@ -45,7 +46,30 @@ export function GoogleReviewsPreview({ locale }: { locale: Locale }) {
           {copy.reviews.map((review) => (
             <figure className="review-quote" key={review}>
               <blockquote>“{review}”</blockquote>
-              <figcaption>{copy.sourceLabel}</figcaption>
+              <figcaption>
+                <span className="review-source">
+                  <IconBrandGoogle aria-hidden="true" size={18} />
+                  {copy.sourceLabel}
+                </span>
+                <span className="review-stars" role="img" aria-label="5 out of 5 stars">
+                  {Array.from({ length: 5 }, (_, index) => (
+                    <Star
+                      aria-hidden="true"
+                      fill="currentColor"
+                      key={index}
+                      size={13}
+                    />
+                  ))}
+                </span>
+                <a
+                  href={siteConfig.googleReviewUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {copy.viewLabel}
+                  <ArrowUpRight aria-hidden="true" size={14} />
+                </a>
+              </figcaption>
             </figure>
           ))}
         </div>

@@ -63,6 +63,7 @@ const english = {
     subtitle: "Real feedback from public customer reviews",
     action: "Read All Google Reviews",
     sourceLabel: "Google customer review",
+    viewLabel: "View on Google",
     ...reviewSource,
   },
   membership: {
@@ -125,6 +126,7 @@ export const homepageContent = {
       subtitle: "真实顾客评价",
       action: "查看全部 Google 评价",
       sourceLabel: "Google 顾客评价",
+      viewLabel: "在 Google 查看",
       ratingNote: "公开列表快照",
     },
     membership: {
@@ -183,6 +185,7 @@ export const homepageContent = {
       subtitle: "Maklum balas sebenar daripada pelanggan",
       action: "Baca Semua Ulasan Google",
       sourceLabel: "Ulasan pelanggan Google",
+      viewLabel: "Lihat di Google",
       ratingNote: "Ringkasan senarai awam",
     },
     membership: {

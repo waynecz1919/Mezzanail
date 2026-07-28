@@ -88,7 +88,7 @@ function SiteHeader() {
       <div className="official-header-main shell">
         <button className="utility-button icon-only official-mobile-menu" onClick={() => setOpen(!open)} aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open}>{open?<X size={18}/>:<Menu size={18}/>}</button>
         <Link href="/" className="official-header-brand" aria-label={`${siteConfig.brandName} home`}>
-          {isHome ? <h1><BrandLogo compact/></h1> : <BrandLogo compact/>}
+          <BrandLogo compact/>
         </Link>
         <nav className="official-desktop-nav" aria-label="Primary navigation">{nav.map(({href,label}) => <Link key={href} href={href} className={`nav-link ${pathname === href ? "is-current" : ""}`}>{label}</Link>)}</nav>
         <div className="official-header-tools"><LanguageMenu/><a href={siteConfig.bookingUrl} className="header-book" target="_blank" rel="noopener noreferrer" onClick={() => trackPublicAction("book_appointment_click", siteConfig.bookingUrl, "header")}>{t.nav.book}</a></div>
@@ -116,7 +116,17 @@ function MobileNav() {
 
 export function OfficialFrame({ children }: {children: React.ReactNode}) {
   const { locale } = useOfficial();
-  const whatsappUrl = getWhatsappUrl(locale);
+  const pathname = usePathname();
+  const whatsappContext = pathname.startsWith("/services")
+    ? "services"
+    : pathname.startsWith("/rewards") || pathname.startsWith("/membership")
+      ? "membership"
+      : pathname.startsWith("/promotion")
+        ? "promotion"
+        : pathname.startsWith("/job")
+          ? "career"
+          : "general";
+  const whatsappUrl = getWhatsappUrl(locale, whatsappContext);
   return <><SiteHeader/><main>{children}</main><SiteFooter/><MobileNav/><a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="whatsapp-float" aria-label={`WhatsApp ${siteConfig.brandName}`} onClick={() => trackPublicAction("whatsapp_click", whatsappUrl, "floating_action")}><MessageCircle size={22}/></a></>;
 }
 

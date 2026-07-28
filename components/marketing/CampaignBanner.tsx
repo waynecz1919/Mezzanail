@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowRight, CalendarDays } from "lucide-react";
+import { siteConfig } from "@/lib/site";
 import styles from "./CampaignBanner.module.css";
 
 type CampaignBannerProps = {
@@ -17,6 +19,12 @@ type CampaignBannerProps = {
   mobileHeight?: number;
   campaignId: string;
   campaignName: string;
+  heading: string;
+  campaignTitle: string;
+  dates: string;
+  invitation: string;
+  promotionLabel: string;
+  bookingLabel: string;
 };
 
 export function CampaignBanner({
@@ -32,9 +40,15 @@ export function CampaignBanner({
   mobileHeight,
   campaignId,
   campaignName,
+  heading,
+  campaignTitle,
+  dates,
+  invitation,
+  promotionLabel,
+  bookingLabel,
 }: CampaignBannerProps) {
-  const trackClick = () => {
-    if (!href || typeof window === "undefined") return;
+  const trackClick = (destination: string, label: string) => {
+    if (typeof window === "undefined") return;
 
     const analyticsWindow = window as Window & {
       gtag?: (...args: unknown[]) => void;
@@ -43,7 +57,8 @@ export function CampaignBanner({
     analyticsWindow.gtag?.("event", "campaign_banner_click", {
       campaign_id: campaignId,
       campaign_name: campaignName,
-      destination: href,
+      destination,
+      content_label: label,
     });
   };
 
@@ -63,37 +78,67 @@ export function CampaignBanner({
         alt={alt}
         width={width}
         height={height}
-        priority={priority}
+        fetchPriority={priority ? "high" : undefined}
         loading={priority ? "eager" : "lazy"}
         sizes="100vw"
       />
     </picture>
   );
 
-  if (!href) {
-    return <section className={styles.section} data-campaign-banner>{picture}</section>;
-  }
-
-  const linkProps = {
-    className: styles.link,
-    onClick: trackClick,
-    "aria-label": alt,
-    ...(openInNewTab
-      ? { target: "_blank", rel: "noopener noreferrer" }
-      : {}),
-  };
-
   return (
-    <section className={styles.section} data-campaign-banner>
-      {href.startsWith("/") && !openInNewTab ? (
-        <Link href={href} {...linkProps}>
-          {picture}
-        </Link>
-      ) : (
-        <a href={href} {...linkProps}>
-          {picture}
-        </a>
-      )}
+    <section
+      className={styles.section}
+      data-campaign-banner
+      aria-labelledby="home-hero-title"
+    >
+      <div className={styles.media}>{picture}</div>
+      <div className={styles.overlay}>
+        <div className={styles.content}>
+          <p className={styles.campaignTitle}>{campaignTitle}</p>
+          <h1 id="home-hero-title">{heading}</h1>
+          <p className={styles.intro}>
+            Manicure, pedicure, nail extensions, callus care and waxing from
+            Mezzanail Nail Studio in Melaka.
+          </p>
+          <p className={styles.date}>
+            <CalendarDays aria-hidden="true" size={17} />
+            {dates}
+          </p>
+          <p className={styles.invitation}>{invitation}</p>
+          <div className={styles.actions}>
+            {href?.startsWith("/") && !openInNewTab ? (
+              <Link
+                href={href}
+                className={styles.primary}
+                onClick={() => trackClick(href, "view_promotion")}
+              >
+                {promotionLabel}
+                <ArrowRight aria-hidden="true" size={16} />
+              </Link>
+            ) : href ? (
+              <a
+                href={href}
+                className={styles.primary}
+                target={openInNewTab ? "_blank" : undefined}
+                rel={openInNewTab ? "noopener noreferrer" : undefined}
+                onClick={() => trackClick(href, "view_promotion")}
+              >
+                {promotionLabel}
+                <ArrowRight aria-hidden="true" size={16} />
+              </a>
+            ) : null}
+            <a
+              href={siteConfig.bookingUrl}
+              className={styles.secondary}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackClick(siteConfig.bookingUrl, "book_now")}
+            >
+              {bookingLabel}
+            </a>
+          </div>
+        </div>
+      </div>
     </section>
   );
 }

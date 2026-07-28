@@ -9,8 +9,8 @@
         "mobile": false
       },
       "screenshot": "C:\\Users\\mezza\\Documents\\Codex\\2026-07-26\\chon\\work\\Mezzanail\\test-results\\homepage-desktop.png",
-      "screenshotHeight": 6699,
-      "title": "Mezzanail Nail Studio | Premium Nail Care Melaka",
+      "screenshotHeight": 6833,
+      "title": "Premium Nail Care in Melaka",
       "h1Count": 1,
       "sectionHeadings": [
         "Signature Services",
@@ -23,8 +23,9 @@
       "viewportWidth": 1536,
       "pageWidth": 1536,
       "horizontalOverflow": 0,
-      "pageHeight": 6699,
+      "pageHeight": 6833,
       "bannerResources": [
+        "http://127.0.0.1:3010/campaigns/7th-anniversary/banner-desktop.webp",
         "http://127.0.0.1:3010/_next/image?url=%2Fcampaigns%2F7th-anniversary%2Fbanner-desktop.webp&w=1920&q=75",
         "http://127.0.0.1:3010/_next/image?url=%2Fcampaigns%2F7th-anniversary%2Fhomepage-studio-campaign.png&w=640&q=75"
       ],
@@ -36,45 +37,9 @@
       },
       "vitals": {
         "cls": 0,
-        "lcp": 712
+        "lcp": 296
       },
       "smallTargets": [
-        {
-          "label": "Home",
-          "width": 34,
-          "height": 18,
-          "visible": true
-        },
-        {
-          "label": "Services",
-          "width": 50,
-          "height": 18,
-          "visible": true
-        },
-        {
-          "label": "Membership",
-          "width": 70,
-          "height": 18,
-          "visible": true
-        },
-        {
-          "label": "Offers",
-          "width": 35,
-          "height": 18,
-          "visible": true
-        },
-        {
-          "label": "Our story",
-          "width": 53,
-          "height": 18,
-          "visible": true
-        },
-        {
-          "label": "Contact",
-          "width": 47,
-          "height": 18,
-          "visible": true
-        },
         {
           "label": "06 288 5267",
           "width": 80,
@@ -85,90 +50,6 @@
           "label": "016 2121 332",
           "width": 79,
           "height": 23,
-          "visible": true
-        },
-        {
-          "label": "Our story",
-          "width": 235,
-          "height": 20,
-          "visible": true
-        },
-        {
-          "label": "Services",
-          "width": 235,
-          "height": 20,
-          "visible": true
-        },
-        {
-          "label": "Offers",
-          "width": 235,
-          "height": 20,
-          "visible": true
-        },
-        {
-          "label": "Membership",
-          "width": 235,
-          "height": 20,
-          "visible": true
-        },
-        {
-          "label": "Jobs",
-          "width": 235,
-          "height": 20,
-          "visible": true
-        },
-        {
-          "label": "Mezzanail Nail Studio Instagram",
-          "width": 235,
-          "height": 20,
-          "visible": true
-        },
-        {
-          "label": "Mezzanail Nail Studio Facebook",
-          "width": 235,
-          "height": 20,
-          "visible": true
-        },
-        {
-          "label": "Mezzanail Nail Studio Xiaohongshu",
-          "width": 235,
-          "height": 20,
-          "visible": true
-        },
-        {
-          "label": "Contact",
-          "width": 235,
-          "height": 20,
-          "visible": true
-        },
-        {
-          "label": "Google Maps",
-          "width": 235,
-          "height": 20,
-          "visible": true
-        },
-        {
-          "label": "WhatsApp",
-          "width": 235,
-          "height": 20,
-          "visible": true
-        },
-        {
-          "label": "06 288 5267",
-          "width": 235,
-          "height": 20,
-          "visible": true
-        },
-        {
-          "label": "Privacy",
-          "width": 38,
-          "height": 17,
-          "visible": true
-        },
-        {
-          "label": "Terms",
-          "width": 31,
-          "height": 17,
           "visible": true
         }
       ]
@@ -181,8 +62,8 @@
         "mobile": false
       },
       "screenshot": "C:\\Users\\mezza\\Documents\\Codex\\2026-07-26\\chon\\work\\Mezzanail\\test-results\\homepage-tablet.png",
-      "screenshotHeight": 8353,
-      "title": "Mezzanail Nail Studio | Premium Nail Care Melaka",
+      "screenshotHeight": 8557,
+      "title": "Premium Nail Care in Melaka",
       "h1Count": 1,
       "sectionHeadings": [
         "Signature Services",
@@ -195,8 +76,9 @@
       "viewportWidth": 1024,
       "pageWidth": 1024,
       "horizontalOverflow": 0,
-      "pageHeight": 8353,
+      "pageHeight": 8557,
       "bannerResources": [
+        "http://127.0.0.1:3010/campaigns/7th-anniversary/banner-desktop.webp",
         "http://127.0.0.1:3010/_next/image?url=%2Fcampaigns%2F7th-anniversary%2Fbanner-desktop.webp&w=1080&q=75",
         "http://127.0.0.1:3010/_next/image?url=%2Fcampaigns%2F7th-anniversary%2Fhomepage-studio-campaign.png&w=640&q=75"
       ],
@@ -208,7 +90,7 @@
       },
       "vitals": {
         "cls": 0,
-        "lcp": 272
+        "lcp": 236
       },
       "smallTargets": [
         {
@@ -222,90 +104,6 @@
           "width": 79,
           "height": 23,
           "visible": true
-        },
-        {
-          "label": "Our story",
-          "width": 191,
-          "height": 20,
-          "visible": true
-        },
-        {
-          "label": "Services",
-          "width": 191,
-          "height": 20,
-          "visible": true
-        },
-        {
-          "label": "Offers",
-          "width": 191,
-          "height": 20,
-          "visible": true
-        },
-        {
-          "label": "Membership",
-          "width": 191,
-          "height": 20,
-          "visible": true
-        },
-        {
-          "label": "Jobs",
-          "width": 191,
-          "height": 20,
-          "visible": true
-        },
-        {
-          "label": "Mezzanail Nail Studio Instagram",
-          "width": 191,
-          "height": 20,
-          "visible": true
-        },
-        {
-          "label": "Mezzanail Nail Studio Facebook",
-          "width": 191,
-          "height": 20,
-          "visible": true
-        },
-        {
-          "label": "Mezzanail Nail Studio Xiaohongshu",
-          "width": 191,
-          "height": 20,
-          "visible": true
-        },
-        {
-          "label": "Contact",
-          "width": 191,
-          "height": 20,
-          "visible": true
-        },
-        {
-          "label": "Google Maps",
-          "width": 191,
-          "height": 20,
-          "visible": true
-        },
-        {
-          "label": "WhatsApp",
-          "width": 191,
-          "height": 20,
-          "visible": true
-        },
-        {
-          "label": "06 288 5267",
-          "width": 191,
-          "height": 20,
-          "visible": true
-        },
-        {
-          "label": "Privacy",
-          "width": 38,
-          "height": 17,
-          "visible": true
-        },
-        {
-          "label": "Terms",
-          "width": 31,
-          "height": 17,
-          "visible": true
         }
       ]
     },
@@ -317,8 +115,8 @@
         "mobile": true
       },
       "screenshot": "C:\\Users\\mezza\\Documents\\Codex\\2026-07-26\\chon\\work\\Mezzanail\\test-results\\homepage-mobile.png",
-      "screenshotHeight": 8829,
-      "title": "Mezzanail Nail Studio | Premium Nail Care Melaka",
+      "screenshotHeight": 9561,
+      "title": "Premium Nail Care in Melaka",
       "h1Count": 1,
       "sectionHeadings": [
         "Signature Services",
@@ -331,9 +129,9 @@
       "viewportWidth": 390,
       "pageWidth": 390,
       "horizontalOverflow": 0,
-      "pageHeight": 8829,
+      "pageHeight": 9561,
       "bannerResources": [
-        "http://127.0.0.1:3010/_next/image?url=%2Fcampaigns%2F7th-anniversary%2Fbanner-desktop.webp&w=640&q=75",
+        "http://127.0.0.1:3010/campaigns/7th-anniversary/banner-mobile.webp",
         "http://127.0.0.1:3010/_next/image?url=%2Fcampaigns%2F7th-anniversary%2Fhomepage-studio-campaign.png&w=384&q=75"
       ],
       "studioImage": {
@@ -344,22 +142,9 @@
       },
       "vitals": {
         "cls": 0,
-        "lcp": 588
+        "lcp": 240
       },
-      "smallTargets": [
-        {
-          "label": "Privacy",
-          "width": 38,
-          "height": 44,
-          "visible": true
-        },
-        {
-          "label": "Terms",
-          "width": 31,
-          "height": 44,
-          "visible": true
-        }
-      ]
+      "smallTargets": []
     }
   ]
 }

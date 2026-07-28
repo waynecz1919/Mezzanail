@@ -218,12 +218,11 @@ export function PromotionExperience() {
       <section className="promotion-hero" aria-labelledby="promotion-title">
         <Image
           className="promotion-hero-image"
-          src={anniversaryCampaign.banner.png}
+          src={anniversaryCampaign.banner.webp}
           alt="Mezzanail 7th Anniversary Lucky Draw Campaign from 26 July to 30 September 2026, featuring Dyson, HUAWEI and Xiaomi grand prizes"
           fill
           priority
           sizes="100vw"
-          unoptimized
         />
         <a
           className="promotion-hero-banner-link"
