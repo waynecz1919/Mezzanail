@@ -22,7 +22,7 @@ HyperFrames is a video-composition framework, so the site keeps interaction nati
 - `/rewards` — membership and rewards experience
 - `/login` — member sign-in
 
-`/vacancy` is a permanent redirect to `/job`. The private success route is
+`/vacancy` and `/career` are permanent redirects to `/job`. The private success route is
 `/job/application-received`; it is not indexed and only displays the application
 reference and submission state.
 
@@ -88,11 +88,25 @@ All external destinations live in `lib/site.ts`:
 - WhatsApp, Instagram, Facebook and Xiaohongshu
 - Announcement, studio contact details and opening hours
 
-The official booking, WhatsApp, App Store, Google Play and Google Maps destinations are configured. Facebook, Instagram, Xiaohongshu profile URL, Google Review URL/embed and email remain explicit placeholders until their official destinations are supplied.
+The official booking, WhatsApp, App Store, Google Play, Google Maps, Facebook,
+Instagram, Xiaohongshu and Google Review destinations are configured. The Google
+Reviews embed and email remain explicit placeholders and are not rendered as
+public contact information.
 
 ## Service data
 
-`lib/services.ts` is the single source for service names, prices, durations and descriptions. The 13 current service names and durations were verified against the official booking page on 17 July 2026. That page does not publish prices, so the website displays “Please enquire” instead of inventing amounts. Replace those values when the official full price list is supplied.
+`lib/services.ts` is the single source for the 47 current service names, prices,
+durations, descriptions, inclusions and aftercare notes. Prices and specifically
+listed durations come from the Mezzanail Nail Studio price list supplied on
+18 July 2026. Services without a reliable listed duration display
+`Duration varies` and must be confirmed with the studio.
+
+## Membership data
+
+`lib/membership.ts` is the shared source for public membership balance and
+benefit-type definitions. The rewards page and Membership Terms consume these
+same neutral definitions. Actual balances, eligibility and validity remain
+controlled by the authorised member app, specific offer or studio confirmation.
 
 ## Languages
 
@@ -112,6 +126,8 @@ Production verification:
 
 ```bash
 pnpm lint
-pnpm build --webpack
+pnpm typecheck
+pnpm test
+pnpm build
 pnpm start
 ```

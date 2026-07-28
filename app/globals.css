@@ -119,6 +119,7 @@ html,body{background-color:#fff;color:#111}
 .service-row h3{font-size:clamp(18px,1.45vw,22px);line-height:1.25;overflow-wrap:anywhere}
 .service-row .service-description{min-height:0;margin-top:10px;color:var(--muted);font-size:clamp(14px,1vw,16px);line-height:1.65}
 .service-add-on{display:inline-flex;margin-top:9px;border:1px solid color-mix(in srgb,var(--gold) 46%,var(--line));border-radius:999px;padding:4px 8px;color:var(--gold);font-size:10px;font-weight:750;letter-spacing:.07em;text-transform:uppercase}
+.service-card-category{display:block;margin-bottom:7px;color:var(--gold);font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
 .service-card-head{display:grid;gap:18px;align-items:start}
 .service-row .service-facts{grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr)}
 .service-results{padding:0 4px;color:var(--muted);font-size:12px;font-weight:650}

@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronDown, Clock3, Search } from "lucide-react";
-import { useId, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { useLanguage } from "@/components/providers";
 import {
   serviceCategories,
@@ -75,6 +75,54 @@ export function ServicesCatalog() {
   const t = ui[locale];
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<"all" | ServiceCategoryId>("all");
+  const urlStateReady = useRef(false);
+
+  useEffect(() => {
+    const readUrlState = () => {
+      const parameters = new URLSearchParams(window.location.search);
+      const requestedCategory = parameters.get("category");
+      setQuery(parameters.get("q") ?? "");
+      setCategory(
+        requestedCategory &&
+          serviceCategories.some((group) => group.id === requestedCategory)
+          ? (requestedCategory as ServiceCategoryId)
+          : "all",
+      );
+    };
+
+    if (!urlStateReady.current) {
+      urlStateReady.current = true;
+      readUrlState();
+      return;
+    }
+
+    const url = new URL(window.location.href);
+    if (query.trim()) url.searchParams.set("q", query.trim());
+    else url.searchParams.delete("q");
+    if (category === "all") url.searchParams.delete("category");
+    else url.searchParams.set("category", category);
+    window.history.replaceState(
+      window.history.state,
+      "",
+      `${url.pathname}${url.search}${url.hash}`,
+    );
+  }, [category, query]);
+
+  useEffect(() => {
+    const restoreUrlState = () => {
+      const parameters = new URLSearchParams(window.location.search);
+      const requestedCategory = parameters.get("category");
+      setQuery(parameters.get("q") ?? "");
+      setCategory(
+        requestedCategory &&
+          serviceCategories.some((group) => group.id === requestedCategory)
+          ? (requestedCategory as ServiceCategoryId)
+          : "all",
+      );
+    };
+    window.addEventListener("popstate", restoreUrlState);
+    return () => window.removeEventListener("popstate", restoreUrlState);
+  }, []);
 
   const filtered = useMemo(() => serviceCategories.map(group => ({
     ...group,
@@ -105,7 +153,7 @@ export function ServicesCatalog() {
           <div className="service-category-heading"><div><h2>{group.label[locale]}</h2>{group.services.some(service => service.price.includes(" / ")) && <p>{t.dualPrice}</p>}</div><span className="numbers">{String(group.services.length).padStart(2,"0")}</span></div>
           <div className="grid gap-4 lg:grid-cols-2">{group.services.map(service => <article key={service.name} className="service-row">
             <div className="service-card-head">
-              <div className="min-w-0"><h3>{service.name}</h3>{service.addOn && <span className="service-add-on">{t.addOn}</span>}<p className="service-description">{service.shortDescription[locale]}</p></div>
+              <div className="min-w-0"><span className="service-card-category">{group.label[locale]}</span><h3>{service.name}</h3>{service.addOn && <span className="service-add-on">{t.addOn}</span>}<p className="service-description">{service.shortDescription[locale]}</p></div>
               <div className="service-facts">
                 <div><span>{t.price}</span><strong>{service.price === "Please enquire" ? t.enquire : service.price}</strong></div>
                 <div><span><Clock3 size={13} aria-hidden="true"/>{t.duration}</span><strong>{service.duration === "Please enquire" ? t.enquire : service.duration === "Duration varies" ? t.varies : service.duration}</strong></div>

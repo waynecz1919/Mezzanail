@@ -1,3 +1,5 @@
+import { membershipFactItems } from "@/lib/membership";
+
 export type Locale = "en" | "zh" | "ms";
 
 export const localeNames: Record<Locale, string> = { en: "EN", zh: "中文", ms: "BM" };
@@ -8,14 +10,7 @@ export const messages = {
     hero: { eyebrow: "MEZZANAIL MEMBERSHIP", title: "Beauty, rewarded with intention.", body: "Mezzanail’s membership experience, designed around meaningful beauty privileges. Current balances, eligibility and validity are confirmed in the authorised member app or by our Melaka studio.", primary: "Open member access", secondary: "Explore membership", note: "Website examples are interface previews; your member record is the source of truth." },
     card: { label: "MEZZANAIL NAIL STUDIO REWARDS", tier: "MEMBER PREVIEW", member: "Sample interface", points: "—", pointsLabel: "BALANCE IN APP", status: "PREVIEW" },
     stats: { members: "Active members", rewards: "Rewards redeemed", rating: "Member rating", retention: "Renewal rate" },
-    benefits: { eyebrow: "MEMBERSHIP, REFINED", title: "Privileges designed around you.", body: "Every benefit is practical, transparent and available when it matters.", items: [
-      ["Membership balance", "Your current paid or stored membership balance, where applicable, is shown in the authorised member app."],
-      ["Bonus Credit", "Any promotional bonus, its eligible use and validity are shown with the specific offer or member record."],
-      ["Reward Credit", "Any earned reward balance and redemption conditions are confirmed in the authorised member app."],
-      ["Product Voucher", "Product voucher value, eligible products and expiry are governed by the voucher shown in your account."],
-      ["Birthday Benefit", "Availability and eligibility are shown in the member app or confirmed by the Melaka studio."],
-      ["Member Pricing", "Current member prices and whether offers may be combined are stated with the applicable offer."]
-    ]},
+    benefits: { eyebrow: "MEMBERSHIP, REFINED", title: "Privileges designed around you.", body: "Every benefit is practical, transparent and available when it matters.", items: membershipFactItems("en") },
     rewards: { eyebrow: "REWARDS", title: "Value you can see.", body: "A clear reward balance, thoughtful redemptions and no clutter.", available: "Available rewards", cards: [
       ["Membership balance", "View your current record in the app", "Preview"], ["Available rewards", "Eligibility is confirmed in the app", "Preview"], ["Offer validity", "Check the specific reward or voucher terms", "Preview"]
     ]},
@@ -35,7 +30,7 @@ export const messages = {
     hero: { eyebrow: "MEZZANAIL 会员", title: "每一次美丽，都值得回馈。", body: "Mezzanail 会员体验围绕实用的美丽礼遇而设计。当前余额、资格与有效期请以授权会员 App 或 Melaka 门店确认为准。", primary: "打开会员入口", secondary: "了解会员体验", note: "网站内容为界面预览；实际会员记录以 App 或门店确认为准。" },
     card: { label: "MEZZANAIL NAIL STUDIO REWARDS", tier: "会员界面预览", member: "示例界面", points: "—", pointsLabel: "请在 APP 查看余额", status: "预览" },
     stats: { members: "活跃会员", rewards: "已兑换奖励", rating: "会员评分", retention: "续会率" },
-    benefits: { eyebrow: "清楚说明的会员资料", title: "每一类余额，各有明确用途。", body: "网站只说明资料类别；实际金额、资格与有效期请以 App 或门店确认为准。", items: [["会员余额", "如适用，当前付费或储值会员余额显示于授权会员 App。"], ["Bonus Credit", "促销赠送额度、适用范围与有效期以相关优惠或会员记录为准。"], ["Reward Credit", "已获得的奖励额度及兑换条件以授权会员 App 为准。"], ["Product Voucher", "产品礼券金额、适用产品与有效期以账户中的礼券为准。"], ["生日礼遇", "是否提供及适用资格以会员 App 或 Melaka 门店确认为准。"], ["会员专价", "当前会员价格及优惠是否可叠加，以相关优惠条款为准。"]] },
+    benefits: { eyebrow: "清楚说明的会员资料", title: "每一类余额，各有明确用途。", body: "网站只说明资料类别；实际金额、资格与有效期请以 App 或门店确认为准。", items: membershipFactItems("zh") },
     rewards: { eyebrow: "会员界面预览", title: "查看属于你的实际记录。", body: "网站不会显示或承诺未经确认的个人余额与可兑换礼遇。", available: "会员资料", cards: [["会员余额", "请在 App 查看当前记录", "预览"], ["可用奖励", "资格以 App 显示为准", "预览"], ["优惠有效期", "查看具体奖励或礼券条款", "预览"]] },
     timeline: { eyebrow: "使用方式", title: "从到店到领取奖励。", steps: [["01", "加入", "建立安全的会员账户。"], ["02", "累积", "符合条件的到店消费可获得奖励。"], ["03", "选择", "挑选真正适合你的奖励。"], ["04", "享用", "到店出示会员身份即可兑换。"]] },
     birthday: { eyebrow: "生日礼遇", title: "低调而精致的庆祝方式。", body: "如会员配套提供生日礼遇，其资格、预约时间与有效期会显示于授权会员 App，或由门店确认。", cta: "向门店确认" },
@@ -53,7 +48,7 @@ export const messages = {
     hero: { eyebrow: "KEAHLIAN MEZZANAIL", title: "Kecantikan yang dihargai dengan teliti.", body: "Pengalaman keahlian Mezzanail direka dengan keistimewaan kecantikan yang bermakna. Baki, kelayakan dan tempoh sah semasa disahkan dalam aplikasi ahli atau oleh studio Melaka.", primary: "Buka akses ahli", secondary: "Teroka keahlian", note: "Kandungan laman ialah pratonton antara muka; rekod ahli sebenar adalah muktamad." },
     card: { label: "MEZZANAIL NAIL STUDIO REWARDS", tier: "PRATONTON AHLI", member: "Antara muka contoh", points: "—", pointsLabel: "BAKI DALAM APLIKASI", status: "PRATONTON" },
     stats: { members: "Ahli aktif", rewards: "Ganjaran ditebus", rating: "Penilaian ahli", retention: "Kadar pembaharuan" },
-    benefits: { eyebrow: "MAKLUMAT AHLI YANG JELAS", title: "Setiap jenis baki mempunyai tujuan tersendiri.", body: "Laman menerangkan kategori sahaja; amaun, kelayakan dan tempoh sah sebenar disahkan dalam aplikasi atau oleh studio.", items: [["Baki keahlian", "Baki keahlian berbayar atau tersimpan, jika berkenaan, dipaparkan dalam aplikasi ahli."], ["Bonus Credit", "Bonus promosi, kegunaan layak dan tempoh sah ditunjukkan bersama tawaran atau rekod ahli."], ["Reward Credit", "Baki ganjaran dan syarat penebusan disahkan dalam aplikasi ahli."], ["Product Voucher", "Nilai baucar produk, produk layak dan tarikh luput mengikut baucar dalam akaun."], ["Manfaat hari jadi", "Ketersediaan dan kelayakan disahkan dalam aplikasi atau oleh studio Melaka."], ["Harga ahli", "Harga ahli semasa dan gabungan tawaran tertakluk pada tawaran berkenaan."]] },
+    benefits: { eyebrow: "MAKLUMAT AHLI YANG JELAS", title: "Setiap jenis baki mempunyai tujuan tersendiri.", body: "Laman menerangkan kategori sahaja; amaun, kelayakan dan tempoh sah sebenar disahkan dalam aplikasi atau oleh studio.", items: membershipFactItems("ms") },
     rewards: { eyebrow: "PRATONTON ANTARA MUKA", title: "Lihat rekod sebenar anda.", body: "Laman tidak memaparkan atau menjanjikan baki peribadi dan ganjaran yang belum disahkan.", available: "Maklumat ahli", cards: [["Baki keahlian", "Lihat rekod semasa dalam aplikasi", "Pratonton"], ["Ganjaran tersedia", "Kelayakan disahkan dalam aplikasi", "Pratonton"], ["Tempoh sah tawaran", "Semak terma ganjaran atau baucar", "Pratonton"]] },
     timeline: { eyebrow: "CARA IA BERFUNGSI", title: "Daripada kunjungan kepada ganjaran.", steps: [["01", "Sertai", "Cipta profil ahli yang selamat."], ["02", "Kumpul", "Dapatkan kredit melalui kunjungan layak."], ["03", "Pilih", "Pilih ganjaran yang bermakna untuk anda."], ["04", "Nikmati", "Tebus di studio dengan ID ahli."]] },
     birthday: { eyebrow: "MANFAAT HARI JADI", title: "Cara sambutan yang lebih tenang.", body: "Jika manfaat hari jadi tersedia, kelayakan, tempoh tempahan dan tempoh sah akan dipaparkan dalam aplikasi ahli atau disahkan oleh studio.", cta: "Sahkan dengan studio" },

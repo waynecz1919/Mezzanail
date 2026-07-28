@@ -2,6 +2,7 @@ import Link from "next/link";
 import { MessageCircle } from "lucide-react";
 import { AnalyticsSettingsButton } from "@/components/analytics-settings-button";
 import { OfficialFrame } from "@/components/official-site";
+import { membershipTermsBullets } from "@/lib/membership";
 import { siteConfig } from "@/lib/site";
 
 export type LegalDocumentKind =
@@ -513,26 +514,14 @@ const membershipTermsDocument: LegalDocument = {
         paragraphs: [
           "Credits, points, visits or rewards are recorded only for eligible transactions and activities under the offer current at that time. Processing may not be immediate. The studio may correct duplicate, reversed, refunded, fraudulent or erroneous entries after reasonable review.",
         ],
-        bullets: [
-          "Membership balance: a paid or stored membership amount, where the member record provides one.",
-          "Bonus Credit: a promotional amount governed by the specific offer, eligible use and validity shown with it.",
-          "Reward Credit: an earned reward amount governed by the earning and redemption conditions in the member record.",
-          "Product Voucher: a voucher for eligible products, subject to the value, exclusions and expiry shown on that voucher.",
-          "Birthday Benefit: a benefit, if available, subject to the eligibility, booking window and validity shown in the app or confirmed by the studio.",
-        ],
+        bullets: membershipTermsBullets("en"),
       },
       ms: {
         heading: "2. Jenis baki dan manfaat",
         paragraphs: [
           "Kredit, mata, lawatan atau ganjaran direkodkan hanya bagi transaksi dan aktiviti layak di bawah tawaran semasa. Pemprosesan mungkin tidak serta-merta. Studio boleh membetulkan catatan berganda, dibatalkan, dipulangkan, menipu atau tersilap selepas semakan munasabah.",
         ],
-        bullets: [
-          "Baki keahlian: amaun keahlian berbayar atau tersimpan, jika disediakan dalam rekod ahli.",
-          "Bonus Credit: amaun promosi yang tertakluk pada tawaran, kegunaan layak dan tempoh sah yang dinyatakan.",
-          "Reward Credit: amaun ganjaran yang tertakluk pada syarat pengumpulan dan penebusan dalam rekod ahli.",
-          "Product Voucher: baucar produk yang tertakluk pada nilai, pengecualian dan tarikh luput pada baucar tersebut.",
-          "Manfaat hari jadi: jika tersedia, tertakluk pada kelayakan, tempoh tempahan dan tempoh sah dalam aplikasi atau yang disahkan studio.",
-        ],
+        bullets: membershipTermsBullets("ms"),
       },
     },
     {
