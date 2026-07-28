@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
     const sql = getJackpotDb();
     const rows = await sql.query(
       `WITH mutation_lock AS (
-         SELECT pg_advisory_xact_lock(hashtextextended($1::text, 0))
+         SELECT pg_advisory_xact_lock(hashtextextended($1::uuid::text, 0))
        ),
        campaign AS (
          SELECT c.id,
@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
                   SELECT 1 FROM jackpot_draws d WHERE d.campaign_id = c.id
                 ) AS has_draws
            FROM jackpot_campaigns c, mutation_lock
-          WHERE c.id = $1
+          WHERE c.id = $1::uuid
        ),
        duplicate AS (
          SELECT p.id

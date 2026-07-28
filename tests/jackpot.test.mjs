@@ -48,6 +48,8 @@ test("admins can add one participant directly with validation and audit protecti
   assert.match(participantRoute, /DUPLICATE_PARTICIPANT/);
   assert.match(participantRoute, /participant_added/);
   assert.match(participantRoute, /'manual'/);
+  assert.match(participantRoute, /\$1::uuid/);
+  assert.match(importRoute, /\$1::uuid/);
 });
 
 test("locked participant lists cannot be imported or silently unlocked", () => {

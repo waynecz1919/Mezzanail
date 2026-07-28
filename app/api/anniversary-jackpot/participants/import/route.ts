@@ -91,12 +91,12 @@ export async function POST(request: NextRequest) {
 
     const rows = await sql.query(
       `WITH import_lock AS (
-         SELECT pg_advisory_xact_lock(hashtextextended($1::text, 0))
+         SELECT pg_advisory_xact_lock(hashtextextended($1::uuid::text, 0))
        ),
        target AS (
          SELECT c.id
            FROM jackpot_campaigns c, import_lock
-          WHERE c.id = $1
+          WHERE c.id = $1::uuid
             AND c.participant_list_locked = FALSE
             AND NOT EXISTS (
               SELECT 1 FROM jackpot_draws d WHERE d.campaign_id = c.id
