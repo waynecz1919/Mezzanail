@@ -23,6 +23,7 @@ test("jackpot route is private and reuses role-based staff authentication", () =
   assert.match(config, /\/anniversary-jackpot\/:path\*/);
   assert.match(config, /\/api\/anniversary-jackpot\/:path\*/);
   for (const role of ["owner", "admin", "staff"]) assert.match(auth, new RegExp(`"${role}"`));
+  assert.match(auth, /process\.env\.JACKPOT_STAFF_USERS/);
   assert.match(drawRoute, /isJackpotAdmin/);
 });
 

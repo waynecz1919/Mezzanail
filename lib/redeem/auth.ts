@@ -98,10 +98,17 @@ export function expiredSessionCookie() {
 type StaffCredential = { id: string; salt: string; hash: string; role?: StaffRole };
 
 function configuredUsers(): StaffCredential[] {
-  const raw = process.env.REDEEM_STAFF_USERS;
-  if (!raw) throw new Error("REDEEM_AUTH_NOT_CONFIGURED");
-  const parsed = JSON.parse(raw) as StaffCredential[];
-  if (!Array.isArray(parsed)) throw new Error("REDEEM_AUTH_NOT_CONFIGURED");
+  const sources = [
+    process.env.JACKPOT_STAFF_USERS,
+    process.env.REDEEM_STAFF_USERS,
+  ].filter((value): value is string => Boolean(value));
+  if (!sources.length) throw new Error("REDEEM_AUTH_NOT_CONFIGURED");
+
+  const parsed = sources.flatMap((raw) => {
+    const credentials = JSON.parse(raw) as StaffCredential[];
+    if (!Array.isArray(credentials)) throw new Error("REDEEM_AUTH_NOT_CONFIGURED");
+    return credentials;
+  });
   return parsed.filter((item) => item?.id && item?.salt && item?.hash);
 }
 
