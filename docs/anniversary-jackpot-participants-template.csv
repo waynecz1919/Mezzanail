@@ -1,0 +1,3 @@
+Entry ID,Member ID,Customer Name,Phone Number,Draw Tickets,Eligibility Status,Source,Created At
+ENTRY-001,M0001,Sample Customer,60123456789,3,eligible,campaign,2026-09-30T10:00:00+08:00
+ENTRY-002,M0002,Second Sample,60198765432,1,eligible,campaign,2026-09-30T10:05:00+08:00

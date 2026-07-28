@@ -25,6 +25,8 @@ const nextConfig: NextConfig = {
     return [
       { source: "/redeem/:path*", headers: internalHeaders },
       { source: "/api/redeem/:path*", headers: internalHeaders },
+      { source: "/anniversary-jackpot/:path*", headers: internalHeaders },
+      { source: "/api/anniversary-jackpot/:path*", headers: internalHeaders },
       {
         source: "/api/job/:path*",
         headers: [

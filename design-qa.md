@@ -57,3 +57,61 @@
 - Lint, TypeScript, 28 tests and production build passed.
 
 final result: passed
+
+---
+
+# Anniversary Jackpot Campaign Palette — Design QA
+
+**Source visual truth**
+
+- `D:\Downloads\Untitled design (4).png`
+- Source pixels: 1600 × 1600.
+- Palette target: pearl cream, blossom pink, coral rose, rose gold, champagne gold and deep chocolate.
+
+**Rendered implementation**
+
+- Local route: `http://127.0.0.1:3022/anniversary-jackpot/preview`
+- Intended viewports: desktop 1440 × 1000 and mobile 390 × 844 at device scale factor 1.
+- State: Jackpot preview, Live Draw tab, default pre-spin state.
+- Implementation screenshot: unavailable because both the in-app Browser control and the supported Chrome control runtime were unavailable in this session.
+
+**Full-view comparison evidence**
+
+- Blocked: no browser-rendered implementation screenshot could be captured through an approved browser surface.
+
+**Focused region comparison evidence**
+
+- Blocked: the wheel, prize card and primary-action contrast could not be compared in a browser-rendered capture.
+
+**Required fidelity surfaces**
+
+- Fonts and typography: unchanged by this palette-only update.
+- Spacing and layout rhythm: unchanged by this palette-only update.
+- Colors and visual tokens: CSS tokens now map to the supplied campaign palette; small white button labels use a deeper rose with a measured contrast ratio above 4.5:1.
+- Image quality and asset fidelity: the supplied campaign artwork was used as visual color reference only; no source imagery was replaced.
+- Copy and content: unchanged.
+
+**Findings**
+
+- [P2] Browser-rendered visual comparison unavailable.
+  Location: Anniversary Jackpot preview.
+  Evidence: the route responds successfully and TypeScript/lint pass, but no approved browser screenshot could be captured.
+  Impact: responsive color balance and browser rendering still require visual confirmation.
+  Fix: inspect the live local preview at desktop and mobile width and capture both states.
+
+**Comparison history**
+
+- Pass 1: source artwork inspected at original resolution; the earlier dark wine stage was identified as visually inconsistent.
+- Fix: replaced the stage and system tokens with pearl cream, blossom pink, rose gold and champagne; deepened interactive rose tones for readable white labels.
+- Post-fix visual evidence: blocked by unavailable browser-control runtime.
+
+**Implementation checklist**
+
+- Campaign palette applied.
+- Small-text contrast adjusted.
+- Existing layout, typography and behavior preserved.
+- TypeScript and lint passed.
+- Local route returns HTTP 200.
+- Desktop and mobile browser captures remain pending.
+
+final result: blocked

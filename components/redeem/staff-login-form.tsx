@@ -3,7 +3,15 @@
 import { FormEvent, useState } from "react";
 import { LockKeyhole, LogIn } from "lucide-react";
 
-export function StaffLoginForm() {
+export function StaffLoginForm({
+  redirectTo = "/redeem",
+  title = "Redeem Center",
+  subtitle = "Staff Internal Use Only",
+}: {
+  redirectTo?: string;
+  title?: string;
+  subtitle?: string;
+}) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -27,7 +35,7 @@ export function StaffLoginForm() {
         setLoading(false);
         return;
       }
-      window.location.assign("/redeem");
+      window.location.assign(redirectTo);
     } catch {
       setError("Unable to connect. Check your internet connection and try again.");
       setLoading(false);
@@ -39,8 +47,8 @@ export function StaffLoginForm() {
       <section className="redeem-login-card" aria-labelledby="login-title">
         <div className="redeem-mark" aria-hidden="true">M</div>
         <p className="redeem-kicker">MEZZANAIL</p>
-        <h1 id="login-title">Redeem Center</h1>
-        <p className="redeem-subtitle">Staff Internal Use Only</p>
+        <h1 id="login-title">{title}</h1>
+        <p className="redeem-subtitle">{subtitle}</p>
         <div className="redeem-security-note">
           <LockKeyhole size={18} aria-hidden="true" />
           <span>Sign in with your staff credentials to continue.</span>

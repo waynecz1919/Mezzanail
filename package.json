@@ -11,6 +11,7 @@
     "test": "node --test tests/*.test.mjs",
     "db:migrate:redeem": "node scripts/migrate-redeem.mjs",
     "db:migrate:job": "node scripts/migrate-job.mjs",
+    "db:migrate:jackpot": "node scripts/migrate-jackpot.mjs",
     "auth:create:redeem": "node scripts/generate-redeem-staff.mjs"
   },
   "dependencies": {
