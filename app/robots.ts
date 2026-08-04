@@ -12,6 +12,7 @@ export default function robots(): MetadataRoute.Robots {
         "/job/application-received",
         "/login",
         "/redeem/",
+        "/slideshow",
         "/tv-slide",
       ],
     },

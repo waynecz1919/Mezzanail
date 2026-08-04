@@ -115,3 +115,61 @@ final result: passed
 - Desktop and mobile browser captures remain pending.
 
 final result: blocked
+
+---
+
+# Mezzanail Slideshow Design QA
+
+- Source visual truth: `C:\Users\mezza\OneDrive\Documents\Mezzanail OS\.codex-remote-attachments\019fcade-3387-7613-8849-4a7ceb04397f\b83d7650-d969-473c-b5fa-9d8c9c3c28d6\1-Photo-1.jpg`
+- Source dimensions: 1376 × 768 px
+- Primary implementation capture: `C:\Users\mezza\Documents\Codex\2026-08-04\mezzanail-url-https-www-mezzanail-com\outputs\mezzanail-slideshow-1920x1080.png`
+- Responsive implementation capture: `C:\Users\mezza\Documents\Codex\2026-08-04\mezzanail-url-https-www-mezzanail-com\outputs\mezzanail-slideshow-1366x768.png`
+- Full-view comparison: `C:\Users\mezza\Documents\Codex\2026-08-04\mezzanail-url-https-www-mezzanail-com\work\slideshow-qa\reference-vs-implementation.png`
+- Primary CSS viewport: 1920 × 1080 at device scale factor 1
+- Responsive CSS viewport: 1366 × 768 at device scale factor 1
+- Density normalization: the 1376 × 768 source was resized with cover to 1920 × 1080; it was placed beside the 1920 × 1080 implementation without additional implementation scaling.
+- State: static seventh-anniversary slide with live Asia/Kuala_Lumpur time and date.
+
+## Full-view comparison evidence
+
+The combined comparison shows the same warm ivory, blush, champagne and taupe art direction; a dominant manicure image; an editorial anniversary lockup; a fixed brand/time/member reminder/website sidebar; and a four-column benefit bar. The implementation intentionally follows the written 75/25 upper split and 11.5% footer requirement even though the supplied reference uses a slightly wider sidebar and thicker footer.
+
+## Focused-region evidence
+
+Separate focused crops were not required. Both original-size captures were opened and inspected at their native dimensions, where the right-panel date row, symbolic phone QR icon, website, four footer icons and all promotion copy remained clearly readable. Automated browser measurements also confirmed exact region proportions and equal footer-column widths.
+
+## Required fidelity surfaces
+
+- Fonts and typography: Cormorant Garamond and Manrope reuse the existing Mezzanail font system. Display weights, letter spacing, tabular clock numerals and italic slogan remain legible at both target viewports.
+- Spacing and layout rhythm: 75% hero, 25% sidebar, 11.5% footer and four equal footer columns were measured in the browser. No horizontal or vertical overflow was present.
+- Colors and visual tokens: warm ivory, soft blush, dusty rose, champagne gold and warm taupe match the reference without neon color or heavy shadow.
+- Image quality and asset fidelity: the hero is a separate 1920 × 1280 AVIF/WebP/PNG photography asset with every nail visible; it is not the supplied preview rasterized as the page.
+- Copy and content: all requested English copy is present, including `GET RM80 BONUS CREDIT`; WhatsApp, Instagram, a Website label and a scannable television QR are absent.
+
+## Comparison history
+
+1. Initial capture found a P2 development-toolbar badge in the lower-left and a P2 anniversary numeral that crowded the title. The slideshow-only CSS now hides the development portal, and the numeral size/spacing was reduced.
+2. Post-fix captures at 1920 × 1080 and 1366 × 768 show no toolbar, no title collision, no site chrome, no cookie prompt, no overflow and no browser console errors.
+
+## Findings
+
+No actionable P0, P1 or P2 differences remain. The remaining proportional differences from the supplied preview are intentional and follow the user's explicit 75/25 and 11%–12% layout requirements.
+
+## Open questions
+
+None for this preview round.
+
+## Implementation checklist
+
+- [x] Preserve the existing Next.js App Router and brand fonts.
+- [x] Use a real component layout rather than the preview as a full-page image.
+- [x] Keep the static slide in a future-ready array configuration.
+- [x] Update Malaysia time every minute without page refresh.
+- [x] Verify 1920 × 1080 and 1366 × 768 output.
+- [x] Keep the work local and undeployed.
+
+## Follow-up polish
+
+No P3 item is required before stakeholder review.
+
+final result: passed
