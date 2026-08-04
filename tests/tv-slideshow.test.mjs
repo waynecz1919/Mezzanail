@@ -14,14 +14,17 @@ const serviceWorker = read("public/sw-tv-slide.js");
 
 test("TV display has the complete ordered, configurable slide set", () => {
   assert.equal(config.settings.projectName, "Mezzanail TV Display");
-  assert.equal(config.slides.length, 11);
-  assert.deepEqual(config.slides.map((slide) => slide.displayOrder), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
+  assert.equal(config.version, "2026.08.04-2");
+  assert.equal(config.slides.length, 7);
+  assert.deepEqual(config.slides.map((slide) => slide.displayOrder), [1, 2, 3, 4, 5, 7, 8]);
   const required = ["id", "type", "title", "subtitle", "image", "mobileImage", "duration", "enabled", "startDate", "endDate", "displayOrder", "qrUrl", "designCode", "category"];
   for (const slide of config.slides) {
     for (const key of required) assert.ok(Object.hasOwn(slide, key), `${slide.id} must define ${key}`);
   }
   assert.equal(config.slides.filter((slide) => slide.type === "artwork").length, 4);
-  assert.deepEqual(config.slides.find((slide) => slide.type === "membership").plans, ["RM199", "RM399", "RM599"]);
+  assert.ok(!config.slides.some((slide) => slide.type === "membership" || slide.type === "qr" || slide.type === "closing"));
+  assert.ok(!config.slides.some((slide) => ["membership", "member-centre-qr", "nail-gallery-qr", "brand-thank-you"].includes(slide.id)));
+  assert.ok(config.slides.every((slide) => slide.qrUrl === null));
   assert.equal(config.slides.find((slide) => slide.type === "services").services.length, 6);
 });
 
@@ -67,7 +70,12 @@ test("playback supports TV, preview, recovery, controls and safe video", () => {
   assert.match(component, /visibilitychange/);
   assert.match(component, /muted[\s\S]*playsInline[\s\S]*autoPlay[\s\S]*loop/);
   assert.match(component, /markSlideFailed/);
+  assert.match(component, /handleCurrentSlideFailure/);
+  assert.match(component, /nextSlide = slides\.length > 1/);
   assert.match(component, /\[1, 2\]/);
+  assert.match(component, /mergeAdditionalSlides/);
+  assert.match(component, /embedded = false/);
+  assert.match(css, /\.embedded \{/);
 });
 
 test("layout is fullscreen, scroll-free, control-free outside preview, and 5 percent safe", () => {
@@ -88,8 +96,13 @@ test("offline cache and TV route are wired without hardcoding the future gallery
   assert.match(serviceWorker, /cacheFirst/);
   assert.match(serviceWorker, /TV_SLIDESHOW_PREFETCH/);
   assert.match(component, /TV_SLIDESHOW_STORAGE_KEY/);
+  assert.match(component, /TV_SLIDESHOW_LEGACY_STORAGE_KEYS/);
+  assert.match(component, /localStorage\.removeItem/);
+  assert.match(serviceWorker, /2026-08-04-v2/);
   assert.match(component, /NEXT_PUBLIC_SLIDESHOW_DATA_URL|dataUrl/);
   assert.doesNotMatch(nextConfig, /source: "\/slideshow"[\s\S]*destination: "\/tv-slide"/);
   assert.doesNotMatch(component, /nstudio\.mezzanail\.com/);
-  assert.equal(config.slides.find((slide) => slide.id === "nail-gallery-qr").qrUrl, config.settings.galleryFallbackUrl);
+  assert.ok(!config.slides.some((slide) => slide.qrUrl));
+  assert.doesNotMatch(component, /slide\.captionPosition === "right"/);
+  assert.match(css, /width: min\(31vw, 610px\)/);
 });

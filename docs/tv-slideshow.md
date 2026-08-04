@@ -1,20 +1,20 @@
 # Mezzanail TV Display
 
-The production route is `/tv-slide`. `/slideshow` is a permanent redirect for compatibility.
+The fixed in-store display route is `/slideshow`. `/tv-slide` remains available as the standalone full-canvas player.
 
 ## Display modes
 
-- `/tv-slide?tv=1` attempts fullscreen, hides all controls, disables selection and the context menu, and keeps looping.
-- `/tv-slide?preview=1` shows previous, pause/play, next, slide/time status, fullscreen, and content reload controls.
+- `/slideshow?tv=1` attempts fullscreen, hides all controls, disables selection and the context menu, and keeps looping.
+- `/slideshow?preview=1` shows previous, pause/play, next, slide/time status, fullscreen, and content reload controls over the embedded player.
 - Keyboard: `F` fullscreen, `Space` pause/play, arrows previous/next, `R` reload content. Double-click also toggles fullscreen.
 
 ## Content updates
 
-The bundled source is `public/data/slideshow.json`. Slides are sorted by `displayOrder`, require `enabled: true`, and use inclusive Malaysia-time `startDate`/`endDate` scheduling. A failed configured image removes only its slide from the current loop.
+The bundled source is `public/data/slideshow.json`. Slides are sorted by `displayOrder`, require `enabled: true`, and use inclusive Malaysia-time `startDate`/`endDate` scheduling. A failed configured image removes only its slide from the current loop. The fixed display adds the presentation-only anniversary artwork from `config/slideshow-display.ts` without changing the managed source schema.
 
 For a future admin or Cloudflare source, set `NEXT_PUBLIC_SLIDESHOW_DATA_URL` to a CORS-enabled JSON endpoint using the same schema. The client keeps the bundled JSON, the last successful local copy, and the service-worker cache as fallbacks.
 
-`nstudio.mezzanail.com` did not resolve when this display was prepared, so the Nail Gallery slide currently uses the official Instagram URL from the JSON. Change that slide's `qrUrl` to the intended gallery URL when the gallery is live; no component change is needed.
+Legacy QR slides, the QR closing slide, and the RM199/RM399/RM599 membership comparison slide were removed on 2026-08-04. The removal inventory is recorded in `docs/tv-slideshow-cleanup-2026-08-04.md`. The fixed right-side Member Center QR is separate from the managed slide data and remains enabled.
 
 ## Media
 

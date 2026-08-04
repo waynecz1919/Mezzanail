@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "mezzanail-tv-display";
-const CACHE_NAME = `${CACHE_PREFIX}-2026-08-04-v1`;
+const CACHE_NAME = `${CACHE_PREFIX}-2026-08-04-v2`;
 const TV_ROUTE = "/tv-slide";
 const CONFIG_ROUTE = "/data/slideshow.json";
 const CORE_ASSETS = [

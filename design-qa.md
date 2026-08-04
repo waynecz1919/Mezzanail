@@ -60,6 +60,95 @@ final result: passed
 
 ---
 
+# Mezzanail Live-TV Overflow and Content Cleanup — Design QA
+
+**Source visual truth**
+
+- On-site television photo supplied in the conversation: `sandbox:/workspace/scratch/fbb9bfdab21c/audit-tv-live/01-live-tv-playback.jpg`.
+- The source is an angled camera photo of the live television with browser chrome and television overscan. Its camera pixels are not a 1:1 CSS viewport, so it is used as qualitative evidence for the clipped date, website and footer copy rather than for pixel-distance comparison.
+- Normalized implementation captures: `C:\Users\mezza\Documents\Codex\2026-08-04\mezzanail-url-https-www-mezzanail-com\outputs\mezzanail-slideshow-1920x1080.png` and `C:\Users\mezza\Documents\Codex\2026-08-04\mezzanail-url-https-www-mezzanail-com\outputs\mezzanail-slideshow-1366x768.png`.
+- CSS viewports: 1920 × 1080 and 1366 × 768 at device scale factor 1. Both implementation captures are exact 1:1 browser output without browser chrome.
+- State: active `art-minimalist` artwork slide, fixed Malaysia clock/date, fixed Member Center QR and fixed four-benefit footer.
+
+## Full-view comparison evidence
+
+The on-site source photo showed the correct 75/25/14 composition but clipped the year, both sides of the website and three long footer values. The revised 1366 × 768 capture keeps the same visual scale for the hero, clock and QR while adding right-panel safe padding and resizing only the long text. The revised footer retains four equal columns and displays every value and label in full. The artwork caption is visibly smaller and fixed inside the left-bottom safe area.
+
+## Focused-region comparison evidence
+
+- Right panel at 1366: 341.5 px wide with approximately 32 px inline safe padding. Weekday and full date share one baseline; the website remains centered with visible space on both sides.
+- Footer at 1366: four columns each measure 341.5 px. All eight lines report `scrollWidth <= clientWidth`, remain `white-space: nowrap`, and no element uses `text-overflow: ellipsis`.
+- QR at 1366: 177.58 × 177.58 CSS px from a 640 × 640 source. At 1920 it measures 249.59 × 249.59 CSS px. Both retain `object-fit: contain`.
+- Focused browser checks found no document overflow, site chrome, consent UI or console errors.
+
+## Findings and comparison history
+
+1. [P1] **Date and website clipped on the physical television.** The source photo ended the date at `202` and cropped the website. The right panel now uses responsive 32–48 px safety padding, a 12–16 px date scale, reduced date tracking, centered finite gap, and an 18–24 px website constrained to 100% width. Post-fix capture and DOM bounds show both fully inside the right panel.
+2. [P1] **Three footer values were ellipsized.** `FREE GEL COLOR`, `RM80 BONUS CREDIT` and the opening time were visibly truncated on site. Ellipsis was removed; icons now scale to 26–30 px, gaps to 12–16 px, value text to 16–24 px, and text containers retain `min-width: 0`. Post-fix measurements show all lines fit at both target viewports.
+3. [P2] **Artwork caption competed with the manicure subject.** It was reduced by approximately 10%, given a smaller responsive padding and type scale, and fixed to the lower-left 5% safe area. The post-fix artwork capture preserves the image focal point more clearly.
+4. [P1] **Obsolete QR and membership package content remained in the managed loop.** Removed `membership`, `member-centre-qr`, `nail-gallery-qr` and `brand-thank-you` from the bundled source. Cache/storage versions were bumped and the legacy local-storage key is removed on startup. Two complete loops contained only the eight retained display slides.
+
+## Required fidelity surfaces
+
+- Fonts and typography: Cormorant Garamond continues to carry brand and clock hierarchy; Inter remains the readable information face. The responsive date, website and benefit values use TV-safe weights with no clipping, truncation or wrapping.
+- Spacing and layout rhythm: 75% hero, 25% sidebar, 14% footer and four equal footer columns were remeasured at both viewports. Only the affected right-panel and footer spacing changed.
+- Colors and visual tokens: Ink, Rose, Gold, Ivory and pure-white QR background remain unchanged from the accepted display.
+- Image quality and asset fidelity: the managed artwork remains AVIF/WebP with original fallbacks and `object-fit: cover`. Every retained primary and fallback image was visually checked; none contains a QR code or RM199/RM399/RM599 comparison.
+- Copy and content: fixed Member Center QR copy and URL remain correct. Footer `RM80 BONUS CREDIT / RM199 Nail Package` is retained as explicitly requested; obsolete QR and membership slides are absent.
+
+## Runtime evidence
+
+- 188.586-second Edge run observed the exact eight-slide order twice and returned to `brand-welcome`; `completedCycles: 2`, `passed: true`.
+- Rendered QR decoded to `https://member.mezzanail.com/member-credits`; DOM target matched and the measured quiet zone met four modules on every side.
+- Next and next-two images preload successfully. A forced current-image and fallback failure advanced from `art-minimalist` to `art-silver-sculpture` without an empty frame.
+- 68/68 tests, typecheck, lint and the Next.js production build passed.
+
+## Evidence limits
+
+- Browser output verifies the requested 1366 × 768 and 1920 × 1080 layouts. Final on-site viewing should keep the television on Screen Fit, Just Scan, Full Pixel or 100% Zoom; Zoom, Wide Zoom and Overscan can still crop browser output outside the application’s control.
+- Physical QR scanning at 1 m, 2 m and 3 m remains an on-site device test; the rendered TV-sized QR was software-decoded successfully in this run.
+
+final result: passed
+
+---
+
+# Mezzanail Slideshow Member QR Refresh — Audit + Design QA
+
+**Source visual truth**
+
+- Reference: `C:\Users\mezza\OneDrive\Documents\Mezzanail OS\.codex-remote-attachments\019fcade-3387-7613-8849-4a7ceb04397f\b83d7650-d969-473c-b5fa-9d8c9c3c28d6\1-Photo-1.jpg`
+- Pre-change captures: `C:\Users\mezza\Documents\Codex\2026-08-04\mezzanail-url-https-www-mezzanail-com\work\slideshow-audit-before\mezzanail-slideshow-1920x1080.png` and `mezzanail-slideshow-1366x768.png`
+- Final captures: `C:\Users\mezza\Documents\Codex\2026-08-04\mezzanail-url-https-www-mezzanail-com\outputs\mezzanail-slideshow-1920x1080.png` and `mezzanail-slideshow-1366x768.png`
+- Final side-by-side comparison: `C:\Users\mezza\Documents\Codex\2026-08-04\mezzanail-url-https-www-mezzanail-com\work\slideshow-qa\final-reference-comparison.png`
+- Viewports: 1920 × 1080 and 1366 × 768, device scale factor 1.
+- State: seventh-anniversary slide with live `Asia/Kuala_Lumpur` time and generated member-credit QR.
+
+## Audit trail
+
+1. **Existing route and content flow — passed.** The independent `/slideshow` route, configuration-backed slide array, image fallbacks and existing `/tv-slide` route remain intact.
+2. **TV geometry — passed.** Browser measurements returned 75% hero, 25% sidebar, 13% footer, four equal footer columns and document/body dimensions equal to the viewport at both sizes.
+3. **Information hierarchy — passed.** The sidebar now progresses from wordmark to time/date to scan instruction, a large QR and the single member-domain label, with only two horizontal gold dividers.
+4. **QR scan safety — passed.** The actual 216 × 216 rendered QR crop decoded to `https://member.mezzanail.com/member-credits`; its 640 × 640 source retained 56–57 white pixels on every edge, meeting the four-module quiet-zone requirement for a 37-module H-level symbol.
+5. **Footer legibility — passed.** All eight offer lines remained `nowrap`, had `scrollWidth <= clientWidth`, and showed no truncation at either viewport.
+6. **Runtime and release safety — passed.** No site chrome, consent banner, scrollbar, layout overflow or browser console error was present. Full tests, typecheck, lint and production build completed successfully.
+
+## Before-audit findings and resolutions
+
+- [P1] The television showed a symbolic phone/QR icon that could not be scanned. Replaced with locally generated black-on-white QR artwork using error correction H, 640 px output and four-module margin.
+- [P1] The QR destination and visible domain did not match the requested Member Center flow. Both now use the exact member-credit destination and `member.mezzanail.com` label.
+- [P2] Footer copy was label-first and used the obsolete `GET RM80 BONUS CREDIT` wording. Reordered value-first and updated all four benefit pairs.
+- [P2] Footer height was 11.5%. Updated to the requested 13% while preserving the upper 75/25 split.
+
+## Accessibility and evidence limits
+
+- Strong color contrast, semantic sections, descriptive QR alt text and live text content are retained. Decorative icons are hidden from assistive technology.
+- Keyboard interaction is not exposed because this is a non-interactive television display.
+- Validation covers real Edge rendering at both target viewports and pixel-level QR decoding. A physical television/camera scan was not part of this local run.
+
+final result: passed
+
+---
+
 # Anniversary Jackpot Campaign Palette — Design QA
 
 **Source visual truth**
@@ -171,5 +260,60 @@ None for this preview round.
 ## Follow-up polish
 
 No P3 item is required before stakeholder review.
+
+final result: passed
+
+---
+
+# Mezzanail Slideshow Restored Player — Design QA
+
+**Source visual truth**
+
+- User audit screenshot: `sandbox:/workspace/scratch/fbb9bfdab21c/audit-tv/01-tv-slideshow-current.png`.
+- Normalized pre-change capture extracted from the prior accepted 1920 × 1080 comparison: `C:\Users\mezza\Documents\Codex\2026-08-04\mezzanail-url-https-www-mezzanail-com\work\slideshow-qa\slideshow-before-restored-player-1920.png`.
+- Final implementation captures: `C:\Users\mezza\Documents\Codex\2026-08-04\mezzanail-url-https-www-mezzanail-com\outputs\mezzanail-slideshow-1920x1080.png` and `mezzanail-slideshow-1366x768.png`.
+- Full-view comparison: `C:\Users\mezza\Documents\Codex\2026-08-04\mezzanail-url-https-www-mezzanail-com\work\slideshow-qa\slideshow-before-after-player-1920.png`.
+- Focused comparisons: `slideshow-right-panel-before-after.png` and `slideshow-footer-before-after.png` in the same QA folder.
+- CSS viewports: 1920 × 1080 and 1366 × 768; device scale factor 1; captures are normalized 1:1 without browser chrome.
+- State: active original slide `art-minimalist`, fixed information panel and fixed benefit footer.
+
+## Findings and comparison history
+
+1. [P1] **The left region was not consuming the managed slideshow.** The pre-change capture showed a single fixed anniversary composition. The final capture shows the original `art-minimalist` slide rendered by the existing TV player. The fix reconnects `/slideshow` to the same JSON/environment data URL, storage cache, sorting, schedule, per-slide duration, service rotation, preloading and failure recovery used by `/tv-slide`.
+2. [P1] **TV-distance QR size was too small.** It increased from 216 px to 249.6 px at 1920 and from 153.7 px to 177.6 px at 1366. The rendered 249.6 px crop decoded to the exact member-credit URL and retained a four-module quiet zone.
+3. [P2] **Date and supporting content were too small.** The date row is now 30% larger, constrained to 85% of the sidebar, and remains on one line. The clock numerals use Cormorant Garamond SemiBold while the period remains Inter.
+4. [P2] **Footer benefits lacked television emphasis.** The footer increased from 13% to 14%; value text increased to 20–32 px, labels to 13–18 px, and icons were reduced. Browser measurements show all eight text lines fit without truncation at both viewports.
+
+## Required fidelity surfaces
+
+- Fonts and typography: Cormorant Garamond now supplies the clock numerals and slideshow display headings; Inter remains the readable UI face. Date, QR instruction, website and footer text use heavier TV-safe weights with no wrapping.
+- Spacing and layout rhythm: the upper region remains exactly 75%/25%; the right panel follows 15%/25%/46%/14%; the fixed footer measures exactly 14% and its four columns are equal.
+- Colors and visual tokens: Ink, Rose, Gold and Ivory tokens remain unchanged. QR remains pure black on white.
+- Image quality: all original image sources and fallbacks render through `<picture>` with `object-fit: cover`; final `art-minimalist` media measured 2160 × 2160 natural pixels and was not stretched.
+- Copy and content: QR copy is now `SCAN TO OPEN / MEMBER CENTER`; fixed domain and all four requested value-first benefits remain correct.
+
+## Runtime evidence
+
+- Real-time Edge run observed 25 consecutive slide changes over 268.8 seconds: all 12 displayed slides in the expected order, repeated twice, then returning to slide 1.
+- Original 10-second, 12-second and 18-second intervals remained within normal timer tolerance; all records stayed `visible`.
+- Startup network records confirmed the next and next-two images were preloaded. A forced current-image plus fallback failure advanced directly from `art-minimalist` to `art-silver-sculpture` without an empty frame.
+- Arrow-key navigation was exercised to select the final screenshot state; no console errors, site chrome, scrollbar or empty frame appeared.
+- Full tests, typecheck, lint and production build passed.
+
+## Evidence limits
+
+- Local validation covers real Edge rendering, software decoding of the rendered QR and two full playback loops. Physical 1 m/2 m/3 m camera tests on the shop television remain an on-site acceptance step.
+
+## Follow-up polish
+
+No actionable P0, P1 or P2 item remains in the requested local scope.
+
+final result: passed
+
+---
+
+# Current TV slideshow QA status
+
+The current report is **Mezzanail Live-TV Overflow and Content Cleanup — Design QA** above. It covers the on-site overflow evidence, content cleanup, 1366 × 768 and 1920 × 1080 captures, responsive DOM measurements, QR decoding, cache migration, two complete playback loops and production-build validation.
 
 final result: passed
