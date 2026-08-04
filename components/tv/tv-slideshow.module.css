@@ -14,6 +14,10 @@
   display: none;
 }
 
+:global(body.tv-display-active .analytics-consent) {
+  display: none !important;
+}
+
 .stage {
   --tv-wine: #5a1f2d;
   --tv-wine-deep: #2d1119;

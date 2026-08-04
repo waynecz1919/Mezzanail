@@ -79,6 +79,7 @@ test("layout is fullscreen, scroll-free, control-free outside preview, and 5 per
   assert.match(css, /left: 5vw/);
   assert.match(css, /right: 5vw/);
   assert.match(component, /previewMode \?/);
+  assert.match(css, /tv-display-active \.analytics-consent/);
 });
 
 test("offline cache and final route are wired without hardcoding the future gallery in the component", () => {
