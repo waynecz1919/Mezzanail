@@ -27,11 +27,6 @@ const nextConfig: NextConfig = {
         destination: "/job",
         permanent: true,
       },
-      {
-        source: "/slideshow",
-        destination: "/tv-slide",
-        permanent: true,
-      },
     ];
   },
   async headers() {
@@ -51,6 +46,7 @@ const nextConfig: NextConfig = {
     ];
     return [
       { source: "/tv-slide", headers: tvHeaders },
+      { source: "/slideshow", headers: tvHeaders },
       {
         source: "/data/slideshow.json",
         headers: [

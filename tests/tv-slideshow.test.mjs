@@ -82,15 +82,14 @@ test("layout is fullscreen, scroll-free, control-free outside preview, and 5 per
   assert.match(css, /tv-display-active \.analytics-consent/);
 });
 
-test("offline cache and final route are wired without hardcoding the future gallery in the component", () => {
+test("offline cache and TV route are wired without hardcoding the future gallery in the component", () => {
   assert.match(serviceWorker, /precacheShell/);
   assert.match(serviceWorker, /networkFirst/);
   assert.match(serviceWorker, /cacheFirst/);
   assert.match(serviceWorker, /TV_SLIDESHOW_PREFETCH/);
   assert.match(component, /TV_SLIDESHOW_STORAGE_KEY/);
   assert.match(component, /NEXT_PUBLIC_SLIDESHOW_DATA_URL|dataUrl/);
-  assert.match(nextConfig, /source: "\/slideshow"/);
-  assert.match(nextConfig, /destination: "\/tv-slide"/);
+  assert.doesNotMatch(nextConfig, /source: "\/slideshow"[\s\S]*destination: "\/tv-slide"/);
   assert.doesNotMatch(component, /nstudio\.mezzanail\.com/);
   assert.equal(config.slides.find((slide) => slide.id === "nail-gallery-qr").qrUrl, config.settings.galleryFallbackUrl);
 });
