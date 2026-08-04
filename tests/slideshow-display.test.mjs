@@ -78,7 +78,11 @@ test("slideshow reserves 75 percent hero, 25 percent sidebar and 14 percent foot
   assert.match(css, /--gold: #b28a3b/);
   assert.match(css, /--ivory: #fbf6ee/);
   assert.match(css, /width: clamp\(176px, 13vw, 260px\)/);
-  assert.match(css, /font-size: clamp\(20px, 1\.45vw, 32px\)/);
+  assert.match(css, /font-size: clamp\(16px, 1\.15vw, 24px\)/);
+  assert.match(css, /font-size: clamp\(18px, 1\.25vw, 24px\)/);
+  assert.match(css, /padding-inline: clamp\(32px, 2\.35vw, 48px\)/);
+  assert.doesNotMatch(css, /text-overflow: ellipsis/);
+  assert.match(css, /\.offerItem p \{[\s\S]*min-width: 0/);
 });
 
 test("slideshow has an independent noindex route without site chrome", () => {

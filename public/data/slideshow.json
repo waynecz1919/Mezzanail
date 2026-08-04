@@ -1,6 +1,6 @@
 {
-  "version": "2026.08.04-1",
-  "updatedAt": "2026-08-04T12:00:00+08:00",
+  "version": "2026.08.04-2",
+  "updatedAt": "2026-08-04T19:00:00+08:00",
   "settings": {
     "projectName": "Mezzanail TV Display",
     "defaultDuration": 10000,
@@ -108,24 +108,6 @@
       "category": "Luxury"
     },
     {
-      "id": "membership",
-      "type": "membership",
-      "title": "More Beauty in Every Visit",
-      "subtitle": "Ask Our Team About Mezzanail Membership",
-      "image": null,
-      "mobileImage": null,
-      "duration": 10000,
-      "enabled": true,
-      "startDate": null,
-      "endDate": null,
-      "displayOrder": 6,
-      "qrUrl": null,
-      "designCode": null,
-      "category": "Membership",
-      "plans": ["RM199", "RM399", "RM599"],
-      "benefits": ["Member Credit", "Birthday Benefit", "Exclusive Rewards"]
-    },
-    {
       "id": "anniversary-lucky-draw",
       "type": "campaign",
       "title": "Mezzanail 7th Anniversary Member Lucky Draw",
@@ -212,59 +194,6 @@
           "imagePosition": "50% 46%"
         }
       ]
-    },
-    {
-      "id": "member-centre-qr",
-      "type": "qr",
-      "title": "Your Mezzanail Membership, In One Place",
-      "subtitle": "Check your credit balance, membership and personal QR.",
-      "image": null,
-      "mobileImage": null,
-      "duration": 10000,
-      "enabled": true,
-      "startDate": null,
-      "endDate": null,
-      "displayOrder": 9,
-      "qrUrl": "https://member.mezzanail.com",
-      "designCode": null,
-      "category": "Member Centre",
-      "qrLabel": "member.mezzanail.com"
-    },
-    {
-      "id": "nail-gallery-qr",
-      "type": "qr",
-      "title": "Find Your Next Nail Inspiration",
-      "subtitle": "Scan to explore our nail art collection.",
-      "image": null,
-      "mobileImage": null,
-      "duration": 10000,
-      "enabled": true,
-      "startDate": null,
-      "endDate": null,
-      "displayOrder": 10,
-      "qrUrl": "https://www.instagram.com/mezzanail_nail_studio/",
-      "designCode": null,
-      "category": "Nail Gallery",
-      "qrLabel": "@mezzanail_nail_studio",
-      "intendedQrUrl": "https://nstudio.mezzanail.com"
-    },
-    {
-      "id": "brand-thank-you",
-      "type": "closing",
-      "title": "Thank You for Being Part of Our Story",
-      "subtitle": "Mezzanail Nail Studio",
-      "image": "/brand/mezzanail-nail-studio-wordmark.png",
-      "mobileImage": "/brand/mezzanail-nail-studio-wordmark.png",
-      "fallbackImage": "/brand/mezzanail-nail-studio-logo.jpg",
-      "duration": 10000,
-      "enabled": true,
-      "startDate": null,
-      "endDate": null,
-      "displayOrder": 11,
-      "qrUrl": "https://www.instagram.com/mezzanail_nail_studio/",
-      "designCode": null,
-      "category": "Brand",
-      "qrLabel": "Follow our story"
     }
   ]
 }

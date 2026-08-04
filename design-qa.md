@@ -60,6 +60,58 @@ final result: passed
 
 ---
 
+# Mezzanail Live-TV Overflow and Content Cleanup — Design QA
+
+**Source visual truth**
+
+- On-site television photo supplied in the conversation: `sandbox:/workspace/scratch/fbb9bfdab21c/audit-tv-live/01-live-tv-playback.jpg`.
+- The source is an angled camera photo of the live television with browser chrome and television overscan. Its camera pixels are not a 1:1 CSS viewport, so it is used as qualitative evidence for the clipped date, website and footer copy rather than for pixel-distance comparison.
+- Normalized implementation captures: `C:\Users\mezza\Documents\Codex\2026-08-04\mezzanail-url-https-www-mezzanail-com\outputs\mezzanail-slideshow-1920x1080.png` and `C:\Users\mezza\Documents\Codex\2026-08-04\mezzanail-url-https-www-mezzanail-com\outputs\mezzanail-slideshow-1366x768.png`.
+- CSS viewports: 1920 × 1080 and 1366 × 768 at device scale factor 1. Both implementation captures are exact 1:1 browser output without browser chrome.
+- State: active `art-minimalist` artwork slide, fixed Malaysia clock/date, fixed Member Center QR and fixed four-benefit footer.
+
+## Full-view comparison evidence
+
+The on-site source photo showed the correct 75/25/14 composition but clipped the year, both sides of the website and three long footer values. The revised 1366 × 768 capture keeps the same visual scale for the hero, clock and QR while adding right-panel safe padding and resizing only the long text. The revised footer retains four equal columns and displays every value and label in full. The artwork caption is visibly smaller and fixed inside the left-bottom safe area.
+
+## Focused-region comparison evidence
+
+- Right panel at 1366: 341.5 px wide with approximately 32 px inline safe padding. Weekday and full date share one baseline; the website remains centered with visible space on both sides.
+- Footer at 1366: four columns each measure 341.5 px. All eight lines report `scrollWidth <= clientWidth`, remain `white-space: nowrap`, and no element uses `text-overflow: ellipsis`.
+- QR at 1366: 177.58 × 177.58 CSS px from a 640 × 640 source. At 1920 it measures 249.59 × 249.59 CSS px. Both retain `object-fit: contain`.
+- Focused browser checks found no document overflow, site chrome, consent UI or console errors.
+
+## Findings and comparison history
+
+1. [P1] **Date and website clipped on the physical television.** The source photo ended the date at `202` and cropped the website. The right panel now uses responsive 32–48 px safety padding, a 12–16 px date scale, reduced date tracking, centered finite gap, and an 18–24 px website constrained to 100% width. Post-fix capture and DOM bounds show both fully inside the right panel.
+2. [P1] **Three footer values were ellipsized.** `FREE GEL COLOR`, `RM80 BONUS CREDIT` and the opening time were visibly truncated on site. Ellipsis was removed; icons now scale to 26–30 px, gaps to 12–16 px, value text to 16–24 px, and text containers retain `min-width: 0`. Post-fix measurements show all lines fit at both target viewports.
+3. [P2] **Artwork caption competed with the manicure subject.** It was reduced by approximately 10%, given a smaller responsive padding and type scale, and fixed to the lower-left 5% safe area. The post-fix artwork capture preserves the image focal point more clearly.
+4. [P1] **Obsolete QR and membership package content remained in the managed loop.** Removed `membership`, `member-centre-qr`, `nail-gallery-qr` and `brand-thank-you` from the bundled source. Cache/storage versions were bumped and the legacy local-storage key is removed on startup. Two complete loops contained only the eight retained display slides.
+
+## Required fidelity surfaces
+
+- Fonts and typography: Cormorant Garamond continues to carry brand and clock hierarchy; Inter remains the readable information face. The responsive date, website and benefit values use TV-safe weights with no clipping, truncation or wrapping.
+- Spacing and layout rhythm: 75% hero, 25% sidebar, 14% footer and four equal footer columns were remeasured at both viewports. Only the affected right-panel and footer spacing changed.
+- Colors and visual tokens: Ink, Rose, Gold, Ivory and pure-white QR background remain unchanged from the accepted display.
+- Image quality and asset fidelity: the managed artwork remains AVIF/WebP with original fallbacks and `object-fit: cover`. Every retained primary and fallback image was visually checked; none contains a QR code or RM199/RM399/RM599 comparison.
+- Copy and content: fixed Member Center QR copy and URL remain correct. Footer `RM80 BONUS CREDIT / RM199 Nail Package` is retained as explicitly requested; obsolete QR and membership slides are absent.
+
+## Runtime evidence
+
+- 188.586-second Edge run observed the exact eight-slide order twice and returned to `brand-welcome`; `completedCycles: 2`, `passed: true`.
+- Rendered QR decoded to `https://member.mezzanail.com/member-credits`; DOM target matched and the measured quiet zone met four modules on every side.
+- Next and next-two images preload successfully. A forced current-image and fallback failure advanced from `art-minimalist` to `art-silver-sculpture` without an empty frame.
+- 68/68 tests, typecheck, lint and the Next.js production build passed.
+
+## Evidence limits
+
+- Browser output verifies the requested 1366 × 768 and 1920 × 1080 layouts. Final on-site viewing should keep the television on Screen Fit, Just Scan, Full Pixel or 100% Zoom; Zoom, Wide Zoom and Overscan can still crop browser output outside the application’s control.
+- Physical QR scanning at 1 m, 2 m and 3 m remains an on-site device test; the rendered TV-sized QR was software-decoded successfully in this run.
+
+final result: passed
+
+---
+
 # Mezzanail Slideshow Member QR Refresh — Audit + Design QA
 
 **Source visual truth**
@@ -255,5 +307,13 @@ final result: passed
 ## Follow-up polish
 
 No actionable P0, P1 or P2 item remains in the requested local scope.
+
+final result: passed
+
+---
+
+# Current TV slideshow QA status
+
+The current report is **Mezzanail Live-TV Overflow and Content Cleanup — Design QA** above. It covers the on-site overflow evidence, content cleanup, 1366 × 768 and 1920 × 1080 captures, responsive DOM measurements, QR decoding, cache migration, two complete playback loops and production-build validation.
 
 final result: passed

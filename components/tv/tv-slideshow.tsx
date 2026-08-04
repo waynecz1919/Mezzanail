@@ -17,6 +17,7 @@ import {
   collectSlideshowAssets,
   getDisplaySlides,
   isSlideshowConfig,
+  TV_SLIDESHOW_LEGACY_STORAGE_KEYS,
   TV_SLIDESHOW_STORAGE_KEY,
   type TVMedia,
   type TVService,
@@ -115,7 +116,7 @@ function ArtworkSlide({ slide, onFailure }: { slide: TVSlide; onFailure: () => v
         onFailure={onFailure}
       />
       <div className={styles.artworkShade} />
-      <div className={`${styles.artworkCaption} ${slide.captionPosition === "right" ? styles.captionRight : styles.captionLeft}`}>
+      <div className={`${styles.artworkCaption} ${styles.captionLeft}`}>
         <div className={styles.artworkMeta}>
           {slide.designCode ? <span>{slide.designCode}</span> : null}
           {slide.category ? <span>{slide.category}</span> : null}
@@ -424,6 +425,7 @@ export function TVSlideshow({
   useEffect(() => {
     document.documentElement.classList.add("tv-display-active");
     document.body.classList.add("tv-display-active");
+    for (const key of TV_SLIDESHOW_LEGACY_STORAGE_KEYS) window.localStorage.removeItem(key);
     return () => {
       document.documentElement.classList.remove("tv-display-active");
       document.body.classList.remove("tv-display-active");

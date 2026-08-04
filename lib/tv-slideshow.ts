@@ -62,7 +62,8 @@ export type TVSlideshowConfig = {
   slides: TVSlide[];
 };
 
-export const TV_SLIDESHOW_STORAGE_KEY = "mezzanail-tv-slideshow-config-v1";
+export const TV_SLIDESHOW_STORAGE_KEY = "mezzanail-tv-slideshow-config-v2";
+export const TV_SLIDESHOW_LEGACY_STORAGE_KEYS = ["mezzanail-tv-slideshow-config-v1"] as const;
 
 function parseBoundary(value: string | null, endOfDay: boolean) {
   if (!value) return null;
