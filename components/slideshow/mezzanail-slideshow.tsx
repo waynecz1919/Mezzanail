@@ -5,12 +5,14 @@ import {
   IconBottle,
   IconClock,
   IconCreditCard,
-  IconDeviceMobile,
   IconGift,
-  IconQrcode,
   type IconProps,
 } from "@tabler/icons-react";
+import QRCode from "qrcode";
+import Image from "next/image";
+import { TVSlideshow } from "@/components/tv/tv-slideshow";
 import { slideshowDisplayConfig } from "@/config/slideshow-display";
+import type { TVSlideshowConfig } from "@/lib/tv-slideshow";
 import styles from "./mezzanail-slideshow.module.css";
 
 const iconMap: Record<string, ComponentType<IconProps>> = {
@@ -62,24 +64,60 @@ function useMalaysiaClock() {
   return now;
 }
 
-function MemberQrReminder() {
+function MemberQrCode() {
+  const [dataUrl, setDataUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    void QRCode.toDataURL(slideshowDisplayConfig.memberQr.url, {
+      width: 640,
+      margin: 4,
+      errorCorrectionLevel: "H",
+      color: { dark: "#000000ff", light: "#ffffffff" },
+    }).then((result) => {
+      if (active) setDataUrl(result);
+    });
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
   return (
-    <div className={styles.memberReminder}>
-      <span className={styles.memberPhoneIcon} aria-hidden="true">
-        <IconDeviceMobile className={styles.phoneOutline} stroke={1.35} />
-        <IconQrcode className={styles.phoneQr} stroke={1.45} />
-      </span>
-      <p>
-        <span>{slideshowDisplayConfig.memberReminder.title}</span>
-        <strong>{slideshowDisplayConfig.memberReminder.emphasis}</strong>
+    <div className={styles.qrContent} data-qr-target={slideshowDisplayConfig.memberQr.url}>
+      <p className={styles.qrHeading}>
+        <span>{slideshowDisplayConfig.memberQr.title}</span>
+        <strong>{slideshowDisplayConfig.memberQr.subtitle}</strong>
       </p>
+      <div className={styles.qrFrame} aria-busy={!dataUrl}>
+        {dataUrl ? (
+          <Image
+            src={dataUrl}
+            width={640}
+            height={640}
+            alt="QR code for Mezzanail member QR and credit"
+            unoptimized
+          />
+        ) : null}
+      </div>
     </div>
   );
 }
 
-export function MezzanailSlideshow() {
+type MezzanailSlideshowProps = {
+  initialConfig: TVSlideshowConfig;
+  dataUrl: string;
+  previewMode: boolean;
+  tvMode: boolean;
+};
+
+export function MezzanailSlideshow({
+  initialConfig,
+  dataUrl,
+  previewMode,
+  tvMode,
+}: MezzanailSlideshowProps) {
   const now = useMalaysiaClock();
-  const activeSlide = slideshowDisplayConfig.slides[0];
 
   const clock = useMemo(() => {
     if (!now) {
@@ -107,28 +145,17 @@ export function MezzanailSlideshow() {
   }, []);
 
   return (
-    <main className={styles.stage} aria-label={slideshowDisplayConfig.projectName}>
+    <div className={styles.stage} role="main" aria-label={slideshowDisplayConfig.projectName}>
       <div className={styles.upperLayout}>
-        <section className={styles.hero} aria-label="Seventh anniversary feature">
-          <picture className={styles.heroPicture}>
-            <source srcSet={activeSlide.image.avif} type="image/avif" />
-            <source srcSet={activeSlide.image.webp} type="image/webp" />
-            <img
-              src={activeSlide.image.fallback}
-              alt={activeSlide.image.alt}
-              style={{ objectPosition: activeSlide.image.objectPosition }}
-              fetchPriority="high"
-              decoding="async"
-            />
-          </picture>
-          <div className={styles.heroReadability} aria-hidden="true" />
-          <div className={styles.anniversaryCopy}>
-            <p className={styles.ordinal}>
-              <span>7</span><sup>th</sup>
-            </p>
-            <h1>{activeSlide.title}</h1>
-            <p className={styles.anniversarySubtitle}>{activeSlide.subtitle}</p>
-          </div>
+        <section className={styles.hero} aria-label="Mezzanail automatic slideshow">
+          <TVSlideshow
+            initialConfig={initialConfig}
+            dataUrl={dataUrl}
+            previewMode={previewMode}
+            tvMode={tvMode}
+            additionalSlides={slideshowDisplayConfig.slides}
+            embedded
+          />
         </section>
 
         <aside className={styles.infoPanel} aria-label="Mezzanail information">
@@ -150,12 +177,12 @@ export function MezzanailSlideshow() {
             </div>
           </section>
 
-          <section className={styles.memberBlock}>
-            <MemberQrReminder />
+          <section className={styles.qrBlock} aria-label="Member credits QR code">
+            <MemberQrCode />
           </section>
 
-          <section className={styles.websiteBlock}>
-            <p>{slideshowDisplayConfig.website}</p>
+          <section className={styles.websiteBlock} aria-label="Mezzanail Member Center website">
+            <p>{slideshowDisplayConfig.memberQr.displayUrl}</p>
           </section>
         </aside>
       </div>
@@ -169,13 +196,13 @@ export function MezzanailSlideshow() {
                 <Icon stroke={1.35} />
               </span>
               <p>
-                <span>{item.title}</span>
-                <strong>{item.emphasis}</strong>
+                <strong>{item.value}</strong>
+                <span>{item.label}</span>
               </p>
             </article>
           );
         })}
       </footer>
-    </main>
+    </div>
   );
 }

@@ -67,7 +67,12 @@ test("playback supports TV, preview, recovery, controls and safe video", () => {
   assert.match(component, /visibilitychange/);
   assert.match(component, /muted[\s\S]*playsInline[\s\S]*autoPlay[\s\S]*loop/);
   assert.match(component, /markSlideFailed/);
+  assert.match(component, /handleCurrentSlideFailure/);
+  assert.match(component, /nextSlide = slides\.length > 1/);
   assert.match(component, /\[1, 2\]/);
+  assert.match(component, /mergeAdditionalSlides/);
+  assert.match(component, /embedded = false/);
+  assert.match(css, /\.embedded \{/);
 });
 
 test("layout is fullscreen, scroll-free, control-free outside preview, and 5 percent safe", () => {

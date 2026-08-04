@@ -30,6 +30,8 @@ type SlideshowProps = {
   dataUrl: string;
   previewMode: boolean;
   tvMode: boolean;
+  additionalSlides?: readonly TVSlide[];
+  embedded?: boolean;
 };
 
 type PictureProps = {
@@ -291,15 +293,34 @@ function preloadMedia(media: Pick<TVMedia, "image" | "fallbackImage">, onFailure
   };
 }
 
-export function TVSlideshow({ initialConfig, dataUrl, previewMode, tvMode }: SlideshowProps) {
-  const [config, setConfig] = useState(initialConfig);
+function mergeAdditionalSlides(config: TVSlideshowConfig, additionalSlides: readonly TVSlide[]) {
+  if (!additionalSlides.length) return config;
+  const configuredIds = new Set(config.slides.map((slide) => slide.id));
+  const presentationSlides = additionalSlides.filter((slide) => !configuredIds.has(slide.id));
+  if (!presentationSlides.length) return config;
+  return { ...config, slides: [...config.slides, ...presentationSlides] };
+}
+
+export function TVSlideshow({
+  initialConfig,
+  dataUrl,
+  previewMode,
+  tvMode,
+  additionalSlides = [],
+  embedded = false,
+}: SlideshowProps) {
+  const mergedInitialConfig = useMemo(
+    () => mergeAdditionalSlides(initialConfig, additionalSlides),
+    [additionalSlides, initialConfig],
+  );
+  const [config, setConfig] = useState(mergedInitialConfig);
   const [failedSlides, setFailedSlides] = useState<Set<string>>(() => new Set());
   const [scheduleNow, setScheduleNow] = useState(() => new Date());
   const slides = useMemo(
     () => getDisplaySlides(config, failedSlides, scheduleNow),
     [config, failedSlides, scheduleNow],
   );
-  const [currentId, setCurrentId] = useState(() => getDisplaySlides(initialConfig)[0]?.id ?? "");
+  const [currentId, setCurrentId] = useState(() => getDisplaySlides(mergedInitialConfig)[0]?.id ?? "");
   const [previousSlide, setPreviousSlide] = useState<TVSlide | null>(null);
   const [paused, setPaused] = useState(false);
   const [elapsed, setElapsed] = useState(0);
@@ -329,6 +350,18 @@ export function TVSlideshow({ initialConfig, dataUrl, previewMode, tvMode }: Sli
     startedAtRef.current = typeof performance === "undefined" ? 0 : performance.now();
     setElapsed(0);
   }, []);
+
+  const handleCurrentSlideFailure = useCallback((failedId: string) => {
+    const failedIndex = slides.findIndex((slide) => slide.id === failedId);
+    const nextSlide = slides.length > 1
+      ? slides[(Math.max(0, failedIndex) + 1) % slides.length]
+      : undefined;
+    setPreviousSlide(null);
+    setCurrentId(nextSlide?.id ?? "");
+    setServiceIndex(0);
+    resetClock();
+    markSlideFailed(failedId);
+  }, [markSlideFailed, resetClock, slides]);
 
   const goToIndex = useCallback((targetIndex: number) => {
     if (!slides.length) return;
@@ -365,19 +398,20 @@ export function TVSlideshow({ initialConfig, dataUrl, previewMode, tvMode }: Sli
       if (!response.ok) throw new Error("SLIDESHOW_DATA_UNAVAILABLE");
       const candidate: unknown = await response.json();
       if (!isSlideshowConfig(candidate)) throw new Error("SLIDESHOW_DATA_INVALID");
-      setConfig(candidate);
+      const mergedCandidate = mergeAdditionalSlides(candidate, additionalSlides);
+      setConfig(mergedCandidate);
       setFailedSlides(new Set());
       window.localStorage.setItem(TV_SLIDESHOW_STORAGE_KEY, JSON.stringify(candidate));
       navigator.serviceWorker?.controller?.postMessage({
         type: "TV_SLIDESHOW_PREFETCH",
-        urls: collectSlideshowAssets(candidate),
+        urls: collectSlideshowAssets(mergedCandidate),
       });
     } catch {
       const stored = window.localStorage.getItem(TV_SLIDESHOW_STORAGE_KEY);
       if (stored) {
         try {
           const candidate: unknown = JSON.parse(stored);
-          if (isSlideshowConfig(candidate)) setConfig(candidate);
+          if (isSlideshowConfig(candidate)) setConfig(mergeAdditionalSlides(candidate, additionalSlides));
         } catch {
           // The server-rendered configuration remains the safe final fallback.
         }
@@ -385,7 +419,7 @@ export function TVSlideshow({ initialConfig, dataUrl, previewMode, tvMode }: Sli
     } finally {
       setRefreshing(false);
     }
-  }, [dataUrl]);
+  }, [additionalSlides, dataUrl]);
 
   useEffect(() => {
     document.documentElement.classList.add("tv-display-active");
@@ -545,7 +579,7 @@ export function TVSlideshow({ initialConfig, dataUrl, previewMode, tvMode }: Sli
 
   if (!currentSlide) {
     return (
-      <main className={`${styles.stage} ${previewMode ? styles.preview : ""} ${tvMode ? styles.tvMode : ""}`}>
+      <main className={`${styles.stage} ${embedded ? styles.embedded : ""} ${previewMode ? styles.preview : ""} ${tvMode ? styles.tvMode : ""}`}>
         <div className={styles.emptyState}>
           <span>MEZZANAIL</span>
           <h1>Our gallery is taking a quiet moment.</h1>
@@ -558,7 +592,7 @@ export function TVSlideshow({ initialConfig, dataUrl, previewMode, tvMode }: Sli
 
   return (
     <main
-      className={`${styles.stage} ${previewMode ? styles.preview : ""} ${tvMode ? styles.tvMode : ""}`}
+      className={`${styles.stage} ${embedded ? styles.embedded : ""} ${previewMode ? styles.preview : ""} ${tvMode ? styles.tvMode : ""}`}
       style={stageStyle}
       onDoubleClick={() => void toggleFullscreen()}
       onContextMenu={tvMode ? (event) => event.preventDefault() : undefined}
@@ -575,7 +609,7 @@ export function TVSlideshow({ initialConfig, dataUrl, previewMode, tvMode }: Sli
         data-slide-id={currentSlide.id}
         data-slide-index={currentIndex + 1}
       >
-        <SlideContent slide={currentSlide} serviceIndex={serviceIndex} onFailure={() => markSlideFailed(currentSlide.id)} />
+        <SlideContent slide={currentSlide} serviceIndex={serviceIndex} onFailure={() => handleCurrentSlideFailure(currentSlide.id)} />
       </div>
 
       {paused && !previewMode ? <div className={styles.pausedMark} aria-label="Slideshow paused"><Pause size={22} /></div> : null}
