@@ -1,0 +1,124 @@
+{
+  "targetUrl": "http://127.0.0.1:3010/",
+  "results": [
+    {
+      "viewport": {
+        "name": "desktop",
+        "width": 1536,
+        "height": 1024,
+        "mobile": false
+      },
+      "screenshot": "C:\\Users\\mezza\\Documents\\Codex\\2026-07-26\\chon\\work\\Mezzanail\\test-results\\homepage-desktop.png",
+      "screenshotHeight": 6833,
+      "title": "Premium Nail Care in Melaka",
+      "h1Count": 1,
+      "sectionHeadings": [
+        "Signature Services",
+        "Selected Nail Work",
+        "Quiet confidence, built into every visit.",
+        "Loved by Our Customers",
+        "Rewards designed around your visits.",
+        "Mezzanail Nail Studio"
+      ],
+      "viewportWidth": 1536,
+      "pageWidth": 1536,
+      "horizontalOverflow": 0,
+      "pageHeight": 6833,
+      "bannerResources": [
+        "http://127.0.0.1:3010/campaigns/7th-anniversary/banner-desktop.webp",
+        "http://127.0.0.1:3010/_next/image?url=%2Fcampaigns%2F7th-anniversary%2Fbanner-desktop.webp&w=1920&q=75",
+        "http://127.0.0.1:3010/_next/image?url=%2Fcampaigns%2F7th-anniversary%2Fhomepage-studio-campaign.png&w=640&q=75"
+      ],
+      "studioImage": {
+        "complete": true,
+        "naturalWidth": 590,
+        "naturalHeight": 590,
+        "currentSrc": "http://127.0.0.1:3010/_next/image?url=%2Fcampaigns%2F7th-anniversary%2Fhomepage-studio-campaign.png&w=640&q=75"
+      },
+      "vitals": {
+        "cls": 0,
+        "lcp": 900
+      },
+      "smallTargets": []
+    },
+    {
+      "viewport": {
+        "name": "tablet",
+        "width": 1024,
+        "height": 1366,
+        "mobile": false
+      },
+      "screenshot": "C:\\Users\\mezza\\Documents\\Codex\\2026-07-26\\chon\\work\\Mezzanail\\test-results\\homepage-tablet.png",
+      "screenshotHeight": 8599,
+      "title": "Premium Nail Care in Melaka",
+      "h1Count": 1,
+      "sectionHeadings": [
+        "Signature Services",
+        "Selected Nail Work",
+        "Quiet confidence, built into every visit.",
+        "Loved by Our Customers",
+        "Rewards designed around your visits.",
+        "Mezzanail Nail Studio"
+      ],
+      "viewportWidth": 1024,
+      "pageWidth": 1024,
+      "horizontalOverflow": 0,
+      "pageHeight": 8599,
+      "bannerResources": [
+        "http://127.0.0.1:3010/campaigns/7th-anniversary/banner-desktop.webp",
+        "http://127.0.0.1:3010/_next/image?url=%2Fcampaigns%2F7th-anniversary%2Fbanner-desktop.webp&w=1080&q=75",
+        "http://127.0.0.1:3010/_next/image?url=%2Fcampaigns%2F7th-anniversary%2Fhomepage-studio-campaign.png&w=640&q=75"
+      ],
+      "studioImage": {
+        "complete": true,
+        "naturalWidth": 512,
+        "naturalHeight": 512,
+        "currentSrc": "http://127.0.0.1:3010/_next/image?url=%2Fcampaigns%2F7th-anniversary%2Fhomepage-studio-campaign.png&w=640&q=75"
+      },
+      "vitals": {
+        "cls": 0,
+        "lcp": 408
+      },
+      "smallTargets": []
+    },
+    {
+      "viewport": {
+        "name": "mobile",
+        "width": 390,
+        "height": 844,
+        "mobile": true
+      },
+      "screenshot": "C:\\Users\\mezza\\Documents\\Codex\\2026-07-26\\chon\\work\\Mezzanail\\test-results\\homepage-mobile.png",
+      "screenshotHeight": 9561,
+      "title": "Premium Nail Care in Melaka",
+      "h1Count": 1,
+      "sectionHeadings": [
+        "Signature Services",
+        "Selected Nail Work",
+        "Quiet confidence, built into every visit.",
+        "Loved by Our Customers",
+        "Rewards designed around your visits.",
+        "Mezzanail Nail Studio"
+      ],
+      "viewportWidth": 390,
+      "pageWidth": 390,
+      "horizontalOverflow": 0,
+      "pageHeight": 9561,
+      "bannerResources": [
+        "http://127.0.0.1:3010/campaigns/7th-anniversary/banner-mobile.webp",
+        "http://127.0.0.1:3010/_next/image?url=%2Fcampaigns%2F7th-anniversary%2Fhomepage-studio-campaign.png&w=384&q=75"
+      ],
+      "studioImage": {
+        "complete": true,
+        "naturalWidth": 358,
+        "naturalHeight": 358,
+        "currentSrc": "http://127.0.0.1:3010/_next/image?url=%2Fcampaigns%2F7th-anniversary%2Fhomepage-studio-campaign.png&w=384&q=75"
+      },
+      "vitals": {
+        "cls": 0,
+        "lcp": 316
+      },
+      "smallTargets": []
+    }
+  ]
+}

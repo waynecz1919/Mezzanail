@@ -7,7 +7,7 @@ Mobile-first, multilingual official website and rewards platform for Mezzanail N
 - Next.js 16 App Router and React 19
 - Tailwind CSS 4
 - Framer Motion and Lucide Icons
-- `next-themes` light/dark mode
+- `next-themes` forced light mode (system theme disabled)
 - HyperFrames-inspired Velvet Precision visual and motion system
 
 HyperFrames is a video-composition framework, so the site keeps interaction native to Next.js and Framer Motion while applying its visual-identity gate, modular composition discipline and restrained motion rules.
@@ -18,8 +18,42 @@ HyperFrames is a video-composition framework, so the site keeps interaction nati
 - `/services` — searchable service catalogue with verified durations
 - `/about` — brand story and values
 - `/contact` — studio information and direct booking
+- `/job` — Nail Artist and Nail Apprentice vacancies with secure online application
 - `/rewards` — membership and rewards experience
 - `/login` — member sign-in
+
+`/vacancy` and `/career` are permanent redirects to `/job`. The private success route is
+`/job/application-received`; it is not indexed and only displays the application
+reference and submission state.
+
+## Job applications
+
+Job applications are validated and processed only by the Node.js server route at
+`POST /api/job/applications`. The server generates an
+`MN-JOB-{YYYYMMDD}-{4CHAR}` reference, builds a real A4 PDF in memory, and sends
+that PDF to `mezzanailstudio@gmail.com` through Resend. The PDF is not stored and
+no public PDF URL is created. A private same-origin POST endpoint can regenerate
+the same PDF for the applicant after a failed email attempt.
+
+The `job_applications` PostgreSQL table stores a minimized delivery/audit record.
+Idempotency tokens, request IPs and application payloads are stored only as keyed
+HMAC hashes. Apply the migration before enabling the form:
+
+```bash
+pnpm db:migrate:job
+```
+
+Required server-only environment variables:
+
+- `DATABASE_URL`
+- `EMAIL_PROVIDER=resend`
+- `EMAIL_PROVIDER_API_KEY` (use a sending-only provider key)
+- `EMAIL_FROM_ADDRESS` (must be a provider-verified sender)
+- `JOB_APPLICATION_RECIPIENT=mezzanailstudio@gmail.com`
+- `JOB_APPLICATION_HASH_SECRET` (at least 32 random characters)
+
+See `docs/job-application.md` for the submission, retry, privacy and manual QA
+runbook.
 
 ## Redeem Center
 
@@ -54,11 +88,25 @@ All external destinations live in `lib/site.ts`:
 - WhatsApp, Instagram, Facebook and Xiaohongshu
 - Announcement, studio contact details and opening hours
 
-The official booking, WhatsApp, App Store, Google Play and Google Maps destinations are configured. Facebook, Instagram, Xiaohongshu profile URL, Google Review URL/embed and email remain explicit placeholders until their official destinations are supplied.
+The official booking, WhatsApp, App Store, Google Play, Google Maps, Facebook,
+Instagram, Xiaohongshu and Google Review destinations are configured. The Google
+Reviews embed and email remain explicit placeholders and are not rendered as
+public contact information.
 
 ## Service data
 
-`lib/services.ts` is the single source for service names, prices, durations and descriptions. The 13 current service names and durations were verified against the official booking page on 17 July 2026. That page does not publish prices, so the website displays “Please enquire” instead of inventing amounts. Replace those values when the official full price list is supplied.
+`lib/services.ts` is the single source for the 47 current service names, prices,
+durations, descriptions, inclusions and aftercare notes. Prices and specifically
+listed durations come from the Mezzanail Nail Studio price list supplied on
+18 July 2026. Services without a reliable listed duration display
+`Duration varies` and must be confirmed with the studio.
+
+## Membership data
+
+`lib/membership.ts` is the shared source for public membership balance and
+benefit-type definitions. The rewards page and Membership Terms consume these
+same neutral definitions. Actual balances, eligibility and validity remain
+controlled by the authorised member app, specific offer or studio confirmation.
 
 ## Languages
 
@@ -78,6 +126,8 @@ Production verification:
 
 ```bash
 pnpm lint
-pnpm build --webpack
+pnpm typecheck
+pnpm test
+pnpm build
 pnpm start
 ```

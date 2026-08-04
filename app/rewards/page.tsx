@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
-import { RewardsSite } from "@/components/rewards-site";
+import { permanentRedirect } from "next/navigation";
+import { MEMBER_CENTER_URL } from "@/config/member-center";
 
-export const metadata: Metadata = { title: "Membership & Rewards", description: "Explore Mezzanail Nail Studio membership privileges, birthday benefits and member rewards." };
-export default function Page() { return <RewardsSite />; }
+export default function Page() {
+  permanentRedirect(MEMBER_CENTER_URL);
+}

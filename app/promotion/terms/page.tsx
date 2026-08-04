@@ -7,9 +7,9 @@ import {
 import {
   promotionLanguageLabels,
   promotionLanguageShortLabels,
-  promotionPrizeTerms,
   termsCopy,
 } from "@/lib/promotion/campaign-copy";
+import { getWhatsappUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "7th Anniversary Campaign Terms",
@@ -78,11 +78,7 @@ export default async function PromotionTermsPage({
             <span>{String(index + 1).padStart(2, "0")}</span>
             <div>
               <h2>{section.title}</h2>
-              <p>
-                {index === 2
-                  ? promotionPrizeTerms[language]
-                  : section.body}
-              </p>
+              <p>{section.body}</p>
             </div>
           </section>
         ))}
@@ -94,12 +90,14 @@ export default async function PromotionTermsPage({
             {copy.returnCampaign}
           </Link>
           <a
-            href={`https://wa.me/${anniversaryCampaign.whatsappContact}`}
+            href={getWhatsappUrl(language, "promotion")}
             target="_blank"
             rel="noopener noreferrer"
           >
             {copy.contact}
           </a>
+          <Link href="/privacy">Privacy / Privasi</Link>
+          <Link href="/cookies">Cookies & Analytics</Link>
         </div>
       </div>
     </main>

@@ -1,53 +1,117 @@
-# Design QA
+# Homepage Signature Service Images — Design QA
 
-## Evidence
+**Source visual truth**
 
-- Source visual truth: `C:\Users\mezza\AppData\Local\Temp\codex-clipboard-c721db09-4e7b-47a7-ae97-9bb27536887b.png`
-- Browser-rendered implementation:
-  - `C:\Users\mezza\OneDrive\Documents\NIllam\mezzanail-rewards\final-service-icons-desktop.png`
-  - `C:\Users\mezza\OneDrive\Documents\NIllam\mezzanail-rewards\final-service-icons-mobile.png`
-- Combined comparison: `C:\Users\mezza\OneDrive\Documents\NIllam\mezzanail-rewards\design-qa-service-icons-comparison.png`
-- Viewports: desktop 1223 x 620; mobile 390 x 844.
-- State: homepage service-category section, English locale, light theme.
+- Callus Removal: `D:\Downloads\Purple & Cream Minimalist Sales Report Graph (2).png`
+- Waxing: `C:\Users\mezza\AppData\Local\Temp\codex-clipboard-53726e9d-b6ce-471f-9589-83202ca5dd77.png`
+- Hand Care: `D:\Downloads\Purple & Cream Minimalist Sales Report Graph.png`
+- Foot Care: `D:\Downloads\Purple & Cream Minimalist Sales Report Graph (1).png`
 
-## Full-view comparison evidence
+**Rendered implementation**
 
-- The five-column desktop grid retains the reference borders, card widths, cream background and centered editorial layout.
-- All five icon boxes share the same top coordinate; every title and body block begins on the same baseline.
-- Mobile collapses cleanly to one column with no horizontal overflow (`375px` body inside a `390px` viewport).
+- Desktop capture: `C:\Users\mezza\Documents\Codex\2026-07-27\files-mentioned-by-the-user-mezzanail\work\service-image-qa\test-results\homepage-desktop.png`
+- Mobile capture: `C:\Users\mezza\Documents\Codex\2026-07-27\files-mentioned-by-the-user-mezzanail\work\service-image-qa\test-results\homepage-mobile.png`
+- Focused desktop section: `C:\Users\mezza\Documents\Codex\2026-07-27\files-mentioned-by-the-user-mezzanail\work\service-image-qa\service-section-desktop.png`
+- Combined source/render comparison: `C:\Users\mezza\Documents\Codex\2026-07-27\files-mentioned-by-the-user-mezzanail\work\service-image-qa\service-images-comparison.png`
+- Viewports: desktop 1536 × 1024, tablet 1024 × 1366 and mobile 390 × 844 at device scale factor 1.
+- State: homepage Signature Services section, default state, English locale.
 
-## Focused comparison evidence
+**Full-view comparison evidence**
 
-- Fonts and typography: existing Georgia editorial headings and Manrope body copy remain unchanged. Fixed title and body rows prevent different copy lengths from shifting nearby content.
-- Spacing and layout rhythm: desktop cards use fixed `46px / 52px / 72px` icon-title-body rows, consistent 10px gaps and equal vertical centering.
-- Colors and tokens: icons continue using the existing champagne-gold token and borders use the existing line token.
-- Image/icon fidelity: icons now come from the MIT-licensed Tabler icon library rather than custom SVG/CSS drawings. Bottle, footsteps, finger, bandage and razor map directly to the five service categories.
-- Copy and content: all service titles and descriptions are preserved. The Xiaohongshu Account ID is removed from both Contact and Footer while the official profile link remains.
+- The four supplied images appear in the requested service categories.
+- The existing asymmetric two-featured-plus-three-supporting service grid is unchanged.
+- Desktop, tablet and mobile captures have zero page-level horizontal overflow and CLS 0.
 
-## Findings
+**Focused region comparison evidence**
 
-- No actionable P0, P1 or P2 differences remain.
-- P3: the new icons intentionally differ from the reference because the user requested a more title-appropriate set.
+- The source images and browser-rendered service section are shown together in `service-images-comparison.png`.
+- Hand Care and Foot Care retain their primary subjects within the featured 3:2 desktop crop.
+- Waxing retains the treatment action and client leg.
+- Callus Removal uses the new 4:3 source and fills the card while keeping both feet and the Before / After labels visible.
 
-## Comparison history
+**Required fidelity surfaces**
 
-1. Initial reference showed uneven visual alignment caused by content-driven vertical centering and several generic icons.
-2. Replaced the icon set with Tabler category-specific icons and converted each card to fixed icon, title and description rows.
-3. Post-fix browser measurements confirm identical desktop coordinates across all five cards: icon top `219.19px`, title top `275.19px`, body top `337.19px`.
+- Fonts and typography: section headings, service titles and supporting copy are unchanged.
+- Spacing and layout rhythm: card dimensions, gaps, radii and content baselines remain consistent.
+- Colors and visual tokens: supplied warm-neutral imagery sits within the existing cream and wine design system.
+- Image quality and asset fidelity: exact supplied PNG files are served through `next/image`; no generated substitutes or text recreation were used.
+- Copy and content: service names, descriptions, links and ordering are unchanged.
 
-## Primary interactions tested
+**Findings**
 
-- All five service cards remain links to the Services page.
-- Desktop and mobile responsive layouts rendered successfully.
-- Xiaohongshu links remain active without showing the Account ID.
-- Browser console checked with no warnings or errors.
+- No actionable P0, P1 or P2 differences.
+- No remaining P3 visual differences were identified.
 
-## Implementation checklist
+**Comparison history**
 
-- [x] Align icons, titles and descriptions to shared baselines.
-- [x] Replace the previous generic icon set.
-- [x] Preserve responsive behavior and link interactions.
-- [x] Remove Xiaohongshu Account ID from visible content and configuration.
-- [x] Pass lint, production build and browser verification.
+- Pass 1: the earlier square Callus Removal image required side margins to retain its Before / After labels.
+- Fix: replaced it with the supplied 4:3 version and changed the card to `cover`.
+- Pass 2: desktop and mobile captures confirm a full-width image with both labels visible and no layout regression.
+
+**Implementation checklist**
+
+- Exact four supplied images installed.
+- Correct category mapping applied.
+- Accurate alt text added.
+- Responsive desktop, tablet and mobile captures completed.
+- Lint, TypeScript, 28 tests and production build passed.
 
 final result: passed
+
+---
+
+# Anniversary Jackpot Campaign Palette — Design QA
+
+**Source visual truth**
+
+- `D:\Downloads\Untitled design (4).png`
+- Source pixels: 1600 × 1600.
+- Palette target: pearl cream, blossom pink, coral rose, rose gold, champagne gold and deep chocolate.
+
+**Rendered implementation**
+
+- Local route: `http://127.0.0.1:3022/anniversary-jackpot/preview`
+- Intended viewports: desktop 1440 × 1000 and mobile 390 × 844 at device scale factor 1.
+- State: Jackpot preview, Live Draw tab, default pre-spin state.
+- Implementation screenshot: unavailable because both the in-app Browser control and the supported Chrome control runtime were unavailable in this session.
+
+**Full-view comparison evidence**
+
+- Blocked: no browser-rendered implementation screenshot could be captured through an approved browser surface.
+
+**Focused region comparison evidence**
+
+- Blocked: the wheel, prize card and primary-action contrast could not be compared in a browser-rendered capture.
+
+**Required fidelity surfaces**
+
+- Fonts and typography: unchanged by this palette-only update.
+- Spacing and layout rhythm: unchanged by this palette-only update.
+- Colors and visual tokens: CSS tokens now map to the supplied campaign palette; small white button labels use a deeper rose with a measured contrast ratio above 4.5:1.
+- Image quality and asset fidelity: the supplied campaign artwork was used as visual color reference only; no source imagery was replaced.
+- Copy and content: unchanged.
+
+**Findings**
+
+- [P2] Browser-rendered visual comparison unavailable.
+  Location: Anniversary Jackpot preview.
+  Evidence: the route responds successfully and TypeScript/lint pass, but no approved browser screenshot could be captured.
+  Impact: responsive color balance and browser rendering still require visual confirmation.
+  Fix: inspect the live local preview at desktop and mobile width and capture both states.
+
+**Comparison history**
+
+- Pass 1: source artwork inspected at original resolution; the earlier dark wine stage was identified as visually inconsistent.
+- Fix: replaced the stage and system tokens with pearl cream, blossom pink, rose gold and champagne; deepened interactive rose tones for readable white labels.
+- Post-fix visual evidence: blocked by unavailable browser-control runtime.
+
+**Implementation checklist**
+
+- Campaign palette applied.
+- Small-text contrast adjusted.
+- Existing layout, typography and behavior preserved.
+- TypeScript and lint passed.
+- Local route returns HTTP 200.
+- Desktop and mobile browser captures remain pending.
+
+final result: blocked

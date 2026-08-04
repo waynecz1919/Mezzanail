@@ -17,8 +17,15 @@ export function Providers({ children }: { children: React.ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>("en");
 
   useEffect(() => {
+    window.localStorage.removeItem("theme");
+    document.documentElement.classList.remove("dark");
+    document.documentElement.classList.add("light");
+    document.documentElement.style.colorScheme = "light";
+
     const saved = window.localStorage.getItem("mezzanail-rewards-locale") as Locale | null;
     if (saved && saved in messages) {
+      document.documentElement.lang =
+        saved === "zh" ? "zh-CN" : saved === "ms" ? "ms" : "en";
       const frame = window.requestAnimationFrame(() => setLocaleState(saved));
       return () => window.cancelAnimationFrame(frame);
     }
@@ -33,7 +40,13 @@ export function Providers({ children }: { children: React.ReactNode }) {
   const value = useMemo(() => ({ locale, setLocale, dict: messages[locale], localeNames }), [locale]);
 
   return (
-    <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} disableTransitionOnChange={false}>
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="light"
+      enableSystem={false}
+      forcedTheme="light"
+      disableTransitionOnChange
+    >
       <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>
     </ThemeProvider>
   );

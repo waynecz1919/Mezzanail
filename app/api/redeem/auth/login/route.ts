@@ -40,18 +40,18 @@ export async function POST(request: NextRequest) {
   if (!staffId || !password) return apiError("Enter your staff ID and password.");
 
   try {
-    const verifiedStaffId = verifyStaffCredentials(staffId, password);
-    if (!verifiedStaffId) {
+    const verifiedStaff = verifyStaffCredentials(staffId, password);
+    if (!verifiedStaff) {
       await new Promise((resolve) => setTimeout(resolve, 300));
       return apiError("Invalid staff ID or password.", 401);
     }
 
     attempts.delete(ip);
     const response = NextResponse.json(
-      { success: true, staffId: verifiedStaffId },
+      { success: true, staffId: verifiedStaff.staffId, role: verifiedStaff.role },
       { headers: privateHeaders },
     );
-    const cookie = sessionCookie(createStaffSession(verifiedStaffId));
+    const cookie = sessionCookie(createStaffSession(verifiedStaff.staffId, verifiedStaff.role));
     response.cookies.set(cookie.name, cookie.value, cookie.options);
     return response;
   } catch (error) {

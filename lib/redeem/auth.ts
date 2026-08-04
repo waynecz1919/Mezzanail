@@ -6,8 +6,11 @@ import { cookies } from "next/headers";
 const COOKIE_NAME = "mn_redeem_staff_session";
 const SESSION_SECONDS = 8 * 60 * 60;
 
-type StaffSession = {
+export type StaffRole = "owner" | "admin" | "staff";
+
+export type StaffSession = {
   staffId: string;
+  role: StaffRole;
   issuedAt: number;
   expiresAt: number;
 };
@@ -26,10 +29,11 @@ function sign(value: string) {
   return createHmac("sha256", sessionSecret()).update(value).digest("base64url");
 }
 
-export function createStaffSession(staffId: string) {
+export function createStaffSession(staffId: string, role: StaffRole = "staff") {
   const now = Math.floor(Date.now() / 1000);
   const payload: StaffSession = {
     staffId,
+    role,
     issuedAt: now,
     expiresAt: now + SESSION_SECONDS,
   };
@@ -49,7 +53,10 @@ export function verifyStaffSession(token: string | undefined | null): StaffSessi
     const payload = JSON.parse(Buffer.from(encoded, "base64url").toString("utf8")) as StaffSession;
     const now = Math.floor(Date.now() / 1000);
     if (!payload.staffId || payload.expiresAt <= now || payload.issuedAt > now + 60) return null;
-    return payload;
+    return {
+      ...payload,
+      role: ["owner", "admin", "staff"].includes(payload.role) ? payload.role : "staff",
+    };
   } catch {
     return null;
   }
@@ -88,13 +95,20 @@ export function expiredSessionCookie() {
   };
 }
 
-type StaffCredential = { id: string; salt: string; hash: string };
+type StaffCredential = { id: string; salt: string; hash: string; role?: StaffRole };
 
 function configuredUsers(): StaffCredential[] {
-  const raw = process.env.REDEEM_STAFF_USERS;
-  if (!raw) throw new Error("REDEEM_AUTH_NOT_CONFIGURED");
-  const parsed = JSON.parse(raw) as StaffCredential[];
-  if (!Array.isArray(parsed)) throw new Error("REDEEM_AUTH_NOT_CONFIGURED");
+  const sources = [
+    process.env.JACKPOT_STAFF_USERS,
+    process.env.REDEEM_STAFF_USERS,
+  ].filter((value): value is string => Boolean(value));
+  if (!sources.length) throw new Error("REDEEM_AUTH_NOT_CONFIGURED");
+
+  const parsed = sources.flatMap((raw) => {
+    const credentials = JSON.parse(raw) as StaffCredential[];
+    if (!Array.isArray(credentials)) throw new Error("REDEEM_AUTH_NOT_CONFIGURED");
+    return credentials;
+  });
   return parsed.filter((item) => item?.id && item?.salt && item?.hash);
 }
 
@@ -108,7 +122,12 @@ export function verifyStaffCredentials(staffId: string, password: string) {
   const calculated = scryptSync(password, Buffer.from(credential.salt, "base64url"), 32);
   const expected = Buffer.from(credential.hash, "base64url");
   if (calculated.length !== expected.length || !timingSafeEqual(calculated, expected)) return null;
-  return credential.id;
+  return {
+    staffId: credential.id,
+    role: credential.role && ["owner", "admin", "staff"].includes(credential.role)
+      ? credential.role
+      : "staff",
+  };
 }
 
 export { COOKIE_NAME };

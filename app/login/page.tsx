@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
-import { LoginPage } from "@/components/login-page";
+import { permanentRedirect } from "next/navigation";
+import { MEMBER_CENTER_URL } from "@/config/member-center";
 
-export const metadata: Metadata = { title: "Member Sign In", robots: { index: false, follow: false } };
-export default function Page(){ return <LoginPage/>; }
+export default function Page() {
+  permanentRedirect(MEMBER_CENTER_URL);
+}
