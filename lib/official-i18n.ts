@@ -32,7 +32,7 @@ export const officialCampaignMessages = {
 
 export const officialMessages = {
   en: {
-    nav: { home: "Home", services: "Services", work: "Our work", story: "Our story", reviews: "Reviews", contact: "Contact", rewards: "Rewards", promo: "Offers", jobs: "Career", book: "Book now" },
+    nav: { home: "Home", services: "Services", work: "Our work", story: "Our story", reviews: "Reviews", contact: "Contact", rewards: "Membership", promo: "Offers", jobs: "Career", book: "Book now" },
     announcement: { label: "7TH ANNIVERSARY", action: "Discover the celebration" },
     hero: { eyebrow: "MEZZANAIL NAIL STUDIO · MALAYSIA", title: "Nail care, elevated to a modern ritual.", body: "Precision-led nail artistry and considered care in a calm, contemporary studio.", primary: "Book an appointment", secondary: "Explore our services", note: "Thoughtful service · Refined finish · Lasting confidence" },
     campaign: { eyebrow: "20TH JULY — 15TH SEPTEMBER 2026", title: "Seven years of beauty, shared with you.", body: "Discover anniversary-only privileges, member rewards and special surprises created to thank our Mezzanail Nail Studio community.", primary: "Book the anniversary edit", secondary: "View anniversary rewards" },
@@ -57,7 +57,7 @@ export const officialMessages = {
     }
   },
   zh: {
-    nav: { home: "首页", services: "服务", work: "作品", story: "品牌故事", reviews: "评价", contact: "联系", rewards: "会员礼遇", promo: "促销", jobs: "招聘", book: "立即预约" },
+    nav: { home: "首页", services: "服务", work: "作品", story: "品牌故事", reviews: "评价", contact: "联系", rewards: "会员中心", promo: "促销", jobs: "招聘", book: "立即预约" },
     announcement: { label: "七周年庆典", action: "查看周年活动" },
     hero: { eyebrow: "MEZZANAIL NAIL STUDIO · 马来西亚", title: "让美甲护理，成为现代精致仪式。", body: "以专业技术、细致美甲艺术与舒适空间，带来从容而高级的护理体验。", primary: "预约服务", secondary: "查看服务项目", note: "细致服务 · 精准呈现 · 长久自信" },
     campaign: { eyebrow: "2026年7月20日 — 9月15日", title: "七年美丽时光，与你共同分享。", body: "探索周年限定礼遇、会员回馈与惊喜活动，感谢每一位 Mezzanail Nail Studio 顾客一路相伴。", primary: "预约周年限定服务", secondary: "查看周年礼遇" },
@@ -72,7 +72,7 @@ export const officialMessages = {
     pages: { services: { eyebrow: "服务目录", title: "为双手与双足而设的精准护理。", body: "预约前可浏览完整官方服务清单、最新价格与已标注的预计时长。", cta: "咨询适合的服务" }, about: { eyebrow: "MEZZANAIL NAIL STUDIO · 马来西亚", title: "一间围绕细节而生的工作室。", body: "我们的方式现代、精准且充满个人关怀。从咨询到完成，每个细节都自然流畅。", values: [["精准", "同样重视专业技术与最终呈现。"], ["健康", "每个决定都以指甲健康和顾客舒适为先。"], ["克制", "真正精致的结果，无需多余堆砌。"]], cta: "计划到店" }, contact: { eyebrow: "联系与预约", title: "直接联系门店团队。", body: "告诉我们理想服务、日期与时间，我们将直接确认预约。", formTitle: "联系前请准备", steps: ["选择服务类别", "提供理想日期和时间", "等待团队确认"] } }
   },
   ms: {
-    nav: { home: "Utama", services: "Servis", work: "Hasil kami", story: "Kisah kami", reviews: "Ulasan", contact: "Hubungi", rewards: "Ganjaran", promo: "Promosi", jobs: "Kerjaya", book: "Tempah sekarang" },
+    nav: { home: "Utama", services: "Servis", work: "Hasil kami", story: "Kisah kami", reviews: "Ulasan", contact: "Hubungi", rewards: "Keahlian", promo: "Promosi", jobs: "Kerjaya", book: "Tempah sekarang" },
     announcement: { label: "ULANG TAHUN KE-7", action: "Lihat sambutan kami" },
     hero: { eyebrow: "MEZZANAIL NAIL STUDIO · MALAYSIA", title: "Penjagaan kuku sebagai ritual moden.", body: "Seni kuku berketepatan tinggi dan penjagaan teliti dalam studio yang tenang dan kontemporari.", primary: "Tempah janji temu", secondary: "Lihat servis kami", note: "Layanan teliti · Hasil kemas · Keyakinan berpanjangan" },
     campaign: { eyebrow: "20 JULAI — 15 SEPTEMBER 2026", title: "Tujuh tahun keindahan, dikongsi bersama anda.", body: "Temui keistimewaan ulang tahun, ganjaran ahli dan kejutan istimewa sebagai penghargaan kepada komuniti Mezzanail Nail Studio.", primary: "Tempah pilihan ulang tahun", secondary: "Lihat ganjaran ulang tahun" },

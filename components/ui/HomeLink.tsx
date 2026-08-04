@@ -21,6 +21,7 @@ type HomeLinkProps = {
   event?: HomepageAnalyticsEvent;
   eventLabel?: string;
   external?: boolean;
+  target?: "_self" | "_blank";
 };
 
 function trackHomepageAction(
@@ -47,9 +48,11 @@ export function HomeLink({
   event,
   eventLabel,
   external = false,
+  target,
 }: HomeLinkProps) {
   const classes = `mn-button mn-button--${variant} ${className}`.trim();
   const onClick = () => trackHomepageAction(event, href, eventLabel);
+  const linkTarget = target ?? (external ? "_blank" : undefined);
 
   if (!external && href.startsWith("/")) {
     return (
@@ -65,8 +68,8 @@ export function HomeLink({
       className={classes}
       aria-label={ariaLabel}
       onClick={onClick}
-      target={external ? "_blank" : undefined}
-      rel={external ? "noopener noreferrer" : undefined}
+      target={linkTarget}
+      rel={linkTarget === "_blank" ? "noopener noreferrer" : undefined}
     >
       {children}
     </a>

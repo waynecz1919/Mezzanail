@@ -68,9 +68,9 @@ const english = {
   },
   membership: {
     eyebrow: "MEZZANAIL MEMBERSHIP",
-    title: "Rewards designed around your visits.",
-    subtitle: "Thoughtful privileges for every return to the studio",
-    action: "Explore Membership",
+    title: "Your membership, all in one place.",
+    subtitle: "View your Member Center balance, vouchers, packages and latest records",
+    action: "Membership",
   },
   studio: {
     eyebrow: "VISIT THE STUDIO",
@@ -131,8 +131,9 @@ export const homepageContent = {
     },
     membership: {
       ...english.membership,
-      subtitle: "为每一次到访设计的专属会员礼遇",
-      action: "探索会员礼遇",
+      title: "会员资料，一目了然。",
+      subtitle: "查看会员余额、礼券、配套与最近记录",
+      action: "会员中心",
     },
     studio: {
       ...english.studio,
@@ -190,8 +191,9 @@ export const homepageContent = {
     },
     membership: {
       ...english.membership,
-      subtitle: "Keistimewaan yang direka untuk setiap kunjungan",
-      action: "Teroka Keahlian",
+      title: "Keahlian anda, semuanya di satu tempat.",
+      subtitle: "Lihat baki, baucar, pakej dan rekod terkini di Pusat Ahli",
+      action: "Keahlian",
     },
     studio: {
       ...english.studio,

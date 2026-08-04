@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { MEMBER_CENTER_URL } from "./config/member-center";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
@@ -6,6 +7,16 @@ const nextConfig: NextConfig = {
   experimental: { optimizePackageImports: ["lucide-react", "framer-motion"] },
   async redirects() {
     return [
+      {
+        source: "/rewards",
+        destination: MEMBER_CENTER_URL,
+        permanent: true,
+      },
+      {
+        source: "/login",
+        destination: MEMBER_CENTER_URL,
+        permanent: true,
+      },
       {
         source: "/vacancy",
         destination: "/job",

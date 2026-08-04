@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { homepageContent } from "@/config/homepage";
 import type { Locale } from "@/lib/i18n";
 import { HomeLink } from "@/components/ui/HomeLink";
+import { MEMBER_CENTER_URL } from "@/config/member-center";
 
 export function MembershipBanner({ locale }: { locale: Locale }) {
   const copy = homepageContent[locale].membership;
@@ -18,7 +19,8 @@ export function MembershipBanner({ locale }: { locale: Locale }) {
             <p>{copy.subtitle}</p>
           </div>
           <HomeLink
-            href="/rewards"
+            href={MEMBER_CENTER_URL}
+            target="_self"
             variant="primary"
             event="membership_click"
             eventLabel="homepage_membership_banner"

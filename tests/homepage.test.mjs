@@ -31,9 +31,10 @@ test("homepage renders the approved quiet-luxury section order", () => {
 });
 
 test("homepage navigation is concise and jobs remain in the footer", () => {
-  for (const route of ["/", "/services", "/rewards", "/promotion", "/about", "/contact"]) {
+  for (const route of ["/", "/services", "/promotion", "/about", "/contact"]) {
     assert.match(navigation, new RegExp(`href: "${route.replace("/", "\\/")}"`));
   }
+  assert.match(navigation, /href: MEMBER_CENTER_URL/);
   assert.doesNotMatch(navigation, /\/job|\/#app/);
   assert.match(officialSite, /<Link href="\/job">\{t\.nav\.jobs\}<\/Link>/);
   assert.match(officialSite, /siteConfig\.bookingUrl/);

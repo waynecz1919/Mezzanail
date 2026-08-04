@@ -19,6 +19,7 @@ import { StudioLocationBooking } from "@/components/home/StudioLocationBooking";
 import { WhyMezzanail } from "@/components/home/WhyMezzanail";
 import { useLanguage } from "@/components/providers";
 import { ServicesCatalog } from "@/components/services-catalog";
+import { MEMBER_CENTER_URL } from "@/config/member-center";
 import { primaryNavigation } from "@/config/navigation";
 import type { Locale } from "@/lib/i18n";
 import { officialMessages } from "@/lib/official-i18n";
@@ -61,6 +62,13 @@ function ExternalOrPending({ href, children, className = "", ariaLabel }: { href
   return <a href={href} className={className} target="_blank" rel="noopener noreferrer" aria-label={ariaLabel}>{children}</a>;
 }
 
+function NavigationLink({ href, children, className = "", onClick }: { href: string; children: React.ReactNode; className?: string; onClick?: () => void }) {
+  if (href.startsWith("https://")) {
+    return <a href={href} className={className} target="_self" onClick={onClick}>{children}</a>;
+  }
+  return <Link href={href} className={className} onClick={onClick}>{children}</Link>;
+}
+
 function LanguageMenu() {
   const { locale, setLocale } = useOfficial();
   const [open, setOpen] = useState(false);
@@ -80,7 +88,7 @@ function SiteHeader() {
   const isHome = pathname === "/";
   const nav = primaryNavigation.map((item) => ({
     href: item.href,
-    label: item.labelKey === "rewards" ? (t.nav.rewards === "Rewards" ? "Membership" : t.nav.rewards) : t.nav[item.labelKey],
+    label: t.nav[item.labelKey],
   }));
   return <>
     {!isHome && siteConfig.announcement.enabled && <div className="announcement"><span>{t.announcement.label}</span><span className="announcement-date">{siteConfig.announcement.dates}</span><Link href="/promotion">{t.announcement.action}<ArrowRight size={13}/></Link></div>}
@@ -90,10 +98,10 @@ function SiteHeader() {
         <Link href="/" className="official-header-brand" aria-label={`${siteConfig.brandName} home`}>
           <BrandLogo compact/>
         </Link>
-        <nav className="official-desktop-nav" aria-label="Primary navigation">{nav.map(({href,label}) => <Link key={href} href={href} className={`nav-link ${pathname === href ? "is-current" : ""}`}>{label}</Link>)}</nav>
+        <nav className="official-desktop-nav" aria-label="Primary navigation">{nav.map(({href,label}) => <NavigationLink key={href} href={href} className={`nav-link ${pathname === href ? "is-current" : ""}`}>{label}</NavigationLink>)}</nav>
         <div className="official-header-tools"><LanguageMenu/><a href={siteConfig.bookingUrl} className="header-book" target="_blank" rel="noopener noreferrer" onClick={() => trackPublicAction("book_appointment_click", siteConfig.bookingUrl, "header")}>{t.nav.book}</a></div>
       </div>
-      <AnimatePresence>{open && <motion.nav initial={{height:0,opacity:0}} animate={{height:"auto",opacity:1}} exit={{height:0,opacity:0}} className="official-mobile-drawer"><div className="shell grid gap-1 py-4"><a href={siteConfig.bookingUrl} target="_blank" rel="noopener noreferrer" className="mobile-drawer-book" onClick={()=>{trackPublicAction("book_appointment_click", siteConfig.bookingUrl, "mobile_drawer");setOpen(false)}}>{t.nav.book}<ArrowRight size={16}/></a>{nav.map(({href,label})=><Link key={href} href={href} className="mobile-drawer-link" onClick={()=>setOpen(false)}>{label}</Link>)}</div></motion.nav>}</AnimatePresence>
+      <AnimatePresence>{open && <motion.nav initial={{height:0,opacity:0}} animate={{height:"auto",opacity:1}} exit={{height:0,opacity:0}} className="official-mobile-drawer"><div className="shell grid gap-1 py-4"><a href={siteConfig.bookingUrl} target="_blank" rel="noopener noreferrer" className="mobile-drawer-book" onClick={()=>{trackPublicAction("book_appointment_click", siteConfig.bookingUrl, "mobile_drawer");setOpen(false)}}>{t.nav.book}<ArrowRight size={16}/></a>{nav.map(({href,label})=><NavigationLink key={href} href={href} className="mobile-drawer-link" onClick={()=>setOpen(false)}>{label}</NavigationLink>)}</div></motion.nav>}</AnimatePresence>
     </header>
   </>;
 }
@@ -103,7 +111,7 @@ function SiteFooter() {
   const whatsapp = getWhatsappUrl(locale);
   return <footer className="official-footer"><div className="shell"><div className="grid gap-12 border-b border-white/15 py-16 md:grid-cols-[1.4fr_repeat(3,1fr)]">
     <div><BrandLogo inverse/><p className="mt-5 max-w-xs text-sm leading-7 text-white/55">{t.footer.line}</p></div>
-    <div><h3>{t.footer.explore}</h3><Link href="/about">{t.nav.story}</Link><Link href="/services">{t.nav.services}</Link><Link href="/promotion">{t.nav.promo}</Link><Link href="/rewards">{t.nav.rewards === "Rewards" ? "Membership" : t.nav.rewards}</Link><Link href="/job">{t.nav.jobs}</Link></div>
+    <div><h3>{t.footer.explore}</h3><Link href="/about">{t.nav.story}</Link><Link href="/services">{t.nav.services}</Link><Link href="/promotion">{t.nav.promo}</Link><NavigationLink href={MEMBER_CENTER_URL}>{t.nav.rewards}</NavigationLink><Link href="/job">{t.nav.jobs}</Link></div>
     <div><h3>{t.footer.connect}</h3><ExternalOrPending href={siteConfig.instagramUrl} ariaLabel={`${siteConfig.brandName} Instagram`}>Instagram</ExternalOrPending><ExternalOrPending href={siteConfig.facebookUrl} ariaLabel={`${siteConfig.brandName} Facebook`}>Facebook</ExternalOrPending><ExternalOrPending href={siteConfig.xiaohongshuUrl} ariaLabel={`${siteConfig.brandName} Xiaohongshu`}>Xiaohongshu</ExternalOrPending></div>
     <div><h3>{t.footer.studio}</h3><Link href="/contact">{t.nav.contact}</Link><a href={siteConfig.googleMapsDirectionsUrl} target="_blank" rel="noopener noreferrer">Google Maps</a><a href={whatsapp} target="_blank" rel="noopener noreferrer">WhatsApp</a><a href={siteConfig.phoneLink}>{siteConfig.phoneDisplay}</a></div>
   </div><div className="flex flex-col gap-4 py-7 text-[11px] text-white/42 sm:flex-row sm:items-center sm:justify-between"><span>© 2026 {siteConfig.brandName}. All rights reserved.</span><div className="flex flex-wrap gap-x-5 gap-y-2"><Link href="/privacy">{t.footer.privacy}</Link><Link href="/terms">{t.footer.terms}</Link><Link href="/cookies">Cookies</Link><Link href="/privacy/job-applicants">Applicant Privacy</Link><Link href="/membership/terms">Membership Terms</Link><Link href="/promotion/terms">Promotion Terms</Link></div></div></div></footer>;
