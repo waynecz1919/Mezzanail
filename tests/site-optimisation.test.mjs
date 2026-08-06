@@ -5,7 +5,6 @@ import test from "node:test";
 const read = (path) => readFileSync(path, "utf8");
 const services = read("lib/services.ts");
 const servicesCatalog = read("components/services-catalog.tsx");
-const membership = read("lib/i18n.ts");
 const membershipConfig = read("lib/membership.ts");
 const membershipTerms = read("components/legal-document.tsx");
 const rootLayout = read("app/layout.tsx");
@@ -29,7 +28,7 @@ test("unverified service durations are not presented as 90 minutes", () => {
 });
 
 test("membership preview avoids unverified benefits and point values", () => {
-  const membershipSources = `${membership}\n${membershipConfig}\n${membershipTerms}`;
+  const membershipSources = `${membershipConfig}\n${membershipTerms}`;
   assert.doesNotMatch(membershipSources, /500 points|800 points|500 积分|800 积分|500 mata|800 mata/);
   assert.doesNotMatch(membershipSources, /No expiry pressure|Family sharing|Complimentary colour-gel refresh/);
   for (const type of [
@@ -41,7 +40,6 @@ test("membership preview avoids unverified benefits and point values", () => {
   ]) {
     assert.match(membershipConfig, new RegExp(type));
   }
-  assert.match(membership, /membershipFactItems\("en"\)/);
   assert.match(membershipTerms, /membershipTermsBullets\("en"\)/);
 });
 

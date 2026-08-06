@@ -104,14 +104,14 @@ listed durations come from the Mezzanail Nail Studio price list supplied on
 ## Membership data
 
 `lib/membership.ts` is the shared source for public membership balance and
-benefit-type definitions. The rewards page and Membership Terms consume these
-same neutral definitions. Actual balances, eligibility and validity remain
+benefit-type definitions. Membership Terms consume these neutral definitions.
+Actual balances, eligibility and validity remain
 controlled by the authorised member app, specific offer or studio confirmation.
 
 ## Languages
 
 - Official website copy: `lib/official-i18n.ts`
-- Rewards copy: `lib/i18n.ts`
+- Shared locale primitives: `lib/i18n.ts`
 - Supported locales: English, Simplified Chinese and Bahasa Melayu
 - Selection persists in local storage as `mezzanail-rewards-locale`
 
