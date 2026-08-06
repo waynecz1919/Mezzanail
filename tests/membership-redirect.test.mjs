@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import test from "node:test";
 
 const read = (filePath) => readFileSync(filePath, "utf8");
@@ -8,22 +8,26 @@ const nextConfig = read("next.config.ts");
 const navigation = read("config/navigation.ts");
 const officialSite = read("components/official-site.tsx");
 const membershipBanner = read("components/home/MembershipBanner.tsx");
-const rewardsPage = read("app/rewards/page.tsx");
-const loginPage = read("app/login/page.tsx");
 const sitemap = read("app/sitemap.ts");
 const messages = read("lib/official-i18n.ts");
 
 test("legacy membership routes use framework-level permanent redirects", () => {
-  assert.match(memberCenter, /https:\/\/credits\.mezzanail\.com\/member-credits/);
+  const destinationMatch = memberCenter.match(
+    /MEMBER_CENTER_URL\s*=\s*[\"']([^\"']+)[\"']/,
+  );
+  assert.ok(destinationMatch, "MEMBER_CENTER_URL must be declared");
+  const destination = destinationMatch[1];
+  assert.match(destination, /^https:\/\//);
+  assert.doesNotMatch(destination, /\/(?:login|rewards)(?:\/|$)/);
+
   for (const source of ["/rewards", "/login"]) {
     const redirect = new RegExp(
       `source: "${source}",[\\s\\S]*?destination: MEMBER_CENTER_URL,[\\s\\S]*?permanent: true`,
     );
     assert.match(nextConfig, redirect);
   }
-  assert.match(rewardsPage, /permanentRedirect\(MEMBER_CENTER_URL\)/);
-  assert.match(loginPage, /permanentRedirect\(MEMBER_CENTER_URL\)/);
-  assert.doesNotMatch(rewardsPage, /RewardsSite|createPublicMetadata|canonical/);
+  assert.equal(existsSync("app/login/page.tsx"), false);
+  assert.equal(existsSync("app/rewards/page.tsx"), false);
 });
 
 test("public membership links go directly to Member Center in the same tab", () => {
