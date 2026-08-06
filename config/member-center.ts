@@ -1,1 +1,1 @@
-export const MEMBER_CENTER_URL = "https://credits.mezzanail.com/member-credits";
+export const MEMBER_CENTER_URL = "https://member.mezzanail.com/member-credits";
