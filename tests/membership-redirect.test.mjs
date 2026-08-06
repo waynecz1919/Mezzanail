@@ -17,7 +17,9 @@ test("legacy membership routes use framework-level permanent redirects", () => {
   );
   assert.ok(destinationMatch, "MEMBER_CENTER_URL must be declared");
   const destination = destinationMatch[1];
+  assert.equal(destination, "https://member.mezzanail.com/member-credits");
   assert.match(destination, /^https:\/\//);
+  assert.doesNotMatch(destination, /credits\.mezzanail\.com/);
   assert.doesNotMatch(destination, /\/(?:login|rewards)(?:\/|$)/);
 
   for (const source of ["/rewards", "/login"]) {
@@ -28,6 +30,12 @@ test("legacy membership routes use framework-level permanent redirects", () => {
   }
   assert.equal(existsSync("app/login/page.tsx"), false);
   assert.equal(existsSync("app/rewards/page.tsx"), false);
+});
+
+test("legacy redirects preserve query strings through Next.js defaults", () => {
+  assert.doesNotMatch(nextConfig, /source: "\/(?:rewards|login)"[\s\S]*?has:/);
+  assert.doesNotMatch(nextConfig, /source: "\/(?:rewards|login)"[\s\S]*?missing:/);
+  assert.match(nextConfig, /destination: MEMBER_CENTER_URL/);
 });
 
 test("public membership links go directly to Member Center in the same tab", () => {
