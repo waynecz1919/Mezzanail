@@ -12,7 +12,7 @@ const DEFAULT_ROLE: WinnieRole = "STAFF";
 
 export const companyUsers = {
   ADMIN: [
-    "joannlau@gmail.com",
+    "joannlau8@gmail.com",
     "waynecz1919@gmail.com",
     "winnielau48@gmail.com",
   ],

@@ -31,7 +31,7 @@ test("Google company authentication has an explicit server-side allowlist", () =
 
 test("Phase 2B.1 starts with the exact approved six-account role map", () => {
   for (const email of [
-    "joannlau@gmail.com",
+    "joannlau8@gmail.com",
     "waynecz1919@gmail.com",
     "winnielau48@gmail.com",
     "joyilovesungmin@gmail.com",
