@@ -2,6 +2,7 @@
 
 import {
   BarChart3,
+  Bell,
   BriefcaseBusiness,
   CalendarDays,
   CheckSquare,
@@ -16,6 +17,7 @@ import {
   ShieldCheck,
   Sparkles,
   UsersRound,
+  UserRound,
   WalletCards,
   X,
 } from "lucide-react";
@@ -35,13 +37,17 @@ type ManagerShellProps = {
 
 const iconById = {
   dashboard: BarChart3,
+  "winnie-tools": Sparkles,
   "voice-notes": MessageCircle,
   tasks: CheckSquare,
   "customer-tasks": ContactRound,
+  "customer-profile": UserRound,
   appointments: CalendarDays,
   "member-credit": WalletCards,
   whatsapp: MessageCircle,
+  "whatsapp-service": MessageCircle,
   "team-hub": UsersRound,
+  reminders: Bell,
   inventory: Package,
   finance: CircleDollarSign,
   settings: Settings,

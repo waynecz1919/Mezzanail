@@ -25,17 +25,65 @@ test("Google company authentication has an explicit server-side allowlist", () =
   assert.match(access, /WINNIE_AUTH_ROLE_MAP_JSON/);
   assert.match(access, /isCompanyAccountAllowed/);
   assert.match(access, /return false/);
+  assert.match(access, /COUNTER/);
   assert.doesNotMatch(access, /admin@|example\.com/);
 });
 
+test("Phase 2B.1 starts with the exact approved six-account role map", () => {
+  for (const email of [
+    "joannlau@gmail.com",
+    "waynecz1919@gmail.com",
+    "winnielau48@gmail.com",
+    "joyilovesungmin@gmail.com",
+    "tanziling517@gmail.com",
+    "mezzanailstudio@gmail.com",
+  ]) assert.match(access, new RegExp(email.replace("@", "\\@")));
+  assert.match(access, /companyUsers/);
+  assert.match(access, /initialRoleByEmail/);
+  assert.doesNotMatch(access, /allowedDomains\.includes/);
+});
+
+test("COUNTER has front-desk permissions without sensitive financial or admin access", () => {
+  const counterBlock = permissions.match(/COUNTER:\s*\[([\s\S]*?)\n  \],/);
+  assert.ok(counterBlock, "COUNTER permissions must be declared centrally");
+  for (const permission of [
+    "dashboard.view",
+    "appointments.view",
+    "appointments.manage",
+    "customer_profile.view",
+    "member_credit.view",
+    "team_hub.view",
+    "reminders.view",
+    "reminders.manage",
+    "whatsapp.customer_service",
+    "winnie_ai.basic",
+  ]) assert.match(counterBlock[1], new RegExp(permission.replace(".", "\\.")));
+  for (const permission of [
+    "member_credit.adjust",
+    "member_credit.delete_transaction",
+    "family_sharing.approve",
+    "finance.view",
+    "finance.manage",
+    "roles.manage",
+    "permissions.manage",
+    "audit.manage",
+    "whatsapp.broadcast",
+    "settings.manage",
+  ]) assert.doesNotMatch(counterBlock[1], new RegExp(permission.replace(".", "\\.")));
+});
+
 test("roles and permissions are separate from Google identity", () => {
-  for (const role of ["ADMIN", "MANAGER", "STAFF"]) assert.match(permissions, new RegExp(`\\b${role}\\b`));
+  for (const role of ["ADMIN", "MANAGER", "STAFF", "COUNTER"]) assert.match(permissions, new RegExp(`\\b${role}\\b`));
   assert.match(permissions, /rolePermissions/);
   assert.match(permissions, /ADMIN:\s*allPermissions/);
-  assert.match(permissions, /MANAGER:[\s\S]*member_credit\.view/);
-  assert.doesNotMatch(permissions, /MANAGER:[\s\S]*member_credit\.manage/);
-  assert.doesNotMatch(permissions, /STAFF:[\s\S]*member_credit\.view/);
-  assert.doesNotMatch(permissions, /MANAGER:[\s\S]*permissions\.manage/);
+  const managerBlock = permissions.match(/MANAGER:\s*\[([\s\S]*?)\n  \],/);
+  const staffBlock = permissions.match(/STAFF:\s*\[([\s\S]*?)\n  \],/);
+  assert.ok(managerBlock);
+  assert.ok(staffBlock);
+  assert.match(managerBlock[1], /member_credit\.view/);
+  assert.doesNotMatch(managerBlock[1], /member_credit\.manage/);
+  assert.doesNotMatch(staffBlock[1], /member_credit\.view/);
+  assert.doesNotMatch(managerBlock[1], /permissions\.manage/);
 });
 
 test("server guards protect authentication and permissions", () => {

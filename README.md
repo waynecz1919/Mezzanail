@@ -135,8 +135,10 @@ pnpm start
 ## Winnie AI Manager authentication boundary
 
 The internal Manager entry point uses a standard NextAuth Google provider when
-the server-only credentials are configured. Company access is deliberately
-closed by default; no real email address is stored in the repository.
+the server-only credentials are configured. The initial Phase 2B.1 allowlist is
+centralized in `config/auth/company-access.ts` with six approved accounts
+(three `ADMIN`, two `STAFF`, one `COUNTER`). Access uses exact email matching;
+a configured domain alone cannot grant access.
 
 Configure these values only in the deployment secret store when the company is
 ready to enable the entry point:
@@ -144,9 +146,9 @@ ready to enable the entry point:
 - `GOOGLE_CLIENT_ID`
 - `GOOGLE_CLIENT_SECRET`
 - `NEXTAUTH_SECRET`
-- `WINNIE_AUTH_ALLOWED_DOMAINS` (comma-separated domains)
-- `WINNIE_AUTH_ALLOWED_EMAILS` (comma-separated exceptions)
-- `WINNIE_AUTH_ROLE_MAP_JSON` (optional email-to-role map for `ADMIN`, `MANAGER` or `STAFF`)
+- `WINNIE_AUTH_ALLOWED_DOMAINS` (reserved for a future externalized policy; not an access bypass in Phase 2B.1)
+- `WINNIE_AUTH_ALLOWED_EMAILS` (optional server-only additions)
+- `WINNIE_AUTH_ROLE_MAP_JSON` (optional server-only role overrides for `ADMIN`, `MANAGER`, `STAFF` or `COUNTER`)
 
 Winnie identity, role and permission are separate layers. The role-driven
 navigation and server guards protect `/manager` and its placeholder module
