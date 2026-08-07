@@ -131,3 +131,25 @@ pnpm test
 pnpm build
 pnpm start
 ```
+
+## Winnie AI Manager authentication boundary
+
+The internal Manager entry point uses a standard NextAuth Google provider when
+the server-only credentials are configured. Company access is deliberately
+closed by default; no real email address is stored in the repository.
+
+Configure these values only in the deployment secret store when the company is
+ready to enable the entry point:
+
+- `GOOGLE_CLIENT_ID`
+- `GOOGLE_CLIENT_SECRET`
+- `NEXTAUTH_SECRET`
+- `WINNIE_AUTH_ALLOWED_DOMAINS` (comma-separated domains)
+- `WINNIE_AUTH_ALLOWED_EMAILS` (comma-separated exceptions)
+- `WINNIE_AUTH_ROLE_MAP_JSON` (optional email-to-role map for `ADMIN`, `MANAGER` or `STAFF`)
+
+Winnie identity, role and permission are separate layers. The role-driven
+navigation and server guards protect `/manager` and its placeholder module
+routes, while Appointment, Member Credit, Team Hub, WhatsApp and other
+business systems remain independent. Phase 2B intentionally does not connect
+their databases or APIs; those module bridges are deferred to Phase 2C.
