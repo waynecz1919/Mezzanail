@@ -12,6 +12,11 @@ export function proxy(request: NextRequest) {
   const host = request.headers.get("host")?.split(":")[0].toLowerCase();
   const destination = request.nextUrl.clone();
 
+  if (host === "winnie.mezzanail.com" && request.nextUrl.pathname === "/") {
+    destination.pathname = "/manager/login";
+    return NextResponse.redirect(destination, 307);
+  }
+
   if (host === "promotion.mezzanail.com" && request.nextUrl.pathname === "/") {
     destination.pathname = "/promotion";
     return NextResponse.rewrite(destination);
