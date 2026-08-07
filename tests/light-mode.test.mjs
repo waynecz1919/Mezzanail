@@ -22,10 +22,11 @@ test("the site is forced to light mode", () => {
   assert.doesNotMatch(globals, /prefers-color-scheme:\s*dark/);
 });
 
-test("theme controls cannot reactivate dark mode", () => {
-  const controls = `${read("components/login-tools.tsx")}\n${read("components/rewards-site.tsx")}`;
+test("the active provider cannot reactivate dark mode", () => {
+  const provider = read("components/providers.tsx");
 
-  assert.doesNotMatch(controls, /useTheme|setTheme|resolvedTheme|Moon/);
-  assert.doesNotMatch(controls, /Toggle colour mode/);
-  assert.match(controls, /Light colour mode/);
+  assert.doesNotMatch(provider, /useTheme|setTheme|resolvedTheme|Moon/);
+  assert.match(provider, /defaultTheme="light"/);
+  assert.match(provider, /enableSystem=\{false\}/);
+  assert.match(provider, /forcedTheme="light"/);
 });

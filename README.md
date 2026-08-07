@@ -104,14 +104,14 @@ listed durations come from the Mezzanail Nail Studio price list supplied on
 ## Membership data
 
 `lib/membership.ts` is the shared source for public membership balance and
-benefit-type definitions. The rewards page and Membership Terms consume these
-same neutral definitions. Actual balances, eligibility and validity remain
+benefit-type definitions. Membership Terms consume these neutral definitions.
+Actual balances, eligibility and validity remain
 controlled by the authorised member app, specific offer or studio confirmation.
 
 ## Languages
 
 - Official website copy: `lib/official-i18n.ts`
-- Rewards copy: `lib/i18n.ts`
+- Shared locale primitives: `lib/i18n.ts`
 - Supported locales: English, Simplified Chinese and Bahasa Melayu
 - Selection persists in local storage as `mezzanail-rewards-locale`
 
@@ -131,3 +131,27 @@ pnpm test
 pnpm build
 pnpm start
 ```
+
+## Winnie AI Manager authentication boundary
+
+The internal Manager entry point uses a standard NextAuth Google provider when
+the server-only credentials are configured. The initial Phase 2B.1 allowlist is
+centralized in `config/auth/company-access.ts` with six approved accounts
+(three `ADMIN`, two `STAFF`, one `COUNTER`). Access uses exact email matching;
+a configured domain alone cannot grant access.
+
+Configure these values only in the deployment secret store when the company is
+ready to enable the entry point:
+
+- `GOOGLE_CLIENT_ID`
+- `GOOGLE_CLIENT_SECRET`
+- `NEXTAUTH_SECRET`
+- `WINNIE_AUTH_ALLOWED_DOMAINS` (reserved for a future externalized policy; not an access bypass in Phase 2B.1)
+- `WINNIE_AUTH_ALLOWED_EMAILS` (optional server-only additions)
+- `WINNIE_AUTH_ROLE_MAP_JSON` (optional server-only role overrides for `ADMIN`, `MANAGER`, `STAFF` or `COUNTER`)
+
+Winnie identity, role and permission are separate layers. The role-driven
+navigation and server guards protect `/manager` and its placeholder module
+routes, while Appointment, Member Credit, Team Hub, WhatsApp and other
+business systems remain independent. Phase 2B intentionally does not connect
+their databases or APIs; those module bridges are deferred to Phase 2C.

@@ -2,12 +2,11 @@
 
 import { ThemeProvider } from "next-themes";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { Locale, localeNames, messages } from "@/lib/i18n";
+import { Locale, localeNames } from "@/lib/i18n";
 
 type LanguageContextValue = {
   locale: Locale;
   setLocale: (locale: Locale) => void;
-  dict: (typeof messages)[Locale];
   localeNames: typeof localeNames;
 };
 
@@ -23,7 +22,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     document.documentElement.style.colorScheme = "light";
 
     const saved = window.localStorage.getItem("mezzanail-rewards-locale") as Locale | null;
-    if (saved && saved in messages) {
+    if (saved && saved in localeNames) {
       document.documentElement.lang =
         saved === "zh" ? "zh-CN" : saved === "ms" ? "ms" : "en";
       const frame = window.requestAnimationFrame(() => setLocaleState(saved));
@@ -37,7 +36,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     document.documentElement.lang = next === "zh" ? "zh-CN" : next;
   };
 
-  const value = useMemo(() => ({ locale, setLocale, dict: messages[locale], localeNames }), [locale]);
+  const value = useMemo(() => ({ locale, setLocale, localeNames }), [locale]);
 
   return (
     <ThemeProvider
