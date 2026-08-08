@@ -155,3 +155,14 @@ navigation and server guards protect `/manager` and its placeholder module
 routes, while Appointment, Member Credit, Team Hub, WhatsApp and other
 business systems remain independent. Phase 2B intentionally does not connect
 their databases or APIs; those module bridges are deferred to Phase 2C.
+
+## Winnie module bridge foundation
+
+Phase 2C.0 adds server-only, read-only bridge contracts for Appointment,
+Member/CRM, and Team Hub data. The foundation contains no live upstream
+configuration and no business write methods. Existing systems remain the
+authoritative sources of truth, while Winnie access continues through the
+existing permission model.
+
+- [Bridge architecture](docs/winnie/module-bridge-foundation.md)
+- [Integration inventory](docs/winnie/integration-inventory.md)
