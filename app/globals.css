@@ -634,6 +634,8 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
   transform: translateY(-2px);
 }
 
+.winnie-button-primary:disabled { cursor: wait; opacity: 0.65; transform: none; }
+
 .winnie-hero-footnote {
   margin: 10px 0 0;
   color: #596680;
@@ -844,6 +846,14 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
 .winnie-meta-card { border: 1px solid var(--winnie-border); border-radius: 17px; background: var(--winnie-gradient-soft); padding: 16px; }
 .winnie-meta-card-label { margin: 0; color: var(--winnie-purple); font-size: 10px; font-weight: 850; letter-spacing: 0.12em; text-transform: uppercase; }
 .winnie-meta-card-value { margin: 8px 0 0; color: var(--winnie-ink); font-size: 14px; font-weight: 800; overflow-wrap: anywhere; }
+.winnie-member-result { display: flex; align-items: center; gap: 13px; border: 1px solid var(--winnie-border); border-radius: 17px; background: var(--winnie-surface); padding: 15px; transition: border-color var(--winnie-transition), box-shadow var(--winnie-transition), transform var(--winnie-transition); }
+.winnie-member-result:hover { border-color: #d8d9ee; box-shadow: var(--winnie-shadow); transform: translateY(-2px); }
+.winnie-member-result-icon { display: grid; width: 40px; height: 40px; flex: 0 0 auto; place-items: center; border-radius: 13px; background: var(--winnie-gradient-soft); color: var(--winnie-purple); }
+.winnie-member-profile-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.winnie-member-profile-group { display: grid; gap: 11px; border: 1px solid var(--winnie-border); border-radius: 17px; background: var(--winnie-gradient-soft); padding: 16px; }
+.winnie-member-profile-group-label { margin: 0; color: var(--winnie-purple); font-size: 10px; font-weight: 850; letter-spacing: 0.14em; text-transform: uppercase; }
+.winnie-member-profile-field { border-top: 1px solid rgba(117, 98, 232, 0.12); padding-top: 10px; }
+.winnie-member-profile-value { margin: 6px 0 0; color: var(--winnie-ink); font-size: 14px; font-weight: 800; overflow-wrap: anywhere; }
 
 .winnie-button-secondary {
   display: inline-flex;
@@ -932,6 +942,7 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
   .winnie-insight .winnie-button-primary { grid-column: 1 / -1; width: 100%; }
   .winnie-section-heading { align-items: flex-start; flex-direction: column; }
   .winnie-meta-grid { grid-template-columns: 1fr; }
+  .winnie-member-profile-grid { grid-template-columns: 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {

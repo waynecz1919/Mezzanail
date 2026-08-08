@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { AppointmentReadModule } from "@/components/winnie/appointment-read-module";
+import { MemberReadModule } from "@/components/winnie/member-read-module";
 import { ManagerShell } from "@/components/winnie/manager-shell";
 import { ModulePlaceholder } from "@/components/winnie/module-placeholder";
 import { winnieNavigationItems } from "@/config/winnie-navigation";
@@ -17,6 +18,9 @@ export default async function ManagerModulePage({ params }: ModulePageProps) {
   if (module === "appointments") {
     const result = await getTodayAppointmentsForWinnie(session);
     return <ManagerShell user={session.user}><AppointmentReadModule result={result} /></ManagerShell>;
+  }
+  if (module === "customer-profile") {
+    return <ManagerShell user={session.user}><MemberReadModule user={session.user} /></ManagerShell>;
   }
   return <ManagerShell user={session.user}><ModulePlaceholder item={item} user={session.user} /></ManagerShell>;
 }
