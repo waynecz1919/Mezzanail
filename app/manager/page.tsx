@@ -6,7 +6,6 @@ import {
   CircleDollarSign,
   MessageCircle,
   Package,
-  ShieldCheck,
   Sparkles,
   UsersRound,
   WalletCards,
@@ -16,7 +15,8 @@ import Link from "next/link";
 import { ManagerShell } from "@/components/winnie/manager-shell";
 import { winnieNavigationItems } from "@/config/winnie-navigation";
 import { requireWinniePermission } from "@/lib/auth/guards";
-import { hasPermission, roleLabel } from "@/lib/auth/permissions";
+import { hasPermission } from "@/lib/auth/permissions";
+import { getTodayAppointmentsForWinnie } from "@/lib/winnie/bridges";
 
 const quickAccessIconById = {
   appointments: CalendarDays,
@@ -29,6 +29,19 @@ const quickAccessIconById = {
 
 export default async function ManagerDashboardPage() {
   const session = await requireWinniePermission("dashboard.view");
+  const todayAppointments = await getTodayAppointmentsForWinnie(session);
+  const appointmentKpi = todayAppointments.status === "success" || todayAppointments.status === "stale_data"
+    ? {
+        value: String(todayAppointments.data.length),
+        copy: todayAppointments.status === "stale_data" ? "Live source connected; data may be out of date." : "Live from the Appointment System.",
+      }
+    : todayAppointments.status === "no_data"
+      ? { value: "0", copy: "Connected successfully; no appointments today." }
+      : todayAppointments.status === "configuration_missing"
+        ? { value: "--", copy: "Not connected in this environment." }
+        : todayAppointments.status === "permission_denied"
+          ? { value: "--", copy: "Appointment access is restricted." }
+          : { value: "--", copy: "Data unavailable." };
   const quickAccessItems = winnieNavigationItems
     .filter((item) => item.id !== "dashboard" && hasPermission(session.user.permissions, item.permission))
     .slice(0, 4);
@@ -64,9 +77,9 @@ export default async function ManagerDashboardPage() {
           </div>
           <div className="winnie-kpi-grid mt-4">
             <article className="winnie-kpi-card">
-              <div className="winnie-kpi-header"><span className="winnie-kpi-icon winnie-kpi-icon--purple"><ShieldCheck aria-hidden="true" className="h-5 w-5" /></span><span className="winnie-kpi-label">Role</span></div>
-              <p className="winnie-kpi-value">{roleLabel(session.user.role)}</p>
-              <p className="winnie-kpi-copy">Identity and authorization are evaluated separately.</p>
+              <div className="winnie-kpi-header"><span className="winnie-kpi-icon winnie-kpi-icon--purple"><CalendarDays aria-hidden="true" className="h-5 w-5" /></span><span className="winnie-kpi-label">Today&apos;s Appointments</span></div>
+              <p className="winnie-kpi-value">{appointmentKpi.value}</p>
+              <p className="winnie-kpi-copy">{appointmentKpi.copy}</p>
             </article>
             <article className="winnie-kpi-card">
               <div className="winnie-kpi-header"><span className="winnie-kpi-icon winnie-kpi-icon--blue"><CheckCircle2 aria-hidden="true" className="h-5 w-5" /></span><span className="winnie-kpi-label">Permissions</span></div>

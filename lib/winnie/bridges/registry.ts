@@ -1,7 +1,7 @@
 import "server-only";
 
 import type { AppointmentBridge } from "./appointments/bridge";
-import { UnconfiguredAppointmentBridge } from "./appointments/unconfigured";
+import { ProductionAppointmentBridge } from "./appointments/production";
 import type { MemberBridge } from "./members/bridge";
 import { UnconfiguredMemberBridge } from "./members/unconfigured";
 import type { TeamHubBridge } from "./team-hub/bridge";
@@ -14,7 +14,10 @@ export type WinnieBridgeRegistry = Readonly<{
 }>;
 
 export const winnieBridgeRegistry: WinnieBridgeRegistry = Object.freeze({
-  appointments: new UnconfiguredAppointmentBridge(),
+  appointments: new ProductionAppointmentBridge({
+    baseUrl: process.env.APPOINTMENT_READ_API_URL,
+    token: process.env.WINNIE_APPOINTMENT_READ_TOKEN,
+  }),
   members: new UnconfiguredMemberBridge(),
   teamHub: new UnconfiguredTeamHubBridge(),
 });

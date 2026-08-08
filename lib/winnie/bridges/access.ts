@@ -1,8 +1,9 @@
 import "server-only";
 
-import { hasPermission, type Permission } from "@/lib/auth/permissions";
+import type { Permission } from "@/lib/auth/permissions";
 import type { WinnieSession } from "@/lib/auth/session";
 
+import { runBridgeReadWithPermissions } from "./access-core";
 import type { WinnieBridgeResult, WinnieBridgeSource } from "./contracts";
 import { bridgePermissionDenied, bridgeUpstreamUnavailable } from "./result";
 
@@ -17,13 +18,11 @@ export async function runAuthorizedBridgeRead<
   Data,
   Source extends WinnieBridgeSource,
 >({ session, permission, source, read }: BridgeReadOptions<Data, Source>) {
-  if (!hasPermission(session.user.permissions, permission)) {
-    return bridgePermissionDenied(source);
-  }
-
-  try {
-    return await read();
-  } catch {
-    return bridgeUpstreamUnavailable(source);
-  }
+  return runBridgeReadWithPermissions({
+    permissions: session.user.permissions,
+    permission,
+    read,
+    permissionDenied: () => bridgePermissionDenied(source),
+    upstreamUnavailable: () => bridgeUpstreamUnavailable(source),
+  });
 }
