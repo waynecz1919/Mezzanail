@@ -18,6 +18,7 @@ const memberContracts = read("lib/winnie/bridges/members/contracts.ts");
 const teamContracts = read("lib/winnie/bridges/team-hub/contracts.ts");
 const appointmentBridge = read("lib/winnie/bridges/appointments/bridge.ts");
 const memberBridge = read("lib/winnie/bridges/members/bridge.ts");
+const memberProduction = read("lib/winnie/bridges/members/production.ts");
 const teamBridge = read("lib/winnie/bridges/team-hub/bridge.ts");
 const access = read("lib/winnie/bridges/access.ts");
 const accessCore = read("lib/winnie/bridges/access-core.ts");
@@ -82,7 +83,7 @@ test("normalized Winnie contracts cover appointment, member and team summaries",
     "reminderStatus",
   ]) assert.match(appointmentContracts, new RegExp(`\\b${field}\\b`));
 
-  for (const field of ["customerId", "memberId", "name", "phone", "discountRate", "memberStatus"]) {
+  for (const field of ["customerId", "memberNo", "name", "phone", "normalizedPhone", "status", "sourceTier", "birthMonth", "sourceSystem", "syncedAt", "memberDiscountRate"]) {
     assert.match(memberContracts, new RegExp(`\\b${field}\\b`));
   }
   for (const field of ["staffId", "name", "role", "workStatus", "attendanceStatus"]) {
@@ -101,7 +102,10 @@ test("normalized Winnie contracts cover appointment, member and team summaries",
 test("module bridges expose read methods only", () => {
   assert.match(appointmentBridge, /getTodayAppointments/);
   assert.match(appointmentBridge, /getAppointmentSummary/);
-  assert.match(memberBridge, /getMemberSummary/);
+  for (const method of ["searchMembers", "getMemberSummary", "getMemberByMemberNo", "getMemberByPhone"]) {
+    assert.match(memberBridge, new RegExp(method));
+    assert.match(memberProduction, new RegExp(method));
+  }
   assert.match(teamBridge, /getTeamStatus/);
 
   const bridgeInterfaces = [appointmentBridge, memberBridge, teamBridge].join("\n");
@@ -115,20 +119,18 @@ test("module bridges expose read methods only", () => {
   ]) assert.doesNotMatch(bridgeInterfaces, new RegExp(writeMethod));
 });
 
-test("unconfigured member and team adapters fail closed until a future source is approved", () => {
-  for (const path of [
-    "lib/winnie/bridges/members/unconfigured.ts",
-    "lib/winnie/bridges/team-hub/unconfigured.ts",
-  ]) {
-    const source = read(path);
-    assert.match(source, /bridgeConfigurationMissing/);
-    assert.doesNotMatch(source, /process\.env|fetch\(|database|D1Database/);
-  }
+test("member and team adapters use separate reviewed source boundaries", () => {
+  const teamUnconfigured = read("lib/winnie/bridges/team-hub/unconfigured.ts");
+  assert.match(teamUnconfigured, /bridgeConfigurationMissing/);
+  assert.doesNotMatch(teamUnconfigured, /process\.env|fetch\(|database|D1Database/);
   assert.match(registry, /ProductionAppointmentBridge/);
   assert.match(registry, /APPOINTMENT_READ_API_URL/);
   assert.match(registry, /WINNIE_APPOINTMENT_READ_TOKEN/);
   assert.doesNotMatch(registry, /NEXT_PUBLIC_APPOINTMENT|NEXT_PUBLIC_WINNIE_APPOINTMENT/);
-  assert.match(registry, /UnconfiguredMemberBridge/);
+  assert.match(registry, /ProductionMemberBridge/);
+  assert.match(registry, /MEMBER_READ_API_URL/);
+  assert.match(registry, /WINNIE_MEMBER_READ_TOKEN/);
+  assert.doesNotMatch(registry, /NEXT_PUBLIC_MEMBER|NEXT_PUBLIC_WINNIE_MEMBER/);
   assert.match(registry, /UnconfiguredTeamHubBridge/);
 });
 
@@ -139,7 +141,7 @@ test("server bridge reads retain the existing Winnie permission boundary", () =>
   assert.match(access, /bridgePermissionDenied/);
   assert.match(access, /bridgeUpstreamUnavailable/);
   assert.match(queries, /permission: "appointments\.view"/);
-  assert.match(queries, /permission: "member_credit\.view"/);
+  assert.match(queries, /permission: "customer_profile\.view"/);
   assert.match(queries, /permission: "team_hub\.view"/);
 });
 

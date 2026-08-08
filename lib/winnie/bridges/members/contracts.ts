@@ -7,10 +7,15 @@ export type WinnieMemberStatus =
   | "unknown";
 
 export type WinnieMember = Readonly<{
-  customerId: string;
-  memberId: string;
+  customerId: number;
+  memberNo: string | null;
   name: string;
   phone: string | null;
-  discountRate: number | null;
-  memberStatus: WinnieMemberStatus;
+  normalizedPhone: string | null;
+  status: WinnieMemberStatus;
+  sourceTier: string | null;
+  birthMonth: number | null;
+  sourceSystem: string | null;
+  syncedAt: string | null;
+  memberDiscountRate: null;
 }>;

@@ -32,13 +32,15 @@ Appointment System   Member / CRM   Team Hub
 - common result, freshness, and safe error contracts;
 - normalized Appointment, Member, and Team Hub data contracts;
 - read-only bridge interfaces;
-- unconfigured adapters that return `configuration_missing`;
+- reviewed adapters with safe `configuration_missing` fallbacks;
 - a server-only registry;
 - permission-gated server query functions.
 
-The registry intentionally uses unconfigured adapters. No upstream URL,
-database binding, service credential, or production data is connected in this
-phase.
+The registry keeps upstream URLs and service credentials in server-only
+deployment configuration. The Appointment and Member bridges now use their
+reviewed read-only service contracts; Team Hub remains unconfigured until its
+own read scope is approved. Missing configuration fails closed without
+exposing upstream details.
 
 ## Access boundary
 
@@ -49,7 +51,7 @@ unexpected adapter exception into a safe `upstream_unavailable` result.
 | Bridge read | Required permission |
 | --- | --- |
 | Appointment reads | `appointments.view` |
-| Member summary | `member_credit.view` |
+| Member / CRM reads | `customer_profile.view` |
 | Team status | `team_hub.view` |
 
 UI visibility is not an authorization control. Future API routes and server
@@ -74,7 +76,8 @@ credentials are never part of the result contract.
 ## Deferred phases
 
 1. **Phase 2C.1 — Appointment Read Bridge**
-2. **Phase 2C.2 — Member / CRM Read Bridge**
+2. **Phase 2C.2 — Member / CRM Read Bridge** (implemented as a read-only
+   Member Center adapter)
 3. **Phase 2C.3 — Team Hub Read Bridge**
 4. **Phase 2C.4 — Cross-module Dashboard Aggregation**
 

@@ -28,13 +28,40 @@ export function getAppointmentSummaryForWinnie(
 
 export function getMemberSummaryForWinnie(
   session: WinnieSession,
-  customerIdOrMemberId: string,
+  customerId: string | number,
 ) {
   return runAuthorizedBridgeRead({
     session,
-    permission: "member_credit.view",
+    permission: "customer_profile.view",
     source: winnieBridgeRegistry.members.source,
-    read: () => winnieBridgeRegistry.members.getMemberSummary(customerIdOrMemberId),
+    read: () => winnieBridgeRegistry.members.getMemberSummary(customerId),
+  });
+}
+
+export function searchMembersForWinnie(session: WinnieSession, query: string, limit?: number) {
+  return runAuthorizedBridgeRead({
+    session,
+    permission: "customer_profile.view",
+    source: winnieBridgeRegistry.members.source,
+    read: () => winnieBridgeRegistry.members.searchMembers(query, limit),
+  });
+}
+
+export function getMemberByMemberNoForWinnie(session: WinnieSession, memberNo: string) {
+  return runAuthorizedBridgeRead({
+    session,
+    permission: "customer_profile.view",
+    source: winnieBridgeRegistry.members.source,
+    read: () => winnieBridgeRegistry.members.getMemberByMemberNo(memberNo),
+  });
+}
+
+export function getMemberByPhoneForWinnie(session: WinnieSession, normalizedPhone: string) {
+  return runAuthorizedBridgeRead({
+    session,
+    permission: "customer_profile.view",
+    source: winnieBridgeRegistry.members.source,
+    read: () => winnieBridgeRegistry.members.getMemberByPhone(normalizedPhone),
   });
 }
 
