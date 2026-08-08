@@ -436,17 +436,63 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
 }
 
 .winnie-access-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   border: 1px solid rgba(117, 98, 232, 0.12);
-  border-radius: 20px;
-  background: var(--winnie-gradient-soft);
-  padding: 16px;
+  border-radius: 15px;
+  background: #fafaff;
+  padding: 10px 12px;
 }
 
 .winnie-access-card svg {
+  flex: none;
   color: var(--winnie-purple);
 }
 
+.winnie-access-card span,
+.winnie-access-card strong {
+  display: block;
+}
+
+.winnie-access-card span {
+  color: var(--winnie-muted);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.winnie-access-card strong {
+  margin-top: 2px;
+  color: var(--winnie-ink);
+  font-size: 12px;
+  font-weight: 800;
+}
+
 .winnie-nav {
+  display: grid;
+  gap: 5px;
+}
+
+.winnie-nav-group {
+  display: grid;
+  gap: 5px;
+  margin-block: 5px;
+  border-block: 1px solid #eff0f5;
+  padding-block: 9px;
+}
+
+.winnie-nav-group-label {
+  padding-inline: 13px;
+  color: #949db0;
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.winnie-nav-group-items {
   display: grid;
   gap: 5px;
 }
@@ -504,14 +550,14 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
 .winnie-hero {
   position: relative;
   display: grid;
-  min-height: 318px;
+  min-height: 262px;
   grid-template-columns: minmax(0, 1fr) minmax(180px, 0.38fr);
   align-items: center;
   overflow: hidden;
   border: 1px solid rgba(117, 98, 232, 0.13);
   border-radius: 30px;
   background: var(--winnie-gradient-primary);
-  padding: clamp(26px, 4vw, 48px);
+  padding: clamp(23px, 3.2vw, 38px);
   box-shadow: var(--winnie-shadow);
   isolation: isolate;
 }
@@ -565,7 +611,7 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
   max-width: 680px;
   margin: 14px 0 0;
   color: var(--winnie-ink);
-  font-size: clamp(34px, 4.2vw, 58px);
+  font-size: clamp(32px, 3.7vw, 50px);
   font-weight: 800;
   letter-spacing: -0.055em;
   line-height: 1.02;
@@ -585,7 +631,7 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
   min-height: 56px;
   align-items: center;
   gap: 10px;
-  margin-top: 26px;
+  margin-top: 20px;
   border: 1px solid rgba(255, 255, 255, 0.72);
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.72);
@@ -643,14 +689,14 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
 .winnie-hero-art {
   position: relative;
   display: grid;
-  min-height: 200px;
+  min-height: 165px;
   place-items: center;
 }
 
 .winnie-orbit {
   position: relative;
   display: grid;
-  width: min(210px, 25vw);
+  width: min(182px, 22vw);
   aspect-ratio: 1;
   place-items: center;
   border: 1px solid rgba(255, 255, 255, 0.62);
@@ -749,7 +795,7 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
 }
 
 .winnie-kpi-card:hover,
-.winnie-quick-link:hover {
+.winnie-quick-link:not(.is-unavailable):hover {
   border-color: #d9daf0;
   box-shadow: var(--winnie-shadow-hover);
   transform: translateY(-3px);
@@ -818,6 +864,15 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
   transition: border-color var(--winnie-transition), box-shadow var(--winnie-transition), transform var(--winnie-transition);
 }
 
+.winnie-quick-link.is-unavailable {
+  cursor: not-allowed;
+}
+
+.winnie-quick-link.is-unavailable .winnie-quick-icon {
+  background: #f2f3f7;
+  color: #8d97aa;
+}
+
 .winnie-quick-icon {
   display: grid;
   width: 34px;
@@ -830,6 +885,8 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
 
 .winnie-quick-label { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--winnie-ink); font-size: 12px; font-weight: 800; }
 .winnie-quick-label svg { color: #a0a8bd; }
+.winnie-quick-status { align-self: end; color: var(--winnie-muted); font-size: 10px; font-weight: 650; line-height: 1.45; }
+.winnie-quick-link.is-unavailable .winnie-quick-label { color: #5e687a; }
 
 .winnie-page-card {
   max-width: 900px;
@@ -921,9 +978,9 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
 @media (max-width: 700px) {
   .winnie-header { min-height: 64px; }
   .winnie-main { padding: 18px 14px 30px; }
-  .winnie-hero { display: block; min-height: 0; padding: 26px 22px 24px; }
-  .winnie-hero-art { min-height: 145px; margin-top: 12px; }
-  .winnie-orbit { width: 142px; }
+  .winnie-hero { display: block; min-height: 0; padding: 22px 20px; }
+  .winnie-hero-art { min-height: 120px; margin-top: 10px; }
+  .winnie-orbit { width: 122px; }
   .winnie-ask-bar { align-items: stretch; flex-direction: column; padding: 7px; }
   .winnie-ask-bar input { min-height: 42px; }
   .winnie-ask-submit { width: 100%; }

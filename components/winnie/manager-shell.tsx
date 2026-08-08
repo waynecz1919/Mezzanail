@@ -73,12 +73,27 @@ export function ManagerShell({ user, children }: ManagerShellProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const visibleItems = winnieNavigationItems.filter((item) => hasPermission(user.permissions, item.permission));
+  const whatsappItems = visibleItems.filter((item) => item.id === "whatsapp" || item.id === "whatsapp-service");
+  const firstWhatsAppItemId = whatsappItems[0]?.id;
 
   const navigation = (
     <nav aria-label="Winnie AI modules" className="winnie-nav">
-      {visibleItems.map((item) => (
-        <NavigationLink key={item.id} item={item} active={pathname === item.href} onNavigate={() => setMobileOpen(false)} />
-      ))}
+      {visibleItems.map((item) => {
+        if (item.id === "whatsapp" || item.id === "whatsapp-service") {
+          if (item.id !== firstWhatsAppItemId) return null;
+          return (
+            <div className="winnie-nav-group" key="whatsapp-group">
+              <span className="winnie-nav-group-label">WhatsApp</span>
+              <div className="winnie-nav-group-items">
+                {whatsappItems.map((whatsappItem) => (
+                  <NavigationLink key={whatsappItem.id} item={whatsappItem} active={pathname === whatsappItem.href} onNavigate={() => setMobileOpen(false)} />
+                ))}
+              </div>
+            </div>
+          );
+        }
+        return <NavigationLink key={item.id} item={item} active={pathname === item.href} onNavigate={() => setMobileOpen(false)} />;
+      })}
     </nav>
   );
 
@@ -150,9 +165,12 @@ export function ManagerShell({ user, children }: ManagerShellProps) {
 
       <div className="winnie-layout">
         <aside className="winnie-sidebar hidden lg:block">
-          <div className="winnie-access-card mb-6">
-            <div className="flex items-center gap-2 text-sm font-semibold text-[#182235]"><ShieldCheck aria-hidden="true" className="h-5 w-5" />Company access</div>
-            <p className="mt-2 text-xs leading-5 text-[#69748b]">Your identity and role are checked independently for every module.</p>
+          <div className="winnie-access-card mb-5">
+            <ShieldCheck aria-hidden="true" className="h-5 w-5" />
+            <div>
+              <span>Secure access</span>
+              <strong>{roleLabel(user.role)}</strong>
+            </div>
           </div>
           {navigation}
         </aside>

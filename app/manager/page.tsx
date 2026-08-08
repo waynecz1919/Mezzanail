@@ -1,37 +1,41 @@
 import {
   ArrowUpRight,
   BarChart3,
+  BellRing,
   CalendarDays,
   CheckCircle2,
-  CircleDollarSign,
   MessageCircle,
-  Package,
-  ShieldCheck,
+  Search,
   Sparkles,
-  UsersRound,
-  WalletCards,
 } from "lucide-react";
 import Link from "next/link";
 
 import { ManagerShell } from "@/components/winnie/manager-shell";
-import { winnieNavigationItems } from "@/config/winnie-navigation";
 import { requireWinniePermission } from "@/lib/auth/guards";
-import { hasPermission, roleLabel } from "@/lib/auth/permissions";
+import { hasPermission, type Permission } from "@/lib/auth/permissions";
 
-const quickAccessIconById = {
-  appointments: CalendarDays,
-  "member-credit": WalletCards,
-  whatsapp: MessageCircle,
-  "team-hub": UsersRound,
-  inventory: Package,
-  finance: CircleDollarSign,
-} as const;
+const operationalKpis = [
+  { label: "Today’s Appointments", icon: CalendarDays, tone: "purple" },
+  { label: "Unreplied WhatsApp", icon: MessageCircle, tone: "blue" },
+  { label: "Pending Actions", icon: CheckCircle2, tone: "mint" },
+] as const;
+
+const quickActions: readonly {
+  label: string;
+  status: string;
+  href?: string;
+  permission: Permission;
+  icon: typeof CalendarDays;
+}[] = [
+  { label: "New Appointment", status: "Available after system connection", permission: "appointments.manage", icon: CalendarDays },
+  { label: "Find Member", status: "Available after system connection", permission: "customer_profile.view", icon: Search },
+  { label: "Send Reminder", status: "Available after system connection", permission: "reminders.manage", icon: BellRing },
+  { label: "Ask Winnie", status: "Open AI tools", href: "/manager/winnie-tools", permission: "winnie_ai.basic", icon: Sparkles },
+];
 
 export default async function ManagerDashboardPage() {
   const session = await requireWinniePermission("dashboard.view");
-  const quickAccessItems = winnieNavigationItems
-    .filter((item) => item.id !== "dashboard" && hasPermission(session.user.permissions, item.permission))
-    .slice(0, 4);
+  const visibleQuickActions = quickActions.filter((action) => hasPermission(session.user.permissions, action.permission));
 
   return (
     <ManagerShell user={session.user}>
@@ -58,26 +62,18 @@ export default async function ManagerDashboardPage() {
           <div className="winnie-section-heading">
             <div>
               <h2>Today at a glance</h2>
-              <p>Your identity, permissions, and current operating phase.</p>
+              <p>Operational updates will appear as approved systems are connected.</p>
             </div>
-            <span className="hidden text-xs font-semibold uppercase tracking-[0.14em] text-[#8d98ad] sm:block">Live access view</span>
+            <span className="hidden text-xs font-semibold uppercase tracking-[0.14em] text-[#8d98ad] sm:block">Data connections</span>
           </div>
           <div className="winnie-kpi-grid mt-4">
-            <article className="winnie-kpi-card">
-              <div className="winnie-kpi-header"><span className="winnie-kpi-icon winnie-kpi-icon--purple"><ShieldCheck aria-hidden="true" className="h-5 w-5" /></span><span className="winnie-kpi-label">Role</span></div>
-              <p className="winnie-kpi-value">{roleLabel(session.user.role)}</p>
-              <p className="winnie-kpi-copy">Identity and authorization are evaluated separately.</p>
-            </article>
-            <article className="winnie-kpi-card">
-              <div className="winnie-kpi-header"><span className="winnie-kpi-icon winnie-kpi-icon--blue"><CheckCircle2 aria-hidden="true" className="h-5 w-5" /></span><span className="winnie-kpi-label">Permissions</span></div>
-              <p className="winnie-kpi-value">{session.user.permissions.length}</p>
-              <p className="winnie-kpi-copy">Scoped permissions drive the sidebar and server guards.</p>
-            </article>
-            <article className="winnie-kpi-card">
-              <div className="winnie-kpi-header"><span className="winnie-kpi-icon winnie-kpi-icon--mint"><Sparkles aria-hidden="true" className="h-5 w-5" /></span><span className="winnie-kpi-label">Module bridge</span></div>
-              <p className="winnie-kpi-value">Phase 2C</p>
-              <p className="winnie-kpi-copy">Business connections remain intentionally deferred.</p>
-            </article>
+            {operationalKpis.map(({ label, icon: Icon, tone }) => (
+              <article className="winnie-kpi-card" key={label}>
+                <div className="winnie-kpi-header"><span className={`winnie-kpi-icon winnie-kpi-icon--${tone}`}><Icon aria-hidden="true" className="h-5 w-5" /></span><span className="winnie-kpi-label">{label}</span></div>
+                <p className="winnie-kpi-value">--</p>
+                <p className="winnie-kpi-copy">Not connected yet</p>
+              </article>
+            ))}
           </div>
         </section>
 
@@ -85,8 +81,8 @@ export default async function ManagerDashboardPage() {
           <span className="winnie-insight-icon"><Sparkles aria-hidden="true" className="h-5 w-5" /></span>
           <div>
             <p className="winnie-insight-label">Winnie AI insight</p>
-            <h2>Your operating system is ready for its next conversation.</h2>
-            <p>Use the AI tools workspace to prepare an operational note without changing connected business data.</p>
+            <h2>System connections are being prepared.</h2>
+            <p>Operational summaries will appear here after approved read-only connections become available.</p>
           </div>
           <Link href="/manager/winnie-tools" className="winnie-button-primary">Open AI tools<ArrowUpRight aria-hidden="true" className="h-4 w-4" /></Link>
         </section>
@@ -99,15 +95,19 @@ export default async function ManagerDashboardPage() {
             </div>
           </div>
           <div className="winnie-quick-grid mt-4">
-            {quickAccessItems.map((item) => {
-              const Icon = quickAccessIconById[item.id as keyof typeof quickAccessIconById] ?? Sparkles;
-              return (
-                <Link key={item.id} href={item.href} className="winnie-quick-link">
-                  <span className="winnie-quick-icon"><Icon aria-hidden="true" className="h-4 w-4" /></span>
-                  <span className="winnie-quick-label">{item.label}<ArrowUpRight aria-hidden="true" className="h-4 w-4" /></span>
-                </Link>
-              );
-            })}
+            {visibleQuickActions.map(({ label, status, href, icon: Icon }) => href ? (
+              <Link key={label} href={href} className="winnie-quick-link">
+                <span className="winnie-quick-icon"><Icon aria-hidden="true" className="h-4 w-4" /></span>
+                <span className="winnie-quick-label">{label}<ArrowUpRight aria-hidden="true" className="h-4 w-4" /></span>
+                <span className="winnie-quick-status">{status}</span>
+              </Link>
+            ) : (
+              <div key={label} className="winnie-quick-link is-unavailable" role="link" aria-disabled="true">
+                <span className="winnie-quick-icon"><Icon aria-hidden="true" className="h-4 w-4" /></span>
+                <span className="winnie-quick-label">{label}</span>
+                <span className="winnie-quick-status">{status}</span>
+              </div>
+            ))}
           </div>
         </section>
       </div>
