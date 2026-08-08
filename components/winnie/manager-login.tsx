@@ -1,5 +1,6 @@
 "use client";
 
+import { Sparkles } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 
@@ -25,25 +26,26 @@ export function ManagerLogin({ googleConfigured, accessConfigured }: ManagerLogi
   }
 
   return (
-    <main className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-[#fdf9f7] px-5 py-10 text-slate-900">
-      <section className="w-full max-w-md rounded-3xl border border-[#eadfd9] bg-white p-8 shadow-[0_24px_70px_rgba(102,72,60,0.12)] sm:p-10">
-        <div className="mb-8">
-          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.22em] text-[#9d7166]">Winnie AI Manager</p>
-          <h1 className="text-3xl font-semibold tracking-tight text-slate-950">Mezzanail Internal Management System</h1>
-          <p className="mt-4 text-sm leading-6 text-slate-600">Authorized Mezzanail staff only.</p>
+    <main className="winnie-login-page" aria-label="Winnie AI Manager">
+      <section className="winnie-login-card">
+        <div className="winnie-login-brand">
+          <span className="winnie-brand-mark"><Sparkles aria-hidden="true" className="h-5 w-5" /></span>
+          <div>
+            <strong>Winnie AI</strong>
+            <span>Mezzanail Operating System</span>
+          </div>
         </div>
 
-        <button
-          type="button"
-          onClick={handleSignIn}
-          disabled={!canSignIn || loading}
-          className="min-h-14 w-full rounded-2xl bg-slate-950 px-5 text-base font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:bg-slate-300"
-        >
+        <h1>Welcome back.</h1>
+        <p>Mezzanail Internal Management System</p>
+        <p>Authorized Mezzanail staff only.</p>
+
+        <button type="button" onClick={handleSignIn} disabled={!canSignIn || loading} className="winnie-login-button">
           {loading ? "Connecting…" : "Continue with Google"}
         </button>
 
         {!canSignIn && (
-          <p className="mt-4 rounded-xl bg-[#fff5ed] px-4 py-3 text-sm leading-5 text-[#87533e]">
+          <p className="winnie-login-note">
             Google sign-in is not configured for this environment. An administrator must configure the company access placeholders before enabling the internal entry point.
           </p>
         )}
