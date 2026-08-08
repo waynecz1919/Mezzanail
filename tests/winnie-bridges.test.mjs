@@ -20,6 +20,7 @@ const appointmentBridge = read("lib/winnie/bridges/appointments/bridge.ts");
 const memberBridge = read("lib/winnie/bridges/members/bridge.ts");
 const teamBridge = read("lib/winnie/bridges/team-hub/bridge.ts");
 const access = read("lib/winnie/bridges/access.ts");
+const accessCore = read("lib/winnie/bridges/access-core.ts");
 const queries = read("lib/winnie/bridges/queries.ts");
 const registry = read("lib/winnie/bridges/registry.ts");
 
@@ -114,9 +115,8 @@ test("module bridges expose read methods only", () => {
   ]) assert.doesNotMatch(bridgeInterfaces, new RegExp(writeMethod));
 });
 
-test("unconfigured adapters fail closed until a future source is approved", () => {
+test("unconfigured member and team adapters fail closed until a future source is approved", () => {
   for (const path of [
-    "lib/winnie/bridges/appointments/unconfigured.ts",
     "lib/winnie/bridges/members/unconfigured.ts",
     "lib/winnie/bridges/team-hub/unconfigured.ts",
   ]) {
@@ -124,14 +124,18 @@ test("unconfigured adapters fail closed until a future source is approved", () =
     assert.match(source, /bridgeConfigurationMissing/);
     assert.doesNotMatch(source, /process\.env|fetch\(|database|D1Database/);
   }
-  assert.match(registry, /UnconfiguredAppointmentBridge/);
+  assert.match(registry, /ProductionAppointmentBridge/);
+  assert.match(registry, /APPOINTMENT_READ_API_URL/);
+  assert.match(registry, /WINNIE_APPOINTMENT_READ_TOKEN/);
+  assert.doesNotMatch(registry, /NEXT_PUBLIC_APPOINTMENT|NEXT_PUBLIC_WINNIE_APPOINTMENT/);
   assert.match(registry, /UnconfiguredMemberBridge/);
   assert.match(registry, /UnconfiguredTeamHubBridge/);
 });
 
 test("server bridge reads retain the existing Winnie permission boundary", () => {
   assert.match(access, /import "server-only"/);
-  assert.match(access, /hasPermission\(session\.user\.permissions, permission\)/);
+  assert.match(access, /runBridgeReadWithPermissions/);
+  assert.match(accessCore, /permissions\.includes\(permission\)/);
   assert.match(access, /bridgePermissionDenied/);
   assert.match(access, /bridgeUpstreamUnavailable/);
   assert.match(queries, /permission: "appointments\.view"/);
@@ -142,6 +146,7 @@ test("server bridge reads retain the existing Winnie permission boundary", () =>
 test("bridge documentation and honest disconnected placeholders are present", () => {
   assert.equal(existsSync(new URL("../docs/winnie/module-bridge-foundation.md", import.meta.url)), true);
   assert.equal(existsSync(new URL("../docs/winnie/integration-inventory.md", import.meta.url)), true);
+  assert.equal(existsSync(new URL("../docs/winnie/appointment-read-bridge.md", import.meta.url)), true);
   const placeholder = read("components/winnie/module-placeholder.tsx");
   assert.match(placeholder, /Bridge ready — source not connected/);
   assert.match(placeholder, /Read-only foundation/);
