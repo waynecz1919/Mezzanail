@@ -31,7 +31,7 @@ All external destinations live in `lib/site.ts`:
 - WhatsApp, Instagram, Facebook and Xiaohongshu
 - Announcement, studio contact details and opening hours
 
-The official booking, WhatsApp, App Store, Google Play and Google Maps destinations are configured. Facebook, Instagram, Xiaohongshu profile URL, Google Review URL/embed and email remain explicit placeholders until their official destinations are supplied.
+The official booking, WhatsApp, App Store, Google Play, Google Maps, Google Review, Facebook, Instagram and Xiaohongshu destinations are configured. The Google Reviews embed URL and email remain explicit `REPLACE_WITH_…` placeholders until their official values are supplied.
 
 ## Service data
 
