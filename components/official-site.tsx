@@ -23,6 +23,7 @@ import { MEMBER_CENTER_URL } from "@/config/member-center";
 import { primaryNavigation } from "@/config/navigation";
 import type { Locale } from "@/lib/i18n";
 import { officialMessages } from "@/lib/official-i18n";
+import { useCampaignActive } from "@/lib/promotion/use-campaign-active";
 import { getWhatsappUrl, isConfiguredUrl, siteConfig } from "@/lib/site";
 
 const contactCopy = {
@@ -86,12 +87,15 @@ function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const isHome = pathname === "/";
-  const nav = primaryNavigation.map((item) => ({
-    href: item.href,
-    label: t.nav[item.labelKey],
-  }));
+  const campaignActive = useCampaignActive();
+  const nav = primaryNavigation
+    .filter((item) => campaignActive || item.href !== "/promotion")
+    .map((item) => ({
+      href: item.href,
+      label: t.nav[item.labelKey],
+    }));
   return <>
-    {!isHome && siteConfig.announcement.enabled && <div className="announcement"><span>{t.announcement.label}</span><span className="announcement-date">{siteConfig.announcement.dates}</span><Link href="/promotion">{t.announcement.action}<ArrowRight size={13}/></Link></div>}
+    {!isHome && campaignActive && <div className="announcement"><span>{t.announcement.label}</span><span className="announcement-date">{siteConfig.announcement.dates}</span><Link href="/promotion">{t.announcement.action}<ArrowRight size={13}/></Link></div>}
     <header className="official-header">
       <div className="official-header-main shell">
         <button className="utility-button icon-only official-mobile-menu" onClick={() => setOpen(!open)} aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open}>{open?<X size={18}/>:<Menu size={18}/>}</button>
@@ -108,10 +112,11 @@ function SiteHeader() {
 
 function SiteFooter() {
   const { locale, t } = useOfficial();
+  const campaignActive = useCampaignActive();
   const whatsapp = getWhatsappUrl(locale);
   return <footer className="official-footer"><div className="shell"><div className="grid gap-12 border-b border-white/15 py-16 md:grid-cols-[1.4fr_repeat(3,1fr)]">
     <div><BrandLogo inverse/><p className="mt-5 max-w-xs text-sm leading-7 text-white/55">{t.footer.line}</p></div>
-    <div><h3>{t.footer.explore}</h3><Link href="/about">{t.nav.story}</Link><Link href="/services">{t.nav.services}</Link><Link href="/promotion">{t.nav.promo}</Link><NavigationLink href={MEMBER_CENTER_URL}>{t.nav.rewards}</NavigationLink><Link href="/job">{t.nav.jobs}</Link></div>
+    <div><h3>{t.footer.explore}</h3><Link href="/about">{t.nav.story}</Link><Link href="/services">{t.nav.services}</Link>{campaignActive ? <Link href="/promotion">{t.nav.promo}</Link> : null}<NavigationLink href={MEMBER_CENTER_URL}>{t.nav.rewards}</NavigationLink><Link href="/job">{t.nav.jobs}</Link></div>
     <div><h3>{t.footer.connect}</h3><ExternalOrPending href={siteConfig.instagramUrl} ariaLabel={`${siteConfig.brandName} Instagram`}>Instagram</ExternalOrPending><ExternalOrPending href={siteConfig.facebookUrl} ariaLabel={`${siteConfig.brandName} Facebook`}>Facebook</ExternalOrPending><ExternalOrPending href={siteConfig.xiaohongshuUrl} ariaLabel={`${siteConfig.brandName} Xiaohongshu`}>Xiaohongshu</ExternalOrPending></div>
     <div><h3>{t.footer.studio}</h3><Link href="/contact">{t.nav.contact}</Link><a href={siteConfig.googleMapsDirectionsUrl} target="_blank" rel="noopener noreferrer">Google Maps</a><a href={whatsapp} target="_blank" rel="noopener noreferrer">WhatsApp</a><a href={siteConfig.phoneLink}>{siteConfig.phoneDisplay}</a></div>
   </div><div className="flex flex-col gap-4 py-7 text-[11px] text-white/42 sm:flex-row sm:items-center sm:justify-between"><span>© 2026 {siteConfig.brandName}. All rights reserved.</span><div className="flex flex-wrap gap-x-5 gap-y-2"><Link href="/privacy">{t.footer.privacy}</Link><Link href="/terms">{t.footer.terms}</Link><Link href="/cookies">Cookies</Link><Link href="/privacy/job-applicants">Applicant Privacy</Link><Link href="/membership/terms">Membership Terms</Link><Link href="/promotion/terms">Promotion Terms</Link></div></div></div></footer>;
@@ -119,7 +124,8 @@ function SiteFooter() {
 
 function MobileNav() {
   const { t } = useOfficial();
-  return <nav className="mobile-official-nav" aria-label="Mobile quick navigation"><Link href="/"><Home size={18}/><span>{t.nav.home}</span></Link><Link href="/services"><Sparkles size={18}/><span>{t.nav.services}</span></Link><Link href="/promotion"><Gift size={18}/><span>{t.nav.promo}</span></Link><a href={siteConfig.bookingUrl} target="_blank" rel="noopener noreferrer" className="mobile-book" onClick={() => trackPublicAction("book_appointment_click", siteConfig.bookingUrl, "mobile_quick_nav")}><CalendarCheck size={18}/><span>{t.nav.book}</span></a></nav>;
+  const campaignActive = useCampaignActive();
+  return <nav className="mobile-official-nav" aria-label="Mobile quick navigation"><Link href="/"><Home size={18}/><span>{t.nav.home}</span></Link><Link href="/services"><Sparkles size={18}/><span>{t.nav.services}</span></Link>{campaignActive ? <Link href="/promotion"><Gift size={18}/><span>{t.nav.promo}</span></Link> : null}<a href={siteConfig.bookingUrl} target="_blank" rel="noopener noreferrer" className="mobile-book" onClick={() => trackPublicAction("book_appointment_click", siteConfig.bookingUrl, "mobile_quick_nav")}><CalendarCheck size={18}/><span>{t.nav.book}</span></a></nav>;
 }
 
 export function OfficialFrame({ children }: {children: React.ReactNode}) {
@@ -140,7 +146,7 @@ export function OfficialFrame({ children }: {children: React.ReactNode}) {
 
 function StoryPreview() {
   const { t } = useOfficial();
-  return <section className="section surface"><div className="shell grid items-stretch gap-5 lg:grid-cols-[.85fr_1.15fr]"><Reveal className="relative min-h-[500px] overflow-hidden rounded-[20px]"><Image src="/gallery/editorial-black.jpg" alt={`${siteConfig.brandName} editorial manicure`} fill sizes="(max-width: 1024px) 100vw, 42vw" className="object-cover"/></Reveal><Reveal delay={.08} className="flex flex-col justify-center rounded-[20px] border border-[var(--line)] bg-[var(--bg)] p-8 sm:p-14"><div className="eyebrow">{t.story.eyebrow}</div><h2 className="h2 mt-6">{t.story.title}</h2><p className="lead mt-7">{t.story.body}</p><div className="mt-9 flex flex-wrap gap-3"><Link href="/about" className="btn btn-dark">{t.story.primary}<ArrowRight size={16}/></Link><Link href="/contact" className="btn btn-ghost">{t.story.secondary}</Link></div></Reveal></div></section>;
+  return <section className="section surface"><div className="shell grid items-stretch gap-5 lg:grid-cols-[.85fr_1.15fr]"><Reveal className="relative min-h-[500px] overflow-hidden rounded-[20px]"><Image src="/gallery/editorial-black.jpg" alt={`${siteConfig.brandName} editorial manicure`} fill sizes="(max-width: 1024px) 100vw, 42vw" className="object-cover"/></Reveal><Reveal delay={.08} className="flex flex-col justify-center rounded-[20px] border border-[var(--line)] bg-[var(--bg)] p-8 sm:p-14"><div className="eyebrow">{t.story.eyebrow}</div><h2 className="h2 mt-6">{t.story.title}</h2><p className="lead mt-7">{t.story.body}</p><div className="mt-9 flex flex-wrap gap-3"><Link href="/services" className="btn btn-dark">{t.story.primary}<ArrowRight size={16}/></Link><Link href="/contact" className="btn btn-ghost">{t.story.secondary}</Link></div></Reveal></div></section>;
 }
 
 function ContactPanel() {
