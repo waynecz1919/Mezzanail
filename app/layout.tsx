@@ -14,7 +14,6 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: { default: "Mezzanail Nail Studio | Premium Nail Care Melaka", template: "%s | Mezzanail Nail Studio" },
   description: "Mezzanail Nail Studio in Melaka, Malaysia offers professional manicure, pedicure, nail extensions and specialised foot care in a modern premium studio.",
-  keywords: ["Mezzanail Nail Studio", "nail studio Melaka", "manicure Melaka", "pedicure Melaka", "premium nail care Malaysia"],
   openGraph: { title: "Mezzanail Nail Studio", description: "Modern premium nail care in Melaka, Malaysia.", type: "website", locale: "en_MY", siteName: "Mezzanail Nail Studio", images: [{ url: "/opengraph-image.png", width: 3456, height: 1152, alt: "Mezzanail Nail Studio official logo" }] },
   twitter: { card: "summary_large_image", title: "Mezzanail Nail Studio", description: "Modern premium nail care in Melaka, Malaysia.", images: ["/opengraph-image.png"] },
   icons: { icon: "/icon.png", apple: "/icon.png" },
