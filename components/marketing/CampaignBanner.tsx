@@ -25,6 +25,9 @@ type CampaignBannerProps = {
   invitation: string;
   promotionLabel: string;
   bookingLabel: string;
+  active?: boolean;
+  inactiveSrc?: string;
+  inactiveAlt?: string;
 };
 
 export function CampaignBanner({
@@ -46,6 +49,9 @@ export function CampaignBanner({
   invitation,
   promotionLabel,
   bookingLabel,
+  active = true,
+  inactiveSrc,
+  inactiveAlt,
 }: CampaignBannerProps) {
   const trackClick = (destination: string, label: string) => {
     if (typeof window === "undefined") return;
@@ -62,20 +68,24 @@ export function CampaignBanner({
     });
   };
 
+  const resolvedSrc = active ? desktopSrc : inactiveSrc ?? desktopSrc;
+  const resolvedAlt = active ? alt : inactiveAlt ?? alt;
+  const resolvedMobileSrc = active ? mobileSrc : undefined;
+
   const picture = (
     <picture className={styles.picture}>
-      {mobileSrc ? (
+      {resolvedMobileSrc ? (
         <source
           media="(max-width: 767px)"
-          srcSet={mobileSrc}
+          srcSet={resolvedMobileSrc}
           width={mobileWidth}
           height={mobileHeight}
         />
       ) : null}
       <Image
         className={styles.image}
-        src={desktopSrc}
-        alt={alt}
+        src={resolvedSrc}
+        alt={resolvedAlt}
         width={width}
         height={height}
         fetchPriority={priority ? "high" : undefined}
@@ -94,19 +104,23 @@ export function CampaignBanner({
       <div className={styles.media}>{picture}</div>
       <div className={styles.overlay}>
         <div className={styles.content}>
-          <p className={styles.campaignTitle}>{campaignTitle}</p>
+          {active ? <p className={styles.campaignTitle}>{campaignTitle}</p> : null}
           <h1 id="home-hero-title">{heading}</h1>
           <p className={styles.intro}>
             Manicure, pedicure, nail extensions, callus care and waxing from
             Mezzanail Nail Studio in Melaka.
           </p>
-          <p className={styles.date}>
-            <CalendarDays aria-hidden="true" size={17} />
-            {dates}
-          </p>
-          <p className={styles.invitation}>{invitation}</p>
+          {active ? (
+            <>
+              <p className={styles.date}>
+                <CalendarDays aria-hidden="true" size={17} />
+                {dates}
+              </p>
+              <p className={styles.invitation}>{invitation}</p>
+            </>
+          ) : null}
           <div className={styles.actions}>
-            {href?.startsWith("/") && !openInNewTab ? (
+            {active && href?.startsWith("/") && !openInNewTab ? (
               <Link
                 href={href}
                 className={styles.primary}
@@ -115,7 +129,7 @@ export function CampaignBanner({
                 {promotionLabel}
                 <ArrowRight aria-hidden="true" size={16} />
               </Link>
-            ) : href ? (
+            ) : active && href ? (
               <a
                 href={href}
                 className={styles.primary}
@@ -129,13 +143,22 @@ export function CampaignBanner({
             ) : null}
             <a
               href={siteConfig.bookingUrl}
-              className={styles.secondary}
+              className={active ? styles.secondary : styles.primary}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackClick(siteConfig.bookingUrl, "book_now")}
             >
               {bookingLabel}
             </a>
+            {!active ? (
+              <Link
+                href="/services"
+                className={styles.secondary}
+                onClick={() => trackClick("/services", "view_services")}
+              >
+                View Services
+              </Link>
+            ) : null}
           </div>
         </div>
       </div>
