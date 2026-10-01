@@ -1,17 +1,22 @@
+import { BOOKING_URL } from "@/lib/site";
+import { campaign } from "@/lib/promotion/campaign-period";
+
 export type PromotionLanguage = "en" | "zh" | "ms";
 export type PromotionSource = "nfc" | "qr" | "whatsapp" | "website" | "direct";
+
+export const WINNER_ANNOUNCEMENT =
+  "Winners will be announced on Instagram and Facebook by 15 October 2026.";
 
 export const anniversaryCampaign = {
   id: "mezzanail-7th-anniversary-2026",
   analyticsName: "mezzanail_7th_anniversary_2026",
   title: "Mezzanail 7th Anniversary Celebration",
   campaignName: "7th Anniversary Lucky Draw Campaign",
-  startDate: "2026-07-26",
-  endDate: "2026-09-30",
+  startDate: campaign.start,
+  endDate: campaign.end,
   displayDates: "26 July – 30 September 2026",
   promotionUrl: "https://www.mezzanail.com/promotion",
-  bookingUrl:
-    "https://booking.tunai.io/booking/mezzanail?outletID=4188#contact",
+  bookingUrl: BOOKING_URL,
   whatsappContact: "60162121332",
   banner: {
     webp: "/images/promotion/mezzanail-7th-anniversary-banner-v2.webp",
