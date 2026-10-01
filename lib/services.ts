@@ -303,5 +303,5 @@ export const serviceCategories: ServiceCategory[] = [
 export const serviceSource = {
   name: "Mezzanail Nail Studio printed price list",
   verifiedOn: "2026-07-18",
-  note: "Prices and listed durations were transcribed from the official studio price list supplied on 18 July 2026. The studio confirmed that services without a listed duration take up to 90 minutes.",
+  note: "Prices updated July 2026. Where no duration is listed, please check with the studio when booking.",
 };
