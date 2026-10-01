@@ -23,7 +23,7 @@ const ui = {
   ms: {
     search: "Cari servis", all: "Semua servis", price: "Harga", duration: "Tempoh", enquire: "Sila tanya", varies: "Tempoh berbeza", empty: "Tiada servis sepadan dengan carian.", included: "Apa yang Disertakan", pricing: "Nota harga", aftercare: "Penjagaan selepas servis", addOn: "Servis tambahan", categories: "Kategori servis", viewDetails: "Lihat butiran", hideDetails: "Tutup butiran", clear: "Kosongkan carian dan penapis", results: "servis dipaparkan", dualPrice: "Jika dua harga dipaparkan, harga pertama untuk wanita dan harga kedua untuk lelaki.",
     pricingGuide: "Harga yang dipaparkan adalah berdasarkan servis standard. Harga akhir mungkin berbeza mengikut keadaan dan panjang kuku, kerumitan reka bentuk, keperluan penanggalan serta servis tambahan yang dipilih. Juruteknik kuku anda akan mengesahkan harga akhir sebelum servis bermula.",
-    source: "Harga dan tempoh yang dinyatakan secara khusus datang daripada senarai harga Mezzanail Nail Studio bertarikh 18 Julai 2026. Jika tiada tempoh yang boleh disahkan, tempoh ditandakan sebagai berbeza dan perlu disahkan dengan studio.",
+    source: "Harga dikemas kini pada Julai 2026. Jika tempoh tidak disenaraikan, sila semak dengan studio semasa membuat tempahan.",
   },
 } as const;
 
