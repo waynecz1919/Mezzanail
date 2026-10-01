@@ -176,7 +176,7 @@ export const serviceCategories: ServiceCategory[] = [
     services: [
       service("Footlogix Treatment", "RM168 / RM178", "90 mins", {
         shortDescription: text("A professional callus and foot-skin treatment using Footlogix foot-care products for smoother, more comfortable feet.", "使用 Footlogix 足部护理产品进行专业去茧与足部肌肤护理，让双足更平滑舒适。", "Rawatan profesional untuk kulit keras dan kulit kaki menggunakan produk penjagaan kaki Footlogix bagi kaki yang lebih licin dan selesa."),
-        included: list(["Professional Footlogix nail-care products"], ["Footlogix 专业美甲护理产品"], ["Produk penjagaan kuku profesional Footlogix"]),
+        included: list(["Professional Footlogix foot-care products"], ["Footlogix 专业足部护理产品"], ["Produk penjagaan kaki profesional Footlogix"]),
         pricingNote: confirmPrice,
       }),
       service("Callus Removal", "RM98 / RM108", "60 mins", {
