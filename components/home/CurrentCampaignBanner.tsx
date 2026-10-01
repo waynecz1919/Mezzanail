@@ -1,8 +1,11 @@
+"use client";
+
 import { CampaignBanner } from "@/components/marketing/CampaignBanner";
 import { currentCampaign } from "@/config/current-campaign";
+import { useCampaignActive } from "@/lib/promotion/use-campaign-active";
 
 export function CurrentCampaignBanner() {
-  if (!currentCampaign.enabled) return null;
+  const active = useCampaignActive();
 
   return (
     <CampaignBanner
@@ -24,6 +27,9 @@ export function CurrentCampaignBanner() {
       invitation={currentCampaign.invitation}
       promotionLabel={currentCampaign.promotionLabel}
       bookingLabel={currentCampaign.bookingLabel}
+      active={active}
+      inactiveSrc="/studio/mezzanail-studio-sign.jpg"
+      inactiveAlt="Mezzanail Nail Studio in Melaka"
     />
   );
 }
