@@ -381,10 +381,18 @@ export function JobApplicationExperience() {
           <aside className="job-opening-card" aria-label="Open positions">
             <span>OPEN POSITIONS · 招聘职位</span>
             <h2>Nail Artist</h2>
+            <div>
+              <small>Full-time monthly salary · 全职月薪</small>
+              <strong>RM2,500</strong>
+            </div>
             <h2>Nail Apprentice</h2>
             <div>
-              <small>Monthly salary · 月薪</small>
-              <strong>RM2500–RM3000</strong>
+              <small>Full-time monthly salary · 全职月薪</small>
+              <strong>RM1,700</strong>
+            </div>
+            <div>
+              <small>Part-time pay · 兼职薪资</small>
+              <strong>Depends on experience</strong>
             </div>
             <p>Melaka · Full-time and part-time arrangements available</p>
           </aside>

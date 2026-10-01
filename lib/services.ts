@@ -111,15 +111,15 @@ export const serviceCategories: ServiceCategory[] = [
         text("Age-appropriate manicure care", "适龄美甲护理", "Penjagaan manicure sesuai usia"),
       )),
       service("CUCCIO Butter Manicure", "RM55 / RM65", "60 mins", handCare(
-        text("A manicure using professional CUCCIO nail-care products for a polished, well-groomed finish.", "使用 CUCCIO 品牌专业美甲护理产品完成的手部美甲服务。", "Manicure menggunakan produk penjagaan kuku profesional CUCCIO untuk kemasan yang rapi."),
+        text("A deeply hydrating manicure using CUCCIO’s rich whipped butter, which melts into the skin for long-lasting moisture without a greasy after-feel.", "使用 CUCCIO 丰润的打发质地 Butter 深层滋润双手，带来持久保湿而不留油腻感。", "Manicure penghidratan mendalam menggunakan CUCCIO whipped butter untuk kelembapan tahan lama tanpa rasa berminyak."),
         text("Professional CUCCIO nail-care products", "CUCCIO 专业美甲护理产品", "Produk penjagaan kuku profesional CUCCIO"), confirmPrice, true,
       )),
       service("CUCCIO Polisher Manicure", "RM88 / RM98", "75 mins", handCare(
-        text("A manicure using professional CUCCIO nail-care products for a polished, well-groomed finish.", "使用 CUCCIO 品牌专业美甲护理产品完成的手部美甲服务。", "Manicure menggunakan produk penjagaan kuku profesional CUCCIO untuk kemasan yang rapi."),
+        text("A gentle exfoliating manicure using CUCCIO’s creamy polisher with sugarcane, walnut and jojoba extracts to remove dull surface skin and leave hands feeling smoother.", "使用含甘蔗、核桃与荷荷巴萃取的 CUCCIO 柔和乳霜磨砂进行手部去角质，让肌肤触感更平滑。", "Manicure eksfoliasi lembut menggunakan CUCCIO creamy polisher dengan ekstrak tebu, walnut dan jojoba untuk membantu kulit tangan terasa lebih licin."),
         text("Professional CUCCIO nail-care products", "CUCCIO 专业美甲护理产品", "Produk penjagaan kuku profesional CUCCIO"), confirmPrice, true,
       )),
       service("CUCCIO Spa Manicure", "RM158 / RM168", "75 mins", handCare(
-        text("A manicure using professional CUCCIO nail-care products for a polished, well-groomed finish.", "使用 CUCCIO 品牌专业美甲护理产品完成的手部美甲服务。", "Manicure menggunakan produk penjagaan kuku profesional CUCCIO untuk kemasan yang rapi."),
+        text("A complete hand-care ritual combining exfoliation, intensive hydration and cuticle care using CUCCIO spa products to leave hands feeling smooth, soft and refreshed.", "使用 CUCCIO Spa 产品进行完整手部护理，结合去角质、深层保湿与甘皮护理，让双手更柔滑清爽。", "Ritual penjagaan tangan lengkap menggunakan produk CUCCIO Spa, menggabungkan eksfoliasi, penghidratan intensif dan penjagaan kutikel untuk tangan yang lebih halus, lembut dan segar."),
         text("Professional CUCCIO nail-care products", "CUCCIO 专业美甲护理产品", "Produk penjagaan kuku profesional CUCCIO"), confirmPrice, true,
       )),
     ],
@@ -157,15 +157,15 @@ export const serviceCategories: ServiceCategory[] = [
         text("Age-appropriate pedicure care", "适龄美足护理", "Penjagaan pedicure sesuai usia"),
       )),
       service("CUCCIO Butter Pedicure", "RM75 / RM85", "60 mins", footCare(
-        text("A pedicure using professional CUCCIO nail-care products for a polished, well-groomed finish.", "使用 CUCCIO 品牌专业美甲护理产品完成的足部美甲服务。", "Pedicure menggunakan produk penjagaan kuku profesional CUCCIO untuk kemasan yang rapi."),
+        text("A deeply hydrating pedicure using CUCCIO’s rich whipped butter to soften and moisturise dry skin on the feet without leaving a greasy after-feel.", "使用 CUCCIO 丰润的打发质地 Butter 滋润双足，帮助柔软并保湿干燥肌肤，同时不留油腻感。", "Pedicure penghidratan mendalam menggunakan CUCCIO whipped butter untuk melembut dan melembapkan kulit kaki yang kering tanpa rasa berminyak."),
         text("Professional CUCCIO nail-care products", "CUCCIO 专业美甲护理产品", "Produk penjagaan kuku profesional CUCCIO"), confirmPrice, true,
       )),
       service("CUCCIO Polisher Pedicure", "RM98 / RM108", "75 mins", footCare(
-        text("A pedicure using professional CUCCIO nail-care products for a polished, well-groomed finish.", "使用 CUCCIO 品牌专业美甲护理产品完成的足部美甲服务。", "Pedicure menggunakan produk penjagaan kuku profesional CUCCIO untuk kemasan yang rapi."),
+        text("A gentle exfoliating pedicure using CUCCIO’s creamy polisher with sugarcane, walnut and jojoba extracts to smooth and refresh the skin on the feet.", "使用含甘蔗、核桃与荷荷巴萃取的 CUCCIO 柔和乳霜磨砂进行足部去角质，让双足肌肤更平滑清爽。", "Pedicure eksfoliasi lembut menggunakan CUCCIO creamy polisher dengan ekstrak tebu, walnut dan jojoba untuk melicinkan dan menyegarkan kulit kaki."),
         text("Professional CUCCIO nail-care products", "CUCCIO 专业美甲护理产品", "Produk penjagaan kuku profesional CUCCIO"), confirmPrice, true,
       )),
       service("CUCCIO Spa Pedicure", "RM188 / RM198", "75 mins", footCare(
-        text("A pedicure using professional CUCCIO nail-care products for a polished, well-groomed finish.", "使用 CUCCIO 品牌专业美甲护理产品完成的足部美甲服务。", "Pedicure menggunakan produk penjagaan kuku profesional CUCCIO untuk kemasan yang rapi."),
+        text("A complete foot-care ritual combining exfoliation, intensive hydration, cuticle care and targeted heel care using CUCCIO spa products to leave feet feeling smoother, softer and refreshed.", "使用 CUCCIO Spa 产品进行完整足部护理，结合去角质、深层保湿、甘皮护理与针对性足跟护理，让双足更平滑柔软清爽。", "Ritual penjagaan kaki lengkap menggunakan produk CUCCIO Spa, menggabungkan eksfoliasi, penghidratan intensif, penjagaan kutikel dan penjagaan tumit khusus untuk kaki yang lebih licin, lembut dan segar."),
         text("Professional CUCCIO nail-care products", "CUCCIO 专业美甲护理产品", "Produk penjagaan kuku profesional CUCCIO"), confirmPrice, true,
       )),
     ],
@@ -174,9 +174,9 @@ export const serviceCategories: ServiceCategory[] = [
     id: "callus",
     label: text("Callus Removal", "去茧护理", "Rawatan Kulit Keras"),
     services: [
-      service("FootLogix Treatment", "RM168 / RM178", "90 mins", {
-        shortDescription: text("A professional foot-care service using professional FootLogix nail-care products for a clean, well-groomed finish.", "使用 FootLogix 品牌专业美甲护理产品完成的足部护理服务。", "Servis penjagaan kaki menggunakan produk penjagaan kuku profesional FootLogix untuk kemasan yang rapi."),
-        included: list(["Professional FootLogix nail-care products"], ["FootLogix 专业美甲护理产品"], ["Produk penjagaan kuku profesional FootLogix"]),
+      service("Footlogix Treatment", "RM168 / RM178", "90 mins", {
+        shortDescription: text("A professional callus and foot-skin treatment using Footlogix foot-care products for smoother, more comfortable feet.", "使用 Footlogix 足部护理产品进行专业去茧与足部肌肤护理，让双足更平滑舒适。", "Rawatan profesional untuk kulit keras dan kulit kaki menggunakan produk penjagaan kaki Footlogix bagi kaki yang lebih licin dan selesa."),
+        included: list(["Professional Footlogix foot-care products"], ["Footlogix 专业足部护理产品"], ["Produk penjagaan kaki profesional Footlogix"]),
         pricingNote: confirmPrice,
       }),
       service("Callus Removal", "RM98 / RM108", "60 mins", {
@@ -303,5 +303,5 @@ export const serviceCategories: ServiceCategory[] = [
 export const serviceSource = {
   name: "Mezzanail Nail Studio printed price list",
   verifiedOn: "2026-07-18",
-  note: "Prices and listed durations were transcribed from the official studio price list supplied on 18 July 2026. The studio confirmed that services without a listed duration take up to 90 minutes.",
+  note: "Prices updated July 2026. Where no duration is listed, please check with the studio when booking.",
 };

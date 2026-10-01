@@ -1,4 +1,7 @@
-import type { PromotionLanguage } from "@/lib/promotion/campaign-config";
+import {
+  WINNER_ANNOUNCEMENT,
+  type PromotionLanguage,
+} from "@/lib/promotion/campaign-config";
 
 export const promotionLanguageLabels: Record<PromotionLanguage, string> = {
   en: "English",
@@ -142,6 +145,63 @@ export const promotionPrizeTerms: Record<PromotionLanguage, string> = {
   en: "Campaign prizes include one Dyson Supersonic™ Travel Hair Dryer, one HUAWEI Watch Fit 5, one Xiaomi Robot Vacuum, beauty vouchers and weekly rewards. Prizes are non-transferable and cannot be exchanged for cash unless Mezzanail states otherwise.",
   zh: "活动奖品包括一台 Dyson Supersonic™ 旅行吹风机、一只 HUAWEI Watch Fit 5、一台 Xiaomi 扫地机器人、美容礼券及每周奖励。除非 Mezzanail 另有说明，奖品不可转让，也不可兑换现金。",
   ms: "Hadiah kempen termasuk satu Dyson Supersonic™ Travel Hair Dryer, satu HUAWEI Watch Fit 5, satu Xiaomi Robot Vacuum, baucar kecantikan dan ganjaran mingguan. Hadiah tidak boleh dipindah milik atau ditukar dengan wang tunai kecuali dinyatakan sebaliknya oleh Mezzanail.",
+};
+
+export const promotionEndedCopy: Record<
+  PromotionLanguage,
+  {
+    status: string;
+    title: string;
+    thankYou: string;
+    winnerAnnouncement: string;
+    prizeEyebrow: string;
+    prizeTitle: string;
+    prizeLead: string;
+    viewTerms: string;
+    footerCampaign: string;
+  }
+> = {
+  en: {
+    status: "7th Anniversary",
+    title: "Our 7th Anniversary campaign has ended",
+    thankYou: "Thank you for celebrating seven wonderful years with us.",
+    winnerAnnouncement: WINNER_ANNOUNCEMENT,
+    prizeEyebrow: "7th Anniversary",
+    prizeTitle: "Campaign Prizes",
+    prizeLead: "The campaign prizes included the following rewards.",
+    viewTerms: "View Terms & Conditions",
+    footerCampaign: "7th Anniversary Campaign",
+  },
+  zh: {
+    status: "七周年",
+    title: "我们的七周年活动已结束",
+    thankYou: "感谢您与我们一起庆祝精彩七周年。",
+    winnerAnnouncement:
+      "得奖名单将于2026年10月15日前在 Instagram 和 Facebook 公布。",
+    prizeEyebrow: "七周年",
+    prizeTitle: "活动奖品",
+    prizeLead: "本次活动的奖品包括以下礼品。",
+    viewTerms: "查看活动条款",
+    footerCampaign: "七周年活动",
+  },
+  ms: {
+    status: "Ulang Tahun Ke-7",
+    title: "Kempen Ulang Tahun Ke-7 kami telah tamat",
+    thankYou: "Terima kasih kerana meraikan tujuh tahun yang indah bersama kami.",
+    winnerAnnouncement:
+      "Pemenang akan diumumkan di Instagram dan Facebook selewat-lewatnya 15 Oktober 2026.",
+    prizeEyebrow: "Ulang Tahun Ke-7",
+    prizeTitle: "Hadiah Kempen",
+    prizeLead: "Hadiah kempen tersebut termasuk ganjaran berikut.",
+    viewTerms: "Lihat Terma & Syarat",
+    footerCampaign: "Kempen Ulang Tahun Ke-7",
+  },
+};
+
+export const campaignClosedNotice: Record<PromotionLanguage, string> = {
+  en: "Campaign closed on 30 September 2026.",
+  zh: "活动已于2026年9月30日结束。",
+  ms: "Kempen ditutup pada 30 September 2026.",
 };
 
 export const promotionCopy = {

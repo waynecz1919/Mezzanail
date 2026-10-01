@@ -24,6 +24,7 @@ import {
 import {
   promotionCampaignDetails,
   promotionCopy,
+  promotionEndedCopy,
   promotionLanguageLabels,
   promotionLanguageShortLabels,
 } from "@/lib/promotion/campaign-copy";
@@ -34,6 +35,7 @@ import {
   validateReferralCode,
 } from "@/lib/promotion/referral";
 import { getWhatsAppShareUrl } from "@/lib/promotion/share-message";
+import { useCampaignActive } from "@/lib/promotion/use-campaign-active";
 
 const PROMOTION_LANGUAGE_STORAGE_KEY = "mezzanail_promotion_language";
 
@@ -52,7 +54,9 @@ export function PromotionExperience() {
   const pageViewTracked = useRef(false);
   const qrViewTracked = useRef(false);
   const copy = promotionCopy[language];
+  const endedCopy = promotionEndedCopy[language];
   const campaignDetails = promotionCampaignDetails[language];
+  const campaignActive = useCampaignActive();
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -168,6 +172,130 @@ export function PromotionExperience() {
     });
 
     window.open(whatsappShareUrl, "_blank", "noopener,noreferrer");
+  }
+
+  if (!campaignActive) {
+    return (
+      <main className="promotion-site">
+        <header className="promotion-header">
+          <div className="promotion-shell promotion-header-inner">
+            <Link className="promotion-brand" href="/" aria-label="Mezzanail home">
+              <Image
+                src="/brand/mezzanail-nail-studio-wordmark.png"
+                alt="Mezzanail Nail Studio"
+                width={156}
+                height={53}
+                priority
+              />
+            </Link>
+            <div className="promotion-header-actions">
+              <div
+                className="promotion-header-languages"
+                aria-label={copy.languageLegend}
+              >
+                {(Object.keys(promotionLanguageShortLabels) as PromotionLanguage[]).map(
+                  (languageCode) => (
+                    <button
+                      key={languageCode}
+                      type="button"
+                      aria-label={promotionLanguageLabels[languageCode]}
+                      aria-pressed={language === languageCode}
+                      onClick={() => handleLanguageChange(languageCode)}
+                    >
+                      {promotionLanguageShortLabels[languageCode]}
+                    </button>
+                  ),
+                )}
+              </div>
+              <a
+                className="promotion-header-book"
+                href={anniversaryCampaign.bookingUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={handleBookingClick}
+              >
+                {copy.bookAppointment}
+              </a>
+            </div>
+          </div>
+        </header>
+
+        <section className="promotion-hero" aria-labelledby="promotion-title">
+          <Image
+            className="promotion-hero-image"
+            src={anniversaryCampaign.banner.webp}
+            alt="Mezzanail 7th Anniversary campaign"
+            fill
+            priority
+            sizes="100vw"
+          />
+          <div className="promotion-hero-scrim" aria-hidden="true" />
+          <div className="promotion-shell promotion-hero-content">
+            <span className="promotion-status">
+              <Sparkles size={15} aria-hidden="true" />
+              {endedCopy.status}
+            </span>
+            <p className="promotion-kicker">{copy.brandKicker}</p>
+            <h1 id="promotion-title">{endedCopy.title}</h1>
+            <p className="promotion-lead">{endedCopy.thankYou}</p>
+            <p className="promotion-date">{endedCopy.winnerAnnouncement}</p>
+          </div>
+        </section>
+
+        <section className="promotion-section promotion-prizes" id="prizes">
+          <div className="promotion-shell">
+            <div className="promotion-section-heading">
+              <div>
+                <p className="promotion-eyebrow">{endedCopy.prizeEyebrow}</p>
+                <h2>{endedCopy.prizeTitle}</h2>
+              </div>
+              <p>{endedCopy.prizeLead}</p>
+            </div>
+            <div className="promotion-prize-grid">
+              {anniversaryCampaign.prizes.map((prize, index) => {
+                const Icon =
+                  prizeIcons[prize.icon as keyof typeof prizeIcons] ?? Gift;
+                const localizedPrize = campaignDetails.prizes[index];
+                return (
+                  <article
+                    className={`promotion-prize-card promotion-prize-${index + 1}`}
+                    key={prize.name}
+                  >
+                    <div className="promotion-prize-number">0{index + 1}</div>
+                    <div className="promotion-prize-icon">
+                      <Icon size={34} strokeWidth={1.5} aria-hidden="true" />
+                    </div>
+                    <h3>{localizedPrize.name}</h3>
+                  </article>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        <section className="promotion-section promotion-final-cta">
+          <div className="promotion-shell promotion-final-card">
+            <Heart size={36} aria-hidden="true" />
+            <p>{endedCopy.thankYou}</p>
+            <div className="promotion-final-actions">
+              <Link href={`/promotion/terms?lang=${language}`}>
+                {endedCopy.viewTerms}
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        <footer className="promotion-footer">
+          <div className="promotion-shell promotion-footer-inner">
+            <div>
+              <strong>MEZZANAIL</strong>
+              <span>{endedCopy.footerCampaign}</span>
+            </div>
+            <p>© 2026 Mezzanail Nail Studio. All rights reserved.</p>
+          </div>
+        </footer>
+      </main>
+    );
   }
 
   return (

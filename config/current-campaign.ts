@@ -1,5 +1,4 @@
 export const currentCampaign = {
-  enabled: true,
   id: "mezzanail-7th-anniversary-2026",
   name: "Mezzanail 7th Anniversary Lucky Draw Campaign",
   desktopSrc: "/campaigns/7th-anniversary/banner-desktop.webp",

@@ -3,17 +3,17 @@ import { PromotionExperience } from "@/components/promotion/promotion-experience
 import { anniversaryCampaign } from "@/lib/promotion/campaign-config";
 
 const promotionDescription =
-  "Celebrate Mezzanail's 7th Anniversary from 26 July to 30 September 2026. Join our membership, share with three friends and enter the lucky draw.";
+  "Mezzanail's 7th Anniversary campaign ran from 26 July to 30 September 2026. Thank you for celebrating seven wonderful years with us.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(anniversaryCampaign.promotionUrl),
-  title: "Mezzanail 7th Anniversary Celebration",
+  title: "Mezzanail 7th Anniversary Campaign Has Ended",
   description: promotionDescription,
   alternates: { canonical: anniversaryCampaign.promotionUrl },
   openGraph: {
-    title: "Mezzanail 7th Anniversary Celebration",
+    title: "Mezzanail 7th Anniversary Campaign Has Ended",
     description:
-      "Join Mezzanail's 7th Anniversary Lucky Draw for Dyson, HUAWEI, Xiaomi and weekly rewards.",
+      "Mezzanail's 7th Anniversary campaign ended on 30 September 2026. The campaign featured Dyson, HUAWEI, Xiaomi and beauty rewards.",
     url: anniversaryCampaign.promotionUrl,
     siteName: "Mezzanail",
     images: [
@@ -29,9 +29,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Mezzanail 7th Anniversary Celebration",
+    title: "Mezzanail 7th Anniversary Campaign Has Ended",
     description:
-      "Join our membership, share with three friends and enter the 7th Anniversary Lucky Draw.",
+      "Mezzanail's 7th Anniversary campaign ended on 30 September 2026. Thank you for celebrating with us.",
     images: [anniversaryCampaign.banner.og],
   },
   robots: { index: true, follow: true },
@@ -44,7 +44,7 @@ export default function PromotionPage() {
     name: anniversaryCampaign.title,
     startDate: anniversaryCampaign.startDate,
     endDate: anniversaryCampaign.endDate,
-    eventStatus: "https://schema.org/EventScheduled",
+    eventStatus: "https://schema.org/EventCompleted",
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
     location: {
       "@type": "Place",

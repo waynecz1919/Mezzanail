@@ -5,6 +5,7 @@ import {
   type PromotionLanguage,
 } from "@/lib/promotion/campaign-config";
 import {
+  campaignClosedNotice,
   promotionLanguageLabels,
   promotionLanguageShortLabels,
   termsCopy,
@@ -72,6 +73,9 @@ export default async function PromotionTermsPage({
         </div>
       </header>
       <div className="promotion-shell promotion-terms-content">
+        <p className="promotion-terms-intro">
+          <strong>{campaignClosedNotice[language]}</strong>
+        </p>
         <p className="promotion-terms-intro">{copy.intro}</p>
         {copy.sections.map((section, index) => (
           <section key={section.title}>

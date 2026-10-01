@@ -13,17 +13,17 @@ const ui = {
   en: {
     search: "Search services", all: "All services", price: "Price", duration: "Duration", enquire: "Please enquire", varies: "Duration varies", empty: "No services match your search.", included: "What’s Included", pricing: "Pricing note", aftercare: "Aftercare", addOn: "Add-on service", categories: "Service categories", viewDetails: "View details", hideDetails: "Hide details", clear: "Clear search and filters", results: "services shown", dualPrice: "Where two prices are shown, the first applies to women and the second to men.",
     pricingGuide: "Prices shown are based on the standard service. Final pricing may vary depending on nail condition, length, design complexity, removal requirements and selected add-ons. Your nail artist will confirm the final price before the service begins.",
-    source: "Prices and specifically listed durations are from the Mezzanail Nail Studio price list supplied on 18 July 2026. Where no reliable duration is listed, the time is shown as variable and should be confirmed with the studio.",
+    source: "Prices updated July 2026. Where no duration is listed, please check with the studio when booking.",
   },
   zh: {
     search: "搜索服务", all: "全部服务", price: "价格", duration: "预计时间", enquire: "请咨询", varies: "时间视情况而定", empty: "没有符合搜索条件的服务。", included: "服务包含", pricing: "价格说明", aftercare: "护理建议", addOn: "附加服务", categories: "服务分类", viewDetails: "查看详情", hideDetails: "收起详情", clear: "清除搜索与筛选", results: "项服务", dualPrice: "如显示两个价格，前者适用于女性，后者适用于男性。",
     pricingGuide: "页面所列价格以标准服务为基础。最终价格可能根据指甲状况、长度、设计复杂度、卸甲需求及所选附加项目而调整。美甲师将在服务开始前与顾客确认最终价格。",
-    source: "价格与明确列出的时长来自2026年7月18日提供的 Mezzanail Nail Studio 价目表。没有可靠时长的项目标示为视情况而定，请向门店确认。",
+    source: "价格更新于2026年7月。若未列出服务时长，请在预约时向门店确认。",
   },
   ms: {
     search: "Cari servis", all: "Semua servis", price: "Harga", duration: "Tempoh", enquire: "Sila tanya", varies: "Tempoh berbeza", empty: "Tiada servis sepadan dengan carian.", included: "Apa yang Disertakan", pricing: "Nota harga", aftercare: "Penjagaan selepas servis", addOn: "Servis tambahan", categories: "Kategori servis", viewDetails: "Lihat butiran", hideDetails: "Tutup butiran", clear: "Kosongkan carian dan penapis", results: "servis dipaparkan", dualPrice: "Jika dua harga dipaparkan, harga pertama untuk wanita dan harga kedua untuk lelaki.",
     pricingGuide: "Harga yang dipaparkan adalah berdasarkan servis standard. Harga akhir mungkin berbeza mengikut keadaan dan panjang kuku, kerumitan reka bentuk, keperluan penanggalan serta servis tambahan yang dipilih. Juruteknik kuku anda akan mengesahkan harga akhir sebelum servis bermula.",
-    source: "Harga dan tempoh yang dinyatakan secara khusus datang daripada senarai harga Mezzanail Nail Studio bertarikh 18 Julai 2026. Jika tiada tempoh yang boleh disahkan, tempoh ditandakan sebagai berbeza dan perlu disahkan dengan studio.",
+    source: "Harga dikemas kini pada Julai 2026. Jika tempoh tidak disenaraikan, sila semak dengan studio semasa membuat tempahan.",
   },
 } as const;
 

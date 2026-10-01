@@ -60,16 +60,6 @@ export default function JobPage() {
         addressCountry: "MY",
       },
     },
-    baseSalary: {
-      "@type": "MonetaryAmount",
-      currency: "MYR",
-      value: {
-        "@type": "QuantitativeValue",
-        minValue: 2500,
-        maxValue: 3000,
-        unitText: "MONTH",
-      },
-    },
     url: "https://www.mezzanail.com/job",
   };
 

@@ -1,6 +1,7 @@
 import type { Locale } from "@/lib/i18n";
 
 export const siteUrl = "https://www.mezzanail.com";
+export const BOOKING_URL = "https://booking.tunai.io/mezzanail";
 
 export type WhatsappContext =
   | "general"
@@ -17,7 +18,7 @@ export const siteConfig = {
   whatsappQrPath: "/brand/mezzanail-whatsapp-qr.png",
   xiaohongshuProfileImagePath: "/brand/mezzanail-xiaohongshu-profile.jpeg",
 
-  bookingUrl: "https://booking.tunai.io/mezzanail",
+  bookingUrl: BOOKING_URL,
   appStoreUrl: "https://apps.apple.com/my/app/tunaiapp/id6446320035",
   googlePlayUrl: "https://play.google.com/store/apps/details?id=io.tunai.userapp",
 
@@ -72,7 +73,6 @@ export const siteConfig = {
   xiaohongshuName: "Mezzanail Nail Studio",
 
   announcement: {
-    enabled: true,
     campaign: "7th Anniversary",
     dates: "26th July — 30th September 2026",
   },
