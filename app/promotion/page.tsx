@@ -7,11 +7,11 @@ const promotionDescription =
 
 export const metadata: Metadata = {
   metadataBase: new URL(anniversaryCampaign.promotionUrl),
-  title: "Mezzanail 7th Anniversary Campaign",
+  title: "Mezzanail 7th Anniversary Campaign Has Ended",
   description: promotionDescription,
   alternates: { canonical: anniversaryCampaign.promotionUrl },
   openGraph: {
-    title: "Mezzanail 7th Anniversary Campaign",
+    title: "Mezzanail 7th Anniversary Campaign Has Ended",
     description:
       "Mezzanail's 7th Anniversary campaign ended on 30 September 2026. The campaign featured Dyson, HUAWEI, Xiaomi and beauty rewards.",
     url: anniversaryCampaign.promotionUrl,
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Mezzanail 7th Anniversary Campaign",
+    title: "Mezzanail 7th Anniversary Campaign Has Ended",
     description:
       "Mezzanail's 7th Anniversary campaign ended on 30 September 2026. Thank you for celebrating with us.",
     images: [anniversaryCampaign.banner.og],
