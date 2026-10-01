@@ -20,10 +20,8 @@ const site = read("lib/site.ts");
 test("campaign uses the official promotion and booking URLs", () => {
   assert.match(config, /https:\/\/www\.mezzanail\.com\/promotion/);
   assert.match(config, /mezzanail-7th-anniversary-qr-v2/);
-  assert.match(
-    config,
-    /https:\/\/booking\.tunai\.io\/booking\/mezzanail\?outletID=4188#contact/,
-  );
+  assert.match(site, /export const BOOKING_URL = "https:\/\/booking\.tunai\.io\/mezzanail"/);
+  assert.match(config, /bookingUrl: BOOKING_URL/);
 });
 
 test("campaign dates, prizes and entry steps match the approved brief", () => {
@@ -71,9 +69,10 @@ test("the full campaign supports English, Chinese and Bahasa Melayu", () => {
 test("the official homepage routes every anniversary entry to promotion", () => {
   assert.match(officialSite, /<CurrentCampaignBanner/);
   assert.match(currentCampaignBanner, /<CampaignBanner/);
-  assert.match(currentCampaignBanner, /currentCampaign\.enabled/);
+  assert.match(currentCampaignBanner, /useCampaignActive/);
+  assert.match(currentCampaignBanner, /active=\{active\}/);
   assert.match(navigation, /href: "\/promotion", labelKey: "promo"/);
-  assert.match(currentCampaign, /enabled: true/);
+  assert.doesNotMatch(currentCampaign, /enabled: true/);
   assert.match(currentCampaign, /href: "\/promotion"/);
   assert.match(currentCampaign, /banner-desktop\.webp/);
   assert.doesNotMatch(officialSite, /href="\/#anniversary"/);
@@ -83,7 +82,7 @@ test("the official homepage routes every anniversary entry to promotion", () => 
 
 test("the campaign banner uses responsive art direction and accessible HTML content", () => {
   assert.match(campaignBanner, /<picture/);
-  assert.match(campaignBanner, /mobileSrc \?/);
+  assert.match(campaignBanner, /resolvedMobileSrc \?/);
   assert.match(campaignBanner, /sizes="100vw"/);
   assert.match(campaignBanner, /width=\{width\}/);
   assert.match(campaignBanner, /height=\{height\}/);
@@ -121,7 +120,7 @@ test("metadata, canonical, OG image and Event JSON-LD are present", () => {
   assert.match(page, /1200/);
   assert.match(page, /630/);
   assert.match(page, /application\/ld\+json/);
-  assert.match(page, /EventScheduled/);
+  assert.match(page, /EventCompleted/);
   assert.match(termsPage, /promotionUrl\}\/terms/);
 });
 
