@@ -73,7 +73,6 @@ export const siteConfig = {
   xiaohongshuName: "Mezzanail Nail Studio",
 
   announcement: {
-    enabled: true,
     campaign: "7th Anniversary",
     dates: "26th July — 30th September 2026",
   },
