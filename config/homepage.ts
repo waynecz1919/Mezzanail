@@ -13,12 +13,13 @@ const sharedImages = {
     "/gallery/chrome-neutral.jpg",
     "/gallery/minimal-manicure.jpg",
   ],
-  studio: "/campaigns/7th-anniversary/homepage-studio-campaign.png",
+  studio: "/studio/mezzanail-studio-sign.jpg",
 } as const;
 
 const reviewSource = {
   rating: "4.9",
-  ratingNote: "Public listing snapshot",
+  ratingNote: "Based on 123 Google reviews",
+  // TODO(owner): Confirm these three quotes match their Google originals word for word.
   reviews: [
     "Excellent service, very polite staff and reasonable pricing. The studio feels comfortable and especially confident with foot care.",
     "Excellent service and friendly staff. I love it here.",
@@ -82,7 +83,7 @@ const english = {
     mapAction: "Open in Maps",
     bookAction: "Book Appointment",
     whatsappAction: "WhatsApp",
-    imageAlt: "Mezzanail 7th Anniversary Lucky Draw campaign",
+    imageAlt: "Mezzanail Nail Studio in Melaka",
   },
 } as const;
 
@@ -127,7 +128,7 @@ export const homepageContent = {
       action: "查看全部 Google 评价",
       sourceLabel: "Google 顾客评价",
       viewLabel: "在 Google 查看",
-      ratingNote: "公开列表快照",
+      ratingNote: "基于 123 条 Google 评价",
     },
     membership: {
       ...english.membership,
@@ -145,7 +146,7 @@ export const homepageContent = {
       mapAction: "打开地图",
       bookAction: "预约服务",
       whatsappAction: "WhatsApp 联系",
-      imageAlt: "Mezzanail 七周年幸运抽奖活动",
+      imageAlt: "马六甲 Mezzanail Nail Studio",
     },
   },
   ms: {
@@ -187,7 +188,7 @@ export const homepageContent = {
       action: "Baca Semua Ulasan Google",
       sourceLabel: "Ulasan pelanggan Google",
       viewLabel: "Lihat di Google",
-      ratingNote: "Ringkasan senarai awam",
+      ratingNote: "Berdasarkan 123 ulasan Google",
     },
     membership: {
       ...english.membership,
@@ -205,7 +206,7 @@ export const homepageContent = {
       mapAction: "Buka Peta",
       bookAction: "Tempah Janji Temu",
       whatsappAction: "WhatsApp",
-      imageAlt: "Kempen cabutan bertuah ulang tahun ke-7 Mezzanail",
+      imageAlt: "Mezzanail Nail Studio di Melaka",
     },
   },
 } as const;
