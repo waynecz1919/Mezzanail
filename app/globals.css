@@ -1087,6 +1087,11 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
   background-color: var(--color-white);
 }
 
+.public-site .service-card-category,
+.public-site .service-add-on {
+  color: var(--color-ink);
+}
+
 .public-site .selected-work-item>span {
   border-color: var(--color-white);
   background: color-mix(in srgb, var(--color-ink) 72%, transparent);
@@ -1190,6 +1195,13 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
   border-color: color-mix(in srgb, var(--color-white) 20%, transparent);
   background: var(--color-ink);
   color: var(--color-white);
+}
+
+:root:has(head link[rel="canonical"][href="https://www.mezzanail.com/privacy"]) body .legal-language-label,
+:root:has(head link[rel="canonical"][href="https://www.mezzanail.com/terms"]) body .legal-language-label,
+:root:has(head link[rel="canonical"][href="https://www.mezzanail.com/privacy"]) body .legal-ms-title,
+:root:has(head link[rel="canonical"][href="https://www.mezzanail.com/terms"]) body .legal-ms-title {
+  color: var(--color-ink);
 }
 
 .home-hero {
