@@ -1092,6 +1092,10 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
   color: var(--color-ink);
 }
 
+.public-site .service-search input {
+  min-height: 44px;
+}
+
 .public-site .selected-work-item>span {
   border-color: var(--color-white);
   background: color-mix(in srgb, var(--color-ink) 72%, transparent);
