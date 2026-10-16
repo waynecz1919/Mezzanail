@@ -13,8 +13,17 @@ const sharedImages = {
     "/gallery/chrome-neutral.jpg",
     "/gallery/minimal-manicure.jpg",
   ],
-  studio: "/services/homepage/foot-care.png",
 } as const;
+
+type HomepageImages = {
+  heroImage: string | null;
+  studioImage: string | null;
+};
+
+export const homepage: HomepageImages = {
+  heroImage: null,
+  studioImage: null,
+};
 
 const reviewSource = {
   rating: "4.9",
@@ -211,4 +220,3 @@ export const homepageContent = {
 } as const;
 
 export const homepageNailWorkImages = sharedImages.nailWork;
-export const homepageStudioImage = sharedImages.studio;

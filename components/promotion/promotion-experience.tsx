@@ -246,7 +246,7 @@ export function PromotionExperience() {
           <p className="promotion-kicker">{copy.brandKicker}</p>
           <h1 id="promotion-title">
             {copy.heroTitle}
-            <span>{copy.heroSubtitle}</span>
+            {!campaignEnded && <span>{copy.heroSubtitle}</span>}
           </h1>
           <p className="promotion-date">
             <CalendarDays size={18} aria-hidden="true" />
@@ -284,7 +284,9 @@ export function PromotionExperience() {
             <h2>{copy.introTitle}</h2>
           </div>
           <div>
-            <p className="promotion-lead">{copy.introLead}</p>
+            {!campaignEnded && (
+              <p className="promotion-lead">{copy.introLead}</p>
+            )}
             <div className="promotion-date-card">
               <CalendarDays size={22} aria-hidden="true" />
               <span>
@@ -325,39 +327,45 @@ export function PromotionExperience() {
                     </span>
                   )}
                   <h3>{localizedPrize.name}</h3>
-                  <p>{localizedPrize.description}</p>
+                  {(!campaignEnded || index < anniversaryCampaign.prizes.length - 1) && (
+                    <p>{localizedPrize.description}</p>
+                  )}
                 </article>
               );
             })}
           </div>
-          <p className="promotion-disclaimer">{copy.prizeDisclaimer}</p>
+          {!campaignEnded && (
+            <p className="promotion-disclaimer">{copy.prizeDisclaimer}</p>
+          )}
         </div>
       </section>
 
-      <section className="promotion-section promotion-how">
-        <div className="promotion-shell">
-          <div className="promotion-section-heading promotion-section-heading-centered">
-            <div>
-              <p className="promotion-eyebrow">{copy.howEyebrow}</p>
-              <h2>{copy.howTitle}</h2>
+      {!campaignEnded && (
+        <section className="promotion-section promotion-how">
+          <div className="promotion-shell">
+            <div className="promotion-section-heading promotion-section-heading-centered">
+              <div>
+                <p className="promotion-eyebrow">{copy.howEyebrow}</p>
+                <h2>{copy.howTitle}</h2>
+              </div>
+            </div>
+            <div className="promotion-steps">
+              {campaignDetails.steps.map((step, index) => (
+                <article className="promotion-step" key={step.title}>
+                  <span className="promotion-step-number">{index + 1}</span>
+                  <div>
+                    <h3>{step.title}</h3>
+                    <p>{step.description}</p>
+                  </div>
+                  {index < campaignDetails.steps.length - 1 && (
+                    <span className="promotion-step-line" aria-hidden="true" />
+                  )}
+                </article>
+              ))}
             </div>
           </div>
-          <div className="promotion-steps">
-            {campaignDetails.steps.map((step, index) => (
-              <article className="promotion-step" key={step.title}>
-                <span className="promotion-step-number">{index + 1}</span>
-                <div>
-                  <h3>{step.title}</h3>
-                  <p>{step.description}</p>
-                </div>
-                {index < campaignDetails.steps.length - 1 && (
-                  <span className="promotion-step-line" aria-hidden="true" />
-                )}
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {!campaignEnded && (
       <section className="promotion-section promotion-share" id="share">
@@ -438,7 +446,7 @@ export function PromotionExperience() {
           <Heart size={36} aria-hidden="true" />
           <p className="promotion-eyebrow">{copy.finalEyebrow}</p>
           <h2>{copy.finalTitle}</h2>
-          <p>{copy.policy}</p>
+          {!campaignEnded && <p>{copy.policy}</p>}
           <div className="promotion-final-actions">
             <a
               className="promotion-button promotion-button-primary"

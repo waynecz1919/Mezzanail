@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { preload } from "react-dom";
 import { OfficialHome } from "@/components/official-site";
 import { createPublicMetadata } from "@/lib/metadata";
 
@@ -11,10 +10,5 @@ export const metadata: Metadata = createPublicMetadata({
 });
 
 export default function HomePage() {
-  preload("/services/homepage/hand-care.png", {
-    as: "image",
-    fetchPriority: "high",
-  });
-
   return <OfficialHome />;
 }

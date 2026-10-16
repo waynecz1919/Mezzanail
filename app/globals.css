@@ -208,7 +208,7 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
 .home-selected-work{background:var(--mn-surface)}.selected-work-heading,.reviews-heading{display:flex;align-items:end;justify-content:space-between;gap:40px}.selected-work-heading>.mn-button{flex:none}
 .selected-work-grid{display:grid;margin-top:44px;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px}.selected-work-item{position:relative;grid-column:span 3;overflow:hidden;border-radius:14px;background:var(--mn-surface-soft);aspect-ratio:4/5}
 .selected-work-item.is-primary{grid-column:span 6;grid-row:span 2}.selected-work-item img{transition:transform .22s ease}.selected-work-item:hover img{transform:scale(1.015)}
-.selected-work-item>span{position:absolute;right:12px;bottom:12px;left:12px;display:flex;min-height:42px;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.38);border-radius:9px;background:rgba(45,17,25,.72);padding:8px 12px;color:#fff;font-size:11px;font-weight:700;letter-spacing:.08em;opacity:0;transform:translateY(4px);transition:opacity .2s,transform .2s;backdrop-filter:blur(8px)}
+.selected-work-item>span{position:absolute;right:12px;bottom:12px;left:12px;display:flex;min-height:42px;align-items:center;justify-content:center;overflow:hidden;border:1px solid rgba(255,255,255,.38);border-radius:9px;background:rgba(45,17,25,.72);padding:8px 12px;color:#fff;font-size:11px;font-weight:700;letter-spacing:.08em;white-space:nowrap;text-overflow:ellipsis;opacity:0;transform:translateY(4px);transition:opacity .2s,transform .2s;backdrop-filter:blur(8px)}
 .selected-work-item:hover>span,.selected-work-item:focus-visible>span{opacity:1;transform:none}
 
 .home-why{background:var(--mn-blush-soft)}.why-mezzanail-grid{display:grid;margin-top:46px;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid color-mix(in srgb,var(--mn-wine) 35%,var(--mn-border))}
@@ -1089,7 +1089,7 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
 
 .public-site .selected-work-item>span {
   border-color: var(--color-white);
-  background: var(--color-ink);
+  background: color-mix(in srgb, var(--color-ink) 72%, transparent);
   color: var(--color-white);
 }
 
@@ -1099,14 +1099,19 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
 }
 
 .public-site .studio-image,
-.public-site .signature-service-image,
-.public-site .selected-work-item {
+.public-site .signature-service-image {
   min-width: 0;
   background: var(--color-pink);
 }
 
 .public-site .studio-grid {
   min-width: 0;
+}
+
+.public-site .studio-grid--no-image {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 900px;
+  margin-inline: auto;
 }
 
 .public-site .studio-image {
@@ -1136,22 +1141,73 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
   outline-color: var(--color-ink);
 }
 
+/* Privacy and Terms are public documents rendered outside the public-site
+   wrapper. Scope their palette by canonical route so applicant/member/legal
+   documents that share the component retain their existing styles. */
+:root:has(head link[rel="canonical"][href="https://www.mezzanail.com/privacy"]) body,
+:root:has(head link[rel="canonical"][href="https://www.mezzanail.com/terms"]) body {
+  --mn-background: var(--color-cream);
+  --mn-surface: var(--color-white);
+  --mn-surface-soft: var(--color-pink);
+  --mn-wine: var(--color-ink);
+  --mn-wine-hover: var(--color-ink);
+  --mn-wine-soft: var(--color-pink);
+  --mn-blush: var(--color-pink);
+  --mn-blush-soft: var(--color-pink);
+  --mn-champagne: var(--color-gold);
+  --mn-champagne-soft: var(--color-pink);
+  --mn-text: var(--color-ink);
+  --mn-muted: var(--color-ink);
+  --mn-border: color-mix(in srgb, var(--color-ink) 16%, var(--color-white));
+  --mn-shadow-soft: 0 10px 32px color-mix(in srgb, var(--color-ink) 10%, transparent);
+  --bg: var(--color-cream);
+  --surface: var(--color-pink);
+  --surface-2: var(--color-pink);
+  --ink: var(--color-ink);
+  --muted: var(--color-ink);
+  --wine: var(--color-ink);
+  --line: var(--mn-border);
+  --gold: var(--color-gold);
+  --gold-bright: var(--color-gold);
+  --shadow: var(--mn-shadow-soft);
+  background: var(--color-cream);
+  color: var(--color-ink);
+}
+
+:root:has(head link[rel="canonical"][href="https://www.mezzanail.com/privacy"]) body .official-footer,
+:root:has(head link[rel="canonical"][href="https://www.mezzanail.com/terms"]) body .official-footer {
+  background: var(--color-ink);
+  color: var(--color-white);
+}
+
+:root:has(head link[rel="canonical"][href="https://www.mezzanail.com/privacy"]) body .official-footer h3,
+:root:has(head link[rel="canonical"][href="https://www.mezzanail.com/terms"]) body .official-footer h3 {
+  color: var(--color-white);
+}
+
+:root:has(head link[rel="canonical"][href="https://www.mezzanail.com/privacy"]) body .analytics-consent,
+:root:has(head link[rel="canonical"][href="https://www.mezzanail.com/terms"]) body .analytics-consent {
+  border-color: color-mix(in srgb, var(--color-white) 20%, transparent);
+  background: var(--color-ink);
+  color: var(--color-white);
+}
+
 .home-hero {
   position: relative;
-  display: grid;
+  display: flex;
   width: min(1280px, 100%);
-  min-height: min(700px, calc(100svh - 80px));
-  grid-template-columns: minmax(0, .96fr) minmax(0, 1.04fr);
+  min-height: min(640px, calc(100svh - 80px));
   align-items: center;
-  gap: clamp(28px, 5vw, 72px);
+  justify-content: center;
   margin-inline: auto;
-  padding: 44px clamp(24px, 4.6vw, 64px);
+  padding: clamp(48px, 8vh, 88px) clamp(24px, 4.6vw, 64px);
+  text-align: center;
 }
 
 .home-hero-copy {
   position: relative;
   z-index: 1;
-  max-width: 640px;
+  width: min(100%, 820px);
 }
 
 .home-hero-copy .mn-eyebrow {
@@ -1160,11 +1216,11 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
 }
 
 .home-hero h1 {
-  max-width: 620px;
-  margin: 0;
+  max-width: 820px;
+  margin: 0 auto;
   color: var(--color-ink);
   font-family: var(--font-beauty), Georgia, serif;
-  font-size: clamp(56px, 6.8vw, 90px);
+  font-size: clamp(54px, 7.3vw, 92px);
   font-weight: 400;
   line-height: .94;
   letter-spacing: -.055em;
@@ -1172,8 +1228,8 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
 }
 
 .home-hero-lede {
-  max-width: 550px;
-  margin: 22px 0 0;
+  max-width: 660px;
+  margin: 22px auto 0;
   color: var(--color-ink);
   font-size: 17px;
   line-height: 1.7;
@@ -1181,10 +1237,40 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
 
 .home-hero-copy .mn-button {
   min-height: 54px;
-  margin-top: 27px;
+  margin: 27px auto 0;
   border-color: var(--color-ink);
   background: var(--color-ink);
   color: var(--color-white);
+}
+
+.home-hero--with-image {
+  display: grid;
+  grid-template-columns: minmax(0, .96fr) minmax(0, 1.04fr);
+  gap: clamp(28px, 5vw, 72px);
+  text-align: left;
+}
+
+.home-hero--with-image .home-hero-copy {
+  width: auto;
+  max-width: 640px;
+}
+
+.home-hero--with-image h1,
+.home-hero--with-image .home-hero-lede {
+  margin-left: 0;
+}
+
+.home-hero--with-image h1 {
+  max-width: 620px;
+  font-size: clamp(56px, 6.8vw, 90px);
+}
+
+.home-hero--with-image .home-hero-lede {
+  max-width: 550px;
+}
+
+.home-hero--with-image .home-hero-copy .mn-button {
+  margin-left: 0;
 }
 
 .home-hero-media {
@@ -1385,12 +1471,15 @@ body:has(.promotion-site:not(.promotion-terms-page)) .analytics-consent-actions 
 
 @media (max-width: 900px) {
   .home-hero {
-    min-height: 640px;
-    grid-template-columns: 1fr;
-    padding: 64px 28px 40px;
+    min-height: min(600px, calc(100svh - 80px));
+    padding: 52px 28px;
   }
 
-  .home-hero-media {
+  .home-hero--with-image {
+    grid-template-columns: 1fr;
+  }
+
+  .home-hero--with-image .home-hero-media {
     position: absolute;
     inset: 0;
     min-height: 0;
@@ -1398,7 +1487,7 @@ body:has(.promotion-site:not(.promotion-terms-page)) .analytics-consent-actions 
     border-radius: 0;
   }
 
-  .home-hero-copy {
+  .home-hero--with-image .home-hero-copy {
     max-width: 680px;
     border-radius: 20px;
     background: var(--color-cream);
@@ -1429,17 +1518,8 @@ body:has(.promotion-site:not(.promotion-terms-page)) .analytics-consent-actions 
   }
 
   .home-hero {
-    height: min(540px, calc(100svh - 160px));
-    min-height: 460px;
-    padding: 0;
-  }
-
-  .home-hero-copy {
-    position: absolute;
-    right: 14px;
-    bottom: 130px;
-    left: 14px;
-    padding: 22px 18px;
+    min-height: min(560px, calc(100svh - 80px));
+    padding: 40px 18px;
   }
 
   .home-hero-copy .mn-eyebrow {
@@ -1453,22 +1533,19 @@ body:has(.promotion-site:not(.promotion-terms-page)) .analytics-consent-actions 
   }
 
   .home-hero-lede {
-    margin-top: 9px;
-    font-size: 14px;
-    line-height: 1.55;
+    margin-top: 14px;
+    font-size: 15px;
+    line-height: 1.6;
   }
 
   .home-hero-copy .mn-button {
-    width: 100%;
+    width: min(100%, 280px);
     min-height: 50px;
-    margin-top: 15px;
+    margin-top: 20px;
   }
 
-  .home-hero-placeholder {
-    top: 14px;
-    right: 14px;
-    padding: 8px 11px;
-    font-size: 10px;
+  .home-hero--with-image .home-hero-copy {
+    margin-inline: auto;
   }
 
   .promotion-site:not(.promotion-terms-page) .promotion-expired-notice {
