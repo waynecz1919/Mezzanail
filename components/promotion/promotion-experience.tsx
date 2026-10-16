@@ -45,6 +45,7 @@ const prizeIcons = {
 };
 
 export function PromotionExperience() {
+  const campaignEnded = true;
   const [language, setLanguage] = useState<PromotionLanguage>("en");
   const [referralCode, setReferralCode] = useState<string | null>(null);
   const [source, setSource] = useState<PromotionSource>("direct");
@@ -215,6 +216,10 @@ export function PromotionExperience() {
         </div>
       </header>
 
+      <div className="promotion-expired-notice" role="status">
+        This campaign ended on 30 September 2026. Thank you for celebrating 7 years with us.
+      </div>
+
       <section className="promotion-hero" aria-labelledby="promotion-title">
         <Image
           className="promotion-hero-image"
@@ -257,15 +262,17 @@ export function PromotionExperience() {
             >
               {copy.bookAppointment}
             </a>
-            <button
-              className="promotion-button promotion-button-whatsapp"
-              type="button"
-              onClick={handleShareClick}
-              aria-label={copy.shareAccessibleName}
-            >
-              <MessageCircle size={19} aria-hidden="true" />
-              {copy.shareViaWhatsApp}
-            </button>
+            {!campaignEnded && (
+              <button
+                className="promotion-button promotion-button-whatsapp"
+                type="button"
+                onClick={handleShareClick}
+                aria-label={copy.shareAccessibleName}
+              >
+                <MessageCircle size={19} aria-hidden="true" />
+                {copy.shareViaWhatsApp}
+              </button>
+            )}
           </div>
         </div>
       </section>
@@ -352,6 +359,7 @@ export function PromotionExperience() {
         </div>
       </section>
 
+      {!campaignEnded && (
       <section className="promotion-section promotion-share" id="share">
         <div className="promotion-shell promotion-share-grid">
           <div className="promotion-share-copy">
@@ -423,6 +431,7 @@ export function PromotionExperience() {
           </div>
         </div>
       </section>
+      )}
 
       <section className="promotion-section promotion-final-cta">
         <div className="promotion-shell promotion-final-card">
@@ -467,14 +476,16 @@ export function PromotionExperience() {
           <CalendarDays size={19} aria-hidden="true" />
           {copy.bookNow}
         </a>
-        <button
-          type="button"
-          onClick={handleShareClick}
-          aria-label={copy.shareAccessibleName}
-        >
-          <Share2 size={19} aria-hidden="true" />
-          {copy.share}
-        </button>
+        {!campaignEnded && (
+          <button
+            type="button"
+            onClick={handleShareClick}
+            aria-label={copy.shareAccessibleName}
+          >
+            <Share2 size={19} aria-hidden="true" />
+            {copy.share}
+          </button>
+        )}
       </nav>
     </main>
   );

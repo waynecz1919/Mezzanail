@@ -11,15 +11,9 @@ export const metadata: Metadata = createPublicMetadata({
 });
 
 export default function HomePage() {
-  preload("/campaigns/7th-anniversary/banner-mobile.webp", {
+  preload("/services/homepage/hand-care.png", {
     as: "image",
     fetchPriority: "high",
-    media: "(max-width: 767px)",
-  });
-  preload("/campaigns/7th-anniversary/banner-desktop.webp", {
-    as: "image",
-    fetchPriority: "high",
-    media: "(min-width: 768px)",
   });
 
   return <OfficialHome />;

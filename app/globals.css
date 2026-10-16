@@ -956,3 +956,524 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
   .winnie-button-secondary,
   .winnie-login-button { transition: none; }
 }
+
+/* Public-site palette. These tokens are scoped below to public routes so the
+   shared global stylesheet keeps the existing appearance of restricted areas. */
+:root {
+  --color-cream: #F8F5EF;
+  --color-pink: #F2DFE3;
+  --color-gold: #B69B68;
+  --color-ink: #343434;
+  --color-white: #FFFFFF;
+  --public-bottom-nav-height: 66px;
+}
+
+.public-site {
+  --public-bottom-nav-height: 66px;
+  --mn-background: var(--color-cream);
+  --mn-surface: var(--color-white);
+  --mn-surface-soft: var(--color-pink);
+  --mn-wine: var(--color-ink);
+  --mn-wine-hover: var(--color-ink);
+  --mn-wine-soft: var(--color-pink);
+  --mn-blush: var(--color-pink);
+  --mn-blush-soft: var(--color-pink);
+  --mn-champagne: var(--color-gold);
+  --mn-champagne-soft: var(--color-pink);
+  --mn-text: var(--color-ink);
+  --mn-muted: var(--color-ink);
+  --mn-border: color-mix(in srgb, var(--color-ink) 16%, var(--color-white));
+  --mn-shadow-soft: 0 10px 32px color-mix(in srgb, var(--color-ink) 10%, transparent);
+  --bg: var(--color-cream);
+  --surface: var(--color-pink);
+  --surface-2: var(--color-pink);
+  --ink: var(--color-ink);
+  --muted: var(--color-ink);
+  --wine: var(--color-ink);
+  --line: var(--mn-border);
+  --gold: var(--color-gold);
+  --gold-bright: var(--color-gold);
+  --shadow: var(--mn-shadow-soft);
+  background: var(--color-cream);
+  color: var(--color-ink);
+}
+
+.public-site .homepage-quiet {
+  --mn-home-bg: var(--color-cream);
+  background: var(--color-cream);
+  color: var(--color-ink);
+}
+
+.public-site .official-header {
+  border-color: var(--line);
+  background: var(--color-cream);
+  color: var(--color-ink);
+}
+
+.public-site .announcement a {
+  border-color: var(--color-white);
+}
+
+.public-site .announcement,
+.public-site .official-footer,
+.public-site .contact-panel,
+.public-site .contact-map,
+.public-site .map-action,
+.public-site .app-promo,
+.public-site .booking-card {
+  background: var(--color-ink);
+  color: var(--color-white);
+}
+
+.public-site .announcement a,
+.public-site .announcement-date,
+.public-site .contact-details span,
+.public-site .official-footer h3,
+.public-site .official-footer a,
+.public-site .official-footer p,
+.public-site .official-footer .brand-wordmark,
+.public-site .contact-panel .eyebrow,
+.public-site .app-promo,
+.public-site .booking-card {
+  color: var(--color-white);
+}
+
+.public-site .official-footer h3~a,
+.public-site .official-footer h3~span {
+  color: var(--color-white);
+}
+
+.public-site .official-footer :is(h3, p, a, span, strong, small),
+.public-site .contact-panel :is(p, h2, a, span, strong, small) {
+  color: var(--color-white);
+}
+
+.public-site .official-footer a:hover {
+  color: var(--color-white);
+}
+
+.public-site .whatsapp-float {
+  background: var(--color-ink);
+  color: var(--color-white);
+  box-shadow: 0 14px 34px color-mix(in srgb, var(--color-ink) 24%, transparent);
+}
+
+.public-site .gold-text,
+.public-site .eyebrow,
+.public-site .signature-service-index,
+.public-site .why-mezzanail-item>span,
+.public-site .official-menu button:hover,
+.public-site .official-menu button.is-active {
+  color: var(--color-ink);
+}
+
+.public-site .membership-banner .mn-eyebrow,
+.public-site .membership-banner h2,
+.public-site .membership-banner p:last-child {
+  color: var(--color-white);
+}
+
+.public-site .mobile-official-nav a.mobile-book,
+.public-site .service-filters button.is-active,
+.public-site .service-tools .service-filters button.is-active {
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-white);
+}
+
+.public-site .service-row,
+.public-site .card,
+.public-site .qr-card {
+  background-color: var(--color-white);
+}
+
+.public-site .selected-work-item>span {
+  border-color: var(--color-white);
+  background: var(--color-ink);
+  color: var(--color-white);
+}
+
+.public-site .review-stars,
+.public-site .google-rating {
+  color: var(--color-gold);
+}
+
+.public-site .studio-image,
+.public-site .signature-service-image,
+.public-site .selected-work-item {
+  min-width: 0;
+  background: var(--color-pink);
+}
+
+.public-site .studio-grid {
+  min-width: 0;
+}
+
+.public-site .studio-image {
+  width: 100%;
+}
+
+.public-site .studio-image img {
+  object-fit: cover !important;
+}
+
+.public-site .red-mark {
+  background: var(--color-ink);
+  color: var(--color-white);
+}
+
+.public-site .legal-action-panel :is(h2, p, a) {
+  color: var(--color-white);
+}
+
+.public-site .legal-action-panel .btn {
+  border-color: var(--color-white);
+  background: var(--color-white);
+  color: var(--color-ink);
+}
+
+.public-site :focus-visible {
+  outline-color: var(--color-ink);
+}
+
+.home-hero {
+  position: relative;
+  display: grid;
+  width: min(1280px, 100%);
+  min-height: min(700px, calc(100svh - 80px));
+  grid-template-columns: minmax(0, .96fr) minmax(0, 1.04fr);
+  align-items: center;
+  gap: clamp(28px, 5vw, 72px);
+  margin-inline: auto;
+  padding: 44px clamp(24px, 4.6vw, 64px);
+}
+
+.home-hero-copy {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+}
+
+.home-hero-copy .mn-eyebrow {
+  margin: 0 0 18px;
+  color: var(--color-ink);
+}
+
+.home-hero h1 {
+  max-width: 620px;
+  margin: 0;
+  color: var(--color-ink);
+  font-family: var(--font-beauty), Georgia, serif;
+  font-size: clamp(56px, 6.8vw, 90px);
+  font-weight: 400;
+  line-height: .94;
+  letter-spacing: -.055em;
+  text-wrap: balance;
+}
+
+.home-hero-lede {
+  max-width: 550px;
+  margin: 22px 0 0;
+  color: var(--color-ink);
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.home-hero-copy .mn-button {
+  min-height: 54px;
+  margin-top: 27px;
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-white);
+}
+
+.home-hero-media {
+  position: relative;
+  min-width: 0;
+  min-height: 520px;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  border-radius: 26px;
+  background: var(--color-pink);
+}
+
+.home-hero-image {
+  object-fit: cover;
+  object-position: center;
+}
+
+.home-hero-placeholder {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 1;
+  border-radius: 999px;
+  background: var(--color-white);
+  padding: 9px 13px;
+  color: var(--color-ink);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+body:has(.public-site) {
+  background: var(--color-cream);
+}
+
+body:has(.public-site) .analytics-consent {
+  border-color: var(--color-white);
+  background: var(--color-ink);
+  color: var(--color-white);
+  box-shadow: 0 22px 70px color-mix(in srgb, var(--color-ink) 30%, transparent);
+}
+
+body:has(.public-site) .analytics-consent>div>span,
+body:has(.public-site) .analytics-consent a {
+  color: var(--color-white);
+}
+
+body:has(.public-site) .analytics-consent p,
+body:has(.public-site) .analytics-consent p small {
+  color: var(--color-white);
+}
+
+body:has(.public-site) .analytics-consent-actions .btn-dark {
+  border-color: var(--color-white);
+  background: var(--color-white);
+  color: var(--color-ink);
+}
+
+.promotion-site:not(.promotion-terms-page) {
+  --promotion-background: var(--color-cream);
+  --promotion-surface: var(--color-white);
+  --promotion-soft-pink: var(--color-pink);
+  --promotion-blush: var(--color-pink);
+  --promotion-rose: var(--color-ink);
+  --promotion-rose-dark: var(--color-ink);
+  --promotion-gold: var(--color-gold);
+  --promotion-text: var(--color-ink);
+  --promotion-muted: var(--color-ink);
+  --promotion-whatsapp: var(--color-ink);
+  --promotion-line: color-mix(in srgb, var(--color-ink) 16%, var(--color-white));
+  --promotion-shadow: 0 22px 60px color-mix(in srgb, var(--color-ink) 10%, transparent);
+  background: var(--color-cream);
+  color: var(--color-ink);
+}
+
+.promotion-site:not(.promotion-terms-page) .promotion-header {
+  border-color: var(--promotion-line);
+  background: var(--color-cream);
+}
+
+.promotion-site:not(.promotion-terms-page) .promotion-brand {
+  background: var(--color-ink);
+  box-shadow: none;
+}
+
+.promotion-site:not(.promotion-terms-page) .promotion-header-languages {
+  border-color: var(--promotion-line);
+  background: var(--color-white);
+}
+
+.promotion-site:not(.promotion-terms-page) .promotion-header-languages button,
+.promotion-site:not(.promotion-terms-page) .promotion-header-languages a {
+  color: var(--color-ink);
+}
+
+.promotion-site:not(.promotion-terms-page) .promotion-header-languages button[aria-pressed="true"],
+.promotion-site:not(.promotion-terms-page) .promotion-header-languages a[aria-current="page"] {
+  background: var(--color-ink);
+  color: var(--color-white);
+}
+
+.promotion-site:not(.promotion-terms-page) .promotion-header-book {
+  border-color: var(--color-ink);
+  background: var(--color-white);
+  color: var(--color-ink);
+}
+
+.promotion-site:not(.promotion-terms-page) .promotion-hero-scrim {
+  background: linear-gradient(90deg,
+    color-mix(in srgb, var(--color-cream) 98%, transparent) 0%,
+    color-mix(in srgb, var(--color-cream) 92%, transparent) 36%,
+    color-mix(in srgb, var(--color-cream) 35%, transparent) 68%,
+    transparent 100%);
+}
+
+.promotion-site:not(.promotion-terms-page) .promotion-status {
+  border-color: var(--promotion-line);
+  background: var(--color-white);
+  color: var(--color-ink);
+}
+
+.promotion-site:not(.promotion-terms-page) .promotion-kicker,
+.promotion-site:not(.promotion-terms-page) .promotion-eyebrow,
+.promotion-site:not(.promotion-terms-page) .promotion-hero h1 span,
+.promotion-site:not(.promotion-terms-page) .promotion-date,
+.promotion-site:not(.promotion-terms-page) .promotion-date-card strong,
+.promotion-site:not(.promotion-terms-page) .promotion-prize-number,
+.promotion-site:not(.promotion-terms-page) .promotion-final-actions>a:last-child {
+  color: var(--color-ink);
+}
+
+.promotion-site:not(.promotion-terms-page) .promotion-date-card,
+.promotion-site:not(.promotion-terms-page) .promotion-prize-card,
+.promotion-site:not(.promotion-terms-page) .promotion-qr-card,
+.promotion-site:not(.promotion-terms-page) .promotion-final-card {
+  border-color: var(--promotion-line);
+  background-color: var(--color-white);
+  box-shadow: var(--promotion-shadow);
+}
+
+.promotion-site:not(.promotion-terms-page) .promotion-button-primary,
+.promotion-site:not(.promotion-terms-page) .promotion-button-whatsapp,
+.promotion-site:not(.promotion-terms-page) .promotion-mobile-cta a,
+.promotion-site:not(.promotion-terms-page) .promotion-mobile-cta button {
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-white);
+  box-shadow: none;
+}
+
+.promotion-site:not(.promotion-terms-page) .promotion-button-primary:hover,
+.promotion-site:not(.promotion-terms-page) .promotion-button-whatsapp:hover,
+.promotion-site:not(.promotion-terms-page) .promotion-mobile-cta a:hover,
+.promotion-site:not(.promotion-terms-page) .promotion-mobile-cta button:hover {
+  background: var(--color-ink);
+}
+
+.promotion-site:not(.promotion-terms-page) .promotion-footer {
+  background: var(--color-ink);
+  color: var(--color-white);
+}
+
+.promotion-site:not(.promotion-terms-page) .promotion-footer span,
+.promotion-site:not(.promotion-terms-page) .promotion-footer p {
+  color: var(--color-white);
+}
+
+.promotion-site:not(.promotion-terms-page) .promotion-expired-notice {
+  position: relative;
+  z-index: 12;
+  margin-top: 84px;
+  background: var(--color-ink);
+  padding: 14px 22px;
+  color: var(--color-white);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.5;
+  text-align: center;
+}
+
+body:has(.promotion-site:not(.promotion-terms-page)) .analytics-consent {
+  border-color: var(--color-white);
+  background: var(--color-ink);
+  color: var(--color-white);
+}
+
+body:has(.promotion-site:not(.promotion-terms-page)) .analytics-consent>div>span,
+body:has(.promotion-site:not(.promotion-terms-page)) .analytics-consent a,
+body:has(.promotion-site:not(.promotion-terms-page)) .analytics-consent p,
+body:has(.promotion-site:not(.promotion-terms-page)) .analytics-consent p small {
+  color: var(--color-white);
+}
+
+body:has(.promotion-site:not(.promotion-terms-page)) .analytics-consent-actions .btn-dark {
+  border-color: var(--color-white);
+  background: var(--color-white);
+  color: var(--color-ink);
+}
+
+@media (max-width: 900px) {
+  .home-hero {
+    min-height: 640px;
+    grid-template-columns: 1fr;
+    padding: 64px 28px 40px;
+  }
+
+  .home-hero-media {
+    position: absolute;
+    inset: 0;
+    min-height: 0;
+    aspect-ratio: auto;
+    border-radius: 0;
+  }
+
+  .home-hero-copy {
+    max-width: 680px;
+    border-radius: 20px;
+    background: var(--color-cream);
+    padding: 30px;
+  }
+}
+
+@media (max-width: 767px) {
+  body:has(.public-site) {
+    padding-bottom: calc(var(--public-bottom-nav-height) + 8px + env(safe-area-inset-bottom));
+  }
+
+  .public-site .official-footer {
+    padding-bottom: calc(var(--public-bottom-nav-height) + 8px + env(safe-area-inset-bottom));
+  }
+
+  .public-site .mobile-official-nav {
+    height: var(--public-bottom-nav-height);
+    bottom: calc(8px + env(safe-area-inset-bottom));
+  }
+
+  .public-site .whatsapp-float {
+    bottom: calc(var(--public-bottom-nav-height) + 20px + env(safe-area-inset-bottom));
+  }
+
+  body:has(.public-site) .analytics-consent {
+    bottom: calc(var(--public-bottom-nav-height) + 20px + env(safe-area-inset-bottom));
+  }
+
+  .home-hero {
+    height: min(540px, calc(100svh - 160px));
+    min-height: 460px;
+    padding: 0;
+  }
+
+  .home-hero-copy {
+    position: absolute;
+    right: 14px;
+    bottom: 130px;
+    left: 14px;
+    padding: 22px 18px;
+  }
+
+  .home-hero-copy .mn-eyebrow {
+    margin-bottom: 10px;
+    font-size: 10px;
+  }
+
+  .home-hero h1 {
+    font-size: clamp(36px, 10vw, 42px);
+    line-height: .98;
+  }
+
+  .home-hero-lede {
+    margin-top: 9px;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .home-hero-copy .mn-button {
+    width: 100%;
+    min-height: 50px;
+    margin-top: 15px;
+  }
+
+  .home-hero-placeholder {
+    top: 14px;
+    right: 14px;
+    padding: 8px 11px;
+    font-size: 10px;
+  }
+
+  .promotion-site:not(.promotion-terms-page) .promotion-expired-notice {
+    margin-top: 0;
+    padding: 12px 16px;
+    font-size: 12px;
+  }
+}

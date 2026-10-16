@@ -10,8 +10,8 @@ import {
   Globe2, Home, Instagram, MapPin, Menu, MessageCircle, Phone, Sparkles, X,
 } from "lucide-react";
 import { Reveal } from "@/components/hyperframe/motion";
-import { CurrentCampaignBanner } from "@/components/home/CurrentCampaignBanner";
 import { GoogleReviewsPreview } from "@/components/home/GoogleReviewsPreview";
+import { HomeHero } from "@/components/home/HomeHero";
 import { MembershipBanner } from "@/components/home/MembershipBanner";
 import { SelectedNailWork } from "@/components/home/SelectedNailWork";
 import { SignatureServices } from "@/components/home/SignatureServices";
@@ -122,7 +122,7 @@ function MobileNav() {
   return <nav className="mobile-official-nav" aria-label="Mobile quick navigation"><Link href="/"><Home size={18}/><span>{t.nav.home}</span></Link><Link href="/services"><Sparkles size={18}/><span>{t.nav.services}</span></Link><Link href="/promotion"><Gift size={18}/><span>{t.nav.promo}</span></Link><a href={siteConfig.bookingUrl} target="_blank" rel="noopener noreferrer" className="mobile-book" onClick={() => trackPublicAction("book_appointment_click", siteConfig.bookingUrl, "mobile_quick_nav")}><CalendarCheck size={18}/><span>{t.nav.book}</span></a></nav>;
 }
 
-export function OfficialFrame({ children }: {children: React.ReactNode}) {
+export function OfficialFrame({ children, publicSite = false }: {children: React.ReactNode; publicSite?: boolean}) {
   const { locale } = useOfficial();
   const pathname = usePathname();
   const whatsappContext = pathname.startsWith("/services")
@@ -135,7 +135,9 @@ export function OfficialFrame({ children }: {children: React.ReactNode}) {
           ? "career"
           : "general";
   const whatsappUrl = getWhatsappUrl(locale, whatsappContext);
-  return <><SiteHeader/><main>{children}</main><SiteFooter/><MobileNav/><a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="whatsapp-float" aria-label={`WhatsApp ${siteConfig.brandName}`} onClick={() => trackPublicAction("whatsapp_click", whatsappUrl, "floating_action")}><MessageCircle size={22}/></a></>;
+  const frame = <><SiteHeader/><main>{children}</main><SiteFooter/><MobileNav/><a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="whatsapp-float" aria-label={`WhatsApp ${siteConfig.brandName}`} onClick={() => trackPublicAction("whatsapp_click", whatsappUrl, "floating_action")}><MessageCircle size={22}/></a></>;
+  const usePublicPalette = publicSite || !pathname.startsWith("/job");
+  return usePublicPalette ? <div className="public-site">{frame}</div> : frame;
 }
 
 function StoryPreview() {
@@ -168,8 +170,8 @@ function ContactVisitSection() {
 
 export function OfficialHome() {
   const { locale } = useOfficial();
-  return <OfficialFrame><div className="homepage-quiet">
-    <CurrentCampaignBanner/>
+  return <OfficialFrame publicSite><div className="homepage-quiet">
+    <HomeHero/>
     <SignatureServices locale={locale}/>
     <SelectedNailWork locale={locale}/>
     <WhyMezzanail locale={locale}/>
@@ -178,6 +180,6 @@ export function OfficialHome() {
     <StudioLocationBooking locale={locale}/>
   </div></OfficialFrame>;
 }
-export function ServicesPage() { const {t}=useOfficial(); return <OfficialFrame><PageHero eyebrow={t.pages.services.eyebrow} title={t.pages.services.title} body={t.pages.services.body}/><ServicesCatalog/><ContactPanel/></OfficialFrame>; }
-export function AboutPage() { const {t}=useOfficial(); return <OfficialFrame><PageHero eyebrow={`${siteConfig.brandName} · Malaysia`} title={t.pages.about.title} body={t.pages.about.body}/><section className="section surface"><div className="shell grid gap-5 lg:grid-cols-3">{t.pages.about.values.map(([title,body],i)=><Reveal key={title} delay={i*.08} className="card min-h-72 p-8"><span className="numbers text-xs font-bold gold-text">0{i+1}</span><h2 className="mt-20 text-2xl font-bold">{title}</h2><p className="mt-4 text-sm leading-7 text-[var(--muted)]">{body}</p></Reveal>)}</div></section><StoryPreview/><ContactPanel/></OfficialFrame>; }
-export function ContactPage() { const {t}=useOfficial(); return <OfficialFrame><PageHero eyebrow={t.pages.contact.eyebrow} title={t.pages.contact.title} body={t.pages.contact.body}/><ContactVisitSection/></OfficialFrame>; }
+export function ServicesPage() { const {t}=useOfficial(); return <OfficialFrame publicSite><PageHero eyebrow={t.pages.services.eyebrow} title={t.pages.services.title} body={t.pages.services.body}/><ServicesCatalog/><ContactPanel/></OfficialFrame>; }
+export function AboutPage() { const {t}=useOfficial(); return <OfficialFrame publicSite><PageHero eyebrow={`${siteConfig.brandName} · Malaysia`} title={t.pages.about.title} body={t.pages.about.body}/><section className="section surface"><div className="shell grid gap-5 lg:grid-cols-3">{t.pages.about.values.map(([title,body],i)=><Reveal key={title} delay={i*.08} className="card min-h-72 p-8"><span className="numbers text-xs font-bold gold-text">0{i+1}</span><h2 className="mt-20 text-2xl font-bold">{title}</h2><p className="mt-4 text-sm leading-7 text-[var(--muted)]">{body}</p></Reveal>)}</div></section><StoryPreview/><ContactPanel/></OfficialFrame>; }
+export function ContactPage() { const {t}=useOfficial(); return <OfficialFrame publicSite><PageHero eyebrow={t.pages.contact.eyebrow} title={t.pages.contact.title} body={t.pages.contact.body}/><ContactVisitSection/></OfficialFrame>; }
