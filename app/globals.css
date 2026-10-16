@@ -1553,4 +1553,9 @@ body:has(.promotion-site:not(.promotion-terms-page)) .analytics-consent-actions 
     padding: 12px 16px;
     font-size: 12px;
   }
+
+  .promotion-site:not(.promotion-terms-page) .promotion-mobile-cta {
+    border-color: var(--promotion-line);
+    background: color-mix(in srgb, var(--color-white) 92%, transparent);
+  }
 }
