@@ -1472,7 +1472,7 @@ body:has(.promotion-site:not(.promotion-terms-page)) .analytics-consent-actions 
   }
 
   .promotion-site:not(.promotion-terms-page) .promotion-expired-notice {
-    margin-top: 0;
+    margin-top: 73px;
     padding: 12px 16px;
     font-size: 12px;
   }
