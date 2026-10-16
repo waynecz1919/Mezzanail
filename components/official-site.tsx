@@ -136,7 +136,7 @@ export function OfficialFrame({ children, publicSite = false }: {children: React
           : "general";
   const whatsappUrl = getWhatsappUrl(locale, whatsappContext);
   const frame = <><SiteHeader/><main>{children}</main><SiteFooter/><MobileNav/><a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="whatsapp-float" aria-label={`WhatsApp ${siteConfig.brandName}`} onClick={() => trackPublicAction("whatsapp_click", whatsappUrl, "floating_action")}><MessageCircle size={22}/></a></>;
-  const usePublicPalette = publicSite || !pathname.startsWith("/job");
+  const usePublicPalette = publicSite || pathname === "/privacy" || pathname === "/terms";
   return usePublicPalette ? <div className="public-site">{frame}</div> : frame;
 }
 
