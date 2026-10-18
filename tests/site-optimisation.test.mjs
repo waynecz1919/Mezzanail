@@ -106,16 +106,29 @@ test("homepage starting prices are computed from matching service categories", (
   });
   const categoryIds = ["manicure", "pedicure", "extensions", "callus", "waxing"];
   const computed = priceModule.getHomepageStartingPrices(categoryIds);
+  const expected = { manicure: 20, pedicure: 20, extensions: 45, callus: 98, waxing: 13 };
+
+  assert.deepEqual({ ...computed }, expected);
 
   for (const categoryId of categoryIds) {
     const matches = serviceModule.serviceCategories.filter((category) => category.id === categoryId);
     assert.equal(matches.length, 1, `${categoryId} must match one service category`);
-    const amounts = matches[0].services.flatMap(({ price }) =>
+    const eligibleServices = matches[0].services.filter(
+      ({ name }) => name.trim().toLowerCase() !== "nail extension removal",
+    );
+    assert.ok(
+      eligibleServices.every(({ name }) => name.trim().toLowerCase() !== "nail extension removal"),
+      `${categoryId} must not use Nail Extension Removal as a starting price`,
+    );
+    const amounts = eligibleServices.flatMap(({ price }) =>
       [...price.matchAll(/\bRM\s*(\d+(?:\.\d{1,2})?)\b/gi)].map((match) => Number(match[1])),
     );
     assert.ok(amounts.length > 0, `${categoryId} needs a numeric source price`);
     assert.equal(computed[categoryId], Math.min(...amounts));
   }
+
+  const callusCategory = serviceModule.serviceCategories.find(({ id }) => id === "callus");
+  assert.equal(callusCategory.services.find(({ name }) => name === "Callus Removal").price, "RM98 / RM108");
 
   assert.match(homepagePage, /getHomepageStartingPrices\(/);
   assert.match(signatureServices, /startingPrices\[item\.serviceCategoryId\]/);

@@ -24,7 +24,10 @@ export function getHomepageStartingPrices(
     const matches = serviceCategories.filter((category) => category.id === categoryId);
     if (matches.length !== 1) continue;
 
-    const priceLists = matches[0].services.map(({ price }) => parsePriceAmounts(price));
+    const priceableServices = matches[0].services.filter(
+      ({ name }) => name.trim().toLowerCase() !== "nail extension removal",
+    );
+    const priceLists = priceableServices.map(({ price }) => parsePriceAmounts(price));
     if (!priceLists.length || priceLists.some((amounts) => !amounts?.length)) continue;
 
     const minimum = Math.min(...priceLists.flatMap((amounts) => amounts ?? []));
