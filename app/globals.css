@@ -1220,6 +1220,12 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
 .public-site .red-mark {
   background: var(--color-ink);
   color: var(--color-white);
+  font-size: 11px;
+}
+
+.not-found-page-scope .official-footer h3,
+.not-found-page-scope .mobile-official-nav a {
+  font-size: 11px;
 }
 
 .public-site .legal-action-panel :is(h2, p, a) {
