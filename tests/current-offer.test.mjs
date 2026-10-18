@@ -56,12 +56,12 @@ test("the offer price and terms match the approved poster in every language", as
 
 test("the homepage hero shows real client work without cropping any nail", () => {
   assert.match(homepageConfig, /src: "\/home\/hero-tortoiseshell\.webp"/);
-  assert.match(homepageConfig, /width: 923/);
-  assert.match(homepageConfig, /height: 940/);
+  assert.match(homepageConfig, /width: 848/);
+  assert.match(homepageConfig, /height: 890/);
   assert.match(homepageConfig, /Tortoiseshell almond nails with pearl line art by Mezzanail/);
   assert.match(hero, /alt=\{heroImage\.alt\[locale\]\}/);
   assert.doesNotMatch(hero, /\bfill\b/);
-  assert.match(globals, /aspect-ratio: 923 \/ 940/);
+  assert.match(globals, /aspect-ratio: 848 \/ 890/);
   assert.match(globals, /\.home-hero-image \{[^}]*object-fit: contain/);
   assert.doesNotMatch(globals, /\.home-hero-image \{[^}]*object-fit: cover/);
 });

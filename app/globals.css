@@ -1289,7 +1289,7 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
   margin-left: 0;
 }
 
-/* The hero frame follows the photo's own ratio (923 x 940) and the image is
+/* The hero frame follows the photo's own ratio (848 x 890) and the image is
    never cropped: every finger and nail stays fully visible at every width. */
 .home-hero-media {
   position: relative;
@@ -1299,7 +1299,7 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
   margin: 0;
   justify-self: end;
   overflow: hidden;
-  aspect-ratio: 923 / 940;
+  aspect-ratio: 848 / 890;
   border-radius: 26px;
   background: var(--color-pink);
 }

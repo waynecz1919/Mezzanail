@@ -31,8 +31,8 @@ export const homepage: HomepageImages = {
   // Real Mezzanail client work. The frame uses the photo's own ratio, so no nail is cropped.
   heroImage: {
     src: "/home/hero-tortoiseshell.webp",
-    width: 923,
-    height: 940,
+    width: 848,
+    height: 890,
     alt: {
       en: "Tortoiseshell almond nails with pearl line art by Mezzanail",
       zh: "Mezzanail 作品：玳瑁杏仁甲配珍珠线条彩绘",
