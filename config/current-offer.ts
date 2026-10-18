@@ -1,4 +1,4 @@
-// Seasonal offer shown on the homepage strip and at the top of /promotion.
+// Seasonal offer shown inside the homepage hero and at the top of /promotion.
 // Kept separate from config/homepage.ts so the homepage content stays price-free.
 // Times are Malaysia time (Asia/Kuala_Lumpur, UTC+8, no daylight saving).
 
@@ -14,6 +14,7 @@ type OfferCopy = {
   terms: string;
   action: string;
   details: string;
+  otherServices: string;
   posterAlt: string;
   whatsappMessage: string;
 };
@@ -47,6 +48,7 @@ export const currentOffer = {
         "Solid colour only. Nail art and gel removal are charged separately. Not valid with other offers or packages.",
       action: "Book on WhatsApp",
       details: "Offer details",
+      otherServices: "Book other services",
       posterAlt:
         "Deepavali Gel Glow poster: Gelish Manicure RM68, usual price RM95, valid 15 October to 8 November 2026",
       whatsappMessage:
@@ -62,6 +64,7 @@ export const currentOffer = {
       terms: "仅限纯色；彩绘及卸甲另计；不可与其他优惠或配套同时使用。",
       action: "WhatsApp 预约",
       details: "优惠详情",
+      otherServices: "预约其他服务",
       posterAlt: "屠妖节 Gel Glow 海报：Gelish 手部美甲 RM68，原价 RM95，2026年10月15日至11月8日",
       whatsappMessage: "您好 Mezzanail，我想预约屠妖节 Gel Glow Gelish 手部美甲（RM68）。",
     },
@@ -76,6 +79,7 @@ export const currentOffer = {
         "Warna solid sahaja. Seni kuku dan penanggalan gel dicaj berasingan. Tidak sah bersama tawaran atau pakej lain.",
       action: "Tempah melalui WhatsApp",
       details: "Butiran tawaran",
+      otherServices: "Tempah servis lain",
       posterAlt:
         "Poster Deepavali Gel Glow: Manikur Gelish RM68, harga biasa RM95, sah 15 Oktober hingga 8 November 2026",
       whatsappMessage:

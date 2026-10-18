@@ -6,7 +6,6 @@ import { pathToFileURL } from "node:url";
 const read = (filePath) => readFileSync(filePath, "utf8");
 const offerPath = "config/current-offer.ts";
 const offerSource = read(offerPath);
-const strip = read("components/home/CurrentOfferStrip.tsx");
 const hero = read("components/home/HomeHero.tsx");
 const homepageConfig = read("config/homepage.ts");
 const promotion = read("components/promotion/promotion-experience.tsx");
@@ -67,9 +66,15 @@ test("the homepage hero shows real client work without cropping any nail", () =>
   assert.doesNotMatch(globals, /\.home-hero-image \{[^}]*object-fit: cover/);
 });
 
-test("the offer strip and promotion section hide themselves after the offer ends", () => {
-  assert.match(strip, /useOfferActive\(\)/);
-  assert.match(strip, /if \(!active\) return null/);
+test("the hero offer and promotion section hide themselves after the offer ends", () => {
+  assert.match(hero, /const offerActive = useOfferActive\(\)/);
+  assert.match(hero, /\{offerActive \? \(\s*<div className="home-hero-offer"/);
+  assert.ok(
+    hero.indexOf('className="home-hero-offer"') < hero.indexOf("home-hero-media"),
+    "the RM68 offer must sit in the hero copy, before the photo",
+  );
+  assert.match(hero, /RM\{currentOffer\.offerPrice\}/);
+  assert.match(hero, /<h1 id="home-hero-title">Premium Nail Care in Melaka<\/h1>/);
   assert.match(promotion, /\{offerActive && \(/);
   assert.match(promotion, /id="current-offer"/);
   assert.ok(
