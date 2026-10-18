@@ -114,6 +114,18 @@ test("public announcement is localized, offer-gated and keeps home clear", () =>
   assert.match(officialSite, /className="announcement-label"/);
 });
 
+test("the public offer announcement has white text on an ink background", () => {
+  const announcement = globals.match(/\.announcement--offer\s*\{([^}]+)\}/)?.[1] ?? "";
+  const label = globals.match(/\.announcement--offer\s+\.announcement-label\s*\{([^}]+)\}/)?.[1] ?? "";
+  const link = globals.match(/\.announcement--offer\s+a\s*\{([^}]+)\}/)?.[1] ?? "";
+
+  assert.match(announcement, /background:\s*var\(--color-ink\)/);
+  assert.match(announcement, /color:\s*var\(--color-white\)/);
+  assert.match(label, /color:\s*var\(--color-white\)/);
+  assert.match(link, /color:\s*var\(--color-white\)/);
+  assert.match(link, /border:\s*1px solid color-mix\(in srgb,\s*var\(--color-white\) 55%,\s*transparent\)/);
+});
+
 test("Gelish service offer badge is active-gated without changing listed service data", () => {
   assert.match(servicesCatalog, /const offerActive = useOfferActive\(\)/);
   assert.match(servicesCatalog, /offerActive && service\.name === "Gelish Manicure"/);

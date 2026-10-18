@@ -1010,7 +1010,7 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
   color: var(--color-ink);
 }
 
-.public-site .announcement a {
+.public-site .announcement:not(.announcement--offer) a {
   border-color: var(--color-white);
 }
 
@@ -1117,8 +1117,8 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
   min-height: 54px;
   gap: 12px;
   padding: 5px 16px;
-  background: var(--color-cream);
-  color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-white);
   font-size: 12px;
   letter-spacing: normal;
   text-transform: none;
@@ -1129,7 +1129,7 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
   min-width: 0;
   flex: 1 1 auto;
   overflow: hidden;
-  color: var(--color-ink);
+  color: var(--color-white);
   font-size: 12px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1146,10 +1146,10 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
   flex: 0 0 auto;
   align-items: center;
   gap: 6px;
-  border: 1px solid color-mix(in srgb, var(--color-ink) 24%, var(--color-white));
+  border: 1px solid color-mix(in srgb, var(--color-white) 55%, transparent);
   border-radius: 999px;
   padding: 0 10px;
-  color: var(--color-ink);
+  color: var(--color-white);
   font-size: 12px;
   text-decoration: none;
   white-space: nowrap;
