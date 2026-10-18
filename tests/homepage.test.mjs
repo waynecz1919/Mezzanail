@@ -4,14 +4,19 @@ import test from "node:test";
 
 const read = (filePath) => readFileSync(filePath, "utf8");
 const officialSite = read("components/official-site.tsx");
+const officialI18n = read("lib/official-i18n.ts");
+const servicesCatalog = read("components/services-catalog.tsx");
+const servicesData = read("lib/services.ts");
+const currentOfferConfig = read("config/current-offer.ts");
 const homepageConfig = read("config/homepage.ts");
 const navigation = read("config/navigation.ts");
 const globals = read("app/globals.css");
 const homeLink = read("components/ui/HomeLink.tsx");
+const homeHero = read("components/home/HomeHero.tsx");
 
 test("homepage renders the approved quiet-luxury section order", () => {
   const orderedComponents = [
-    "<CurrentCampaignBanner",
+    "<HomeHero",
     "<SignatureServices",
     "<SelectedNailWork",
     "<WhyMezzanail",
@@ -72,6 +77,14 @@ test("homepage uses the approved palette, typography and restrained buttons", ()
   assert.match(globals, /\.mn-button--text/);
 });
 
+test("public eyebrow is at least 11px and mobile offer title uses separate lines", () => {
+  assert.match(globals, /\.public-site \.mn-eyebrow\s*\{\s*font-size:\s*11px;/);
+  assert.match(homeHero, /className="home-hero-offer-separator"/);
+  assert.match(homeHero, /className="home-hero-offer-service"/);
+  assert.match(globals, /\.public-site \.home-hero-offer-separator\s*\{\s*display:\s*none;/);
+  assert.match(globals, /\.public-site \.home-hero-offer-service\s*\{\s*display:\s*block;/);
+});
+
 test("homepage analytics include only approved interaction context", () => {
   for (const event of [
     "service_category_click",
@@ -85,4 +98,26 @@ test("homepage analytics include only approved interaction context", () => {
     assert.match(`${homeLink}\n${officialSite}`, new RegExp(event));
   }
   assert.doesNotMatch(homeLink, /customer_name|phone_number|appointment_data|member_balance/);
+});
+
+test("public announcement is localized, offer-gated and keeps home clear", () => {
+  const announcementBlocks = officialI18n.match(/announcement: \{[^}]*\}/g) ?? [];
+  assert.equal(announcementBlocks.length, 3);
+  for (const block of announcementBlocks) {
+    assert.doesNotMatch(block, /7TH ANNIVERSARY|七周年庆典|ULANG TAHUN KE-7/);
+  }
+  assert.match(officialSite, /const offerActive = useOfferActive\(\)/);
+  assert.match(officialSite, /!isHome && !pathname\.startsWith\("\/job"\) && offerActive/);
+  assert.match(officialSite, /href="\/promotion#current-offer"/);
+  assert.match(officialSite, /currentOffer\.offerPrice/);
+  assert.match(currentOfferConfig, /getOfferEndDateLabel/);
+  assert.match(officialSite, /className="announcement-label"/);
+});
+
+test("Gelish service offer badge is active-gated without changing listed service data", () => {
+  assert.match(servicesCatalog, /const offerActive = useOfferActive\(\)/);
+  assert.match(servicesCatalog, /offerActive && service\.name === "Gelish Manicure"/);
+  assert.match(servicesCatalog, /href="\/promotion#current-offer"/);
+  assert.match(servicesCatalog, /currentOffer\.offerPrice/);
+  assert.doesNotMatch(servicesData, /Deepavali RM68|offerBadge/);
 });

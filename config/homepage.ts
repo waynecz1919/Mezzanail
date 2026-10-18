@@ -13,8 +13,38 @@ const sharedImages = {
     "/gallery/chrome-neutral.jpg",
     "/gallery/minimal-manicure.jpg",
   ],
-  studio: "/campaigns/7th-anniversary/homepage-studio-campaign.png",
 } as const;
+
+type HomepageHeroImage = {
+  src: string;
+  width: number;
+  height: number;
+  alt: Record<"en" | "zh" | "ms", string>;
+};
+
+type HomepageImages = {
+  heroImage: HomepageHeroImage | null;
+  studioImage: string | null;
+};
+
+export const homepage: HomepageImages = {
+  // HOW TO CHANGE THE HERO PHOTO:
+  // - Use a new file name for each replacement.
+  // - Keep src, width, and height matched to the image file.
+  // - Provide EN, ZH, and MS alt text.
+  // - Say "by Mezzanail" only for real client work.
+  heroImage: {
+    src: "/home/hero-2026-10-bridal.webp",
+    width: 1280,
+    height: 1280,
+    alt: {
+      en: "Bride in a lace gown with French-tip almond nails, hands clasped behind her back",
+      zh: "身穿蕾丝婚纱的新娘，双手背在身后，法式杏仁甲",
+      ms: "Pengantin bergaun renda dengan kuku badam French tip, tangan digenggam di belakang",
+    },
+  },
+  studioImage: null,
+};
 
 const reviewSource = {
   rating: "4.9",
@@ -82,7 +112,7 @@ const english = {
     mapAction: "Open in Maps",
     bookAction: "Book Appointment",
     whatsappAction: "WhatsApp",
-    imageAlt: "Mezzanail 7th Anniversary Lucky Draw campaign",
+    imageAlt: "French pedicure with a white flower",
   },
 } as const;
 
@@ -145,7 +175,7 @@ export const homepageContent = {
       mapAction: "打开地图",
       bookAction: "预约服务",
       whatsappAction: "WhatsApp 联系",
-      imageAlt: "Mezzanail 七周年幸运抽奖活动",
+      imageAlt: "搭配白色花朵的法式足部护理",
     },
   },
   ms: {
@@ -205,10 +235,9 @@ export const homepageContent = {
       mapAction: "Buka Peta",
       bookAction: "Tempah Janji Temu",
       whatsappAction: "WhatsApp",
-      imageAlt: "Kempen cabutan bertuah ulang tahun ke-7 Mezzanail",
+      imageAlt: "Pedikur Perancis dengan bunga putih",
     },
   },
 } as const;
 
 export const homepageNailWorkImages = sharedImages.nailWork;
-export const homepageStudioImage = sharedImages.studio;

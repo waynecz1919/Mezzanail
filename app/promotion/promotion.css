@@ -1224,3 +1224,62 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+.promotion-site:not(.promotion-terms-page) .promotion-past-campaign {
+  border-block: 1px solid color-mix(in srgb, var(--color-ink) 14%, var(--color-white));
+  background: var(--color-cream);
+  color: var(--color-ink);
+  padding: 18px 0;
+}
+
+.promotion-site:not(.promotion-terms-page) .promotion-past-campaign-inner {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.promotion-site:not(.promotion-terms-page) .promotion-past-campaign p {
+  color: var(--color-ink);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.promotion-site:not(.promotion-terms-page) .promotion-past-campaign a {
+  display: inline-flex;
+  min-height: 44px;
+  flex: 0 0 auto;
+  align-items: center;
+  color: var(--color-ink);
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.promotion-site:not(.promotion-terms-page) .promotion-header-languages button,
+.promotion-site:not(.promotion-terms-page) .promotion-languages button {
+  font-size: 11px;
+}
+
+.promotion-site:not(.promotion-terms-page) .promotion-mobile-cta {
+  grid-template-columns: 1fr;
+}
+
+@media (max-width: 900px) {
+  .promotion-site:not(.promotion-terms-page) {
+    padding-bottom: calc(84px + env(safe-area-inset-bottom));
+  }
+
+  .promotion-site:not(.promotion-terms-page) .promotion-past-campaign-inner {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .promotion-site:not(.promotion-terms-page) .promotion-mobile-cta a {
+    min-height: 52px;
+    width: 100%;
+  }
+}

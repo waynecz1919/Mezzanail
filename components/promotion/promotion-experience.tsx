@@ -34,6 +34,8 @@ import {
   validateReferralCode,
 } from "@/lib/promotion/referral";
 import { getWhatsAppShareUrl } from "@/lib/promotion/share-message";
+import { useOfferActive } from "@/components/offer/use-offer-active";
+import { currentOffer, getOfferWhatsappUrl } from "@/config/current-offer";
 
 const PROMOTION_LANGUAGE_STORAGE_KEY = "mezzanail_promotion_language";
 
@@ -44,7 +46,24 @@ const prizeIcons = {
   gift: Gift,
 };
 
+const pastCampaignCopy: Record<PromotionLanguage, { text: string; terms: string }> = {
+  en: {
+    text: "Past campaign: 7th Anniversary Lucky Draw (26 Jul – 30 Sep 2026) has ended. Thank you for celebrating 7 years with us.",
+    terms: "Campaign terms",
+  },
+  zh: {
+    text: "往期活动：七周年幸运抽奖（2026年7月26日 – 9月30日）已结束。感谢大家陪我们走过7年。",
+    terms: "活动条款",
+  },
+  ms: {
+    text: "Kempen lepas: Cabutan Bertuah Ulang Tahun ke-7 (26 Jul – 30 Sep 2026) telah tamat. Terima kasih kerana meraikan 7 tahun bersama kami.",
+    terms: "Terma kempen",
+  },
+};
+
 export function PromotionExperience() {
+  const campaignEnded = true;
+  const offerActive = useOfferActive();
   const [language, setLanguage] = useState<PromotionLanguage>("en");
   const [referralCode, setReferralCode] = useState<string | null>(null);
   const [source, setSource] = useState<PromotionSource>("direct");
@@ -215,6 +234,74 @@ export function PromotionExperience() {
         </div>
       </header>
 
+      {offerActive && (
+        <section
+          className="promotion-current-offer"
+          id="current-offer"
+          aria-labelledby="current-offer-heading"
+        >
+          <div className="promotion-shell promotion-current-offer-inner">
+            <div className="promotion-current-offer-poster">
+              <Image
+                src={currentOffer.poster[language]}
+                alt={currentOffer.copy[language].posterAlt}
+                width={currentOffer.poster.width}
+                height={currentOffer.poster.height}
+                priority
+                sizes="(max-width: 900px) min(100vw, 560px), 480px"
+              />
+            </div>
+            <div className="promotion-current-offer-copy">
+              <p className="promotion-current-offer-eyebrow">
+                {currentOffer.copy[language].eyebrow}
+              </p>
+              <h1 id="current-offer-heading">{currentOffer.copy[language].title}</h1>
+              <p className="promotion-current-offer-service">
+                {currentOffer.copy[language].service}
+              </p>
+              <p className="promotion-current-offer-price">
+                <s>RM{currentOffer.originalPrice}</s>
+                <strong>RM{currentOffer.offerPrice}</strong>
+                <span>{currentOffer.copy[language].save}</span>
+              </p>
+              <ul className="promotion-current-offer-facts">
+                <li>{currentOffer.copy[language].includes}</li>
+                <li>{currentOffer.copy[language].validity}</li>
+              </ul>
+              <p className="promotion-current-offer-terms">
+                {currentOffer.copy[language].terms}
+              </p>
+              <a
+                className="promotion-current-offer-action"
+                href={getOfferWhatsappUrl(language)}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() =>
+                  window.gtag?.("event", "whatsapp_click", {
+                    destination: "whatsapp",
+                    content_label: `${currentOffer.id}_promotion`,
+                    language,
+                  })
+                }
+              >
+                <MessageCircle size={18} aria-hidden="true" />
+                {currentOffer.copy[language].action}
+              </a>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {campaignEnded && (
+        <section className="promotion-past-campaign" role="status">
+          <div className="promotion-shell promotion-past-campaign-inner">
+            <p>{pastCampaignCopy[language].text}</p>
+            <Link href="/promotion/terms">{pastCampaignCopy[language].terms}</Link>
+          </div>
+        </section>
+      )}
+
+      {!campaignEnded && (
       <section className="promotion-hero" aria-labelledby="promotion-title">
         <Image
           className="promotion-hero-image"
@@ -239,10 +326,10 @@ export function PromotionExperience() {
             {copy.status}
           </span>
           <p className="promotion-kicker">{copy.brandKicker}</p>
-          <h1 id="promotion-title">
+          <h2 id="promotion-title">
             {copy.heroTitle}
-            <span>{copy.heroSubtitle}</span>
-          </h1>
+            {!campaignEnded && <span>{copy.heroSubtitle}</span>}
+          </h2>
           <p className="promotion-date">
             <CalendarDays size={18} aria-hidden="true" />
             {copy.displayDates}
@@ -257,19 +344,23 @@ export function PromotionExperience() {
             >
               {copy.bookAppointment}
             </a>
-            <button
-              className="promotion-button promotion-button-whatsapp"
-              type="button"
-              onClick={handleShareClick}
-              aria-label={copy.shareAccessibleName}
-            >
-              <MessageCircle size={19} aria-hidden="true" />
-              {copy.shareViaWhatsApp}
-            </button>
+            {!campaignEnded && (
+              <button
+                className="promotion-button promotion-button-whatsapp"
+                type="button"
+                onClick={handleShareClick}
+                aria-label={copy.shareAccessibleName}
+              >
+                <MessageCircle size={19} aria-hidden="true" />
+                {copy.shareViaWhatsApp}
+              </button>
+            )}
           </div>
         </div>
       </section>
+      )}
 
+      {!campaignEnded && (
       <section className="promotion-section promotion-intro">
         <div className="promotion-shell promotion-intro-grid">
           <div>
@@ -277,7 +368,9 @@ export function PromotionExperience() {
             <h2>{copy.introTitle}</h2>
           </div>
           <div>
-            <p className="promotion-lead">{copy.introLead}</p>
+            {!campaignEnded && (
+              <p className="promotion-lead">{copy.introLead}</p>
+            )}
             <div className="promotion-date-card">
               <CalendarDays size={22} aria-hidden="true" />
               <span>
@@ -288,7 +381,9 @@ export function PromotionExperience() {
           </div>
         </div>
       </section>
+      )}
 
+      {!campaignEnded && (
       <section className="promotion-section promotion-prizes" id="prizes">
         <div className="promotion-shell">
           <div className="promotion-section-heading">
@@ -318,40 +413,48 @@ export function PromotionExperience() {
                     </span>
                   )}
                   <h3>{localizedPrize.name}</h3>
-                  <p>{localizedPrize.description}</p>
+                  {(!campaignEnded || index < anniversaryCampaign.prizes.length - 1) && (
+                    <p>{localizedPrize.description}</p>
+                  )}
                 </article>
               );
             })}
           </div>
-          <p className="promotion-disclaimer">{copy.prizeDisclaimer}</p>
+          {!campaignEnded && (
+            <p className="promotion-disclaimer">{copy.prizeDisclaimer}</p>
+          )}
         </div>
       </section>
+      )}
 
-      <section className="promotion-section promotion-how">
-        <div className="promotion-shell">
-          <div className="promotion-section-heading promotion-section-heading-centered">
-            <div>
-              <p className="promotion-eyebrow">{copy.howEyebrow}</p>
-              <h2>{copy.howTitle}</h2>
+      {!campaignEnded && (
+        <section className="promotion-section promotion-how">
+          <div className="promotion-shell">
+            <div className="promotion-section-heading promotion-section-heading-centered">
+              <div>
+                <p className="promotion-eyebrow">{copy.howEyebrow}</p>
+                <h2>{copy.howTitle}</h2>
+              </div>
+            </div>
+            <div className="promotion-steps">
+              {campaignDetails.steps.map((step, index) => (
+                <article className="promotion-step" key={step.title}>
+                  <span className="promotion-step-number">{index + 1}</span>
+                  <div>
+                    <h3>{step.title}</h3>
+                    <p>{step.description}</p>
+                  </div>
+                  {index < campaignDetails.steps.length - 1 && (
+                    <span className="promotion-step-line" aria-hidden="true" />
+                  )}
+                </article>
+              ))}
             </div>
           </div>
-          <div className="promotion-steps">
-            {campaignDetails.steps.map((step, index) => (
-              <article className="promotion-step" key={step.title}>
-                <span className="promotion-step-number">{index + 1}</span>
-                <div>
-                  <h3>{step.title}</h3>
-                  <p>{step.description}</p>
-                </div>
-                {index < campaignDetails.steps.length - 1 && (
-                  <span className="promotion-step-line" aria-hidden="true" />
-                )}
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
+      {!campaignEnded && (
       <section className="promotion-section promotion-share" id="share">
         <div className="promotion-shell promotion-share-grid">
           <div className="promotion-share-copy">
@@ -423,13 +526,15 @@ export function PromotionExperience() {
           </div>
         </div>
       </section>
+      )}
 
+      {!campaignEnded && (
       <section className="promotion-section promotion-final-cta">
         <div className="promotion-shell promotion-final-card">
           <Heart size={36} aria-hidden="true" />
           <p className="promotion-eyebrow">{copy.finalEyebrow}</p>
           <h2>{copy.finalTitle}</h2>
-          <p>{copy.policy}</p>
+          {!campaignEnded && <p>{copy.policy}</p>}
           <div className="promotion-final-actions">
             <a
               className="promotion-button promotion-button-primary"
@@ -446,35 +551,43 @@ export function PromotionExperience() {
           </div>
         </div>
       </section>
+      )}
 
       <footer className="promotion-footer">
         <div className="promotion-shell promotion-footer-inner">
           <div>
             <strong>MEZZANAIL</strong>
-            <span>{copy.footerCampaign}</span>
+            {offerActive && <span>{currentOffer.copy[language].title}</span>}
           </div>
           <p>© 2026 Mezzanail Nail Studio. All rights reserved.</p>
         </div>
       </footer>
 
-      <nav className="promotion-mobile-cta" aria-label="Campaign actions">
-        <a
-          href={anniversaryCampaign.bookingUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={handleBookingClick}
-        >
-          <CalendarDays size={19} aria-hidden="true" />
-          {copy.bookNow}
-        </a>
-        <button
-          type="button"
-          onClick={handleShareClick}
-          aria-label={copy.shareAccessibleName}
-        >
-          <Share2 size={19} aria-hidden="true" />
-          {copy.share}
-        </button>
+      <nav className="promotion-mobile-cta" aria-label={copy.bookAppointment}>
+        {offerActive ? (
+          <a
+            href={getOfferWhatsappUrl(language)}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <MessageCircle size={19} aria-hidden="true" />
+            {language === "zh"
+              ? `WhatsApp 预约 RM${currentOffer.offerPrice}`
+              : language === "ms"
+                ? `Tempah RM${currentOffer.offerPrice} melalui WhatsApp`
+                : `Book RM${currentOffer.offerPrice} on WhatsApp`}
+          </a>
+        ) : (
+          <a
+            href={anniversaryCampaign.bookingUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={handleBookingClick}
+          >
+            <CalendarDays size={19} aria-hidden="true" />
+            {copy.bookNow}
+          </a>
+        )}
       </nav>
     </main>
   );

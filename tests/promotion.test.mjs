@@ -16,6 +16,8 @@ const campaignBanner = read("components/marketing/CampaignBanner.tsx");
 const currentCampaign = read("config/current-campaign.ts");
 const navigation = read("config/navigation.ts");
 const site = read("lib/site.ts");
+const servicesCatalog = read("components/services-catalog.tsx");
+const servicesData = read("lib/services.ts");
 
 test("campaign uses the official promotion and booking URLs", () => {
   assert.match(config, /https:\/\/www\.mezzanail\.com\/promotion/);
@@ -28,7 +30,7 @@ test("campaign uses the official promotion and booking URLs", () => {
 
 test("campaign dates, prizes and entry steps match the approved brief", () => {
   assert.match(config, /26 July .* 30 September 2026/);
-  assert.match(site, /26th July .* 30th September 2026/);
+  assert.doesNotMatch(site, /26th July .* 30th September 2026/);
   for (const prize of [
     "Dyson Supersonic",
     "HUAWEI Watch Fit 5",
@@ -69,7 +71,10 @@ test("the full campaign supports English, Chinese and Bahasa Melayu", () => {
 });
 
 test("the official homepage routes every anniversary entry to promotion", () => {
-  assert.match(officialSite, /<CurrentCampaignBanner/);
+  // The anniversary campaign has ended: the homepage leads with the hero, which
+  // carries the current seasonal offer, instead of the anniversary banner.
+  assert.doesNotMatch(officialSite, /<CurrentCampaignBanner/);
+  assert.match(officialSite, /<HomeHero\/>/);
   assert.match(currentCampaignBanner, /<CampaignBanner/);
   assert.match(currentCampaignBanner, /currentCampaign\.enabled/);
   assert.match(navigation, /href: "\/promotion", labelKey: "promo"/);
@@ -131,4 +136,27 @@ test("tracking failure cannot block the WhatsApp action", () => {
   assert.ok(fetchIndex >= 0);
   assert.ok(openIndex > fetchIndex);
   assert.match(experience, /\.catch\(/);
+});
+
+test("promotion metadata uses the active offer and its uncropped social image", () => {
+  assert.match(page, /const promotionTitle = `\$\{currentOffer\.copy\.en\.title\}/);
+  assert.match(page, /const promotionDescription = `\$\{currentOffer\.copy\.en\.title\}/);
+  assert.match(page, /const promotionOgImage = "\/campaigns\/deepavali-2026\/og-1200x630\.jpg"/);
+  assert.match(page, /title: promotionTitle/);
+  assert.match(page, /description: promotionDescription/);
+  assert.match(page, /url: promotionOgImage/);
+  assert.match(page, /alt: currentOffer\.copy\.en\.posterAlt/);
+  assert.match(page, /canonical: anniversaryCampaign\.promotionUrl/);
+});
+
+test("ended anniversary sections are conditional and the offer is the only promotion h1", () => {
+  assert.equal((experience.match(/<h1\b/g) ?? []).length, 1);
+  assert.match(experience, /\{campaignEnded && \(\s*<section className="promotion-past-campaign"/);
+  for (const section of ["promotion-hero", "promotion-intro", "promotion-prizes", "promotion-final-cta"]) {
+    assert.match(experience, new RegExp(`\\{!campaignEnded && \\(\\s*<section className="promotion-section ${section}|\\{!campaignEnded && \\(\\s*<section className="${section}"`));
+  }
+  assert.match(experience, /href=\{getOfferWhatsappUrl\(language\)\}/);
+  assert.match(experience, /Book RM\$\{currentOffer\.offerPrice\} on WhatsApp/);
+  assert.match(servicesCatalog, /offerActive && service\.name === "Gelish Manicure"/);
+  assert.doesNotMatch(servicesData, /Deepavali RM68|offerBadge/);
 });

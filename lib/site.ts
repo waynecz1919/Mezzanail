@@ -71,11 +71,6 @@ export const siteConfig = {
   xiaohongshuUrl: "https://xhslink.com/m/5g3Myox7iC2",
   xiaohongshuName: "Mezzanail Nail Studio",
 
-  announcement: {
-    enabled: true,
-    campaign: "7th Anniversary",
-    dates: "26th July — 30th September 2026",
-  },
 } as const;
 
 export function isConfiguredUrl(url: string) {
