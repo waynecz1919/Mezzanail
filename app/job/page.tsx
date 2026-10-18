@@ -74,8 +74,10 @@ export default function JobPage() {
   };
 
   return (
-    <OfficialFrame>
-      <JobApplicationExperience />
+    <OfficialFrame publicSite>
+      <div className="job-page">
+        <JobApplicationExperience />
+      </div>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}

@@ -16,7 +16,6 @@ export function GoogleReviewsPreview({ locale }: { locale: Locale }) {
       <div className="mn-home-shell">
         <div className="reviews-heading" id="reviews-title">
           <SectionHeading
-            eyebrow={copy.eyebrow}
             title={copy.title}
             subtitle={copy.subtitle}
           />

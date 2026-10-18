@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { Reveal } from "@/components/hyperframe/motion";
 import { GoogleReviewsPreview } from "@/components/home/GoogleReviewsPreview";
+import type { HomepageStartingPrices } from "@/lib/homepage-service-prices";
 import { HomeHero } from "@/components/home/HomeHero";
 import { MembershipBanner } from "@/components/home/MembershipBanner";
 import { SelectedNailWork } from "@/components/home/SelectedNailWork";
@@ -171,11 +172,11 @@ function ContactVisitSection() {
   </div></section>;
 }
 
-export function OfficialHome() {
+export function OfficialHome({ startingPrices }: { startingPrices: HomepageStartingPrices }) {
   const { locale } = useOfficial();
   return <OfficialFrame publicSite><div className="homepage-quiet">
     <HomeHero/>
-    <SignatureServices locale={locale}/>
+    <SignatureServices locale={locale} startingPrices={startingPrices}/>
     <SelectedNailWork locale={locale}/>
     <WhyMezzanail locale={locale}/>
     <GoogleReviewsPreview locale={locale}/>

@@ -2232,3 +2232,200 @@ body:has(.promotion-site:not(.promotion-terms-page)) .analytics-consent-actions 
     align-items: center;
   }
 }
+
+/* WEBSITE PHASE 1.5 - approved full-pass refinements. */
+.public-site .mn-section-heading--no-eyebrow .mn-section-title {
+  margin-top: 0;
+}
+
+.public-site .signature-service-price {
+  margin: 7px 0 0;
+  color: var(--color-ink);
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.4;
+}
+
+.public-site .home-membership .membership-banner h2,
+.public-site .home-studio .studio-copy h2 {
+  margin-top: 0;
+}
+
+.public-site .job-page {
+  --bg: var(--color-cream);
+  --surface: var(--color-white);
+  --surface-2: var(--color-pink);
+  --ink: var(--color-ink);
+  --muted: var(--color-ink);
+  --wine: var(--color-ink);
+  --gold: var(--color-ink);
+  --gold-bright: var(--color-ink);
+  --line: color-mix(in srgb, var(--color-ink) 16%, var(--color-white));
+  --shadow: 0 10px 32px color-mix(in srgb, var(--color-ink) 10%, transparent);
+}
+
+.public-site .job-hero {
+  background:
+    radial-gradient(circle at 76% 20%, color-mix(in srgb, var(--color-gold) 17%, transparent), transparent 29%),
+    var(--color-ink);
+  color: var(--color-white);
+}
+
+.public-site .job-hero:after {
+  background: linear-gradient(110deg, transparent 54%, color-mix(in srgb, var(--color-pink) 16%, transparent));
+}
+
+.public-site .job-hero .eyebrow,
+.public-site .job-contact-strip .eyebrow {
+  color: var(--color-white);
+}
+
+.public-site .job-hero .btn-gold {
+  border-color: var(--color-white);
+  background: var(--color-white);
+  color: var(--color-ink);
+}
+
+.public-site .job-opening-card {
+  border-color: color-mix(in srgb, var(--color-ink) 18%, var(--color-white));
+  background: var(--color-cream);
+  color: var(--color-ink);
+  backdrop-filter: none;
+}
+
+.public-site .job-opening-card h2 {
+  border-bottom-color: color-mix(in srgb, var(--color-ink) 16%, var(--color-white));
+}
+
+.public-site .job-opening-card > span,
+.public-site .job-opening-card small,
+.public-site .job-opening-card strong,
+.public-site .job-opening-card p {
+  color: var(--color-ink);
+}
+
+.public-site .job-page .btn-gold {
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-white);
+}
+
+.public-site .job-page .job-hero .btn-gold {
+  border-color: var(--color-white);
+  background: var(--color-white);
+  color: var(--color-ink);
+}
+
+.public-site .job-label b,
+.public-site .job-field em,
+.public-site .job-check-card em,
+.public-site .job-language-options + em,
+.public-site .job-consent-panel em {
+  color: var(--color-ink);
+}
+
+.public-site .job-error-panel {
+  border-color: color-mix(in srgb, var(--color-ink) 24%, var(--color-white));
+  background: var(--color-pink);
+}
+
+.public-site .job-error-panel > span {
+  color: var(--color-ink);
+}
+
+.public-site .job-contact-strip {
+  background: var(--color-ink);
+  color: var(--color-white);
+}
+
+.public-site .job-contact-strip .btn-gold {
+  border-color: var(--color-white);
+  background: var(--color-white);
+  color: var(--color-ink);
+}
+
+.promotion-site:not(.promotion-terms-page) .promotion-header {
+  border-bottom-color: color-mix(in srgb, var(--color-ink) 16%, var(--color-white));
+  background: var(--color-cream);
+  backdrop-filter: none;
+}
+
+.promotion-site:not(.promotion-terms-page) .promotion-header-inner {
+  min-height: 84px;
+}
+
+.promotion-site:not(.promotion-terms-page) .promotion-brand {
+  height: auto;
+  width: 178px;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.promotion-site:not(.promotion-terms-page) .promotion-brand img {
+  width: 144px;
+  filter: brightness(0.2) saturate(100%);
+}
+
+.promotion-site:not(.promotion-terms-page) .promotion-header-languages button,
+.promotion-site:not(.promotion-terms-page) .promotion-header-languages a {
+  height: 44px;
+  min-width: 44px;
+}
+
+.promotion-site:not(.promotion-terms-page) .promotion-header-book {
+  min-height: 48px;
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-white);
+}
+
+@media (max-width: 900px) {
+  .promotion-site:not(.promotion-terms-page) .promotion-header-inner {
+    min-height: 80px;
+  }
+
+  .promotion-site:not(.promotion-terms-page) .promotion-header-languages button,
+  .promotion-site:not(.promotion-terms-page) .promotion-header-languages a {
+    height: 44px;
+    min-width: 44px;
+  }
+
+  .promotion-site:not(.promotion-terms-page) .promotion-brand {
+    width: 96px;
+  }
+
+  .promotion-site:not(.promotion-terms-page) .promotion-brand img {
+    width: 88px;
+  }
+
+  .promotion-site:not(.promotion-terms-page) .promotion-header-actions {
+    gap: 4px;
+  }
+
+  .promotion-site:not(.promotion-terms-page) .promotion-header-book {
+    min-height: 44px;
+    padding-inline: 4px;
+    font-size: 9px;
+    letter-spacing: 0;
+  }
+}
+
+@media (max-width: 360px) {
+  .promotion-site:not(.promotion-terms-page) .promotion-header-inner {
+    width: calc(100% - 16px);
+  }
+
+  .promotion-site:not(.promotion-terms-page) .promotion-brand {
+    width: 72px;
+  }
+
+  .promotion-site:not(.promotion-terms-page) .promotion-brand img {
+    width: 68px;
+  }
+
+  .promotion-site:not(.promotion-terms-page) .promotion-header-book {
+    padding-inline: 2px;
+    font-size: 8px;
+  }
+}

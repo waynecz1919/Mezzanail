@@ -10,7 +10,6 @@ export function WhyMezzanail({ locale }: { locale: Locale }) {
       <div className="mn-home-shell">
         <div id="why-mezzanail-title">
           <SectionHeading
-            eyebrow={copy.eyebrow}
             title={copy.title}
             subtitle={copy.subtitle}
           />

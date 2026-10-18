@@ -63,11 +63,11 @@ const english = {
     subtitle: "Selected nail artistry and considered care",
     action: "Explore Services",
     items: [
-      { title: "Hand Care", body: "Refined manicure rituals, gel colour and a precise finish.", href: "/services", image: sharedImages.services[0], alt: "Soft pink manicure on hands with dried lavender", featured: true },
-      { title: "Foot Care", body: "Comfort-led pedicure care designed to restore and refresh.", href: "/services", image: sharedImages.services[1], alt: "French pedicure with a white lily", featured: true },
-      { title: "Nail Extensions", body: "Balanced structure and elegant length with a natural finish.", href: "/services", image: sharedImages.services[2], alt: "Silver nail extensions by Mezzanail Nail Studio", featured: false },
-      { title: "Callus Removal", body: "Professional callus and Footlogix care for smoother feet.", href: "/services", image: sharedImages.services[3], alt: "Before and after heel callus removal result", featured: false },
-      { title: "Waxing", body: "Considered waxing care delivered with comfort and precision.", href: "/services", image: sharedImages.services[4], alt: "Leg waxing treatment at a beauty studio", featured: false },
+      { title: "Hand Care", serviceCategoryId: "manicure", body: "Refined manicure rituals, gel colour and a precise finish.", href: "/services", image: sharedImages.services[0], alt: "Soft pink manicure on hands with dried lavender", featured: true },
+      { title: "Foot Care", serviceCategoryId: "pedicure", body: "Comfort-led pedicure care designed to restore and refresh.", href: "/services", image: sharedImages.services[1], alt: "French pedicure with a white lily", featured: true },
+      { title: "Nail Extensions", serviceCategoryId: "extensions", body: "Balanced structure and elegant length with a natural finish.", href: "/services", image: sharedImages.services[2], alt: "Silver nail extensions by Mezzanail Nail Studio", featured: false },
+      { title: "Callus Removal", serviceCategoryId: "callus", body: "Professional callus and Footlogix care for smoother feet.", href: "/services", image: sharedImages.services[3], alt: "Before and after heel callus removal result", featured: false },
+      { title: "Waxing", serviceCategoryId: "waxing", body: "Considered waxing care delivered with comfort and precision.", href: "/services", image: sharedImages.services[4], alt: "Leg waxing treatment at a beauty studio", featured: false },
     ],
   },
   work: {
@@ -82,9 +82,9 @@ const english = {
     title: "Quiet confidence, built into every visit.",
     subtitle: "A focused studio experience shaped by technique and care",
     items: [
-      { number: "01", title: "Precision", body: "Professional technique with close attention to every detail." },
-      { number: "02", title: "Comfort", body: "A calm, hygienic and personalised service experience." },
-      { number: "03", title: "Confidence", body: "Beautifully finished nails that feel distinctly your own." },
+      { number: "01", title: "Since 2019 in Melaka", body: "Seven years of nail care for Melaka, from everyday gel to bridal sets." },
+      { number: "02", title: "Footlogix foot care", body: "Professional callus removal and Footlogix treatments for healthier, smoother feet." },
+      { number: "03", title: "Member rewards", body: "Your Member Center keeps your balance, vouchers and packages in one place." },
     ],
   },
   reviews: {
@@ -145,9 +145,9 @@ export const homepageContent = {
       title: "把从容自信，融入每一次到访。",
       subtitle: "以专业技术与细致照顾，塑造专注的门店体验",
       items: [
-        { number: "01", title: "Precision", body: "专业技术与细节" },
-        { number: "02", title: "Comfort", body: "舒适、卫生与个人化服务" },
-        { number: "03", title: "Confidence", body: "让每位顾客带着自信离开" },
+        { number: "01", title: "2019 年起扎根马六甲", body: "七年专注美甲，从日常凝胶到新娘美甲。" },
+        { number: "02", title: "Footlogix 专业足部护理", body: "专业去茧与 Footlogix 护理，让双脚更健康柔滑。" },
+        { number: "03", title: "会员礼遇", body: "会员中心一站查看余额、礼券与配套。" },
       ],
     },
     reviews: {
@@ -205,9 +205,9 @@ export const homepageContent = {
       title: "Keyakinan tenang dalam setiap kunjungan.",
       subtitle: "Pengalaman studio yang dibentuk oleh teknik dan perhatian",
       items: [
-        { number: "01", title: "Precision", body: "Teknik profesional dengan perhatian pada setiap butiran." },
-        { number: "02", title: "Comfort", body: "Pengalaman yang tenang, bersih dan diperibadikan." },
-        { number: "03", title: "Confidence", body: "Kemasan indah yang terasa benar-benar milik anda." },
+        { number: "01", title: "Sejak 2019 di Melaka", body: "Tujuh tahun penjagaan kuku di Melaka, dari gel harian hingga set pengantin." },
+        { number: "02", title: "Penjagaan kaki Footlogix", body: "Rawatan kalus profesional dan Footlogix untuk kaki yang lebih sihat dan lembut." },
+        { number: "03", title: "Ganjaran ahli", body: "Member Center menyimpan baki, baucar dan pakej anda di satu tempat." },
       ],
     },
     reviews: {

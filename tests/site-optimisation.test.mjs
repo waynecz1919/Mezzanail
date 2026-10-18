@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
+import { createRequire } from "node:module";
 import { readFileSync } from "node:fs";
+import { runInNewContext } from "node:vm";
 import test from "node:test";
 
 const read = (path) => readFileSync(path, "utf8");
@@ -11,9 +13,32 @@ const rootLayout = read("app/layout.tsx");
 const metadata = read("lib/metadata.ts");
 const robots = read("app/robots.ts");
 const officialSite = read("components/official-site.tsx");
+const globals = read("app/globals.css");
 const site = read("lib/site.ts");
 const analytics = read("components/deferred-google-analytics.tsx");
 const notFound = read("app/not-found.tsx");
+const jobPage = read("app/job/page.tsx");
+const promotion = read("components/promotion/promotion-experience.tsx");
+const homepagePage = read("app/page.tsx");
+const homepageConfig = read("config/homepage.ts");
+const signatureServices = read("components/home/SignatureServices.tsx");
+const homepagePrices = read("lib/homepage-service-prices.ts");
+const approvedStyles = globals.slice(globals.indexOf("/* WEBSITE PHASE 1.5 - approved full-pass refinements. */"));
+
+const require = createRequire(import.meta.url);
+const typescript = require("typescript");
+
+function evaluateTypeScript(source, resolveImport) {
+  const output = typescript.transpileModule(source, {
+    compilerOptions: {
+      module: typescript.ModuleKind.CommonJS,
+      target: typescript.ScriptTarget.ES2020,
+    },
+  }).outputText;
+  const testModule = { exports: {} };
+  runInNewContext(output, { exports: testModule.exports, require: resolveImport, module: testModule });
+  return testModule.exports;
+}
 
 test("unverified service durations are not presented as 90 minutes", () => {
   assert.doesNotMatch(`${services}\n${servicesCatalog}`, /Up to 90 mins/);
@@ -69,4 +94,65 @@ test("cookie choice follows the active language and the 404 is branded", () => {
   assert.match(notFound, /<OfficialFrame publicSite>/);
   assert.match(notFound, /<h1/);
   assert.match(notFound, /Return home/);
+});
+
+test("homepage starting prices are computed from matching service categories", () => {
+  const serviceModule = evaluateTypeScript(services, (specifier) => {
+    throw new Error(`unexpected service module import: ${specifier}`);
+  });
+  const priceModule = evaluateTypeScript(homepagePrices, (specifier) => {
+    assert.equal(specifier, "./services");
+    return serviceModule;
+  });
+  const categoryIds = ["manicure", "pedicure", "extensions", "callus", "waxing"];
+  const computed = priceModule.getHomepageStartingPrices(categoryIds);
+
+  for (const categoryId of categoryIds) {
+    const matches = serviceModule.serviceCategories.filter((category) => category.id === categoryId);
+    assert.equal(matches.length, 1, `${categoryId} must match one service category`);
+    const amounts = matches[0].services.flatMap(({ price }) =>
+      [...price.matchAll(/\bRM\s*(\d+(?:\.\d{1,2})?)\b/gi)].map((match) => Number(match[1])),
+    );
+    assert.ok(amounts.length > 0, `${categoryId} needs a numeric source price`);
+    assert.equal(computed[categoryId], Math.min(...amounts));
+  }
+
+  assert.match(homepagePage, /getHomepageStartingPrices\(/);
+  assert.match(signatureServices, /startingPrices\[item\.serviceCategoryId\]/);
+  assert.match(signatureServices, /`From RM\$\{amount\}`/);
+  assert.match(signatureServices, /`RM\$\{amount\} 起`/);
+  assert.match(signatureServices, /`Dari RM\$\{amount\}`/);
+  assert.doesNotMatch(homepageConfig, /RM\s?\d|price:/i);
+});
+
+test("job uses the public palette without changing application behavior", () => {
+  assert.match(jobPage, /<OfficialFrame publicSite>/);
+  assert.match(jobPage, /className="job-page"/);
+  const jobPaletteStart = globals.indexOf(".public-site .job-page");
+  const promotionHeaderStart = globals.indexOf(
+    ".promotion-site:not(.promotion-terms-page) .promotion-header",
+    jobPaletteStart,
+  );
+  const jobPalette = globals.slice(jobPaletteStart, promotionHeaderStart);
+  assert.ok(jobPaletteStart >= 0 && promotionHeaderStart > jobPaletteStart);
+  assert.match(jobPalette, /--bg:\s*var\(--color-cream\)/);
+  assert.match(jobPalette, /--surface:\s*var\(--color-white\)/);
+  assert.match(jobPalette, /--surface-2:\s*var\(--color-pink\)/);
+  assert.match(jobPalette, /--wine:\s*var\(--color-ink\)/);
+  assert.match(jobPalette, /\.job-hero\s*\{[\s\S]*var\(--color-ink\)/);
+  assert.match(jobPalette, /\.job-contact-strip\s*\{\s*background:\s*var\(--color-ink\)/);
+  assert.match(jobPalette, /\.job-hero \.btn-gold\s*\{[\s\S]*background:\s*var\(--color-white\)[\s\S]*color:\s*var\(--color-ink\)/);
+  assert.doesNotMatch(jobPalette, /#130b0e|#8a2537|#a4263d|#9a2b3e|rgba\(145,33,54/);
+});
+
+test("promotion header uses the main-site palette while preserving its controls", () => {
+  assert.match(promotion, /className="promotion-header"/);
+  assert.match(promotion, /className="promotion-header-languages"/);
+  assert.match(promotion, /className="promotion-header-book"/);
+  assert.match(approvedStyles, /\.promotion-site:not\(\.promotion-terms-page\) \.promotion-header\s*\{[^}]*background:\s*var\(--color-cream\)/);
+  assert.match(approvedStyles, /\.promotion-site:not\(\.promotion-terms-page\) \.promotion-brand\s*\{[^}]*background:\s*transparent;[\s\S]*box-shadow:\s*none/);
+  assert.match(approvedStyles, /\.promotion-site:not\(\.promotion-terms-page\) \.promotion-brand img\s*\{[^}]*filter:\s*brightness\(0\.2\)/);
+  assert.match(approvedStyles, /\.promotion-site:not\(\.promotion-terms-page\) \.promotion-header-inner\s*\{\s*min-height:\s*84px/);
+  assert.match(approvedStyles, /\.promotion-site:not\(\.promotion-terms-page\) \.promotion-header-languages button,[\s\S]*?min-width:\s*44px/);
+  assert.match(approvedStyles, /\.promotion-site:not\(\.promotion-terms-page\) \.promotion-header-book\s*\{[^}]*background:\s*var\(--color-ink\)[\s\S]*color:\s*var\(--color-white\)/);
 });

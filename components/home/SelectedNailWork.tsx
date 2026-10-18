@@ -19,7 +19,6 @@ export function SelectedNailWork({ locale }: { locale: Locale }) {
       <div className="mn-home-shell">
         <div className="selected-work-heading" id="selected-work-title">
           <SectionHeading
-            eyebrow={copy.eyebrow}
             title={copy.title}
             subtitle={copy.subtitle}
           />
