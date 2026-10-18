@@ -1,22 +1,27 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import test from "node:test";
 
 const read = (p) => readFileSync(p, "utf8");
 
 test("old campaign short links redirect permanently to /promotion", () => {
   for (const route of ["luckydraw", "lucky-draw", "promo"]) {
-    const page = read(`app/${route}/page.tsx`);
-    assert.match(page, /export const dynamic = "force-dynamic"/);
-    assert.match(page, /permanentRedirect\("\/promotion"\)/);
+    const routeFile = `app/${route}/route.ts`;
+    assert.equal(existsSync(routeFile), true);
+    assert.equal(existsSync(`app/${route}/page.tsx`), false);
+    const handler = read(routeFile);
+    assert.match(handler, /NextResponse\.redirect\(new URL\("\/promotion", request\.url\), 308\)/);
+    assert.match(handler, /export const HEAD = GET/);
   }
 });
 
 test("the seasonal /deepavali short link redirects temporarily to the current offer", () => {
-  const page = read("app/deepavali/page.tsx");
-  assert.match(page, /export const dynamic = "force-dynamic"/);
-  assert.match(page, /\bredirect\("\/promotion#current-offer"\)/);
-  assert.doesNotMatch(page, /permanentRedirect/);
+  const routeFile = "app/deepavali/route.ts";
+  assert.equal(existsSync(routeFile), true);
+  assert.equal(existsSync("app/deepavali/page.tsx"), false);
+  const handler = read(routeFile);
+  assert.match(handler, /NextResponse\.redirect\(new URL\("\/promotion#current-offer", request\.url\), 307\)/);
+  assert.match(handler, /export const HEAD = GET/);
 });
 
 test("promotion document title is absolute while social titles keep the shorter brand", () => {
