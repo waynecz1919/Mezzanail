@@ -28,15 +28,19 @@ type HomepageImages = {
 };
 
 export const homepage: HomepageImages = {
-  // Real Mezzanail client work. The frame uses the photo's own ratio, so no nail is cropped.
+  // HOW TO CHANGE THE HERO PHOTO:
+  // - Use a new file name for each replacement.
+  // - Keep src, width, and height matched to the image file.
+  // - Provide EN, ZH, and MS alt text.
+  // - Say "by Mezzanail" only for real client work.
   heroImage: {
-    src: "/home/hero-tortoiseshell.webp",
+    src: "/home/hero-2026-10-bridal.webp",
     width: 848,
     height: 890,
     alt: {
-      en: "Tortoiseshell almond nails with pearl line art by Mezzanail",
-      zh: "Mezzanail 作品：玳瑁杏仁甲配珍珠线条彩绘",
-      ms: "Kuku badam corak kulit penyu dengan seni garisan mutiara oleh Mezzanail",
+      en: "Bride in a lace gown with French-tip almond nails, hands clasped behind her back",
+      zh: "身穿蕾丝婚纱的新娘，双手背在身后，法式杏仁甲",
+      ms: "Pengantin bergaun renda dengan kuku badam French tip, tangan digenggam di belakang",
     },
   },
   studioImage: null,

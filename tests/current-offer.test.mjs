@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import test from "node:test";
 import { pathToFileURL } from "node:url";
 
@@ -57,14 +57,23 @@ test("the offer price and terms match the approved poster in every language", as
   assert.match(currentOffer.copy.en.terms, /Nail art and gel removal are charged separately/);
 });
 
-test("the homepage hero shows real client work without cropping any nail", () => {
-  assert.match(homepageConfig, /src: "\/home\/hero-tortoiseshell\.webp"/);
-  assert.match(homepageConfig, /width: 848/);
-  assert.match(homepageConfig, /height: 890/);
-  assert.match(homepageConfig, /Tortoiseshell almond nails with pearl line art by Mezzanail/);
+test("the homepage hero photo is swappable, localized, and uncropped", () => {
+  const heroImageBlock = homepageConfig.match(/heroImage:\s*\{([\s\S]*?)\n  \},/)?.[1] ?? "";
+  const src = heroImageBlock.match(/src:\s*"([^"]+)"/)?.[1] ?? "";
+  const width = heroImageBlock.match(/width:\s*(\d+)/)?.[1];
+  const height = heroImageBlock.match(/height:\s*(\d+)/)?.[1];
+
+  assert.match(src, /^\/home\/hero-[^/]+\.webp$/);
+  assert.equal(existsSync(`public${src}`), true);
+  assert.equal(Number(width), 848);
+  assert.equal(Number(height), 890);
+  assert.match(heroImageBlock, /en: "Bride in a lace gown with French-tip almond nails, hands clasped behind her back"/);
+  assert.match(heroImageBlock, /zh: "身穿蕾丝婚纱的新娘，双手背在身后，法式杏仁甲"/);
+  assert.match(heroImageBlock, /ms: "Pengantin bergaun renda dengan kuku badam French tip, tangan digenggam di belakang"/);
   assert.match(hero, /alt=\{heroImage\.alt\[locale\]\}/);
   assert.doesNotMatch(hero, /\bfill\b/);
-  assert.match(globals, /aspect-ratio: 848 \/ 890/);
+  assert.match(hero, /<figure\s+className="home-hero-media"\s+style=\{\{\s*aspectRatio:\s*`\$\{heroImage\.width\} \/ \$\{heroImage\.height\}`\s*\}\}/);
+  assert.doesNotMatch(globals, /\.home-hero-media\s*\{[^}]*aspect-ratio\s*:/);
   assert.match(globals, /\.home-hero-image \{[^}]*object-fit: contain/);
   assert.doesNotMatch(globals, /\.home-hero-image \{[^}]*object-fit: cover/);
 });

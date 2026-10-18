@@ -81,7 +81,10 @@ export function HomeHero() {
         )}
       </div>
       {heroImage ? (
-        <figure className="home-hero-media">
+        <figure
+          className="home-hero-media"
+          style={{ aspectRatio: `${heroImage.width} / ${heroImage.height}` }}
+        >
           <Image
             src={heroImage.src}
             alt={heroImage.alt[locale]}
