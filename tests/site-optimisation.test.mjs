@@ -1,10 +1,15 @@
 import assert from "node:assert/strict";
 import { createRequire } from "node:module";
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { runInNewContext } from "node:vm";
 import test from "node:test";
 
 const read = (path) => readFileSync(path, "utf8");
+const collectFiles = (directory) =>
+  readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    const path = `${directory}/${entry.name}`;
+    return entry.isDirectory() ? collectFiles(path) : entry.isFile() ? [{ path, source: read(path) }] : [];
+  });
 const services = read("lib/services.ts");
 const servicesCatalog = read("components/services-catalog.tsx");
 const membershipConfig = read("lib/membership.ts");
@@ -76,6 +81,21 @@ test("public SEO uses the canonical www host without fake hreflang", () => {
   assert.match(robots, /sitemap:/);
   assert.match(robots, /\/anniversary-jackpot\//);
   assert.match(robots, /\/redeem\//);
+});
+
+test("default OG and Twitter images use the current brand image", () => {
+  const sourceFiles = ["app", "lib", "components"].flatMap(collectFiles);
+  for (const obsoleteReference of ["mezzanail-nail-studio-og.jpg", "/opengraph-image.png"]) {
+    assert.deepEqual(
+      sourceFiles.filter(({ source }) => source.includes(obsoleteReference)).map(({ path }) => path),
+      [],
+      `${obsoleteReference} must not be referenced in app, lib, or components`,
+    );
+  }
+  assert.match(
+    metadata,
+    /url: "\/brand\/mezzanail-og-2026-10\.jpg",\s*width: 1200,\s*height: 630,\s*alt: "Mezzanail Nail Studio – Premium Nail Care in Melaka"/,
+  );
 });
 
 test("homepage has one content H1 and contextual WhatsApp routing", () => {

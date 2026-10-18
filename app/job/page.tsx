@@ -19,10 +19,10 @@ export const metadata: Metadata = {
     siteName: "Mezzanail Nail Studio",
     images: [
       {
-        url: "/brand/mezzanail-nail-studio-og.jpg",
+        url: "/brand/mezzanail-og-2026-10.jpg",
         width: 1200,
         height: 630,
-        alt: "Mezzanail Nail Studio Melaka",
+        alt: "Mezzanail Nail Studio – Premium Nail Care in Melaka",
       },
     ],
   },
@@ -30,7 +30,14 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title,
     description,
-    images: ["/brand/mezzanail-nail-studio-og.jpg"],
+    images: [
+      {
+        url: "/brand/mezzanail-og-2026-10.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Mezzanail Nail Studio – Premium Nail Care in Melaka",
+      },
+    ],
   },
 };
 

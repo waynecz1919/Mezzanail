@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import { siteConfig, siteUrl } from "@/lib/site";
 
 const socialImage = {
-  url: "/brand/mezzanail-nail-studio-og.jpg",
+  url: "/brand/mezzanail-og-2026-10.jpg",
   width: 1200,
   height: 630,
-  alt: "Mezzanail Nail Studio in Melaka",
+  alt: "Mezzanail Nail Studio – Premium Nail Care in Melaka",
 };
 
 export function createPublicMetadata({
@@ -36,7 +36,7 @@ export function createPublicMetadata({
       card: "summary_large_image",
       title,
       description,
-      images: [socialImage.url],
+      images: [socialImage],
     },
   };
 }
