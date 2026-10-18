@@ -1980,3 +1980,458 @@ body:has(.promotion-site:not(.promotion-terms-page)) .analytics-consent-actions 
     width: 100%;
   }
 }
+
+/* WEBSITE PHASE 1.5 - mobile homepage compaction */
+@media (max-width: 767px) {
+  .public-site .mn-home-section:not(.home-signature-services):not(.home-reviews):not(.home-why):not(.home-membership) {
+    padding-block: 42px;
+  }
+
+  .public-site .home-membership {
+    padding-top: 0;
+    padding-bottom: 42px;
+  }
+
+  .public-site .home-signature-services {
+    padding-block: 24px;
+  }
+
+  .public-site .home-signature-services .mn-section-title {
+    margin-top: 8px;
+    font-size: 31px;
+    line-height: 1;
+  }
+
+  .public-site .home-signature-services .mn-section-subtitle {
+    margin-top: 8px;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  .public-site .signature-services-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 14px;
+    margin-top: 12px;
+  }
+
+  .public-site .signature-service-card,
+  .public-site .signature-service-card.is-featured {
+    grid-column: auto;
+  }
+
+  .public-site .signature-service-image,
+  .public-site .signature-service-card.is-featured .signature-service-image {
+    aspect-ratio: 1;
+    border-radius: 11px;
+  }
+
+  .public-site .signature-service-copy {
+    margin-top: 6px;
+    padding: 0;
+    border: 0;
+  }
+
+  .public-site .signature-service-copy h3 {
+    font-size: 16px;
+    line-height: 1.15;
+  }
+
+  html[lang="zh-CN"] .public-site .signature-service-copy h3 {
+    font-size: 16px;
+  }
+
+  .public-site .signature-service-description,
+  .public-site .signature-service-action,
+  .public-site .signature-service-index {
+    display: none;
+  }
+
+  .public-site .signature-service-card-link {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    padding: 0;
+    border: 0;
+    color: transparent;
+  }
+
+  .public-site .home-reviews {
+    padding-block: 40px;
+  }
+
+  .public-site .reviews-heading {
+    gap: 8px;
+  }
+
+  .public-site .reviews-heading .mn-section-title {
+    margin-top: 8px;
+    font-size: 32px;
+    line-height: 1.05;
+  }
+
+  .public-site .reviews-heading .mn-section-subtitle {
+    margin-top: 8px;
+    line-height: 1.4;
+  }
+
+  .public-site .google-rating {
+    grid-template-columns: auto auto auto;
+    min-width: 0;
+    border: 0;
+    padding: 0;
+  }
+
+  .public-site .google-rating strong {
+    font-size: 24px;
+  }
+
+  .public-site .google-rating small {
+    margin-top: 0;
+    font-size: 11px;
+  }
+
+  .public-site .reviews-grid {
+    display: flex;
+    width: calc(100% + 19px);
+    gap: 12px;
+    margin-top: 16px;
+    overflow-x: auto;
+    border: 0;
+    padding: 0 19px 8px 0;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
+  }
+
+  .public-site .reviews-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .public-site .reviews-grid .review-quote {
+    flex: 0 0 85%;
+    width: 85%;
+    min-height: 0;
+    border: 1px solid var(--mn-border);
+    border-radius: 12px;
+    padding: 18px;
+    scroll-snap-align: start;
+  }
+
+  .public-site .reviews-grid .review-quote + .review-quote {
+    border: 1px solid var(--mn-border);
+  }
+
+  .public-site .review-quote blockquote {
+    font-size: 17px;
+    line-height: 1.45;
+  }
+
+  .public-site .review-quote figcaption {
+    gap: 4px;
+    margin-top: 12px;
+    font-size: 11px;
+  }
+
+  .public-site .reviews-action {
+    width: 100%;
+    margin-top: 16px;
+  }
+
+  .public-site .home-why {
+    padding-block: 40px;
+  }
+
+  .public-site .why-mezzanail-grid {
+    grid-template-columns: 1fr;
+    margin-top: 18px;
+  }
+
+  .public-site .why-mezzanail-item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    column-gap: 12px;
+    min-height: 0;
+    padding: 14px 0;
+  }
+
+  .public-site .why-mezzanail-item + .why-mezzanail-item {
+    border-top: 1px solid color-mix(in srgb, var(--mn-wine) 22%, var(--mn-border));
+    border-left: 0;
+    padding-left: 0;
+  }
+
+  .public-site .why-mezzanail-item > span {
+    grid-column: 1;
+    grid-row: 1;
+    font-size: 26px;
+  }
+
+  .public-site .why-mezzanail-item h3 {
+    grid-column: 2;
+    grid-row: 1;
+    margin: 0;
+    font-size: 22px;
+    line-height: 1.2;
+  }
+
+  .public-site .why-mezzanail-item p {
+    grid-column: 1 / -1;
+    margin: 6px 0 0;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .public-site .official-footer .shell > .grid:first-child {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 16px;
+    padding-top: 24px;
+    padding-bottom: 20px;
+  }
+
+  .public-site .official-footer .shell > .grid:first-child > div:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .public-site .official-footer .shell > .grid:first-child > div:not(:first-child) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-content: start;
+    gap: 2px 6px;
+    min-width: 0;
+  }
+
+  .public-site .official-footer .shell > .grid:first-child h3 {
+    grid-column: 1 / -1;
+    margin-bottom: 4px;
+    font-size: 11px;
+  }
+
+  .public-site .official-footer .shell > .grid:first-child > div:not(:first-child) a,
+  .public-site .official-footer .shell > .grid:first-child > div:not(:first-child) span {
+    overflow-wrap: anywhere;
+  }
+
+  .public-site .official-footer .shell > div:last-child {
+    gap: 8px;
+    padding-block: 16px;
+  }
+
+  .public-site .official-footer .shell > div:last-child > div {
+    gap: 4px 10px;
+  }
+
+  .public-site .official-footer .shell > div:last-child a {
+    display: inline-flex;
+    min-width: 44px;
+    min-height: 44px;
+    align-items: center;
+  }
+}
+
+/* WEBSITE PHASE 1.5 - approved full-pass refinements. */
+.public-site .mn-section-heading--no-eyebrow .mn-section-title {
+  margin-top: 0;
+}
+
+.public-site .signature-service-price {
+  margin: 7px 0 0;
+  color: var(--color-ink);
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.4;
+}
+
+.public-site .home-membership .membership-banner h2,
+.public-site .home-studio .studio-copy h2 {
+  margin-top: 0;
+}
+
+.public-site .job-page {
+  --bg: var(--color-cream);
+  --surface: var(--color-white);
+  --surface-2: var(--color-pink);
+  --ink: var(--color-ink);
+  --muted: var(--color-ink);
+  --wine: var(--color-ink);
+  --gold: var(--color-ink);
+  --gold-bright: var(--color-ink);
+  --line: color-mix(in srgb, var(--color-ink) 16%, var(--color-white));
+  --shadow: 0 10px 32px color-mix(in srgb, var(--color-ink) 10%, transparent);
+}
+
+.public-site .job-hero {
+  background:
+    radial-gradient(circle at 76% 20%, color-mix(in srgb, var(--color-gold) 17%, transparent), transparent 29%),
+    var(--color-ink);
+  color: var(--color-white);
+}
+
+.public-site .job-hero:after {
+  background: linear-gradient(110deg, transparent 54%, color-mix(in srgb, var(--color-pink) 16%, transparent));
+}
+
+.public-site .job-hero .eyebrow,
+.public-site .job-contact-strip .eyebrow {
+  color: var(--color-white);
+}
+
+.public-site .job-hero .btn-gold {
+  border-color: var(--color-white);
+  background: var(--color-white);
+  color: var(--color-ink);
+}
+
+.public-site .job-opening-card {
+  border-color: color-mix(in srgb, var(--color-ink) 18%, var(--color-white));
+  background: var(--color-cream);
+  color: var(--color-ink);
+  backdrop-filter: none;
+}
+
+.public-site .job-opening-card h2 {
+  border-bottom-color: color-mix(in srgb, var(--color-ink) 16%, var(--color-white));
+}
+
+.public-site .job-opening-card > span,
+.public-site .job-opening-card small,
+.public-site .job-opening-card strong,
+.public-site .job-opening-card p {
+  color: var(--color-ink);
+}
+
+.public-site .job-page .job-opening-card > span,
+.public-site .job-page small {
+  font-size: 11px;
+}
+
+.public-site .job-page .btn-gold {
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-white);
+}
+
+.public-site .job-page .job-hero .btn-gold {
+  border-color: var(--color-white);
+  background: var(--color-white);
+  color: var(--color-ink);
+}
+
+.public-site .job-label b,
+.public-site .job-field em,
+.public-site .job-check-card em,
+.public-site .job-language-options + em,
+.public-site .job-consent-panel em {
+  color: var(--color-ink);
+}
+
+.public-site .job-error-panel {
+  border-color: color-mix(in srgb, var(--color-ink) 24%, var(--color-white));
+  background: var(--color-pink);
+}
+
+.public-site .job-error-panel > span {
+  color: var(--color-ink);
+}
+
+.public-site .job-contact-strip {
+  background: var(--color-ink);
+  color: var(--color-white);
+}
+
+.public-site .job-contact-strip .btn-gold {
+  border-color: var(--color-white);
+  background: var(--color-white);
+  color: var(--color-ink);
+}
+
+.promotion-site:not(.promotion-terms-page) .promotion-header {
+  border-bottom-color: color-mix(in srgb, var(--color-ink) 16%, var(--color-white));
+  background: var(--color-cream);
+  backdrop-filter: none;
+}
+
+.promotion-site:not(.promotion-terms-page) .promotion-header-inner {
+  min-height: 84px;
+}
+
+.promotion-site:not(.promotion-terms-page) .promotion-brand {
+  height: auto;
+  min-height: 44px;
+  width: 178px;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.promotion-site:not(.promotion-terms-page) .promotion-brand img {
+  width: 144px;
+  filter: brightness(0.2) saturate(100%);
+}
+
+.promotion-site:not(.promotion-terms-page) .promotion-header-languages button,
+.promotion-site:not(.promotion-terms-page) .promotion-header-languages a {
+  height: 44px;
+  min-width: 44px;
+}
+
+.promotion-site:not(.promotion-terms-page) .promotion-header-book {
+  min-height: 48px;
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-white);
+}
+
+@media (max-width: 900px) {
+  .promotion-site:not(.promotion-terms-page) .promotion-header-inner {
+    min-height: 80px;
+  }
+
+  .promotion-site:not(.promotion-terms-page) .promotion-header-languages button,
+  .promotion-site:not(.promotion-terms-page) .promotion-header-languages a {
+    height: 44px;
+    min-width: 44px;
+  }
+
+  .promotion-site:not(.promotion-terms-page) .promotion-brand {
+    width: 96px;
+  }
+
+  .promotion-site:not(.promotion-terms-page) .promotion-brand img {
+    width: 88px;
+  }
+
+  .promotion-site:not(.promotion-terms-page) .promotion-header-actions {
+    gap: 4px;
+  }
+
+  .promotion-site:not(.promotion-terms-page) .promotion-header-book {
+    min-height: 44px;
+    padding-inline: 4px;
+    font-size: 9px;
+    letter-spacing: 0;
+  }
+}
+
+@media (max-width: 360px) {
+  .promotion-site:not(.promotion-terms-page) .promotion-header-inner {
+    width: calc(100% - 16px);
+  }
+
+  .promotion-site:not(.promotion-terms-page) .promotion-brand {
+    width: 72px;
+  }
+
+  .promotion-site:not(.promotion-terms-page) .promotion-brand img {
+    width: 68px;
+  }
+
+  .promotion-site:not(.promotion-terms-page) .promotion-header-book {
+    padding-inline: 2px;
+    font-size: 8px;
+  }
+}

@@ -1,5 +1,5 @@
 type SectionHeadingProps = {
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
   subtitle: string;
   align?: "left" | "center";
@@ -12,8 +12,8 @@ export function SectionHeading({
   align = "left",
 }: SectionHeadingProps) {
   return (
-    <header className={`mn-section-heading mn-section-heading--${align}`}>
-      <p className="mn-eyebrow">{eyebrow}</p>
+    <header className={`mn-section-heading mn-section-heading--${align}${eyebrow ? "" : " mn-section-heading--no-eyebrow"}`}>
+      {eyebrow ? <p className="mn-eyebrow">{eyebrow}</p> : null}
       <h2 className="mn-section-title">{title}</h2>
       <p className="mn-section-subtitle">{subtitle}</p>
     </header>

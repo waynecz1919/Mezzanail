@@ -14,7 +14,6 @@ export function MembershipBanner({ locale }: { locale: Locale }) {
       <div className="mn-home-shell">
         <div className="membership-banner">
           <div>
-            <p className="mn-eyebrow">{copy.eyebrow}</p>
             <h2 id="membership-title">{copy.title}</h2>
             <p>{copy.subtitle}</p>
           </div>

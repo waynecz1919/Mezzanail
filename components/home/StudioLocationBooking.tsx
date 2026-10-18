@@ -16,7 +16,6 @@ export function StudioLocationBooking({ locale }: { locale: Locale }) {
         className={`mn-home-shell studio-grid${homepage.studioImage ? "" : " studio-grid--no-image"}`}
       >
         <div className="studio-copy">
-          <p className="mn-eyebrow">{copy.eyebrow}</p>
           <h2 id="studio-title">{copy.title}</h2>
           <p className="studio-subtitle">{copy.subtitle}</p>
           <dl className="studio-details">

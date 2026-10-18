@@ -13,6 +13,14 @@ const navigation = read("config/navigation.ts");
 const globals = read("app/globals.css");
 const homeLink = read("components/ui/HomeLink.tsx");
 const homeHero = read("components/home/HomeHero.tsx");
+const homepagePage = read("app/page.tsx");
+const sectionHeading = read("components/ui/SectionHeading.tsx");
+const signatureServices = read("components/home/SignatureServices.tsx");
+const selectedNailWork = read("components/home/SelectedNailWork.tsx");
+const whyMezzanail = read("components/home/WhyMezzanail.tsx");
+const googleReviews = read("components/home/GoogleReviewsPreview.tsx");
+const membershipBanner = read("components/home/MembershipBanner.tsx");
+const studioBooking = read("components/home/StudioLocationBooking.tsx");
 
 test("homepage renders the approved quiet-luxury section order", () => {
   const orderedComponents = [
@@ -55,10 +63,41 @@ test("homepage content is centralised and does not expose prices", () => {
   ]) {
     assert.match(homepageConfig, new RegExp(category));
   }
-  assert.match(homepageConfig, /Precision/);
-  assert.match(homepageConfig, /Comfort/);
-  assert.match(homepageConfig, /Confidence/);
+  for (const proofPoint of [
+    "Since 2019 in Melaka",
+    "Footlogix foot care",
+    "Member rewards",
+    "2019 年起扎根马六甲",
+    "Footlogix 专业足部护理",
+    "会员礼遇",
+    "Sejak 2019 di Melaka",
+    "Penjagaan kaki Footlogix",
+    "Ganjaran ahli",
+  ]) {
+    assert.ok(homepageConfig.includes(proofPoint), `homepage proof point missing: ${proofPoint}`);
+  }
+  assert.doesNotMatch(homepageConfig, /title: "(?:Precision|Comfort|Confidence)"/);
   assert.doesNotMatch(homepageConfig, /RM\s?\d|price:/i);
+});
+
+test("homepage title is absolute while description, canonical and H1 stay unchanged", () => {
+  assert.match(homepagePage, /title: \{ absolute: "Premium Nail Care in Melaka \| Mezzanail Nail Studio" \}/);
+  assert.match(homepagePage, /title: "Premium Nail Care in Melaka"/);
+  assert.match(homepagePage, /description:\s*"Visit Mezzanail Nail Studio in Melaka for manicure, pedicure, nail extensions, callus care and waxing\. Book online or enquire through WhatsApp\."/);
+  assert.match(homepagePage, /path: "\/"/);
+  assert.match(homeHero, /<h1 id="home-hero-title">Premium Nail Care in Melaka<\/h1>/);
+});
+
+test("only the hero eyebrow remains among the homepage section labels", () => {
+  assert.match(sectionHeading, /eyebrow\?: string/);
+  assert.match(sectionHeading, /\{eyebrow \? <p className="mn-eyebrow">\{eyebrow\}<\/p> : null\}/);
+  for (const component of [signatureServices, selectedNailWork, whyMezzanail, googleReviews]) {
+    assert.doesNotMatch(component, /eyebrow=\{copy\.eyebrow\}/);
+  }
+  assert.doesNotMatch(membershipBanner, /className="mn-eyebrow"/);
+  assert.doesNotMatch(studioBooking, /className="mn-eyebrow"/);
+  assert.match(homeHero, /Nail Studio · Melaka/);
+  assert.match(homeHero, /home-hero-offer-label/);
 });
 
 test("homepage uses the approved palette, typography and restrained buttons", () => {
