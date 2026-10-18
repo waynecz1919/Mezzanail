@@ -142,6 +142,7 @@ test("job uses the public palette without changing application behavior", () => 
   assert.match(jobPalette, /\.job-hero\s*\{[\s\S]*var\(--color-ink\)/);
   assert.match(jobPalette, /\.job-contact-strip\s*\{\s*background:\s*var\(--color-ink\)/);
   assert.match(jobPalette, /\.job-hero \.btn-gold\s*\{[\s\S]*background:\s*var\(--color-white\)[\s\S]*color:\s*var\(--color-ink\)/);
+  assert.match(jobPalette, /\.job-page small\s*\{\s*font-size:\s*11px/);
   assert.doesNotMatch(jobPalette, /#130b0e|#8a2537|#a4263d|#9a2b3e|rgba\(145,33,54/);
 });
 
@@ -151,6 +152,7 @@ test("promotion header uses the main-site palette while preserving its controls"
   assert.match(promotion, /className="promotion-header-book"/);
   assert.match(approvedStyles, /\.promotion-site:not\(\.promotion-terms-page\) \.promotion-header\s*\{[^}]*background:\s*var\(--color-cream\)/);
   assert.match(approvedStyles, /\.promotion-site:not\(\.promotion-terms-page\) \.promotion-brand\s*\{[^}]*background:\s*transparent;[\s\S]*box-shadow:\s*none/);
+  assert.match(approvedStyles, /\.promotion-site:not\(\.promotion-terms-page\) \.promotion-brand\s*\{[^}]*min-height:\s*44px/);
   assert.match(approvedStyles, /\.promotion-site:not\(\.promotion-terms-page\) \.promotion-brand img\s*\{[^}]*filter:\s*brightness\(0\.2\)/);
   assert.match(approvedStyles, /\.promotion-site:not\(\.promotion-terms-page\) \.promotion-header-inner\s*\{\s*min-height:\s*84px/);
   assert.match(approvedStyles, /\.promotion-site:not\(\.promotion-terms-page\) \.promotion-header-languages button,[\s\S]*?min-width:\s*44px/);

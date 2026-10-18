@@ -2304,6 +2304,11 @@ body:has(.promotion-site:not(.promotion-terms-page)) .analytics-consent-actions 
   color: var(--color-ink);
 }
 
+.public-site .job-page .job-opening-card > span,
+.public-site .job-page small {
+  font-size: 11px;
+}
+
 .public-site .job-page .btn-gold {
   border-color: var(--color-ink);
   background: var(--color-ink);
@@ -2356,6 +2361,7 @@ body:has(.promotion-site:not(.promotion-terms-page)) .analytics-consent-actions 
 
 .promotion-site:not(.promotion-terms-page) .promotion-brand {
   height: auto;
+  min-height: 44px;
   width: 178px;
   border-radius: 0;
   background: transparent;
