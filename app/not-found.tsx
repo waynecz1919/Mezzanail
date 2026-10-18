@@ -5,7 +5,7 @@ import { OfficialFrame } from "@/components/official-site";
 export default function NotFound() {
   return (
     <div className="not-found-page-scope">
-      <OfficialFrame>
+      <OfficialFrame publicSite>
         <section className="page-hero">
           <div className="shell">
             <div className="max-w-3xl">

@@ -66,6 +66,7 @@ test("cookie choice follows the active language and the 404 is branded", () => {
   assert.match(analytics, /const \{ locale \} = useLanguage\(\)/);
   assert.match(analytics, /只有在您同意后/);
   assert.match(analytics, /Analitik pilihan/);
-  assert.match(notFound, /<OfficialFrame>/);
+  assert.match(notFound, /<OfficialFrame publicSite>/);
   assert.match(notFound, /<h1/);
+  assert.match(notFound, /Return home/);
 });

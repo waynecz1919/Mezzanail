@@ -1799,6 +1799,14 @@ body:has(.promotion-site:not(.promotion-terms-page)) .analytics-consent-actions 
     font-size: clamp(32px, 8.6vw, 38px);
   }
 
+  .public-site .home-hero-offer-separator {
+    display: none;
+  }
+
+  .public-site .home-hero-offer-service {
+    display: block;
+  }
+
   .public-site .home-hero-offer {
     margin-top: 18px;
     padding: 18px 16px 10px;
@@ -1822,6 +1830,10 @@ body:has(.promotion-site:not(.promotion-terms-page)) .analytics-consent-actions 
     border-color: var(--promotion-line);
     background: color-mix(in srgb, var(--color-white) 92%, transparent);
   }
+}
+
+.public-site .mn-eyebrow {
+  font-size: 11px;
 }
 
 /* /promotion — current seasonal offer, shown above the ended campaign. */

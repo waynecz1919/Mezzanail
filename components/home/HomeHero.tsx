@@ -30,7 +30,8 @@ export function HomeHero() {
             </p>
             <p className="home-hero-offer-title" id="home-hero-offer-title">
               {offer.title}
-              <span> — {offer.service}</span>
+              <span className="home-hero-offer-separator"> — </span>
+              <span className="home-hero-offer-service">{offer.service}</span>
             </p>
             <p className="home-hero-offer-price">
               <s>RM{currentOffer.originalPrice}</s>

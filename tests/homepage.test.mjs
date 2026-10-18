@@ -12,6 +12,7 @@ const homepageConfig = read("config/homepage.ts");
 const navigation = read("config/navigation.ts");
 const globals = read("app/globals.css");
 const homeLink = read("components/ui/HomeLink.tsx");
+const homeHero = read("components/home/HomeHero.tsx");
 
 test("homepage renders the approved quiet-luxury section order", () => {
   const orderedComponents = [
@@ -74,6 +75,14 @@ test("homepage uses the approved palette, typography and restrained buttons", ()
   assert.match(globals, /\.mn-button--primary/);
   assert.match(globals, /\.mn-button--secondary/);
   assert.match(globals, /\.mn-button--text/);
+});
+
+test("public eyebrow is at least 11px and mobile offer title uses separate lines", () => {
+  assert.match(globals, /\.public-site \.mn-eyebrow\s*\{\s*font-size:\s*11px;/);
+  assert.match(homeHero, /className="home-hero-offer-separator"/);
+  assert.match(homeHero, /className="home-hero-offer-service"/);
+  assert.match(globals, /\.public-site \.home-hero-offer-separator\s*\{\s*display:\s*none;/);
+  assert.match(globals, /\.public-site \.home-hero-offer-service\s*\{\s*display:\s*block;/);
 });
 
 test("homepage analytics include only approved interaction context", () => {
