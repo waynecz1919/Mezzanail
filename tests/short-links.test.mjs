@@ -6,12 +6,15 @@ const read = (p) => readFileSync(p, "utf8");
 
 test("old campaign short links redirect permanently to /promotion", () => {
   for (const route of ["luckydraw", "lucky-draw", "promo"]) {
-    assert.match(read(`app/${route}/page.tsx`), /permanentRedirect\("\/promotion"\)/);
+    const page = read(`app/${route}/page.tsx`);
+    assert.match(page, /export const dynamic = "force-dynamic"/);
+    assert.match(page, /permanentRedirect\("\/promotion"\)/);
   }
 });
 
 test("the seasonal /deepavali short link redirects temporarily to the current offer", () => {
   const page = read("app/deepavali/page.tsx");
+  assert.match(page, /export const dynamic = "force-dynamic"/);
   assert.match(page, /\bredirect\("\/promotion#current-offer"\)/);
   assert.doesNotMatch(page, /permanentRedirect/);
 });
