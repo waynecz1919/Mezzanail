@@ -35,8 +35,8 @@ export const homepage: HomepageImages = {
   // - Say "by Mezzanail" only for real client work.
   heroImage: {
     src: "/home/hero-2026-10-bridal.webp",
-    width: 848,
-    height: 890,
+    width: 1280,
+    height: 1280,
     alt: {
       en: "Bride in a lace gown with French-tip almond nails, hands clasped behind her back",
       zh: "身穿蕾丝婚纱的新娘，双手背在身后，法式杏仁甲",

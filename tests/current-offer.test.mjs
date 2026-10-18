@@ -65,8 +65,8 @@ test("the homepage hero photo is swappable, localized, and uncropped", () => {
 
   assert.match(src, /^\/home\/hero-[^/]+\.webp$/);
   assert.equal(existsSync(`public${src}`), true);
-  assert.equal(Number(width), 848);
-  assert.equal(Number(height), 890);
+  assert.equal(Number(width), 1280);
+  assert.equal(Number(height), 1280);
   assert.match(heroImageBlock, /en: "Bride in a lace gown with French-tip almond nails, hands clasped behind her back"/);
   assert.match(heroImageBlock, /zh: "身穿蕾丝婚纱的新娘，双手背在身后，法式杏仁甲"/);
   assert.match(heroImageBlock, /ms: "Pengantin bergaun renda dengan kuku badam French tip, tangan digenggam di belakang"/);
