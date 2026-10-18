@@ -1551,6 +1551,14 @@ body:has(.public-site) .analytics-consent p small {
   color: var(--color-white);
 }
 
+body:has(.public-site) .analytics-consent>div>span,
+body:has(.promotion-site) .analytics-consent>div>span,
+:root:has(head link[rel="canonical"][href="https://www.mezzanail.com/cookies"]) body .analytics-consent>div>span,
+:root:has(head link[rel="canonical"][href="https://www.mezzanail.com/privacy"]) body .analytics-consent>div>span,
+:root:has(head link[rel="canonical"][href="https://www.mezzanail.com/terms"]) body .analytics-consent>div>span {
+  font-size: 11px;
+}
+
 body:has(.public-site) .analytics-consent-actions .btn-dark {
   border-color: var(--color-white);
   background: var(--color-white);

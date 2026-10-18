@@ -557,7 +557,7 @@ export function PromotionExperience() {
         <div className="promotion-shell promotion-footer-inner">
           <div>
             <strong>MEZZANAIL</strong>
-            <span>{copy.footerCampaign}</span>
+            {offerActive && <span>{currentOffer.copy[language].title}</span>}
           </div>
           <p>© 2026 Mezzanail Nail Studio. All rights reserved.</p>
         </div>

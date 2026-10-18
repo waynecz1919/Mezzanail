@@ -9,7 +9,7 @@ const promotionOgImage = "/campaigns/deepavali-2026/og-1200x630.jpg";
 
 export const metadata: Metadata = {
   metadataBase: new URL(anniversaryCampaign.promotionUrl),
-  title: promotionTitle,
+  title: { absolute: "Deepavali Gel Glow – Gelish Manicure RM68 | Mezzanail Nail Studio" },
   description: promotionDescription,
   alternates: { canonical: anniversaryCampaign.promotionUrl },
   openGraph: {
