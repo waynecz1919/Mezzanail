@@ -33,8 +33,8 @@ export function SignatureServices({ locale }: { locale: Locale }) {
                   fill
                   sizes={
                     item.featured
-                      ? "(max-width: 767px) 92vw, (max-width: 1279px) 48vw, 600px"
-                      : "(max-width: 767px) 92vw, (max-width: 1279px) 48vw, 390px"
+                      ? "(max-width: 767px) 44vw, (max-width: 1279px) 48vw, 600px"
+                      : "(max-width: 767px) 44vw, (max-width: 1279px) 48vw, 390px"
                   }
                   className="object-cover"
                   loading="lazy"
@@ -42,10 +42,11 @@ export function SignatureServices({ locale }: { locale: Locale }) {
               </div>
               <div className="signature-service-copy">
                 <h3>{item.title}</h3>
-                <p>{item.body}</p>
+                <p className="signature-service-description">{item.body}</p>
                 <HomeLink
                   href={item.href}
                   variant="text"
+                  className="signature-service-action"
                   event="service_category_click"
                   eventLabel={item.title}
                   ariaLabel={`${copy.action}: ${item.title}`}
@@ -54,6 +55,16 @@ export function SignatureServices({ locale }: { locale: Locale }) {
                   <ArrowUpRight aria-hidden="true" size={16} />
                 </HomeLink>
               </div>
+              <HomeLink
+                href={item.href}
+                variant="text"
+                className="signature-service-card-link hidden"
+                event="service_category_click"
+                eventLabel={item.title}
+                ariaLabel={item.title}
+              >
+                <span className="sr-only">{copy.action}: {item.title}</span>
+              </HomeLink>
               <span className="signature-service-index" aria-hidden="true">
                 {String(index + 1).padStart(2, "0")}
               </span>
