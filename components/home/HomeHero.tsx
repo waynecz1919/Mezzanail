@@ -1,12 +1,17 @@
+"use client";
+
 import Image from "next/image";
+import { useLanguage } from "@/components/providers";
 import { HomeLink } from "@/components/ui/HomeLink";
 import { homepage } from "@/config/homepage";
 import { siteConfig } from "@/lib/site";
 
 export function HomeHero() {
+  const { locale } = useLanguage();
+  const heroImage = homepage.heroImage;
   return (
     <section
-      className={`home-hero${homepage.heroImage ? " home-hero--with-image" : ""}`}
+      className={`home-hero${heroImage ? " home-hero--with-image" : ""}`}
       aria-labelledby="home-hero-title"
     >
       <div className="home-hero-copy">
@@ -26,17 +31,18 @@ export function HomeHero() {
           Book Now
         </HomeLink>
       </div>
-      {homepage.heroImage ? (
-        <div className="home-hero-media">
+      {heroImage ? (
+        <figure className="home-hero-media">
           <Image
-            src={homepage.heroImage}
-            alt=""
-            fill
+            src={heroImage.src}
+            alt={heroImage.alt[locale]}
+            width={heroImage.width}
+            height={heroImage.height}
             priority
-            sizes="(max-width: 767px) 100vw, (max-width: 1199px) 45vw, 560px"
+            sizes="(max-width: 900px) min(100vw, 520px), 560px"
             className="home-hero-image"
           />
-        </div>
+        </figure>
       ) : null}
     </section>
   );

@@ -34,6 +34,8 @@ import {
   validateReferralCode,
 } from "@/lib/promotion/referral";
 import { getWhatsAppShareUrl } from "@/lib/promotion/share-message";
+import { useOfferActive } from "@/components/offer/use-offer-active";
+import { currentOffer, getOfferWhatsappUrl } from "@/config/current-offer";
 
 const PROMOTION_LANGUAGE_STORAGE_KEY = "mezzanail_promotion_language";
 
@@ -46,6 +48,7 @@ const prizeIcons = {
 
 export function PromotionExperience() {
   const campaignEnded = true;
+  const offerActive = useOfferActive();
   const [language, setLanguage] = useState<PromotionLanguage>("en");
   const [referralCode, setReferralCode] = useState<string | null>(null);
   const [source, setSource] = useState<PromotionSource>("direct");
@@ -215,6 +218,64 @@ export function PromotionExperience() {
           </div>
         </div>
       </header>
+
+      {offerActive && (
+        <section
+          className="promotion-current-offer"
+          id="current-offer"
+          aria-labelledby="current-offer-heading"
+        >
+          <div className="promotion-shell promotion-current-offer-inner">
+            <div className="promotion-current-offer-poster">
+              <Image
+                src={currentOffer.poster[language]}
+                alt={currentOffer.copy[language].posterAlt}
+                width={currentOffer.poster.width}
+                height={currentOffer.poster.height}
+                priority
+                sizes="(max-width: 900px) min(100vw, 560px), 480px"
+              />
+            </div>
+            <div className="promotion-current-offer-copy">
+              <p className="promotion-current-offer-eyebrow">
+                {currentOffer.copy[language].eyebrow}
+              </p>
+              <h2 id="current-offer-heading">{currentOffer.copy[language].title}</h2>
+              <p className="promotion-current-offer-service">
+                {currentOffer.copy[language].service}
+              </p>
+              <p className="promotion-current-offer-price">
+                <s>RM{currentOffer.originalPrice}</s>
+                <strong>RM{currentOffer.offerPrice}</strong>
+                <span>{currentOffer.copy[language].save}</span>
+              </p>
+              <ul className="promotion-current-offer-facts">
+                <li>{currentOffer.copy[language].includes}</li>
+                <li>{currentOffer.copy[language].validity}</li>
+              </ul>
+              <p className="promotion-current-offer-terms">
+                {currentOffer.copy[language].terms}
+              </p>
+              <a
+                className="promotion-current-offer-action"
+                href={getOfferWhatsappUrl(language)}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() =>
+                  window.gtag?.("event", "whatsapp_click", {
+                    destination: "whatsapp",
+                    content_label: `${currentOffer.id}_promotion`,
+                    language,
+                  })
+                }
+              >
+                <MessageCircle size={18} aria-hidden="true" />
+                {currentOffer.copy[language].action}
+              </a>
+            </div>
+          </div>
+        </section>
+      )}
 
       <div className="promotion-expired-notice" role="status">
         This campaign ended on 30 September 2026. Thank you for celebrating 7 years with us.

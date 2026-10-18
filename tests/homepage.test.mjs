@@ -11,7 +11,8 @@ const homeLink = read("components/ui/HomeLink.tsx");
 
 test("homepage renders the approved quiet-luxury section order", () => {
   const orderedComponents = [
-    "<CurrentCampaignBanner",
+    "<HomeHero",
+    "<CurrentOfferStrip",
     "<SignatureServices",
     "<SelectedNailWork",
     "<WhyMezzanail",

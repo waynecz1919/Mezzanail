@@ -15,13 +15,30 @@ const sharedImages = {
   ],
 } as const;
 
+type HomepageHeroImage = {
+  src: string;
+  width: number;
+  height: number;
+  alt: Record<"en" | "zh" | "ms", string>;
+};
+
 type HomepageImages = {
-  heroImage: string | null;
+  heroImage: HomepageHeroImage | null;
   studioImage: string | null;
 };
 
 export const homepage: HomepageImages = {
-  heroImage: null,
+  // Real Mezzanail client work. The frame uses the photo's own ratio, so no nail is cropped.
+  heroImage: {
+    src: "/home/hero-tortoiseshell.webp",
+    width: 923,
+    height: 940,
+    alt: {
+      en: "Tortoiseshell almond nails with pearl line art by Mezzanail",
+      zh: "Mezzanail 作品：玳瑁杏仁甲配珍珠线条彩绘",
+      ms: "Kuku badam corak kulit penyu dengan seni garisan mutiara oleh Mezzanail",
+    },
+  },
   studioImage: null,
 };
 

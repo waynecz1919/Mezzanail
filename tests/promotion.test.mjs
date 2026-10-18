@@ -69,7 +69,10 @@ test("the full campaign supports English, Chinese and Bahasa Melayu", () => {
 });
 
 test("the official homepage routes every anniversary entry to promotion", () => {
-  assert.match(officialSite, /<CurrentCampaignBanner/);
+  // The anniversary campaign has ended: the homepage leads with the hero and the
+  // current seasonal offer instead of the anniversary banner.
+  assert.doesNotMatch(officialSite, /<CurrentCampaignBanner/);
+  assert.match(officialSite, /<HomeHero\/>\s*<CurrentOfferStrip\/>/);
   assert.match(currentCampaignBanner, /<CampaignBanner/);
   assert.match(currentCampaignBanner, /currentCampaign\.enabled/);
   assert.match(navigation, /href: "\/promotion", labelKey: "promo"/);

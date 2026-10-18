@@ -12,6 +12,7 @@ import {
 import { Reveal } from "@/components/hyperframe/motion";
 import { GoogleReviewsPreview } from "@/components/home/GoogleReviewsPreview";
 import { HomeHero } from "@/components/home/HomeHero";
+import { CurrentOfferStrip } from "@/components/home/CurrentOfferStrip";
 import { MembershipBanner } from "@/components/home/MembershipBanner";
 import { SelectedNailWork } from "@/components/home/SelectedNailWork";
 import { SignatureServices } from "@/components/home/SignatureServices";
@@ -172,6 +173,7 @@ export function OfficialHome() {
   const { locale } = useOfficial();
   return <OfficialFrame publicSite><div className="homepage-quiet">
     <HomeHero/>
+    <CurrentOfferStrip/>
     <SignatureServices locale={locale}/>
     <SelectedNailWork locale={locale}/>
     <WhyMezzanail locale={locale}/>
