@@ -20,10 +20,12 @@ import { WhyMezzanail } from "@/components/home/WhyMezzanail";
 import { useLanguage } from "@/components/providers";
 import { ServicesCatalog } from "@/components/services-catalog";
 import { MEMBER_CENTER_URL } from "@/config/member-center";
+import { currentOffer, getOfferEndDateLabel } from "@/config/current-offer";
 import { primaryNavigation } from "@/config/navigation";
 import type { Locale } from "@/lib/i18n";
 import { officialMessages } from "@/lib/official-i18n";
 import { getWhatsappUrl, isConfiguredUrl, siteConfig } from "@/lib/site";
+import { useOfferActive } from "@/components/offer/use-offer-active";
 
 const contactCopy = {
   en: { directions: "Get Directions", call: "Call Us", whatsapp: "WhatsApp Us", social: "Official channels", qr: "Scan to WhatsApp", xhs: "Xiaohongshu", account: "Account ID", pending: "Official profile link pending" },
@@ -82,8 +84,9 @@ function LanguageMenu() {
 }
 
 function SiteHeader() {
-  const { t } = useOfficial();
+  const { locale, t } = useOfficial();
   const pathname = usePathname();
+  const offerActive = useOfferActive();
   const [open, setOpen] = useState(false);
   const isHome = pathname === "/";
   const nav = primaryNavigation.map((item) => ({
@@ -91,7 +94,7 @@ function SiteHeader() {
     label: t.nav[item.labelKey],
   }));
   return <>
-    {!isHome && siteConfig.announcement.enabled && <div className="announcement"><span>{t.announcement.label}</span><span className="announcement-date">{siteConfig.announcement.dates}</span><Link href="/promotion">{t.announcement.action}<ArrowRight size={13}/></Link></div>}
+    {!isHome && !pathname.startsWith("/job") && offerActive && <div className="announcement announcement--offer"><span className="announcement-label"><span className="announcement-title">{currentOffer.copy[locale].title}</span><span aria-hidden="true"> · </span>{currentOffer.copy[locale].service} RM{currentOffer.offerPrice} · {t.announcement.until}{locale === "zh" ? "" : " "}{getOfferEndDateLabel(locale)}</span><Link href="/promotion#current-offer">{t.announcement.action}<ArrowRight size={13}/></Link></div>}
     <header className="official-header">
       <div className="official-header-main shell">
         <button className="utility-button icon-only official-mobile-menu" onClick={() => setOpen(!open)} aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open}>{open?<X size={18}/>:<Menu size={18}/>}</button>

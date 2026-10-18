@@ -25,7 +25,7 @@ async function loadOffer() {
 }
 
 test("the Deepavali offer runs 15 Oct 00:00 to 8 Nov 23:59 Malaysia time", async () => {
-  const { isOfferActive, currentOffer } = await loadOffer();
+  const { isOfferActive, currentOffer, getOfferEndDateLabel } = await loadOffer();
   assert.equal(currentOffer.id, "deepavali-gel-glow-2026");
   assert.equal(isOfferActive(new Date("2026-10-14T23:59:59+08:00")), false);
   assert.equal(isOfferActive(new Date("2026-10-15T00:00:00+08:00")), true);
@@ -35,6 +35,9 @@ test("the Deepavali offer runs 15 Oct 00:00 to 8 Nov 23:59 Malaysia time", async
   assert.equal(isOfferActive(new Date("2026-11-09T00:00:00+08:00")), false);
   // 8 Nov 16:30 UTC is already 9 Nov 00:30 in Melaka.
   assert.equal(isOfferActive(new Date("2026-11-08T16:30:00Z")), false);
+  assert.equal(getOfferEndDateLabel("en"), "8 Nov");
+  assert.equal(getOfferEndDateLabel("zh"), "11月8日");
+  assert.equal(getOfferEndDateLabel("ms"), "8 Nov");
 });
 
 test("the offer price and terms match the approved poster in every language", async () => {
@@ -78,7 +81,7 @@ test("the hero offer and promotion section hide themselves after the offer ends"
   assert.match(promotion, /\{offerActive && \(/);
   assert.match(promotion, /id="current-offer"/);
   assert.ok(
-    promotion.indexOf('id="current-offer"') < promotion.indexOf("promotion-expired-notice"),
+    promotion.indexOf('id="current-offer"') < promotion.indexOf("promotion-past-campaign"),
     "the current offer must sit above the ended lucky-draw notice",
   );
   assert.doesNotMatch(homepageConfig, /RM\s?\d|price:/i);

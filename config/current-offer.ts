@@ -96,6 +96,20 @@ export function isOfferActive(now: Date = new Date()): boolean {
   return time >= startsAtMs && time < endsBeforeMs;
 }
 
+export function getOfferEndDateLabel(locale: OfferLocale): string {
+  const endDate = new Date(currentOffer.endsAt);
+  const format = new Intl.DateTimeFormat("en-GB", {
+    day: "numeric",
+    month: locale === "zh" ? "numeric" : "short",
+    timeZone: "Asia/Kuala_Lumpur",
+  });
+  const parts = format.formatToParts(endDate);
+  const dayPart = parts.find((part) => part.type === "day")?.value;
+  const month = parts.find((part) => part.type === "month")?.value ?? "";
+  const day = dayPart ? String(Number(dayPart)) : "";
+  return locale === "zh" ? `${month}月${day}日` : `${day} ${month}`;
+}
+
 export function getOfferWhatsappUrl(locale: OfferLocale = "en"): string {
   const message = currentOffer.copy[locale].whatsappMessage;
   return `https://wa.me/${currentOffer.whatsappPhone}?text=${encodeURIComponent(message)}`;

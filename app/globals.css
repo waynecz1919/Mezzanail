@@ -1113,6 +1113,92 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
   background: var(--color-pink);
 }
 
+.announcement--offer {
+  min-height: 54px;
+  gap: 12px;
+  padding: 5px 16px;
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font-size: 12px;
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+}
+
+.announcement--offer .announcement-label {
+  min-width: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
+  color: var(--color-ink);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.announcement--offer .announcement-title {
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.announcement--offer a {
+  min-height: 44px;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid color-mix(in srgb, var(--color-ink) 24%, var(--color-white));
+  border-radius: 999px;
+  padding: 0 10px;
+  color: var(--color-ink);
+  font-size: 12px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.public-site .eyebrow,
+.public-site .service-add-on,
+.public-site .service-card-category,
+.public-site .service-facts > div > span,
+.public-site .contact-details span,
+.public-site .studio-details dt,
+.public-site .official-footer h3,
+.public-site .google-rating small,
+.public-site .review-quote figcaption,
+.public-site .legal-language-label,
+.public-site .mobile-official-nav a {
+  font-size: 11px;
+}
+
+.public-site .service-offer-badge {
+  display: inline-flex;
+  min-height: 44px;
+  grid-column: 1 / -1;
+  align-items: center;
+  justify-self: start;
+  border: 1px solid color-mix(in srgb, #7E1A2A 35%, var(--color-white));
+  border-radius: 999px;
+  padding: 0 11px;
+  color: #7E1A2A;
+  font-size: 11px;
+  font-weight: 750;
+  line-height: 1.25;
+  text-decoration: none;
+}
+
+.public-site .service-offer-badge:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 767px) {
+  .announcement--offer {
+    min-height: 54px;
+    gap: 6px;
+    justify-content: space-between;
+    padding: 5px 10px;
+  }
+}
+
 .public-site .studio-grid {
   min-width: 0;
 }
@@ -1769,7 +1855,7 @@ body:has(.promotion-site:not(.promotion-terms-page)) .analytics-consent-actions 
   text-transform: uppercase;
 }
 
-.promotion-site .promotion-current-offer h2 {
+.promotion-site .promotion-current-offer h1 {
   margin: 10px 0 0;
   font-family: var(--font-beauty), Georgia, serif;
   font-size: clamp(40px, 4.6vw, 60px);

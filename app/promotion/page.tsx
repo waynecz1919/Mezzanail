@@ -1,27 +1,28 @@
 import type { Metadata } from "next";
 import { PromotionExperience } from "@/components/promotion/promotion-experience";
+import { currentOffer } from "@/config/current-offer";
 import { anniversaryCampaign } from "@/lib/promotion/campaign-config";
 
-const promotionDescription =
-  "Celebrate Mezzanail's 7th Anniversary from 26 July to 30 September 2026. Join our membership, share with three friends and enter the lucky draw.";
+const promotionTitle = `${currentOffer.copy.en.title} – ${currentOffer.copy.en.service} RM${currentOffer.offerPrice} | Mezzanail`;
+const promotionDescription = `${currentOffer.copy.en.title} at Mezzanail Nail Studio, Melaka: ${currentOffer.copy.en.service} RM${currentOffer.offerPrice} (usual RM${currentOffer.originalPrice}), ${currentOffer.copy.en.includes[0].toLowerCase()}${currentOffer.copy.en.includes.slice(1)}. ${currentOffer.copy.en.validity}.`;
+const promotionOgImage = "/campaigns/deepavali-2026/og-1200x630.jpg";
 
 export const metadata: Metadata = {
   metadataBase: new URL(anniversaryCampaign.promotionUrl),
-  title: "Mezzanail 7th Anniversary Celebration",
+  title: promotionTitle,
   description: promotionDescription,
   alternates: { canonical: anniversaryCampaign.promotionUrl },
   openGraph: {
-    title: "Mezzanail 7th Anniversary Celebration",
-    description:
-      "Join Mezzanail's 7th Anniversary Lucky Draw for Dyson, HUAWEI, Xiaomi and weekly rewards.",
+    title: promotionTitle,
+    description: promotionDescription,
     url: anniversaryCampaign.promotionUrl,
     siteName: "Mezzanail",
     images: [
       {
-        url: anniversaryCampaign.banner.og,
+        url: promotionOgImage,
         width: 1200,
         height: 630,
-        alt: "Mezzanail 7th Anniversary Celebration",
+        alt: currentOffer.copy.en.posterAlt,
       },
     ],
     locale: "en_MY",
@@ -29,10 +30,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Mezzanail 7th Anniversary Celebration",
-    description:
-      "Join our membership, share with three friends and enter the 7th Anniversary Lucky Draw.",
-    images: [anniversaryCampaign.banner.og],
+    title: promotionTitle,
+    description: promotionDescription,
+    images: [promotionOgImage],
   },
   robots: { index: true, follow: true },
 };
