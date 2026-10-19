@@ -16,7 +16,6 @@ import {
   Lock,
   LogOut,
   Maximize2,
-  Medal,
   Pencil,
   PillBottle,
   Plus,
@@ -637,7 +636,11 @@ export function JackpotConsole({
                 <Image key={asset} src={`/campaigns/7th-anniversary/${asset}`} alt="" width={270} height={490} unoptimized />
               ))}
             </div>
-            <div className="jackpot-winner-medal"><Medal size={36} /></div>
+            <div className="jackpot-winner-medal" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width={36} height={36} focusable="false">
+                <path d="M12 2.48l2.72 6.8 6.8 2.72-6.8 2.72-2.72 6.8-2.72-6.8-6.8-2.72 6.8-2.72z" fill="currentColor" />
+              </svg>
+            </div>
             <p>CONGRATULATIONS · 恭喜中奖</p>
             <h2 id="winner-title">{liveMode ? formatLiveWinnerName(activeWinner.displayName) : activeWinner.displayName}</h2>
             <dl>

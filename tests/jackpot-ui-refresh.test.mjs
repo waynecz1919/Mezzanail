@@ -125,6 +125,26 @@ test("fullscreen layout pins the logo and keeps top-right status within the fram
   assert.match(css, /\.jackpot-root\.is-live \{[^}]*width:\s*100%;[^}]*max-width:\s*100vw[^}]*overflow:\s*clip/s);
 });
 
+test("round four keeps a thin dark edge, bright gold rim, and bulbs on the rim band", () => {
+  assert.match(css, /\.jackpot-wheel-frame\s*\{[^}]*border:\s*2\.5px solid #6E5A32[^}]*linear-gradient\(135deg, #F1E2BC 0%, #C9AE77 42%, #B69B68 72%, #86703F 100%\)/s);
+  assert.match(css, /\.jackpot-wheel-frame \.jackpot-wheel\s*\{\s*inset:\s*4\.2cqi;/);
+  assert.match(css, /\.jackpot-wheel-frame \.jackpot-wheel-rim\s*\{\s*inset:\s*4\.2cqi;[^}]*border:\s*1\.5px solid #FBF8EF/s);
+  assert.match(css, /\.jackpot-wheel-bulbs span\s*\{[^}]*translateY\(-49cqi\)/s);
+  assert.match(css, /\.jackpot-wheel-frame \.jackpot-wheel-nail-tip\s*\{\s*transform:\s*translate\(-50%, -50%\) rotate\(var\(--name-angle\)\) translateY\(-39cqi\);/);
+  assert.match(css, /\.jackpot-wheel-bulbs span:nth-child\(3n\)\s*\{[^}]*width:\s*2\.15cqi/);
+});
+
+test("fullscreen header gains ten pixels below the wordmark at review viewports", () => {
+  assert.match(css, /@media screen and \(min-width: 761px\)\s*\{\s*\.jackpot-live-shell \.jackpot-stage-header\s*\{\s*top:\s*calc\(14\.3vh \+ 10px\);/);
+  assert.match(css, /@media screen and \(min-width: 761px\) and \(max-height: 800px\)\s*\{\s*\.jackpot-live-shell \.jackpot-stage-header\s*\{\s*top:\s*calc\(16vh \+ 10px\);/);
+});
+
+test("winner card uses a gold four-point sparkle in its ink medallion", () => {
+  assert.match(consoleSource, /<div className="jackpot-winner-medal" aria-hidden="true">\s*<svg viewBox="0 0 24 24" width=\{36\} height=\{36\} focusable="false">\s*<path d="M12 2\.48l2\.72 6\.8 6\.8 2\.72-6\.8 2\.72-2\.72 6\.8-2\.72-6\.8-6\.8-2\.72 6\.8-2\.72z" fill="currentColor" \/>/);
+  assert.match(css, /\.jackpot-winner-medal\s*\{[^}]*background:\s*var\(--jp-ink\)[^}]*color:\s*var\(--jp-gold-light\)/s);
+  assert.doesNotMatch(consoleSource, /<Medal size=\{36\}/);
+});
+
 test("drawing button keeps its ink fill and uses a reduced-motion-aware gold shimmer", () => {
   assert.match(consoleSource, /className=\{`jackpot-spin-button \$\{spinning \? "is-spinning" : ""\}`\}/);
   assert.match(consoleSource, /spinning \? "DRAWING…"/);
@@ -166,7 +186,7 @@ test("fullscreen stats wrap labels, use lining tabular numerals, and keep ready 
   assert.match(css, /font-feature-settings:\s*"lnum" 1, "tnum" 1/);
   assert.match(css, /@media screen and \(max-width: 1599px\)\s*\{[\s\S]*?font-size:\s*12px;[\s\S]*?letter-spacing:\s*\.12em;[\s\S]*?white-space:\s*normal;[\s\S]*?overflow-wrap:\s*anywhere/s);
   assert.match(css, /\.jackpot-live-shell \.jackpot-prize-card > p\.jackpot-live-ready\s*\{[^}]*margin-top:\s*18px;/s);
-  assert.match(consoleSource, /<div className="jackpot-winner-medal"><Medal size=\{36\} \/><\/div>/);
+  assert.match(consoleSource, /<div className="jackpot-winner-medal" aria-hidden="true">\s*<svg viewBox="0 0 24 24" width=\{36\} height=\{36\} focusable="false">/);
   assert.match(consoleSource, /<div><dt>Member ID<\/dt><dd>\{activeWinner\.memberIdMasked\}<\/dd><\/div>/);
   assert.match(consoleSource, /<div><dt>Phone<\/dt><dd>\*\*\*\*\{activeWinner\.phoneLast4\}<\/dd><\/div>/);
 });
