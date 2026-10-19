@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
+import { pathToFileURL } from "node:url";
 
 const read = (path) => readFileSync(path, "utf8");
 const config = read("lib/promotion/campaign-config.ts");
@@ -18,6 +19,7 @@ const navigation = read("config/navigation.ts");
 const site = read("lib/site.ts");
 const servicesCatalog = read("components/services-catalog.tsx");
 const servicesData = read("lib/services.ts");
+const globals = read("app/globals.css");
 
 test("campaign uses the official promotion and booking URLs", () => {
   assert.match(config, /https:\/\/www\.mezzanail\.com\/promotion/);
@@ -78,7 +80,7 @@ test("the official homepage routes every anniversary entry to promotion", () => 
   assert.match(currentCampaignBanner, /<CampaignBanner/);
   assert.match(currentCampaignBanner, /currentCampaign\.enabled/);
   assert.match(navigation, /href: "\/promotion", labelKey: "promo"/);
-  assert.match(currentCampaign, /enabled: true/);
+  assert.match(currentCampaign, /enabled: false/);
   assert.match(currentCampaign, /href: "\/promotion"/);
   assert.match(currentCampaign, /banner-desktop\.webp/);
   assert.doesNotMatch(officialSite, /href="\/#anniversary"/);
@@ -120,14 +122,21 @@ test("referral and source validation are allow-listed", () => {
   }
 });
 
-test("metadata, canonical, OG image and Event JSON-LD are present", () => {
+test("promotion metadata and canonical remain while Event JSON-LD is absent", () => {
   assert.match(page, /alternates: \{ canonical:/);
   assert.match(page, /openGraph:/);
   assert.match(page, /1200/);
   assert.match(page, /630/);
-  assert.match(page, /application\/ld\+json/);
-  assert.match(page, /EventScheduled/);
+  assert.doesNotMatch(page, /"@type"\s*:\s*"Event"/);
+  assert.doesNotMatch(page, /EventScheduled/);
   assert.match(termsPage, /promotionUrl\}\/terms/);
+});
+
+test("the expired homepage campaign config is disabled", async () => {
+  const { currentCampaign: campaign } = await import(
+    pathToFileURL("config/current-campaign.ts").href
+  );
+  assert.equal(campaign.enabled, false);
 });
 
 test("tracking failure cannot block the WhatsApp action", () => {
@@ -140,13 +149,34 @@ test("tracking failure cannot block the WhatsApp action", () => {
 
 test("promotion metadata uses the active offer and its uncropped social image", () => {
   assert.match(page, /const promotionTitle = `\$\{currentOffer\.copy\.en\.title\}/);
-  assert.match(page, /const promotionDescription = `\$\{currentOffer\.copy\.en\.title\}/);
+  assert.match(page, /const promotionOgDescription = `\$\{currentOffer\.copy\.en\.title\}/);
+  assert.match(page, /const promotionDescription = `\$\{promotionOgDescription\} Also Gelish Pedicure RM98 and Gelish Manicure \+ Pedicure RM138\.`/);
   assert.match(page, /const promotionOgImage = "\/campaigns\/deepavali-2026\/og-1200x630\.jpg"/);
   assert.match(page, /title: promotionTitle/);
   assert.match(page, /description: promotionDescription/);
+  assert.match(page, /openGraph:\s*\{[\s\S]*?description: promotionOgDescription/);
+  assert.match(page, /twitter:\s*\{[\s\S]*?description: promotionOgDescription/);
   assert.match(page, /url: promotionOgImage/);
   assert.match(page, /alt: currentOffer\.copy\.en\.posterAlt/);
   assert.match(page, /canonical: anniversaryCampaign\.promotionUrl/);
+});
+
+test("the active offer section lists all three localized prices and separate WhatsApp links", () => {
+  assert.match(experience, /const offerRows = \[/);
+  assert.match(experience, /currentOffer\.extras\.map\(\(extra\) =>/);
+  assert.match(experience, /offerRows\.map\(\(offer\) =>/);
+  assert.match(experience, /className=\{`promotion-current-offer-option/);
+  assert.match(experience, /<h2>\{offer\.copy\.service\}<\/h2>/);
+  assert.match(experience, /<p>\{offer\.copy\.includes\}<\/p>/);
+  assert.match(experience, /<s>RM\{offer\.originalPrice\}<\/s>/);
+  assert.match(experience, /<strong>RM\{offer\.offerPrice\}<\/strong>/);
+  assert.match(experience, /<span>\{offer\.copy\.save\}<\/span>/);
+  assert.match(experience, /href=\{getOfferWhatsappUrl\(language, offer\.id\)\}/);
+  assert.equal((experience.match(/currentOffer\.copy\[language\]\.validity/g) ?? []).length, 1);
+  assert.equal((experience.match(/currentOffer\.copy\[language\]\.terms/g) ?? []).length, 1);
+  assert.match(experience, /src=\{currentOffer\.poster\[language\]\}/);
+  assert.match(globals, /\.promotion-current-offer-option-price strong\s*\{[^}]*color:\s*var\(--color-ink\)/);
+  assert.match(globals, /\.promotion-current-offer-option--primary \.promotion-current-offer-option-price strong\s*\{\s*color:\s*#7E1A2A/);
 });
 
 test("ended anniversary sections are conditional and the offer is the only promotion h1", () => {
@@ -155,7 +185,7 @@ test("ended anniversary sections are conditional and the offer is the only promo
   for (const section of ["promotion-hero", "promotion-intro", "promotion-prizes", "promotion-final-cta"]) {
     assert.match(experience, new RegExp(`\\{!campaignEnded && \\(\\s*<section className="promotion-section ${section}|\\{!campaignEnded && \\(\\s*<section className="${section}"`));
   }
-  assert.match(experience, /href=\{getOfferWhatsappUrl\(language\)\}/);
+  assert.match(experience, /href=\{getOfferWhatsappUrl\(language, offer\.id\)\}/);
   assert.match(experience, /Book RM\$\{currentOffer\.offerPrice\} on WhatsApp/);
   assert.match(servicesCatalog, /offerActive && service\.name === "Gelish Manicure"/);
   assert.doesNotMatch(servicesData, /Deepavali RM68|offerBadge/);

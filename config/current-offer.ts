@@ -15,9 +15,20 @@ type OfferCopy = {
   action: string;
   details: string;
   otherServices: string;
+  otherOffersLine: string;
   posterAlt: string;
   whatsappMessage: string;
 };
+
+type OfferExtraCopy = {
+  service: string;
+  includes: string;
+  save: string;
+  whatsappMessage: string;
+};
+
+export type OfferExtraId = "gelish-pedicure" | "gelish-mani-pedi";
+export type OfferId = "deepavali-gel-glow-2026" | OfferExtraId;
 
 export const currentOffer = {
   id: "deepavali-gel-glow-2026",
@@ -29,6 +40,65 @@ export const currentOffer = {
   offerPrice: 68,
   saving: 27,
   whatsappPhone: "60162121332",
+  // Extras inherit this offer's dates and terms.
+  extras: [
+    {
+      id: "gelish-pedicure",
+      originalPrice: 120,
+      offerPrice: 98,
+      saving: 22,
+      copy: {
+        en: {
+          service: "Gelish Pedicure",
+          includes: "Basic pedicure + solid Gelish colour",
+          save: "Save RM22",
+          whatsappMessage:
+            "Hello Mezzanail, I would like to book the Deepavali Gelish Pedicure (RM98).",
+        },
+        zh: {
+          service: "Gelish 足部美甲",
+          includes: "基础修足 + 纯色 Gelish",
+          save: "立省 RM22",
+          whatsappMessage: "您好 Mezzanail，我想预约屠妖节 Gelish 足部美甲（RM98）。",
+        },
+        ms: {
+          service: "Pedikur Gelish",
+          includes: "Pedikur asas + warna Gelish solid",
+          save: "Jimat RM22",
+          whatsappMessage:
+            "Hai Mezzanail, saya ingin menempah Pedikur Gelish Deepavali (RM98).",
+        },
+      } satisfies Record<OfferLocale, OfferExtraCopy>,
+    },
+    {
+      id: "gelish-mani-pedi",
+      originalPrice: 215,
+      offerPrice: 138,
+      saving: 77,
+      copy: {
+        en: {
+          service: "Gelish Manicure + Pedicure",
+          includes: "Hands and feet, solid Gelish colour",
+          save: "Save RM77",
+          whatsappMessage:
+            "Hello Mezzanail, I would like to book the Deepavali Gelish Manicure + Pedicure combo (RM138).",
+        },
+        zh: {
+          service: "Gelish 手足套餐",
+          includes: "手部 + 足部，纯色 Gelish",
+          save: "立省 RM77",
+          whatsappMessage: "您好 Mezzanail，我想预约屠妖节 Gelish 手足套餐（RM138）。",
+        },
+        ms: {
+          service: "Manikur + Pedikur Gelish",
+          includes: "Tangan dan kaki, warna Gelish solid",
+          save: "Jimat RM77",
+          whatsappMessage:
+            "Hai Mezzanail, saya ingin menempah kombo Manikur + Pedikur Gelish Deepavali (RM138).",
+        },
+      } satisfies Record<OfferLocale, OfferExtraCopy>,
+    },
+  ],
   poster: {
     en: "/campaigns/deepavali-2026/deepavali-gel-glow-en.webp",
     zh: "/campaigns/deepavali-2026/deepavali-gel-glow-zh.webp",
@@ -49,6 +119,7 @@ export const currentOffer = {
       action: "Book on WhatsApp",
       details: "Offer details",
       otherServices: "Book other services",
+      otherOffersLine: "Also: Gelish Pedicure RM98 · Mani + Pedi RM138",
       posterAlt:
         "Deepavali Gel Glow poster: Gelish Manicure RM68, usual price RM95, valid 15 October to 8 November 2026",
       whatsappMessage:
@@ -65,6 +136,7 @@ export const currentOffer = {
       action: "WhatsApp 预约",
       details: "优惠详情",
       otherServices: "预约其他服务",
+      otherOffersLine: "另有：Gelish 足部 RM98 · 手足套餐 RM138",
       posterAlt: "屠妖节 Gel Glow 海报：Gelish 手部美甲 RM68，原价 RM95，2026年10月15日至11月8日",
       whatsappMessage: "您好 Mezzanail，我想预约屠妖节 Gel Glow Gelish 手部美甲（RM68）。",
     },
@@ -80,6 +152,7 @@ export const currentOffer = {
       action: "Tempah melalui WhatsApp",
       details: "Butiran tawaran",
       otherServices: "Tempah servis lain",
+      otherOffersLine: "Juga: Pedikur Gelish RM98 · Mani + Pedi RM138",
       posterAlt:
         "Poster Deepavali Gel Glow: Manikur Gelish RM68, harga biasa RM95, sah 15 Oktober hingga 8 November 2026",
       whatsappMessage:
@@ -110,7 +183,15 @@ export function getOfferEndDateLabel(locale: OfferLocale): string {
   return locale === "zh" ? `${month}月${day}日` : `${day} ${month}`;
 }
 
-export function getOfferWhatsappUrl(locale: OfferLocale = "en"): string {
-  const message = currentOffer.copy[locale].whatsappMessage;
+export function getOfferWhatsappUrl(
+  locale: OfferLocale = "en",
+  offerId: OfferId = currentOffer.id,
+): string {
+  const offer =
+    offerId === currentOffer.id
+      ? currentOffer
+      : currentOffer.extras.find((extra) => extra.id === offerId);
+  if (!offer) throw new RangeError(`Unknown offer: ${offerId}`);
+  const message = offer.copy[locale].whatsappMessage;
   return `https://wa.me/${currentOffer.whatsappPhone}?text=${encodeURIComponent(message)}`;
 }

@@ -85,7 +85,31 @@ test("homepage title is absolute while description, canonical and H1 stay unchan
   assert.match(homepagePage, /title: "Premium Nail Care in Melaka"/);
   assert.match(homepagePage, /description:\s*"Visit Mezzanail Nail Studio in Melaka for manicure, pedicure, nail extensions, callus care and waxing\. Book online or enquire through WhatsApp\."/);
   assert.match(homepagePage, /path: "\/"/);
-  assert.match(homeHero, /<h1 id="home-hero-title">Premium Nail Care in Melaka<\/h1>/);
+  assert.match(homeHero, /<h1 id="home-hero-title">\{heroCopy\.title\}<\/h1>/);
+});
+
+test("hero eyebrow, heading, lede and booking action are localized in en, zh and ms", () => {
+  for (const copy of [
+    "Nail Studio · Melaka",
+    "美甲工作室 · 马六甲",
+    "Studio Kuku · Melaka",
+    "Premium Nail Care in Melaka",
+    "马六甲高品质美甲护理",
+    "Penjagaan Kuku Premium di Melaka",
+    "Manicure, pedicure, nail extensions, callus care and waxing from Mezzanail Nail Studio in Melaka.",
+    "马六甲 Mezzanail Nail Studio 提供手部美甲、足部护理、延长甲、去茧护理与脱毛服务。",
+    "Manikur, pedikur, sambungan kuku, rawatan kalus dan waxing di Mezzanail Nail Studio, Melaka.",
+    "Book Now",
+    "立即预约",
+    "Tempah Sekarang",
+  ]) {
+    assert.ok(homepageConfig.includes(copy), `localized hero copy missing: ${copy}`);
+  }
+  assert.match(homeHero, /const heroCopy = homepageContent\[locale\]\.hero/);
+  assert.match(homeHero, /\{heroCopy\.eyebrow\}/);
+  assert.match(homeHero, /\{heroCopy\.title\}/);
+  assert.match(homeHero, /\{heroCopy\.lede\}/);
+  assert.match(homeHero, /\{heroCopy\.bookNow\}/);
 });
 
 test("only the hero eyebrow remains among the homepage section labels", () => {
@@ -96,7 +120,7 @@ test("only the hero eyebrow remains among the homepage section labels", () => {
   }
   assert.doesNotMatch(membershipBanner, /className="mn-eyebrow"/);
   assert.doesNotMatch(studioBooking, /className="mn-eyebrow"/);
-  assert.match(homeHero, /Nail Studio · Melaka/);
+  assert.match(homeHero, /\{heroCopy\.eyebrow\}/);
   assert.match(homeHero, /home-hero-offer-label/);
 });
 
@@ -114,6 +138,21 @@ test("homepage uses the approved palette, typography and restrained buttons", ()
   assert.match(globals, /\.mn-button--primary/);
   assert.match(globals, /\.mn-button--secondary/);
   assert.match(globals, /\.mn-button--text/);
+});
+
+test("the homepage offer card includes one compact localized line for the extra offers", () => {
+  for (const copy of [
+    "Also: Gelish Pedicure RM98 · Mani + Pedi RM138",
+    "另有：Gelish 足部 RM98 · 手足套餐 RM138",
+    "Juga: Pedikur Gelish RM98 · Mani + Pedi RM138",
+  ]) {
+    assert.ok(currentOfferConfig.includes(copy), `offer line missing: ${copy}`);
+  }
+  assert.match(homeHero, /<p className="home-hero-offer-extras">\{offer\.otherOffersLine\}<\/p>/);
+  const offerLineRule = globals.match(/\.home-hero-offer-extras\s*\{([^}]*)\}/)?.[1] ?? "";
+  assert.match(offerLineRule, /font-size:\s*12px/);
+  assert.match(offerLineRule, /color:\s*var\(--color-ink\)/);
+  assert.match(offerLineRule, /white-space:\s*nowrap/);
 });
 
 test("public eyebrow is at least 11px and mobile offer title uses separate lines", () => {

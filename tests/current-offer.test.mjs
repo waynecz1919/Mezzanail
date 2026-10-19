@@ -6,6 +6,7 @@ import { pathToFileURL } from "node:url";
 const read = (filePath) => readFileSync(filePath, "utf8");
 const offerPath = "config/current-offer.ts";
 const offerSource = read(offerPath);
+const servicesSource = read("lib/services.ts");
 const hero = read("components/home/HomeHero.tsx");
 const homepageConfig = read("config/homepage.ts");
 const promotion = read("components/promotion/promotion-experience.tsx");
@@ -47,7 +48,7 @@ test("the offer price and terms match the approved poster in every language", as
   assert.equal(currentOffer.saving, currentOffer.originalPrice - currentOffer.offerPrice);
   for (const locale of ["en", "zh", "ms"]) {
     const copy = currentOffer.copy[locale];
-    for (const field of ["title", "service", "includes", "validity", "terms", "action", "posterAlt"]) {
+    for (const field of ["title", "service", "includes", "validity", "terms", "action", "otherOffersLine", "posterAlt"]) {
       assert.ok(copy[field].trim().length > 0, `${locale}.${field} must be filled`);
     }
     const url = getOfferWhatsappUrl(locale);
@@ -55,6 +56,52 @@ test("the offer price and terms match the approved poster in every language", as
     assert.match(decodeURIComponent(url), /RM68/);
   }
   assert.match(currentOffer.copy.en.terms, /Nail art and gel removal are charged separately/);
+});
+
+test("all three offers save the configured amount and match the service catalog prices", async () => {
+  const { currentOffer } = await loadOffer();
+  const offers = [currentOffer, ...currentOffer.extras];
+  const manicurePrice = Number(servicesSource.match(/service\("Gelish Manicure", "RM(\d+)"/)?.[1]);
+  const pedicurePrice = Number(servicesSource.match(/service\("Gelish Pedicure", "RM(\d+)"/)?.[1]);
+
+  assert.equal(manicurePrice, 95);
+  assert.equal(pedicurePrice, 120);
+  assert.deepEqual(
+    offers.map(({ id }) => id),
+    ["deepavali-gel-glow-2026", "gelish-pedicure", "gelish-mani-pedi"],
+  );
+  for (const offer of offers) {
+    assert.equal(offer.originalPrice - offer.offerPrice, offer.saving, `${offer.id} saving`);
+  }
+  assert.equal(currentOffer.originalPrice, manicurePrice);
+  assert.equal(currentOffer.extras[0].originalPrice, pedicurePrice);
+  assert.equal(currentOffer.extras[1].originalPrice, manicurePrice + pedicurePrice);
+});
+
+test("each extra offer has localized copy and its own WhatsApp message", async () => {
+  const { currentOffer, getOfferWhatsappUrl } = await loadOffer();
+  const expected = {
+    "gelish-pedicure": {
+      en: "Hello Mezzanail, I would like to book the Deepavali Gelish Pedicure (RM98).",
+      zh: "您好 Mezzanail，我想预约屠妖节 Gelish 足部美甲（RM98）。",
+      ms: "Hai Mezzanail, saya ingin menempah Pedikur Gelish Deepavali (RM98).",
+    },
+    "gelish-mani-pedi": {
+      en: "Hello Mezzanail, I would like to book the Deepavali Gelish Manicure + Pedicure combo (RM138).",
+      zh: "您好 Mezzanail，我想预约屠妖节 Gelish 手足套餐（RM138）。",
+      ms: "Hai Mezzanail, saya ingin menempah kombo Manikur + Pedikur Gelish Deepavali (RM138).",
+    },
+  };
+
+  for (const extra of currentOffer.extras) {
+    for (const locale of ["en", "zh", "ms"]) {
+      const copy = extra.copy[locale];
+      assert.ok(copy.service && copy.includes && copy.save);
+      const url = getOfferWhatsappUrl(locale, extra.id);
+      assert.match(url, /^https:\/\/wa\.me\/60162121332\?text=/);
+      assert.equal(decodeURIComponent(url.split("?text=")[1]), expected[extra.id][locale]);
+    }
+  }
 });
 
 test("the homepage hero photo is swappable, localized, and uncropped", () => {
@@ -86,7 +133,7 @@ test("the hero offer and promotion section hide themselves after the offer ends"
     "the RM68 offer must sit in the hero copy, before the photo",
   );
   assert.match(hero, /RM\{currentOffer\.offerPrice\}/);
-  assert.match(hero, /<h1 id="home-hero-title">Premium Nail Care in Melaka<\/h1>/);
+  assert.match(hero, /<h1 id="home-hero-title">\{heroCopy\.title\}<\/h1>/);
   assert.match(promotion, /\{offerActive && \(/);
   assert.match(promotion, /id="current-offer"/);
   assert.ok(
@@ -94,4 +141,14 @@ test("the hero offer and promotion section hide themselves after the offer ends"
     "the current offer must sit above the ended lucky-draw notice",
   );
   assert.doesNotMatch(homepageConfig, /RM\s?\d|price:/i);
+});
+
+test("all three offers share the active-date gate on the homepage and promotion page", async () => {
+  const { isOfferActive, currentOffer } = await loadOffer();
+  assert.equal(isOfferActive(new Date("2026-11-09T00:00:00+08:00")), false);
+  assert.equal(currentOffer.extras.length + 1, 3);
+  assert.match(hero, /\{offerActive \? \(\s*<div className="home-hero-offer"/);
+  assert.match(hero, /home-hero-offer-extras/);
+  assert.match(promotion, /\{offerActive && \(\s*<section[\s\S]*?className="promotion-current-offer"/);
+  assert.match(promotion, /offerRows\.map\(\(offer\) =>/);
 });
