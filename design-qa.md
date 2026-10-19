@@ -60,6 +60,18 @@ final result: passed
 
 ---
 
+# Jackpot UI Review Round 3 QA Status
+
+- Source reference: `C:\Users\mezza\Downloads\jackpot-salon-closeup.png`.
+- Automated checks passed for the supplied medallion asset hash, static center placement, 24 static rim bulbs, the unchanged wheel rotation rule, all four cycling nail assets, and the overflow/layout CSS rules.
+- `pnpm test`: 171 passed; `pnpm lint` and `pnpm typecheck` passed.
+- Browser screenshots and live viewport measurements were not captured. The local preview remained blocked by the browser security policy, and the Owner chose to continue without browser screenshots.
+- `document.documentElement.scrollWidth === window.innerWidth` at 1920×1080 and 1366×768 is therefore unverified; no visual comparison is claimed for this round.
+
+final result: blocked
+
+---
+
 # Anniversary Jackpot Campaign Palette — Design QA
 
 **Source visual truth**

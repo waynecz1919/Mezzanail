@@ -944,3 +944,108 @@ body:has(.jackpot-root) .analytics-consent { display: none !important; }
 @media (prefers-reduced-motion: reduce) {
   .jackpot-winner-nail-burst img { animation: none; opacity: 0; }
 }
+
+/* Round 3: sculpted static rim and the supplied anniversary medallion. */
+html:has(.jackpot-root.is-live) { overflow-x: clip; }
+body:has(.jackpot-root.is-live) { width: 100%; max-width: 100%; overflow-x: clip; }
+.jackpot-root.is-live {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100vw;
+  overflow: clip;
+}
+.jackpot-root.is-live .jackpot-live-shell {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100vw;
+  overflow: clip;
+}
+.jackpot-live-shell .jackpot-live-wordmark { left: 50vw; transform: translateX(-50%); }
+.jackpot-live-shell .jackpot-live-meta {
+  right: clamp(48px, 3.645833vw, 70px);
+  max-width: calc(100vw - 140px);
+}
+.jackpot-live-shell .jackpot-live-meta > span,
+.jackpot-live-shell .jackpot-live-meta time,
+.jackpot-live-shell .jackpot-live-meta small { max-width: 100%; white-space: nowrap; }
+
+.jackpot-wheel-frame {
+  border: 8px solid #6E5A32;
+  background: linear-gradient(135deg, #E6D3A6 0%, #B69B68 52%, #86703F 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 249, 226, .55), 0 2px 0 1px #6E5A32,
+    0 6px 0 4px rgba(91, 72, 39, .72), 0 15px 24px rgba(52, 45, 34, .28);
+}
+.jackpot-wheel-frame::before {
+  inset: 0;
+  z-index: 4;
+  background:
+    radial-gradient(ellipse at 22% 12%, rgba(255, 255, 245, .5), transparent 34%),
+    linear-gradient(135deg, rgba(255, 255, 255, .18), transparent 42%, rgba(60, 45, 22, .22));
+  mask: radial-gradient(circle, transparent 0 44.5cqi, #000 45cqi 50cqi);
+}
+.jackpot-wheel-frame::after {
+  inset: calc(5.5cqi - 2px);
+  z-index: 4;
+  border: 1px solid rgba(255, 250, 230, .92);
+  box-shadow: 0 1px 1px rgba(255, 255, 255, .72), inset 0 -1px 2px rgba(87, 68, 36, .3);
+}
+.jackpot-wheel-frame .jackpot-wheel-ring {
+  inset: 5px;
+  z-index: 2;
+  border: 1px solid rgba(248, 239, 212, .86);
+  background: none;
+  mask: none;
+  box-shadow: 0 1px 2px rgba(255, 255, 255, .75), 0 -1px 2px rgba(74, 56, 28, .42);
+}
+.jackpot-wheel-frame .jackpot-wheel { inset: 5.5cqi; }
+.jackpot-wheel-frame .jackpot-wheel-rim {
+  inset: 5.5cqi;
+  z-index: 5;
+  border: 1.5px solid #FBF8EF;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, .7), 0 1px 2px rgba(83, 65, 36, .25);
+}
+.jackpot-wheel-frame .jackpot-wheel-rim::before { display: none; }
+.jackpot-wheel-frame .jackpot-wheel-ticks {
+  inset: 0;
+  z-index: 4;
+  background: repeating-conic-gradient(from 0deg, #FFF9EA 0deg .28deg, transparent .28deg 6deg);
+  mask: radial-gradient(circle, transparent 0 46cqi, #000 46.2cqi 49.4cqi, transparent 49.6cqi);
+}
+.jackpot-wheel-bulbs {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+}
+.jackpot-wheel-bulbs span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1.35cqi;
+  height: 1.35cqi;
+  border: 1px solid #F5E8BF;
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 28%, #FFFDF1 0 24%, #FFF2C7 46%, #D0AE6B 76%, #8A7042 100%);
+  box-shadow: 0 0 4px 1px rgba(255, 252, 232, .95), 0 0 10px 3px rgba(255, 226, 166, .8), inset 0 1px 2px #FFFDF4;
+  transform: translate(-50%, -50%) rotate(var(--bulb-angle)) translateY(-46.5cqi);
+}
+.jackpot-wheel-bulbs span:nth-child(3n) {
+  width: 2.15cqi;
+  height: 2.15cqi;
+  box-shadow: 0 0 6px 2px rgba(255, 252, 232, .98), 0 0 15px 5px rgba(255, 226, 166, .9), inset 0 1px 3px #FFFDF4;
+}
+.jackpot-wheel-medallion {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 8;
+  width: 42%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 5px rgba(49, 40, 28, .38));
+  transform: translate(-50%, -50%);
+}
+.jackpot-spin-button.is-spinning::after {
+  background: linear-gradient(90deg, transparent, rgba(226, 211, 176, .35), transparent);
+}

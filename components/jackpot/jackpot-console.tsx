@@ -464,6 +464,14 @@ export function JackpotConsole({
                   <div className="jackpot-wheel-frame">
                     <div className="jackpot-wheel-ring" aria-hidden="true" />
                     <div className="jackpot-wheel-ticks" aria-hidden="true" />
+                    <div className="jackpot-wheel-bulbs" aria-hidden="true">
+                      {Array.from({ length: 24 }, (_, index) => (
+                        <span
+                          key={index}
+                          style={{ "--bulb-angle": `${index * 15}deg` } as React.CSSProperties}
+                        />
+                      ))}
+                    </div>
                     <div
                       key={spinning ? activeWinner?.resultToken || "spinning" : "idle"}
                       className={`jackpot-wheel ${spinning ? "is-spinning" : ""}`}
@@ -493,11 +501,14 @@ export function JackpotConsole({
                     </div>
                     <div className="jackpot-wheel-rim" aria-hidden="true" />
                     <div className="jackpot-wheel-gloss" aria-hidden="true" />
-                    <div className="jackpot-wheel-center" aria-hidden="true">
-                      <span>7</span>
-                      <small>YEARS</small>
-                      <Sparkles className="jackpot-wheel-center-sparkle" size={12} aria-hidden="true" />
-                    </div>
+                    <Image
+                      className="jackpot-wheel-medallion"
+                      src="/campaigns/7th-anniversary/jackpot-medallion.svg"
+                      alt="Mezzanail 7th anniversary medallion"
+                      width={300}
+                      height={300}
+                      unoptimized
+                    />
                   </div>
                 </div>
                 {!liveMode && (

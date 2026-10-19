@@ -98,13 +98,31 @@ test("wheel spin rotation and timing stay unchanged", () => {
   assert.match(consoleSource, /"--jackpot-stop": `\$\{activeWinner \? winnerAngle\(activeWinner\.winnerParticipantId\) : 1800\}deg`/);
 });
 
-test("wheel center and gloss are static siblings outside the rotating face", () => {
+test("anniversary medallion, gloss, rim and bulbs are static siblings outside the rotating face", () => {
   assert.match(consoleSource, /<div className="jackpot-wheel-frame">[\s\S]*?<div\s+key=\{spinning \? activeWinner\?\.resultToken \|\| "spinning" : "idle"\}[\s\S]*?className=\{`jackpot-wheel/);
-  assert.match(consoleSource, /<div className="jackpot-wheel-gloss" aria-hidden="true"\s*\/>\s*<div className="jackpot-wheel-center" aria-hidden="true">[\s\S]*?jackpot-wheel-center-sparkle/);
+  assert.match(consoleSource, /<div className="jackpot-wheel-gloss" aria-hidden="true"\s*\/>\s*<Image\s+className="jackpot-wheel-medallion"\s+src="\/campaigns\/7th-anniversary\/jackpot-medallion\.svg"\s+alt="Mezzanail 7th anniversary medallion"/);
+  assert.match(consoleSource, /className="jackpot-wheel-bulbs" aria-hidden="true">\s*\{Array\.from\(\{ length: 24 \}/);
+  assert.match(consoleSource, /jackpot-wheel-bulbs[\s\S]*?className=\{`jackpot-wheel/);
   assert.match(css, /\.jackpot-wheel-frame\s*\{[^}]*container-type:\s*inline-size/s);
   assert.match(css, /\.jackpot-wheel-gloss\s*\{[^}]*position:\s*absolute[^}]*z-index:\s*3/s);
-  assert.match(css, /\.jackpot-wheel-frame \.jackpot-wheel-center\s*\{[^}]*z-index:\s*5/s);
+  assert.match(css, /\.jackpot-wheel-medallion\s*\{[^}]*z-index:\s*8[^}]*width:\s*42%[^}]*transform:\s*translate\(-50%, -50%\)/s);
+  assert.match(css, /\.jackpot-wheel-bulbs span:nth-child\(3n\)\s*\{[^}]*width:\s*2\.15cqi/);
   assert.match(css, /\.jackpot-wheel-frame \.jackpot-wheel-name\s*\{[^}]*rotate\(var\(--name-angle\)\) translateY\(-35\.5cqi\);/s);
+});
+
+test("anniversary medallion matches the Owner-provided SVG exactly", () => {
+  const asset = readFileSync(new URL("../public/campaigns/7th-anniversary/jackpot-medallion.svg", import.meta.url));
+  const sha256 = createHash("sha256").update(asset).digest("hex").toUpperCase();
+
+  assert.equal(sha256, "019CA4E01C4611BCF6C439F6039D7BE3BFB19DF810AB1ABC3E0084E09DEA6BC8");
+  assert.doesNotMatch(consoleSource, /jackpot-wheel-center" aria-hidden/);
+});
+
+test("fullscreen layout pins the logo and keeps top-right status within the frame", () => {
+  assert.match(css, /\.jackpot-live-shell \.jackpot-live-wordmark\s*\{\s*left:\s*50vw;\s*transform:\s*translateX\(-50%\);/);
+  assert.match(css, /\.jackpot-live-shell \.jackpot-live-meta\s*\{[^}]*right:\s*clamp\(48px, 3\.645833vw, 70px\)/s);
+  assert.match(css, /html:has\(\.jackpot-root\.is-live\) \{ overflow-x: clip; \}/);
+  assert.match(css, /\.jackpot-root\.is-live \{[^}]*width:\s*100%;[^}]*max-width:\s*100vw[^}]*overflow:\s*clip/s);
 });
 
 test("drawing button keeps its ink fill and uses a reduced-motion-aware gold shimmer", () => {
@@ -112,6 +130,7 @@ test("drawing button keeps its ink fill and uses a reduced-motion-aware gold shi
   assert.match(consoleSource, /spinning \? "DRAWING…"/);
   assert.match(css, /\.jackpot-spin-button\.is-spinning:disabled[\s\S]*?background:\s*var\(--jp-ink\)/);
   assert.match(css, /\.jackpot-spin-button\.is-spinning::after[\s\S]*?animation:\s*jackpot-button-shimmer 3\.8s ease-in-out infinite/);
+  assert.match(css, /\.jackpot-spin-button\.is-spinning::after\s*\{\s*background:\s*linear-gradient\(90deg, transparent, rgba\(226, 211, 176, \.35\), transparent\);/);
   assert.match(css, /@media \(prefers-reduced-motion: reduce\)\s*\{\s*\.jackpot-spin-button\.is-spinning::after\s*\{\s*animation:\s*none;/);
 });
 
