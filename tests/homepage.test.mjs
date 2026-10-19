@@ -88,6 +88,17 @@ test("homepage title is absolute while description, canonical and H1 stay unchan
   assert.match(homeHero, /<h1 id="home-hero-title">\{heroCopy\.title\}<\/h1>/);
 });
 
+test("homepage Google rating and localized review notes match the owner-approved values", () => {
+  assert.match(homepageConfig, /const reviewSource = \{\s*rating: "4\.8"/);
+  for (const note of [
+    "120+ Google reviews",
+    "120+ 则 Google 评价",
+    "120+ ulasan Google",
+  ]) {
+    assert.ok(homepageConfig.includes(note), `localized review note missing: ${note}`);
+  }
+});
+
 test("hero eyebrow, heading, lede and booking action are localized in en, zh and ms", () => {
   for (const copy of [
     "Nail Studio · Melaka",

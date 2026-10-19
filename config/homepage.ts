@@ -47,8 +47,8 @@ export const homepage: HomepageImages = {
 };
 
 const reviewSource = {
-  rating: "4.9",
-  ratingNote: "Public listing snapshot",
+  rating: "4.8",
+  ratingNote: "120+ Google reviews",
   reviews: [
     "Excellent service, very polite staff and reasonable pricing. The studio feels comfortable and especially confident with foot care.",
     "Excellent service and friendly staff. I love it here.",
@@ -169,7 +169,7 @@ export const homepageContent = {
       action: "查看全部 Google 评价",
       sourceLabel: "Google 顾客评价",
       viewLabel: "在 Google 查看",
-      ratingNote: "公开列表快照",
+      ratingNote: "120+ 则 Google 评价",
     },
     membership: {
       ...english.membership,
@@ -235,7 +235,7 @@ export const homepageContent = {
       action: "Baca Semua Ulasan Google",
       sourceLabel: "Ulasan pelanggan Google",
       viewLabel: "Lihat di Google",
-      ratingNote: "Ringkasan senarai awam",
+      ratingNote: "120+ ulasan Google",
     },
     membership: {
       ...english.membership,
