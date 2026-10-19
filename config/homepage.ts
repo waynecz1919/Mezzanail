@@ -129,7 +129,7 @@ export const homepageContent = {
     hero: {
       eyebrow: "美甲工作室 · 马六甲",
       title: "马六甲高品质美甲护理",
-      lede: "马六甲 Mezzanail Nail Studio 提供手部美甲、足部护理、延长甲、去茧护理与脱毛服务。",
+      lede: "马六甲 Mezzanail Nail Studio 提供 Manicure、Pedicure、Nail Extensions、Callus Removal 与 Waxing 服务。",
       bookNow: "立即预约",
     },
     services: {
@@ -138,11 +138,11 @@ export const homepageContent = {
       subtitle: "精选美甲与护理服务",
       action: "查看服务",
       items: [
-        { ...english.services.items[0], title: "手部护理", body: "精致修甲、凝胶色彩与细腻收尾。" },
-        { ...english.services.items[1], title: "足部护理", body: "兼顾舒适、焕新与整洁效果的足部护理。" },
-        { ...english.services.items[2], title: "美甲延伸", body: "平衡结构、优雅长度与自然完成效果。" },
-        { ...english.services.items[3], title: "去茧护理", body: "专业去茧与 Footlogix 护理，让双足更平滑。" },
-        { ...english.services.items[4], title: "蜜蜡脱毛", body: "以舒适与精准为先的专业蜜蜡护理。" },
+        { ...english.services.items[0], title: "Hand Care", body: "精致修甲、凝胶色彩与细腻收尾。" },
+        { ...english.services.items[1], title: "Foot Care", body: "兼顾舒适、焕新与整洁效果的足部护理。" },
+        { ...english.services.items[2], title: "Nail Extensions", body: "平衡结构、优雅长度与自然完成效果。" },
+        { ...english.services.items[3], title: "Callus Removal", body: "专业去茧与 Footlogix 护理，让双足更平滑。" },
+        { ...english.services.items[4], title: "Waxing", body: "以舒适与精准为先的专业蜜蜡护理。" },
       ],
     },
     work: {
@@ -195,7 +195,7 @@ export const homepageContent = {
     hero: {
       eyebrow: "Studio Kuku · Melaka",
       title: "Penjagaan Kuku Premium di Melaka",
-      lede: "Manikur, pedikur, sambungan kuku, rawatan kalus dan waxing di Mezzanail Nail Studio, Melaka.",
+      lede: "Manicure, Pedicure, Nail Extensions, Callus Removal dan Waxing di Mezzanail Nail Studio, Melaka.",
       bookNow: "Tempah Sekarang",
     },
     services: {
@@ -204,10 +204,10 @@ export const homepageContent = {
       subtitle: "Seni kuku dan penjagaan terpilih",
       action: "Teroka Servis",
       items: [
-        { ...english.services.items[0], title: "Penjagaan Tangan", body: "Ritual manicure, warna gel dan kemasan yang teliti." },
-        { ...english.services.items[1], title: "Penjagaan Kaki", body: "Pedicure yang mengutamakan keselesaan dan kesegaran." },
-        { ...english.services.items[2], title: "Sambungan Kuku", body: "Struktur seimbang, panjang elegan dan kemasan semula jadi." },
-        { ...english.services.items[3], title: "Pembuangan Kulit Keras", body: "Penjagaan callus dan Footlogix untuk kaki lebih licin." },
+        { ...english.services.items[0], title: "Hand Care", body: "Ritual manicure, warna gel dan kemasan yang teliti." },
+        { ...english.services.items[1], title: "Foot Care", body: "Pedicure yang mengutamakan keselesaan dan kesegaran." },
+        { ...english.services.items[2], title: "Nail Extensions", body: "Struktur seimbang, panjang elegan dan kemasan semula jadi." },
+        { ...english.services.items[3], title: "Callus Removal", body: "Penjagaan callus dan Footlogix untuk kaki lebih licin." },
         { ...english.services.items[4], title: "Waxing", body: "Rawatan waxing yang selesa, teliti dan profesional." },
       ],
     },

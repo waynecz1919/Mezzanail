@@ -50,23 +50,23 @@ export const currentOffer = {
       copy: {
         en: {
           service: "Gelish Pedicure",
-          includes: "Basic pedicure + solid Gelish colour",
+          includes: "Classic Pedicure + solid Gelish colour",
           save: "Save RM22",
           whatsappMessage:
             "Hello Mezzanail, I would like to book the Deepavali Gelish Pedicure (RM98).",
         },
         zh: {
-          service: "Gelish 足部美甲",
-          includes: "基础修足 + 纯色 Gelish",
+          service: "Gelish Pedicure",
+          includes: "Classic Pedicure + 纯色 Gelish",
           save: "立省 RM22",
-          whatsappMessage: "您好 Mezzanail，我想预约屠妖节 Gelish 足部美甲（RM98）。",
+          whatsappMessage: "您好 Mezzanail，我想预约屠妖节 Gelish Pedicure（RM98）。",
         },
         ms: {
-          service: "Pedikur Gelish",
-          includes: "Pedikur asas + warna Gelish solid",
+          service: "Gelish Pedicure",
+          includes: "Classic Pedicure + warna Gelish solid",
           save: "Jimat RM22",
           whatsappMessage:
-            "Hai Mezzanail, saya ingin menempah Pedikur Gelish Deepavali (RM98).",
+            "Hai Mezzanail, saya ingin menempah Gelish Pedicure Deepavali (RM98).",
         },
       } satisfies Record<OfferLocale, OfferExtraCopy>,
     },
@@ -84,17 +84,17 @@ export const currentOffer = {
             "Hello Mezzanail, I would like to book the Deepavali Gelish Manicure + Pedicure combo (RM138).",
         },
         zh: {
-          service: "Gelish 手足套餐",
+          service: "Gelish Manicure + Pedicure",
           includes: "手部 + 足部，纯色 Gelish",
           save: "立省 RM77",
-          whatsappMessage: "您好 Mezzanail，我想预约屠妖节 Gelish 手足套餐（RM138）。",
+          whatsappMessage: "您好 Mezzanail，我想预约屠妖节 Gelish Manicure + Pedicure 套餐（RM138）。",
         },
         ms: {
-          service: "Manikur + Pedikur Gelish",
+          service: "Gelish Manicure + Pedicure",
           includes: "Tangan dan kaki, warna Gelish solid",
           save: "Jimat RM77",
           whatsappMessage:
-            "Hai Mezzanail, saya ingin menempah kombo Manikur + Pedikur Gelish Deepavali (RM138).",
+            "Hai Mezzanail, saya ingin menempah kombo Gelish Manicure + Pedicure Deepavali (RM138).",
         },
       } satisfies Record<OfferLocale, OfferExtraCopy>,
     },
@@ -111,7 +111,7 @@ export const currentOffer = {
       eyebrow: "Deepavali offer",
       title: "Deepavali Gel Glow",
       service: "Gelish Manicure",
-      includes: "Basic manicure + solid Gelish colour",
+      includes: "Basic Manicure + solid Gelish colour",
       save: "Save RM27",
       validity: "Valid 15 Oct – 8 Nov 2026",
       terms:
@@ -128,23 +128,23 @@ export const currentOffer = {
     zh: {
       eyebrow: "屠妖节优惠",
       title: "屠妖节 Gel Glow",
-      service: "Gelish 手部美甲",
-      includes: "基础修甲 + 纯色 Gelish",
+      service: "Gelish Manicure",
+      includes: "Basic Manicure + 纯色 Gelish",
       save: "立省 RM27",
       validity: "活动日期 2026年10月15日 – 11月8日",
       terms: "仅限纯色；彩绘及卸甲另计；不可与其他优惠或配套同时使用。",
       action: "WhatsApp 预约",
       details: "优惠详情",
       otherServices: "预约其他服务",
-      otherOffersLine: "另有：Gelish 足部 RM98 · 手足套餐 RM138",
-      posterAlt: "屠妖节 Gel Glow 海报：Gelish 手部美甲 RM68，原价 RM95，2026年10月15日至11月8日",
-      whatsappMessage: "您好 Mezzanail，我想预约屠妖节 Gel Glow Gelish 手部美甲（RM68）。",
+      otherOffersLine: "另有：Gelish Pedicure RM98 · Mani + Pedi RM138",
+      posterAlt: "屠妖节 Gel Glow 海报：Gelish Manicure RM68，原价 RM95，2026年10月15日至11月8日",
+      whatsappMessage: "您好 Mezzanail，我想预约屠妖节 Gel Glow Gelish Manicure（RM68）。",
     },
     ms: {
       eyebrow: "Tawaran Deepavali",
       title: "Deepavali Gel Glow",
-      service: "Manikur Gelish",
-      includes: "Manikur asas + warna Gelish solid",
+      service: "Gelish Manicure",
+      includes: "Basic Manicure + warna Gelish solid",
       save: "Jimat RM27",
       validity: "Sah 15 Okt – 8 Nov 2026",
       terms:
@@ -152,11 +152,11 @@ export const currentOffer = {
       action: "Tempah melalui WhatsApp",
       details: "Butiran tawaran",
       otherServices: "Tempah servis lain",
-      otherOffersLine: "Juga: Pedikur Gelish RM98 · Mani + Pedi RM138",
+      otherOffersLine: "Juga: Gelish Pedicure RM98 · Mani + Pedi RM138",
       posterAlt:
-        "Poster Deepavali Gel Glow: Manikur Gelish RM68, harga biasa RM95, sah 15 Oktober hingga 8 November 2026",
+        "Poster Deepavali Gel Glow: Gelish Manicure RM68, harga biasa RM95, sah 15 Oktober hingga 8 November 2026",
       whatsappMessage:
-        "Hai Mezzanail, saya ingin menempah Manikur Gelish Deepavali Gel Glow (RM68).",
+        "Hai Mezzanail, saya ingin menempah Gelish Manicure Deepavali Gel Glow (RM68).",
     },
   } satisfies Record<OfferLocale, OfferCopy>,
 } as const;

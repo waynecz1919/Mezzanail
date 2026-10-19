@@ -108,8 +108,8 @@ test("hero eyebrow, heading, lede and booking action are localized in en, zh and
     "马六甲高品质美甲护理",
     "Penjagaan Kuku Premium di Melaka",
     "Manicure, pedicure, nail extensions, callus care and waxing from Mezzanail Nail Studio in Melaka.",
-    "马六甲 Mezzanail Nail Studio 提供手部美甲、足部护理、延长甲、去茧护理与脱毛服务。",
-    "Manikur, pedikur, sambungan kuku, rawatan kalus dan waxing di Mezzanail Nail Studio, Melaka.",
+    "马六甲 Mezzanail Nail Studio 提供 Manicure、Pedicure、Nail Extensions、Callus Removal 与 Waxing 服务。",
+    "Manicure, Pedicure, Nail Extensions, Callus Removal dan Waxing di Mezzanail Nail Studio, Melaka.",
     "Book Now",
     "立即预约",
     "Tempah Sekarang",
@@ -154,8 +154,8 @@ test("homepage uses the approved palette, typography and restrained buttons", ()
 test("the homepage offer card includes one compact localized line for the extra offers", () => {
   for (const copy of [
     "Also: Gelish Pedicure RM98 · Mani + Pedi RM138",
-    "另有：Gelish 足部 RM98 · 手足套餐 RM138",
-    "Juga: Pedikur Gelish RM98 · Mani + Pedi RM138",
+    "另有：Gelish Pedicure RM98 · Mani + Pedi RM138",
+    "Juga: Gelish Pedicure RM98 · Mani + Pedi RM138",
   ]) {
     assert.ok(currentOfferConfig.includes(copy), `offer line missing: ${copy}`);
   }

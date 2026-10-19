@@ -25,6 +25,19 @@ async function loadOffer() {
   }
 }
 
+async function loadHomepage() {
+  const homepagePath = "config/homepage.ts";
+  try {
+    return await import(pathToFileURL(homepagePath).href);
+  } catch {
+    const { default: ts } = await import("typescript");
+    const { outputText } = ts.transpileModule(read(homepagePath), {
+      compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 },
+    });
+    return import(`data:text/javascript;base64,${Buffer.from(outputText).toString("base64")}`);
+  }
+}
+
 test("the Deepavali offer runs 15 Oct 00:00 to 8 Nov 23:59 Malaysia time", async () => {
   const { isOfferActive, currentOffer, getOfferEndDateLabel } = await loadOffer();
   assert.equal(currentOffer.id, "deepavali-gel-glow-2026");
@@ -56,6 +69,19 @@ test("the offer price and terms match the approved poster in every language", as
     assert.match(decodeURIComponent(url), /RM68/);
   }
   assert.match(currentOffer.copy.en.terms, /Nail art and gel removal are charged separately/);
+  assert.equal(currentOffer.copy.en.includes, "Basic Manicure + solid Gelish colour");
+  assert.equal(currentOffer.copy.zh.includes, "Basic Manicure + 纯色 Gelish");
+  assert.equal(currentOffer.copy.ms.includes, "Basic Manicure + warna Gelish solid");
+  assert.equal(currentOffer.copy.zh.otherOffersLine, "另有：Gelish Pedicure RM98 · Mani + Pedi RM138");
+  assert.equal(currentOffer.copy.ms.otherOffersLine, "Juga: Gelish Pedicure RM98 · Mani + Pedi RM138");
+  assert.equal(
+    currentOffer.copy.zh.posterAlt,
+    "屠妖节 Gel Glow 海报：Gelish Manicure RM68，原价 RM95，2026年10月15日至11月8日",
+  );
+  assert.equal(
+    currentOffer.copy.ms.posterAlt,
+    "Poster Deepavali Gel Glow: Gelish Manicure RM68, harga biasa RM95, sah 15 Oktober hingga 8 November 2026",
+  );
 });
 
 test("all three offers save the configured amount and match the service catalog prices", async () => {
@@ -83,13 +109,13 @@ test("each extra offer has localized copy and its own WhatsApp message", async (
   const expected = {
     "gelish-pedicure": {
       en: "Hello Mezzanail, I would like to book the Deepavali Gelish Pedicure (RM98).",
-      zh: "您好 Mezzanail，我想预约屠妖节 Gelish 足部美甲（RM98）。",
-      ms: "Hai Mezzanail, saya ingin menempah Pedikur Gelish Deepavali (RM98).",
+      zh: "您好 Mezzanail，我想预约屠妖节 Gelish Pedicure（RM98）。",
+      ms: "Hai Mezzanail, saya ingin menempah Gelish Pedicure Deepavali (RM98).",
     },
     "gelish-mani-pedi": {
       en: "Hello Mezzanail, I would like to book the Deepavali Gelish Manicure + Pedicure combo (RM138).",
-      zh: "您好 Mezzanail，我想预约屠妖节 Gelish 手足套餐（RM138）。",
-      ms: "Hai Mezzanail, saya ingin menempah kombo Manikur + Pedikur Gelish Deepavali (RM138).",
+      zh: "您好 Mezzanail，我想预约屠妖节 Gelish Manicure + Pedicure 套餐（RM138）。",
+      ms: "Hai Mezzanail, saya ingin menempah kombo Gelish Manicure + Pedicure Deepavali (RM138).",
     },
   };
 
@@ -97,9 +123,45 @@ test("each extra offer has localized copy and its own WhatsApp message", async (
     for (const locale of ["en", "zh", "ms"]) {
       const copy = extra.copy[locale];
       assert.ok(copy.service && copy.includes && copy.save);
+      if (extra.id === "gelish-pedicure") {
+        assert.equal(copy.includes, {
+          en: "Classic Pedicure + solid Gelish colour",
+          zh: "Classic Pedicure + 纯色 Gelish",
+          ms: "Classic Pedicure + warna Gelish solid",
+        }[locale]);
+      }
       const url = getOfferWhatsappUrl(locale, extra.id);
       assert.match(url, /^https:\/\/wa\.me\/60162121332\?text=/);
       assert.equal(decodeURIComponent(url.split("?text=")[1]), expected[extra.id][locale]);
+    }
+  }
+});
+
+test("ZH and MS service names stay in English for offers and homepage service cards", async () => {
+  const [{ currentOffer }, { homepageContent }] = await Promise.all([loadOffer(), loadHomepage()]);
+  const forbiddenTranslatedName = /美甲|足部|手部|Manikur|Pedikur/i;
+  const expectedOfferServiceNames = [
+    "Gelish Manicure",
+    "Gelish Pedicure",
+    "Gelish Manicure + Pedicure",
+  ];
+  const expectedHomepageServiceTitles = [
+    "Hand Care",
+    "Foot Care",
+    "Nail Extensions",
+    "Callus Removal",
+    "Waxing",
+  ];
+
+  for (const locale of ["zh", "ms"]) {
+    const offerServiceNames = [currentOffer, ...currentOffer.extras].map(
+      (offer) => offer.copy[locale].service,
+    );
+    const homepageServiceTitles = homepageContent[locale].services.items.map(({ title }) => title);
+    assert.deepEqual(offerServiceNames, expectedOfferServiceNames, `${locale} offer service names`);
+    assert.deepEqual(homepageServiceTitles, expectedHomepageServiceTitles, `${locale} homepage service titles`);
+    for (const name of [...offerServiceNames, ...homepageServiceTitles]) {
+      assert.doesNotMatch(name, forbiddenTranslatedName, `${locale} service name should stay English: ${name}`);
     }
   }
 });
