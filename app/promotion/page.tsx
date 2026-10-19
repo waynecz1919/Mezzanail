@@ -38,33 +38,5 @@ export const metadata: Metadata = {
 };
 
 export default function PromotionPage() {
-  const eventStructuredData = {
-    "@context": "https://schema.org",
-    "@type": "Event",
-    name: anniversaryCampaign.title,
-    startDate: anniversaryCampaign.startDate,
-    endDate: anniversaryCampaign.endDate,
-    eventStatus: "https://schema.org/EventScheduled",
-    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-    location: {
-      "@type": "Place",
-      name: "Mezzanail Nail Studio",
-    },
-    organizer: {
-      "@type": "Organization",
-      name: "Mezzanail",
-      url: "https://www.mezzanail.com",
-    },
-    url: anniversaryCampaign.promotionUrl,
-  };
-
-  return (
-    <>
-      <PromotionExperience />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(eventStructuredData) }}
-      />
-    </>
-  );
+  return <PromotionExperience />;
 }

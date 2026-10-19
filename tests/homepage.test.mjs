@@ -85,7 +85,31 @@ test("homepage title is absolute while description, canonical and H1 stay unchan
   assert.match(homepagePage, /title: "Premium Nail Care in Melaka"/);
   assert.match(homepagePage, /description:\s*"Visit Mezzanail Nail Studio in Melaka for manicure, pedicure, nail extensions, callus care and waxing\. Book online or enquire through WhatsApp\."/);
   assert.match(homepagePage, /path: "\/"/);
-  assert.match(homeHero, /<h1 id="home-hero-title">Premium Nail Care in Melaka<\/h1>/);
+  assert.match(homeHero, /<h1 id="home-hero-title">\{heroCopy\.title\}<\/h1>/);
+});
+
+test("hero eyebrow, heading, lede and booking action are localized in en, zh and ms", () => {
+  for (const copy of [
+    "Nail Studio · Melaka",
+    "美甲工作室 · 马六甲",
+    "Studio Kuku · Melaka",
+    "Premium Nail Care in Melaka",
+    "马六甲高品质美甲护理",
+    "Penjagaan Kuku Premium di Melaka",
+    "Manicure, pedicure, nail extensions, callus care and waxing from Mezzanail Nail Studio in Melaka.",
+    "马六甲 Mezzanail Nail Studio 提供手部美甲、足部护理、延长甲、去茧护理与脱毛服务。",
+    "Manikur, pedikur, sambungan kuku, rawatan kalus dan waxing di Mezzanail Nail Studio, Melaka.",
+    "Book Now",
+    "立即预约",
+    "Tempah Sekarang",
+  ]) {
+    assert.ok(homepageConfig.includes(copy), `localized hero copy missing: ${copy}`);
+  }
+  assert.match(homeHero, /const heroCopy = homepageContent\[locale\]\.hero/);
+  assert.match(homeHero, /\{heroCopy\.eyebrow\}/);
+  assert.match(homeHero, /\{heroCopy\.title\}/);
+  assert.match(homeHero, /\{heroCopy\.lede\}/);
+  assert.match(homeHero, /\{heroCopy\.bookNow\}/);
 });
 
 test("only the hero eyebrow remains among the homepage section labels", () => {
@@ -96,7 +120,7 @@ test("only the hero eyebrow remains among the homepage section labels", () => {
   }
   assert.doesNotMatch(membershipBanner, /className="mn-eyebrow"/);
   assert.doesNotMatch(studioBooking, /className="mn-eyebrow"/);
-  assert.match(homeHero, /Nail Studio · Melaka/);
+  assert.match(homeHero, /\{heroCopy\.eyebrow\}/);
   assert.match(homeHero, /home-hero-offer-label/);
 });
 

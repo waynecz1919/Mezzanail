@@ -57,6 +57,12 @@ const reviewSource = {
 } as const;
 
 const english = {
+  hero: {
+    eyebrow: "Nail Studio · Melaka",
+    title: "Premium Nail Care in Melaka",
+    lede: "Manicure, pedicure, nail extensions, callus care and waxing from Mezzanail Nail Studio in Melaka.",
+    bookNow: "Book Now",
+  },
   services: {
     eyebrow: "CURATED CARE",
     title: "Signature Services",
@@ -120,6 +126,12 @@ export const homepageContent = {
   en: english,
   zh: {
     ...english,
+    hero: {
+      eyebrow: "美甲工作室 · 马六甲",
+      title: "马六甲高品质美甲护理",
+      lede: "马六甲 Mezzanail Nail Studio 提供手部美甲、足部护理、延长甲、去茧护理与脱毛服务。",
+      bookNow: "立即预约",
+    },
     services: {
       ...english.services,
       eyebrow: "精选护理",
@@ -180,6 +192,12 @@ export const homepageContent = {
   },
   ms: {
     ...english,
+    hero: {
+      eyebrow: "Studio Kuku · Melaka",
+      title: "Penjagaan Kuku Premium di Melaka",
+      lede: "Manikur, pedikur, sambungan kuku, rawatan kalus dan waxing di Mezzanail Nail Studio, Melaka.",
+      bookNow: "Tempah Sekarang",
+    },
     services: {
       ...english.services,
       eyebrow: "PENJAGAAN PILIHAN",

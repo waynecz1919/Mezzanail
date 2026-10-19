@@ -6,13 +6,14 @@ import { useLanguage } from "@/components/providers";
 import { useOfferActive } from "@/components/offer/use-offer-active";
 import { HomeLink } from "@/components/ui/HomeLink";
 import { currentOffer, getOfferWhatsappUrl } from "@/config/current-offer";
-import { homepage } from "@/config/homepage";
+import { homepage, homepageContent } from "@/config/homepage";
 import { siteConfig } from "@/lib/site";
 
 export function HomeHero() {
   const { locale } = useLanguage();
   const offerActive = useOfferActive();
   const heroImage = homepage.heroImage;
+  const heroCopy = homepageContent[locale].hero;
   const offer = currentOffer.copy[locale];
 
   return (
@@ -21,8 +22,8 @@ export function HomeHero() {
       aria-labelledby="home-hero-title"
     >
       <div className="home-hero-copy">
-        <p className="mn-eyebrow">Nail Studio · Melaka</p>
-        <h1 id="home-hero-title">Premium Nail Care in Melaka</h1>
+        <p className="mn-eyebrow">{heroCopy.eyebrow}</p>
+        <h1 id="home-hero-title">{heroCopy.title}</h1>
         {offerActive ? (
           <div className="home-hero-offer" role="group" aria-labelledby="home-hero-offer-title">
             <p className="home-hero-offer-label">
@@ -65,8 +66,7 @@ export function HomeHero() {
           </div>
         ) : null}
         <p className="home-hero-lede">
-          Manicure, pedicure, nail extensions, callus care and waxing from
-          Mezzanail Nail Studio in Melaka.
+          {heroCopy.lede}
         </p>
         {offerActive ? null : (
           <HomeLink
@@ -76,7 +76,7 @@ export function HomeHero() {
             eventLabel="homepage_hero"
             external
           >
-            Book Now
+            {heroCopy.bookNow}
           </HomeLink>
         )}
       </div>

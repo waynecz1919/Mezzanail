@@ -86,7 +86,7 @@ test("the hero offer and promotion section hide themselves after the offer ends"
     "the RM68 offer must sit in the hero copy, before the photo",
   );
   assert.match(hero, /RM\{currentOffer\.offerPrice\}/);
-  assert.match(hero, /<h1 id="home-hero-title">Premium Nail Care in Melaka<\/h1>/);
+  assert.match(hero, /<h1 id="home-hero-title">\{heroCopy\.title\}<\/h1>/);
   assert.match(promotion, /\{offerActive && \(/);
   assert.match(promotion, /id="current-offer"/);
   assert.ok(

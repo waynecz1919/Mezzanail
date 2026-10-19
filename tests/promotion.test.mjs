@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
+import { pathToFileURL } from "node:url";
 
 const read = (path) => readFileSync(path, "utf8");
 const config = read("lib/promotion/campaign-config.ts");
@@ -78,7 +79,7 @@ test("the official homepage routes every anniversary entry to promotion", () => 
   assert.match(currentCampaignBanner, /<CampaignBanner/);
   assert.match(currentCampaignBanner, /currentCampaign\.enabled/);
   assert.match(navigation, /href: "\/promotion", labelKey: "promo"/);
-  assert.match(currentCampaign, /enabled: true/);
+  assert.match(currentCampaign, /enabled: false/);
   assert.match(currentCampaign, /href: "\/promotion"/);
   assert.match(currentCampaign, /banner-desktop\.webp/);
   assert.doesNotMatch(officialSite, /href="\/#anniversary"/);
@@ -120,14 +121,21 @@ test("referral and source validation are allow-listed", () => {
   }
 });
 
-test("metadata, canonical, OG image and Event JSON-LD are present", () => {
+test("promotion metadata and canonical remain while Event JSON-LD is absent", () => {
   assert.match(page, /alternates: \{ canonical:/);
   assert.match(page, /openGraph:/);
   assert.match(page, /1200/);
   assert.match(page, /630/);
-  assert.match(page, /application\/ld\+json/);
-  assert.match(page, /EventScheduled/);
+  assert.doesNotMatch(page, /"@type"\s*:\s*"Event"/);
+  assert.doesNotMatch(page, /EventScheduled/);
   assert.match(termsPage, /promotionUrl\}\/terms/);
+});
+
+test("the expired homepage campaign config is disabled", async () => {
+  const { currentCampaign: campaign } = await import(
+    pathToFileURL("config/current-campaign.ts").href
+  );
+  assert.equal(campaign.enabled, false);
 });
 
 test("tracking failure cannot block the WhatsApp action", () => {
