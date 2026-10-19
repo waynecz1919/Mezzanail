@@ -945,6 +945,113 @@ body:has(.jackpot-root) .analytics-consent { display: none !important; }
   .jackpot-winner-nail-burst img { animation: none; opacity: 0; }
 }
 
+/* Round 6: fit the live draw to the browser viewport and expose its controls. */
+.jackpot-session .jackpot-sound-toggle,
+.jackpot-live-meta .jackpot-sound-toggle,
+.jackpot-live-exit {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--jp-gold) 58%, transparent);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--jp-paper) 78%, transparent);
+  color: var(--jp-ink);
+  cursor: pointer;
+}
+.jackpot-session .jackpot-sound-toggle { width: 40px; height: 40px; }
+.jackpot-live-meta-actions { display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
+.jackpot-live-meta-actions > span {
+  border: 1px solid color-mix(in srgb, var(--jp-gold) 58%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--jp-paper) 78%, transparent);
+  padding: 7px 13px;
+  color: var(--jp-gold-text);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: .14em;
+}
+
+html:has(.jackpot-root.is-live),
+body:has(.jackpot-root.is-live) {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+.jackpot-root.is-live { height: 100dvh; min-height: 0; overflow: hidden; }
+.jackpot-root.is-live .jackpot-live-shell { height: 100%; min-height: 0; }
+
+@media screen and (min-width: 761px) {
+  .jackpot-live-shell .jackpot-live-wordmark {
+    top: clamp(20px, 3.2vh, 38px);
+    height: clamp(32px, 5.2vh, 56px);
+  }
+  .jackpot-live-shell .jackpot-stage-header {
+    top: clamp(78px, calc(14.3vh + 10px), 164px);
+  }
+  .jackpot-live-shell .jackpot-wheel-panel {
+    top: 47.5926vh;
+    width: min(55.5556vw, 55.5556vh);
+  }
+  .jackpot-live-shell .jackpot-prize-card {
+    box-sizing: border-box;
+    top: 23.1482vh;
+    height: min(640px, calc(100dvh - 23.1482vh - clamp(14px, 2vh, 24px)));
+    min-height: 0;
+    justify-content: flex-start;
+    overflow: hidden;
+    padding: clamp(12px, 3.2vh, 34px) clamp(16px, 2.3vw, 44px) clamp(12px, 2.8vh, 30px);
+  }
+  .jackpot-live-shell .jackpot-prize-card h3 {
+    margin-top: clamp(6px, 1.2vh, 14px);
+    font-size: clamp(30px, min(5.2vh, 3.2vw), 66px);
+  }
+  .jackpot-live-shell .jackpot-prize-card > span { margin-top: clamp(4px, .9vh, 10px); }
+  .jackpot-live-shell .jackpot-prize-card dl {
+    flex: none;
+    margin-top: clamp(8px, 1.6vh, 18px);
+  }
+  .jackpot-live-shell .jackpot-prize-card dl div {
+    min-height: clamp(48px, 7.1vh, 76px);
+    padding: clamp(5px, 1vh, 10px) clamp(6px, .73vw, 14px);
+  }
+  .jackpot-live-shell .jackpot-prize-card dt { margin-top: 4px; font-size: clamp(12px, 1.7vh, 13px); }
+  .jackpot-live-shell .jackpot-prize-card dd { font-size: clamp(30px, 4.45vh, 48px); }
+  .jackpot-live-shell .jackpot-spin-button {
+    flex: none;
+    min-height: clamp(42px, 5.95vh, 64px);
+    margin-top: clamp(8px, 1.5vh, 20px);
+  }
+  .jackpot-live-shell .jackpot-spin-help { margin-top: clamp(4px, .8vh, 9px); font-size: clamp(12px, 1.7vh, 14px); }
+  .jackpot-live-shell .jackpot-prize-card > p.jackpot-live-ready {
+    margin-top: clamp(8px, 1.5vh, 18px);
+    font-size: clamp(12px, 1.65vh, 13px);
+  }
+  .jackpot-live-shell .jackpot-live-fairness,
+  .jackpot-live-shell .jackpot-prize-card > p.jackpot-live-fairness {
+    margin-top: clamp(5px, .85vh, 10px);
+    font-size: clamp(13px, 1.8vh, 14px);
+    line-height: 1.55;
+  }
+  .jackpot-live-progress {
+    flex: none;
+    gap: clamp(5px, .9vh, 10px);
+    margin-top: clamp(6px, 1.2vh, 14px);
+  }
+  .jackpot-live-progress > div { gap: clamp(4px, .52vw, 10px); }
+  .jackpot-live-progress i { width: clamp(7px, .52vw, 10px); height: clamp(9px, 1.55vh, 18px); }
+  .jackpot-live-progress > span { font-size: clamp(12px, 1.8vh, 14px); }
+}
+
+@media screen and (max-width: 760px) {
+  .jackpot-session .jackpot-sound-toggle { width: 36px; height: 36px; }
+  .jackpot-live-meta-actions { gap: 5px; }
+  .jackpot-live-meta .jackpot-sound-toggle,
+  .jackpot-live-exit { width: 34px; height: 34px; }
+}
+
 /* Round 3: sculpted static rim and the supplied anniversary medallion. */
 html:has(.jackpot-root.is-live) { overflow-x: clip; }
 body:has(.jackpot-root.is-live) { width: 100%; max-width: 100%; overflow-x: clip; }
@@ -1059,4 +1166,11 @@ body:has(.jackpot-root.is-live) { width: 100%; max-width: 100%; overflow-x: clip
 }
 @media screen and (min-width: 761px) and (max-height: 800px) {
   .jackpot-live-shell .jackpot-stage-header { top: calc(16vh + 10px); }
+}
+
+.jackpot-live-shell .jackpot-live-remaining {
+  color: var(--jp-gold-text);
+  font-size: 14px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
 }

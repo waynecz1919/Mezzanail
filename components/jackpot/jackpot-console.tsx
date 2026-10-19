@@ -16,6 +16,7 @@ import {
   Lock,
   LogOut,
   Maximize2,
+  Minimize2,
   Pencil,
   PillBottle,
   Plus,
@@ -28,6 +29,8 @@ import {
   Trophy,
   Unlock,
   Users,
+  Volume2,
+  VolumeX,
   X,
 } from "lucide-react";
 import {
@@ -121,6 +124,71 @@ function StatusBadge({ status }: { status: JackpotDraw["status"] }) {
   return <span className={`jackpot-status is-${status}`}>{status}</span>;
 }
 
+function SoundToggle({ enabled, onToggle }: { enabled: boolean; onToggle: () => void }) {
+  return (
+    <button
+      type="button"
+      className="jackpot-sound-toggle"
+      onClick={onToggle}
+      aria-label={`Sound ${enabled ? "on" : "off"}`}
+      aria-pressed={enabled}
+      title={`Sound ${enabled ? "on" : "off"}`}
+    >
+      {enabled ? <Volume2 size={18} aria-hidden="true" /> : <VolumeX size={18} aria-hidden="true" />}
+    </button>
+  );
+}
+
+const soundPreferenceKey = "jackpot-sound-enabled";
+
+function playWheelTick(context: AudioContext) {
+  const now = context.currentTime;
+  const oscillator = context.createOscillator();
+  const filter = context.createBiquadFilter();
+  const gain = context.createGain();
+  oscillator.type = "triangle";
+  oscillator.frequency.setValueAtTime(2100, now);
+  oscillator.frequency.exponentialRampToValueAtTime(880, now + 0.009);
+  filter.type = "lowpass";
+  filter.frequency.setValueAtTime(3000, now);
+  gain.gain.setValueAtTime(0.0001, now);
+  gain.gain.exponentialRampToValueAtTime(0.018, now + 0.001);
+  gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.009);
+  oscillator.connect(filter);
+  filter.connect(gain);
+  gain.connect(context.destination);
+  oscillator.start(now);
+  oscillator.stop(now + 0.011);
+}
+
+function playRevealChime(context: AudioContext) {
+  const notes = [1046.5, 1318.5, 1568, 2093]; // C6, E6, G6, C7.
+  const startAt = context.currentTime + 0.015;
+  notes.forEach((frequency, index) => {
+    const start = startAt + index * 0.24;
+    const fundamental = context.createOscillator();
+    const harmonic = context.createOscillator();
+    const envelope = context.createGain();
+    const harmonicLevel = context.createGain();
+    fundamental.type = "sine";
+    harmonic.type = "sine";
+    fundamental.frequency.setValueAtTime(frequency, start);
+    harmonic.frequency.setValueAtTime(frequency * 2, start);
+    harmonicLevel.gain.setValueAtTime(0.14, start);
+    envelope.gain.setValueAtTime(0.0001, start);
+    envelope.gain.exponentialRampToValueAtTime(0.032, start + 0.025);
+    envelope.gain.exponentialRampToValueAtTime(0.0001, start + 0.47);
+    fundamental.connect(envelope);
+    harmonic.connect(harmonicLevel);
+    harmonicLevel.connect(envelope);
+    envelope.connect(context.destination);
+    fundamental.start(start);
+    harmonic.start(start);
+    fundamental.stop(start + 0.49);
+    harmonic.stop(start + 0.49);
+  });
+}
+
 export function JackpotConsole({
   initialState,
   previewMode = false,
@@ -131,6 +199,7 @@ export function JackpotConsole({
   const [state, setState] = useState(initialState);
   const [tab, setTab] = useState<Tab>("draw");
   const [liveMode, setLiveMode] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(true);
   const [liveClock, setLiveClock] = useState<Date | null>(null);
   const [winner, setWinner] = useState<WinnerResult | null>(null);
   const [spinning, setSpinning] = useState(false);
@@ -141,6 +210,10 @@ export function JackpotConsole({
   const [redrawReason, setRedrawReason] = useState(redrawReasons[0]);
   const [otherReason, setOtherReason] = useState("");
   const animationTimer = useRef<number | null>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const soundEnabledRef = useRef(true);
+  const soundPreferenceTouchedRef = useRef(false);
+  const wasSpinningRef = useRef(false);
   const isAdmin = state.role === "owner" || state.role === "admin";
 
   const loadState = useCallback(async () => {
@@ -159,6 +232,77 @@ export function JackpotConsole({
       if (animationTimer.current) window.clearTimeout(animationTimer.current);
     };
   }, [state.role]);
+
+  useEffect(() => {
+    const restorePreference = () => {
+      if (soundPreferenceTouchedRef.current) return;
+      try {
+        const savedPreference = window.localStorage.getItem(soundPreferenceKey);
+        if (savedPreference === "off") {
+          soundEnabledRef.current = false;
+          setSoundEnabled(false);
+        }
+      } catch {
+        // Sound remains enabled for this session when storage is unavailable.
+      }
+    };
+    const frame = window.requestAnimationFrame(restorePreference);
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
+
+  useEffect(() => {
+    if (liveMode || !document.fullscreenElement) return;
+    void document.exitFullscreen().catch(() => {
+      // Keep the control-room state usable when the browser blocks exit.
+    });
+  }, [liveMode]);
+
+  useEffect(() => {
+    if (!spinning) return;
+    const wheel = document.querySelector<HTMLElement>(".jackpot-wheel.is-spinning");
+    if (!wheel) return;
+
+    let animationFrame = 0;
+    let previousAngle: number | null = null;
+    let unwrappedAngle = 0;
+    let previousBoundary = 0;
+    let lastTickAt = Number.NEGATIVE_INFINITY;
+
+    const readRotation = () => {
+      const transform = window.getComputedStyle(wheel).transform;
+      if (transform === "none") return 0;
+      const matrix = new DOMMatrixReadOnly(transform);
+      return Math.atan2(matrix.b, matrix.a) * (180 / Math.PI);
+    };
+
+    const trackBoundaries = (timestamp: number) => {
+      const angle = readRotation();
+      if (previousAngle === null) {
+        previousAngle = angle;
+        unwrappedAngle = angle;
+        previousBoundary = Math.floor(unwrappedAngle / 45);
+      } else {
+        let delta = angle - previousAngle;
+        if (delta < -180) delta += 360;
+        if (delta > 180) delta -= 360;
+        previousAngle = angle;
+        unwrappedAngle += delta;
+        const boundary = Math.floor(unwrappedAngle / 45);
+        if (boundary !== previousBoundary) {
+          previousBoundary = boundary;
+          if (timestamp - lastTickAt >= 40) {
+            const context = audioContextRef.current;
+            if (soundEnabledRef.current && context?.state === "running") playWheelTick(context);
+            lastTickAt = timestamp;
+          }
+        }
+      }
+      animationFrame = window.requestAnimationFrame(trackBoundaries);
+    };
+
+    animationFrame = window.requestAnimationFrame(trackBoundaries);
+    return () => window.cancelAnimationFrame(animationFrame);
+  }, [spinning]);
 
   useEffect(() => {
     if (!liveMode) return;
@@ -202,6 +346,17 @@ export function JackpotConsole({
       status: openDraw.status,
     } : null), [openDraw, winner]);
 
+  useEffect(() => {
+    if (spinning) {
+      wasSpinningRef.current = true;
+      return;
+    }
+    if (!wasSpinningRef.current || !activeWinner) return;
+    wasSpinningRef.current = false;
+    const context = audioContextRef.current;
+    if (soundEnabledRef.current && context?.state === "running") playRevealChime(context);
+  }, [activeWinner, spinning]);
+
   async function logout() {
     if (previewMode) {
       window.location.assign("/");
@@ -220,6 +375,37 @@ export function JackpotConsole({
     }
   }
 
+  function exitLiveMode() {
+    setLiveMode(false);
+    if (document.fullscreenElement) {
+      void document.exitFullscreen().catch(() => {
+        // The visual mode still exits if native fullscreen is unavailable.
+      });
+    }
+  }
+
+  function toggleSound() {
+    soundPreferenceTouchedRef.current = true;
+    const nextPreference = !soundEnabledRef.current;
+    soundEnabledRef.current = nextPreference;
+    setSoundEnabled(nextPreference);
+    try {
+      window.localStorage.setItem(soundPreferenceKey, nextPreference ? "on" : "off");
+    } catch {
+      // The toggle still applies for this session when storage is unavailable.
+    }
+  }
+
+  function prepareAudioFromSpinGesture() {
+    try {
+      const context = audioContextRef.current ?? new window.AudioContext();
+      audioContextRef.current = context;
+      if (context.state !== "running") void context.resume().catch(() => {});
+    } catch {
+      // Visual drawing remains available when Web Audio is unsupported.
+    }
+  }
+
   function showWinnerAfterAnimation(nextWinner: WinnerResult) {
     setWinner(nextWinner);
     setSpinning(true);
@@ -232,6 +418,7 @@ export function JackpotConsole({
 
   async function spin() {
     if (!currentPrize || spinning || busy || openDraw) return;
+    prepareAudioFromSpinGesture();
     setBusy(true);
     setError("");
     try {
@@ -385,6 +572,7 @@ export function JackpotConsole({
             <div className="jackpot-session">
               {previewMode && <strong className="jackpot-preview-badge">DEMO PREVIEW</strong>}
               <span>{state.staffId} · {state.role}</span>
+              <SoundToggle enabled={soundEnabled} onToggle={toggleSound} />
               <button type="button" onClick={logout} aria-label="Sign out"><LogOut size={18} /></button>
             </div>
           </div>
@@ -421,7 +609,13 @@ export function JackpotConsole({
               unoptimized
             />
             <div className="jackpot-live-meta">
-              <span>LIVE DRAW</span>
+              <div className="jackpot-live-meta-actions">
+                <span>LIVE DRAW</span>
+                <SoundToggle enabled={soundEnabled} onToggle={toggleSound} />
+                <button type="button" className="jackpot-live-exit" onClick={exitLiveMode} aria-label="Exit Full Screen" title="Exit Full Screen">
+                  <Minimize2 size={18} aria-hidden="true" />
+                </button>
+              </div>
               <time dateTime={liveClock?.toISOString()}>{liveClock ? formatLocalLiveDateTime(liveClock) : ""}</time>
               <small>DRAW {completedUnits + 1} · AUDIT RECORDED</small>
             </div>
@@ -528,12 +722,15 @@ export function JackpotConsole({
                     <span>{currentPrize.prize_description || "Anniversary draw prize"}</span>
                   )
                 )}
-                <dl>
-                  <div><dd>{currentPrize?.remaining_quantity ?? 0}</dd><dt>Remaining</dt></div>
-                  <div><dd>{state.summary.eligibleParticipants}</dd><dt>Participants</dt></div>
-                  <div><dd>{state.summary.remainingTickets}</dd><dt>{liveMode ? "Tickets" : "Eligible Tickets"}</dt></div>
-                  <div><dd>{completedUnits}/{totalUnits}</dd><dt>Progress</dt></div>
-                </dl>
+                {!liveMode && (
+                  <dl>
+                    <div><dd>{currentPrize?.remaining_quantity ?? 0}</dd><dt>Remaining</dt></div>
+                    <div><dd>{completedUnits}/{totalUnits}</dd><dt>Progress</dt></div>
+                  </dl>
+                )}
+                {liveMode && currentPrize && (
+                  <span className="jackpot-live-remaining">{currentPrize.remaining_quantity} remaining</span>
+                )}
                 {isAdmin && (
                   <>
                     <button

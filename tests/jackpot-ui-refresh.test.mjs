@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import test from "node:test";
 
 const read = (path) => readFileSync(new URL("../" + path, import.meta.url), "utf8");
@@ -216,6 +216,48 @@ test("fullscreen placard fits short viewports and mobile control title stays on 
   assert.match(css, /\.jackpot-brand h1\s*\{[^}]*white-space:\s*nowrap/s);
   assert.match(css, /\.jackpot-brand p\s*\{\s*display:\s*none/);
   assert.match(css, /\.jackpot-preview-badge\s*\{[^}]*font-size:\s*11px/s);
+});
+
+test("round six synchronizes browser fullscreen with live mode and fits the requested viewport heights", () => {
+  assert.match(consoleSource, /await document\.documentElement\.requestFullscreen\(\)/);
+  assert.match(consoleSource, /document\.addEventListener\("fullscreenchange"/);
+  assert.match(consoleSource, /if \(!document\.fullscreenElement\) setLiveMode\(false\)/);
+  assert.match(consoleSource, /function exitLiveMode\(\)[\s\S]*?setLiveMode\(false\)[\s\S]*?document\.exitFullscreen\(\)/);
+  assert.match(consoleSource, /aria-label="Exit Full Screen"/);
+  assert.match(css, /\.jackpot-live-wordmark\s*\{\s*top:\s*clamp\(20px, 3\.2vh, 38px\)/);
+  assert.match(css, /\.jackpot-root\.is-live\s*\{\s*height:\s*100dvh;\s*min-height:\s*0;\s*overflow:\s*hidden;/);
+  assert.match(css, /\.jackpot-live-shell \.jackpot-prize-card\s*\{\s*box-sizing:\s*border-box;\s*top:\s*23\.1482vh;\s*height:\s*min\(640px, calc\(100dvh - 23\.1482vh - clamp\(14px, 2vh, 24px\)\)\)/);
+});
+
+test("round five Web Audio sounds have an accessible remembered toggle and no campaign audio files", () => {
+  const audioExtensions = /\.(?:mp3|wav|ogg|m4a|aac|flac|weba)$/i;
+  const campaignDir = new URL("../public/campaigns/7th-anniversary/", import.meta.url);
+  const collectFiles = (directory) => readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    const path = new URL(entry.name, `file://${directory.pathname.replaceAll("\\", "/")}${directory.pathname.endsWith("/") ? "" : "/"}`);
+    return entry.isDirectory() ? collectFiles(path) : [path.pathname];
+  });
+
+  assert.deepEqual(collectFiles(campaignDir).filter((path) => audioExtensions.test(path)), []);
+  assert.match(consoleSource, /new window\.AudioContext\(\)/);
+  assert.match(consoleSource, /context\.resume\(\)/);
+  assert.match(consoleSource, /window\.getComputedStyle\(wheel\)\.transform/);
+  assert.match(consoleSource, /window\.requestAnimationFrame\(trackBoundaries\)/);
+  assert.match(consoleSource, /timestamp - lastTickAt >= 40/);
+  assert.match(consoleSource, /const notes = \[1046\.5, 1318\.5, 1568, 2093\]/);
+  assert.match(consoleSource, /aria-label=\{`Sound \$\{enabled \? "on" : "off"\}`\}/);
+  assert.match(consoleSource, /window\.localStorage\.getItem\(soundPreferenceKey\)/);
+  assert.match(consoleSource, /window\.localStorage\.setItem\(soundPreferenceKey/);
+  assert.match(consoleSource, /function spin\(\)[\s\S]*?prepareAudioFromSpinGesture\(\)/);
+  assert.doesNotMatch(consoleSource, /<audio\b|new Audio\(/i);
+});
+
+test("Live Draw and Full Screen hide participant and ticket totals", () => {
+  const liveDrawCard = consoleSource.match(/<aside className="jackpot-prize-card">([\s\S]*?)<\/aside>/)?.[1];
+  assert.ok(liveDrawCard, "Live Draw prize card markup should exist");
+  assert.doesNotMatch(liveDrawCard, /Participants|Tickets|eligibleParticipants|remainingTickets/i);
+  assert.match(liveDrawCard, /!liveMode && \([\s\S]*?<dt>Remaining<\/dt>[\s\S]*?<dt>Progress<\/dt>[\s\S]*?\)/);
+  assert.match(liveDrawCard, /liveMode && currentPrize && \([\s\S]*?currentPrize\.remaining_quantity\} remaining/);
+  assert.match(css, /\.jackpot-live-shell \.jackpot-live-remaining\s*\{[^}]*color:\s*var\(--jp-gold-text\)[^}]*font-size:\s*14px[^}]*letter-spacing:\s*\.2em[^}]*text-transform:\s*uppercase/s);
 });
 
 test("cookie consent is hidden only on Jackpot pages", () => {
