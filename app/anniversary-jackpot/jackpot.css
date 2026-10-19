@@ -674,7 +674,7 @@ body:has(.jackpot-root) .analytics-consent { display: none !important; }
   font-size: 24px;
   font-weight: 600;
   letter-spacing: .06em;
-  transform: translate(-50%, -50%) rotate(var(--name-angle)) translateY(-35.5cqi);
+  transform: translate(-50%, -50%) rotate(var(--name-angle)) translateY(-30cqi);
 }
 .jackpot-wheel-panel .jackpot-wheel-frame { margin-inline: auto; }
 .jackpot-live-shell .jackpot-wheel-panel .jackpot-wheel-frame { width: 100%; }
@@ -786,7 +786,7 @@ body:has(.jackpot-root) .analytics-consent { display: none !important; }
   height: 8.1667cqi;
   object-fit: contain;
   filter: drop-shadow(0 1px 1px rgba(58, 54, 50, .2));
-  transform: translate(-50%, -50%) rotate(var(--name-angle)) translateY(-44cqi);
+  transform: translate(-50%, -50%) rotate(var(--name-angle)) translateY(-41.3cqi);
 }
 .jackpot-wheel-frame .jackpot-wheel-name {
   z-index: 3;
@@ -794,7 +794,7 @@ body:has(.jackpot-root) .analytics-consent { display: none !important; }
   font-size: 24px;
   font-weight: 600;
   letter-spacing: .06em;
-  transform: translate(-50%, -50%) rotate(var(--name-angle)) translateY(-35.5cqi);
+  transform: translate(-50%, -50%) rotate(var(--name-angle)) translateY(-30cqi);
 }
 .jackpot-wheel-frame .jackpot-wheel-rim { inset: 8px; z-index: 4; border: 1px solid #FBF8EF; }
 .jackpot-wheel-frame .jackpot-wheel-rim::before { inset: 6px; border: 1px dashed #C9B183; }
@@ -983,7 +983,7 @@ body:has(.jackpot-root.is-live) { width: 100%; max-width: 100%; overflow-x: clip
   mask: radial-gradient(circle, transparent 0 46.6cqi, #000 46.9cqi 49.8cqi, transparent 50cqi);
 }
 .jackpot-wheel-frame::after {
-  inset: calc(4.2cqi - 2px);
+  inset: calc(4.5cqi - 2px);
   z-index: 4;
   border: 1px solid rgba(255, 250, 230, .92);
   box-shadow: 0 1px 1px rgba(255, 255, 255, .72), inset 0 -1px 2px rgba(87, 68, 36, .3);
@@ -996,9 +996,10 @@ body:has(.jackpot-root.is-live) { width: 100%; max-width: 100%; overflow-x: clip
   mask: none;
   box-shadow: 0 1px 2px rgba(255, 255, 255, .75), 0 -1px 2px rgba(74, 56, 28, .42);
 }
-.jackpot-wheel-frame .jackpot-wheel { inset: 4.2cqi; }
+.jackpot-wheel-frame .jackpot-wheel,
+.jackpot-live-shell .jackpot-wheel-frame .jackpot-wheel { inset: 4.5cqi; }
 .jackpot-wheel-frame .jackpot-wheel-rim {
-  inset: 4.2cqi;
+  inset: 4.5cqi;
   z-index: 5;
   border: 1.5px solid #FBF8EF;
   box-shadow: inset 0 1px 2px rgba(255, 255, 255, .7), 0 1px 2px rgba(83, 65, 36, .25);
@@ -1026,7 +1027,7 @@ body:has(.jackpot-root.is-live) { width: 100%; max-width: 100%; overflow-x: clip
   border-radius: 50%;
   background: radial-gradient(circle at 34% 28%, #FFFDF1 0 24%, #FFF2C7 46%, #D0AE6B 76%, #8A7042 100%);
   box-shadow: 0 0 4px 1px rgba(255, 252, 232, .95), 0 0 10px 3px rgba(255, 226, 166, .8), inset 0 1px 2px #FFFDF4;
-  transform: translate(-50%, -50%) rotate(var(--bulb-angle)) translateY(-49cqi);
+  transform: translate(-50%, -50%) rotate(var(--bulb-angle)) translateY(-47.7cqi);
 }
 .jackpot-wheel-bulbs span:nth-child(3n) {
   width: 2.15cqi;
@@ -1046,7 +1047,7 @@ body:has(.jackpot-root.is-live) { width: 100%; max-width: 100%; overflow-x: clip
   transform: translate(-50%, -50%);
 }
 .jackpot-wheel-frame .jackpot-wheel-nail-tip {
-  transform: translate(-50%, -50%) rotate(var(--name-angle)) translateY(-39cqi);
+  transform: translate(-50%, -50%) rotate(var(--name-angle)) translateY(-41.3cqi);
 }
 .jackpot-spin-button.is-spinning::after {
   background: linear-gradient(90deg, transparent, rgba(226, 211, 176, .35), transparent);
