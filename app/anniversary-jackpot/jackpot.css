@@ -277,7 +277,7 @@ body:has(.redeem-login-shell) .redeem-login-card { max-width: calc(100vw - 32px)
     height: 100dvh;
     min-height: 100dvh;
     overflow: hidden;
-    background: url("/campaigns/7th-anniversary/jackpot-bg-silk.jpg") center / cover no-repeat, #F8F5EF;
+    background: url("/campaigns/7th-anniversary/jackpot-bg-salon.jpg") center / cover no-repeat, #F8F5EF;
   }
   .jackpot-live-shell { position: relative; display: block; width: 100%; height: 100%; min-height: 100dvh; overflow: hidden; }
   .jackpot-live-frame { position: absolute; inset: 28px; z-index: 30; border: 1px solid color-mix(in srgb, var(--jp-gold) 62%, transparent); pointer-events: none; }
@@ -595,6 +595,131 @@ body:has(.jackpot-root) .analytics-consent { display: none !important; }
 
 .jackpot-live-shell .jackpot-wheel-name { font-size: 24px; }
 
+/* Static frame and medallion stay upright while only the wheel face rotates. */
+.jackpot-wheel-frame {
+  position: relative;
+  isolation: isolate;
+  container-type: inline-size;
+  width: min(52vw, 570px);
+  aspect-ratio: 1;
+  border: 8px solid transparent;
+  border-radius: 50%;
+  background: linear-gradient(var(--jp-paper), var(--jp-paper)) padding-box,
+    linear-gradient(135deg, #E6D3A6 0%, #B69B68 52%, #86703F 100%) border-box;
+  box-shadow: 0 0 0 4px var(--jp-paper), 0 0 0 15px color-mix(in srgb, var(--jp-gold-light) 32%, transparent),
+    0 28px 75px color-mix(in srgb, var(--jp-ink) 18%, transparent);
+}
+.jackpot-wheel-frame::before,
+.jackpot-wheel-frame::after {
+  position: absolute;
+  z-index: 1;
+  border-radius: 50%;
+  pointer-events: none;
+  content: "";
+}
+/* The solid ring sits about 24px beyond the medallion; the dotted ring is 8px farther out. */
+.jackpot-wheel-frame::before { inset: calc(36% - 24px); border: 1.5px solid #C9B183; }
+.jackpot-wheel-frame::after { inset: calc(36% - 32px); border: 1px dotted #E2D3B0; }
+.jackpot-wheel { position: absolute; inset: 8px; width: auto; height: auto; aspect-ratio: auto; border: 0; box-shadow: none; overflow: hidden; }
+.jackpot-wheel {
+  background: repeating-conic-gradient(from -22.5deg, #FFFFFF 0deg 45deg, #F8E8EB 45deg 90deg);
+}
+.jackpot-wheel::before {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, transparent 35%, rgba(77, 57, 48, .13) 100%);
+  pointer-events: none;
+  content: "";
+}
+.jackpot-wheel-frame .jackpot-wheel-rim { inset: 8px; z-index: 4; border: 1px solid #FBF8EF; }
+.jackpot-wheel-rim::before {
+  position: absolute;
+  inset: 6px;
+  border: 1px dashed #C9B183;
+  border-radius: 50%;
+  content: "";
+}
+.jackpot-wheel-frame .jackpot-wheel-ticks { inset: -13px; z-index: 2; }
+.jackpot-wheel-frame .jackpot-wheel-separators {
+  background: repeating-conic-gradient(from 22.5deg, #C9B183 0deg .15deg, transparent .15deg 45deg);
+}
+.jackpot-wheel-gloss {
+  position: absolute;
+  inset: 8px;
+  z-index: 3;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 27% 16%, rgba(255, 255, 255, .45), rgba(255, 255, 255, .14) 28%, transparent 69%);
+  pointer-events: none;
+}
+.jackpot-wheel-frame .jackpot-wheel-center {
+  z-index: 5;
+  width: 28%;
+  border-color: #B69B68;
+  background: radial-gradient(circle at 35% 27%, #484542, #343434 68%);
+}
+.jackpot-wheel-center span { top: 7%; font-size: clamp(34px, 10.5cqi, 68px); }
+.jackpot-wheel-center small { bottom: 25%; }
+.jackpot-wheel-center-sparkle {
+  position: absolute;
+  bottom: 7%;
+  left: 50%;
+  color: #E6D3A6;
+  transform: translateX(-50%);
+}
+.jackpot-wheel-frame .jackpot-wheel-name {
+  width: auto;
+  height: auto;
+  color: #3A3632;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  transform: translate(-50%, -50%) rotate(var(--name-angle)) translateY(-35.5cqi);
+}
+.jackpot-wheel-panel .jackpot-wheel-frame { margin-inline: auto; }
+.jackpot-live-shell .jackpot-wheel-panel .jackpot-wheel-frame { width: 100%; }
+
+@media (max-width: 980px) {
+  .jackpot-wheel-frame { width: min(76vw, 540px); }
+}
+@media (max-width: 680px) {
+  .jackpot-wheel-frame { width: min(82vw, 430px); }
+  .jackpot-wheel-frame .jackpot-wheel-name { font-size: 16px; }
+  .jackpot-live-shell .jackpot-wheel-frame .jackpot-wheel-name { font-size: 16px; }
+  .jackpot-wheel-frame .jackpot-wheel-center span { font-size: clamp(30px, 10.5cqi, 46px); }
+}
+@media screen {
+  .jackpot-live-shell .jackpot-wheel-frame { width: 100%; }
+  .jackpot-live-shell .jackpot-wheel-frame .jackpot-wheel-name { font-size: clamp(16px, 5.3125cqi, 34px); }
+}
+
+/* Keep the current disabled state, but retain the ink button while drawing. */
+.jackpot-spin-button { position: relative; overflow: hidden; }
+.jackpot-spin-button.is-spinning:disabled,
+.jackpot-live-shell .jackpot-spin-button.is-spinning:disabled {
+  border-color: #B8893B;
+  background: var(--jp-ink);
+  color: var(--jp-paper);
+  outline-color: #B8893B;
+}
+.jackpot-spin-button.is-spinning::after {
+  position: absolute;
+  inset: -20% auto -20% -45%;
+  width: 34%;
+  background: linear-gradient(90deg, transparent, rgba(230, 211, 166, .42), transparent);
+  content: "";
+  pointer-events: none;
+  transform: skewX(-18deg);
+  animation: jackpot-button-shimmer 3.8s ease-in-out infinite;
+}
+@keyframes jackpot-button-shimmer {
+  0%, 16% { left: -45%; }
+  80%, 100% { left: 115%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .jackpot-spin-button.is-spinning::after { animation: none; }
+}
+
 @media screen and (max-width: 1599px) {
   .jackpot-live-shell .jackpot-prize-card dl div { min-width: 0; }
   .jackpot-live-shell .jackpot-prize-card dt {
@@ -609,4 +734,213 @@ body:has(.jackpot-root) .analytics-consent { display: none !important; }
 
 @media screen and (max-width: 760px) {
   .jackpot-live-shell .jackpot-wheel-name { font-size: 18px; }
+}
+
+/* Salon wheel artwork: only the face, names, nails, and separators rotate. */
+.jackpot-wheel-panel { overflow: visible; }
+.jackpot-wheel-stage {
+  position: relative;
+  width: min(52vw, 570px);
+  aspect-ratio: 1;
+  container-type: inline-size;
+}
+.jackpot-wheel-frame {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: visible;
+  border-width: 8px;
+}
+.jackpot-wheel-frame .jackpot-wheel,
+.jackpot-live-shell .jackpot-wheel-frame .jackpot-wheel {
+  position: absolute;
+  inset: 8px;
+  z-index: 1;
+  width: auto;
+  height: auto;
+  aspect-ratio: auto;
+  overflow: hidden;
+  border: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, #FFFFFF 35%, #F6EFE3 100%);
+  box-shadow: none;
+}
+.jackpot-wheel-frame .jackpot-wheel::before {
+  z-index: 0;
+  background: radial-gradient(circle, #F8E8EB 35%, #EBCFD5 100%);
+  mask: repeating-conic-gradient(from -22.5deg, #000 0deg 45deg, transparent 45deg 90deg);
+}
+.jackpot-wheel-frame .jackpot-wheel-separators {
+  z-index: 1;
+  background: repeating-conic-gradient(from 22.5deg, #C9B183 0deg .3deg, transparent .3deg 45deg);
+}
+.jackpot-wheel-frame .jackpot-wheel-nail-tip {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  width: 4.5cqi;
+  height: 8.1667cqi;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 1px rgba(58, 54, 50, .2));
+  transform: translate(-50%, -50%) rotate(var(--name-angle)) translateY(-44cqi);
+}
+.jackpot-wheel-frame .jackpot-wheel-name {
+  z-index: 3;
+  font-family: var(--font-beauty), Georgia, serif;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  transform: translate(-50%, -50%) rotate(var(--name-angle)) translateY(-35.5cqi);
+}
+.jackpot-wheel-frame .jackpot-wheel-rim { inset: 8px; z-index: 4; border: 1px solid #FBF8EF; }
+.jackpot-wheel-frame .jackpot-wheel-rim::before { inset: 6px; border: 1px dashed #C9B183; }
+.jackpot-wheel-frame .jackpot-wheel-ticks { inset: -13px; z-index: 2; }
+.jackpot-wheel-frame .jackpot-wheel-center {
+  z-index: 5;
+  width: 37%;
+  border: 4px solid #B69B68;
+  background: radial-gradient(circle at 35% 27%, #484542, #343434 68%);
+}
+.jackpot-wheel-frame .jackpot-wheel-center span { top: 9%; font-size: clamp(38px, 14cqi, 84px); }
+.jackpot-wheel-frame .jackpot-wheel-center small { bottom: 25%; }
+.jackpot-wheel-center-sparkle { bottom: 7%; }
+.jackpot-wheel-stage .jackpot-pointer {
+  position: absolute;
+  top: -44px;
+  left: 50%;
+  z-index: 6;
+  width: 28px;
+  height: 102px;
+  border: 0;
+  filter: drop-shadow(0 3px 3px rgba(52, 52, 52, .22));
+  transform: translateX(-50%);
+}
+.jackpot-wheel-stage .jackpot-pointer::after { content: none; }
+.jackpot-pointer-handle {
+  position: absolute;
+  top: 0;
+  left: 2px;
+  width: 24px;
+  height: 36px;
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: 7px 7px 3px 3px;
+  background: linear-gradient(90deg, #242424, #414141 44%, #2B2B2B);
+}
+.jackpot-pointer-handle::after { position: absolute; top: 4px; bottom: 4px; left: 5px; width: 2px; border-radius: 2px; background: rgba(255,255,255,.36); content: ""; }
+.jackpot-pointer-ferrule {
+  position: absolute;
+  top: 34px;
+  left: 0;
+  width: 28px;
+  height: 13px;
+  border: 1px solid #FBF8EF;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #E6D3A6, #B69B68 52%, #86703F);
+}
+.jackpot-pointer-brush {
+  position: absolute;
+  top: 45px;
+  left: 4px;
+  width: 20px;
+  height: 54px;
+  border: 1px solid #FBF8EF;
+  background: linear-gradient(90deg, #E6D3A6, #B69B68 52%, #86703F);
+  clip-path: polygon(8% 0, 92% 0, 50% 100%);
+}
+.jackpot-pointer > i {
+  position: absolute;
+  top: 48px;
+  left: 11px;
+  width: 6px;
+  height: 6px;
+  border: 1px solid #E6D3A6;
+  border-radius: 50%;
+  background: #343434;
+}
+.jackpot-wheel-stand {
+  position: absolute;
+  top: calc(100% - .7cqi);
+  left: 50%;
+  z-index: 1;
+  width: 15cqi;
+  height: 7.5cqi;
+  max-width: none;
+  object-fit: fill;
+  transform: translateX(-50%);
+}
+.jackpot-wheel-contact-shadow {
+  position: absolute;
+  top: calc(100% + 5.5cqi);
+  left: 50%;
+  z-index: 0;
+  width: 24cqi;
+  height: 2.5cqi;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(84, 62, 45, .24), rgba(84, 62, 45, .08) 48%, transparent 75%);
+  filter: blur(2px);
+  transform: translateX(-50%);
+}
+.jackpot-root:not(.is-live) .jackpot-wheel-stand,
+.jackpot-root:not(.is-live) .jackpot-wheel-contact-shadow { display: none; }
+.jackpot-live-shell .jackpot-wheel-panel {
+  top: 47.5926vh;
+  left: 26.40625vw;
+  width: min(55.5556vw, 55.5556vh);
+  padding: 0;
+  transform: translate(-50%, -50%);
+}
+.jackpot-live-shell .jackpot-wheel-stage { width: 100%; }
+.jackpot-live-shell .jackpot-wheel-frame { width: 100%; }
+.jackpot-live-shell .jackpot-wheel-name { font-size: clamp(16px, 5.3125cqi, 34px); }
+.jackpot-live-shell .jackpot-prize-card {
+  top: 23.1482vh;
+  left: 57.8125vw;
+  width: min(32.292vw, 620px);
+  border-radius: 0;
+  background: rgba(255, 253, 249, .78);
+  backdrop-filter: blur(8px);
+}
+.jackpot-live-shell .jackpot-prize-card > p:not(.jackpot-live-ready):not(.jackpot-live-fairness) {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.jackpot-prize-eyebrow-icon { flex: none; color: var(--jp-gold-text); }
+.jackpot-prize-card > p:first-child { display: flex; align-items: center; gap: 8px; }
+.jackpot-live-progress i {
+  width: clamp(8px, .52vw, 10px);
+  height: clamp(13px, 1.55vh, 18px);
+  border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%;
+  transform: rotate(12deg);
+}
+.jackpot-winner-card { overflow: hidden; }
+.jackpot-winner-nail-burst { position: absolute; top: 10px; left: 50%; z-index: 1; width: 240px; height: 132px; pointer-events: none; transform: translateX(-50%); }
+.jackpot-winner-nail-burst img { position: absolute; width: 22px; height: 40px; opacity: 0; object-fit: contain; animation: jackpot-winner-nail-burst 1.25s ease-out 1 .08s forwards; }
+.jackpot-winner-nail-burst img:nth-child(1) { top: 54px; left: 17px; transform: rotate(-54deg) scale(.45); }
+.jackpot-winner-nail-burst img:nth-child(2) { top: 6px; left: 61px; transform: rotate(-27deg) scale(.45); }
+.jackpot-winner-nail-burst img:nth-child(3) { top: 6px; right: 61px; transform: rotate(27deg) scale(.45); }
+.jackpot-winner-nail-burst img:nth-child(4) { top: 54px; right: 17px; transform: rotate(54deg) scale(.45); }
+@keyframes jackpot-winner-nail-burst {
+  22% { opacity: .95; }
+  100% { opacity: 0; }
+}
+@media (max-width: 980px) {
+  .jackpot-wheel-stage { width: min(76vw, 540px); }
+}
+@media (max-width: 680px) {
+  .jackpot-wheel-stage { width: min(82vw, 430px); }
+  .jackpot-wheel-frame .jackpot-wheel-name { font-size: 16px; }
+  .jackpot-live-shell .jackpot-wheel-frame .jackpot-wheel-name { font-size: 16px; }
+  .jackpot-live-shell .jackpot-wheel-panel { width: min(68vw, 45vh); }
+  .jackpot-live-shell .jackpot-wheel-stage { width: 100%; }
+  .jackpot-live-shell .jackpot-wheel-panel { top: 46vh; left: 50vw; }
+  .jackpot-live-shell .jackpot-prize-card { top: 70vh; left: 50vw; width: min(90vw, 460px); }
+  .jackpot-wheel-stage .jackpot-pointer { top: -34px; transform: translateX(-50%) scale(.72); transform-origin: top center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .jackpot-winner-nail-burst img { animation: none; opacity: 0; }
 }

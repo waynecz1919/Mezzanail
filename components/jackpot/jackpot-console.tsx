@@ -18,6 +18,7 @@ import {
   Maximize2,
   Medal,
   Pencil,
+  PillBottle,
   Plus,
   Printer,
   RefreshCw,
@@ -32,6 +33,7 @@ import {
 } from "lucide-react";
 import {
   FormEvent,
+  Fragment,
   useCallback,
   useEffect,
   useMemo,
@@ -48,6 +50,13 @@ import type {
 
 type Tab = "draw" | "participants" | "prizes" | "winners" | "audit";
 type DrawResponse = { winner: WinnerResult; idempotent: boolean };
+
+const wheelNailAssets = [
+  "jackpot-nail-pink.webp",
+  "jackpot-nail-nude.webp",
+  "jackpot-nail-french.webp",
+  "jackpot-nail-rose-gold.webp",
+] as const;
 
 const redrawReasons = [
   "Winner Not Present",
@@ -435,27 +444,60 @@ export function JackpotConsole({
 
             <div className="jackpot-draw-grid">
               <div className="jackpot-wheel-panel">
-                <div className="jackpot-pointer" aria-hidden="true" />
-                <div
-                  key={spinning ? activeWinner?.resultToken || "spinning" : "idle"}
-                  className={`jackpot-wheel ${spinning ? "is-spinning" : ""}`}
-                  style={wheelStyle}
-                >
-                  <div className="jackpot-wheel-ring" aria-hidden="true" />
-                  <div className="jackpot-wheel-rim" />
-                  <div className="jackpot-wheel-separators" aria-hidden="true" />
-                  <div className="jackpot-wheel-ticks" aria-hidden="true" />
-                  {wheelNames.map((participant, index) => (
-                    <span
-                      className="jackpot-wheel-name"
-                      key={participant.id}
-                      style={{ "--name-angle": `${index * 45}deg` } as React.CSSProperties}
+                <div className="jackpot-wheel-stage">
+                  <div className="jackpot-pointer" aria-hidden="true">
+                    <span className="jackpot-pointer-handle" />
+                    <span className="jackpot-pointer-ferrule" />
+                    <span className="jackpot-pointer-brush" />
+                    <i />
+                  </div>
+                  <div className="jackpot-wheel-contact-shadow" aria-hidden="true" />
+                  <Image
+                    className="jackpot-wheel-stand"
+                    src="/campaigns/7th-anniversary/jackpot-wheel-stand.webp"
+                    alt=""
+                    width={280}
+                    height={140}
+                    unoptimized
+                    aria-hidden="true"
+                  />
+                  <div className="jackpot-wheel-frame">
+                    <div className="jackpot-wheel-ring" aria-hidden="true" />
+                    <div className="jackpot-wheel-ticks" aria-hidden="true" />
+                    <div
+                      key={spinning ? activeWinner?.resultToken || "spinning" : "idle"}
+                      className={`jackpot-wheel ${spinning ? "is-spinning" : ""}`}
+                      style={wheelStyle}
                     >
-                      {initials(participant.customer_name)}
-                    </span>
-                  ))}
-                  <div className="jackpot-wheel-center">
-                    <span>7</span><small>YEARS</small>
+                      <div className="jackpot-wheel-separators" aria-hidden="true" />
+                      {wheelNames.map((participant, index) => (
+                        <Fragment key={participant.id}>
+                          <Image
+                            className="jackpot-wheel-nail-tip"
+                            src={`/campaigns/7th-anniversary/${wheelNailAssets[index % wheelNailAssets.length]}`}
+                            alt=""
+                            width={270}
+                            height={490}
+                            unoptimized
+                            aria-hidden="true"
+                            style={{ "--name-angle": `${index * 45}deg` } as React.CSSProperties}
+                          />
+                          <span
+                            className="jackpot-wheel-name"
+                            style={{ "--name-angle": `${index * 45}deg` } as React.CSSProperties}
+                          >
+                            {initials(participant.customer_name)}
+                          </span>
+                        </Fragment>
+                      ))}
+                    </div>
+                    <div className="jackpot-wheel-rim" aria-hidden="true" />
+                    <div className="jackpot-wheel-gloss" aria-hidden="true" />
+                    <div className="jackpot-wheel-center" aria-hidden="true">
+                      <span>7</span>
+                      <small>YEARS</small>
+                      <Sparkles className="jackpot-wheel-center-sparkle" size={12} aria-hidden="true" />
+                    </div>
                   </div>
                 </div>
                 {!liveMode && (
@@ -466,7 +508,7 @@ export function JackpotConsole({
               </div>
 
               <aside className="jackpot-prize-card">
-                <p>CURRENT PRIZE{liveMode ? ` · ${completedUnits + 1} OF ${totalUnits}` : ""}</p>
+                <p><PillBottle className="jackpot-prize-eyebrow-icon" size={16} aria-hidden="true" />CURRENT PRIZE{liveMode ? ` · ${completedUnits + 1} OF ${totalUnits}` : ""}</p>
                 <div className="jackpot-prize-icon"><Gift size={30} /></div>
                 <h3>{currentPrize?.prize_name || "Set up prizes to begin"}</h3>
                 {currentPrize && (
@@ -485,7 +527,7 @@ export function JackpotConsole({
                 {isAdmin && (
                   <>
                     <button
-                      className="jackpot-spin-button"
+                      className={`jackpot-spin-button ${spinning ? "is-spinning" : ""}`}
                       type="button"
                       onClick={spin}
                       disabled={
@@ -497,7 +539,7 @@ export function JackpotConsole({
                       }
                     >
                       {spinning || busy ? <RefreshCw className="jackpot-spin-icon" size={24} /> : <Sparkles size={23} />}
-                      {spinning ? "DRAWING" : busy ? "PLEASE WAIT" : "SPIN"}
+                      {spinning ? "DRAWING…" : busy ? "PLEASE WAIT" : "SPIN"}
                     </button>
                     {!spinning && !busy && (Boolean(openDraw) || !state.campaign.participant_list_locked || !currentPrize) && (
                       <p className="jackpot-spin-help" role="status">
@@ -579,6 +621,11 @@ export function JackpotConsole({
       {activeWinner && !spinning && (
         <div className={`jackpot-winner-overlay ${liveMode ? "is-live" : ""}`} role="dialog" aria-modal="true" aria-labelledby="winner-title">
           <div className={`jackpot-winner-card ${activeWinner.isJackpot ? "is-grand" : ""}`}>
+            <div className="jackpot-winner-nail-burst" aria-hidden="true">
+              {wheelNailAssets.map((asset) => (
+                <Image key={asset} src={`/campaigns/7th-anniversary/${asset}`} alt="" width={270} height={490} unoptimized />
+              ))}
+            </div>
             <div className="jackpot-winner-medal"><Medal size={36} /></div>
             <p>CONGRATULATIONS · 恭喜中奖</p>
             <h2 id="winner-title">{liveMode ? formatLiveWinnerName(activeWinner.displayName) : activeWinner.displayName}</h2>

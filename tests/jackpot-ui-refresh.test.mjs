@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import test from "node:test";
 
 const read = (path) => readFileSync(new URL("../" + path, import.meta.url), "utf8");
@@ -58,12 +58,14 @@ test("fullscreen winner name shows first name and last initial", () => {
   assert.equal(formatLiveWinnerName("Siti"), "Siti");
 });
 
-test("silk fullscreen background matches the Owner-approved attachment", () => {
-  const asset = readFileSync(new URL("../public/campaigns/7th-anniversary/jackpot-bg-silk.jpg", import.meta.url));
+test("salon fullscreen background matches the Owner-approved attachment and replaces silk", () => {
+  const asset = readFileSync(new URL("../public/campaigns/7th-anniversary/jackpot-bg-salon.jpg", import.meta.url));
   const sha256 = createHash("sha256").update(asset).digest("hex").toUpperCase();
 
-  assert.equal(sha256, "F760A77664D46520FD75837FD7803BAAC16FC12BBAD94C819D46045450ACC68C");
-  assert.match(css, /jackpot-bg-silk\.jpg/);
+  assert.equal(sha256, "BF56EDE301C0BE6B75B9C26EBD5999D9B849A0F544C512ABA5B8EA0AE4D31625");
+  assert.match(css, /jackpot-bg-salon\.jpg/);
+  assert.doesNotMatch(css, /jackpot-bg-silk\.jpg/);
+  assert.equal(existsSync(new URL("../public/campaigns/7th-anniversary/jackpot-bg-silk.jpg", import.meta.url)), false);
 });
 
 test("fullscreen recording view includes local clock, audit marker and private winner formatting", () => {
@@ -86,7 +88,8 @@ test("wheel has the gold rim, ivory inner line, light ticks and segment separato
   assert.match(css, /\.jackpot-wheel-rim\s*\{[^}]*border:\s*1px solid #FBF8EF/s);
   assert.match(css, /\.jackpot-wheel-ticks\s*\{[^}]*#FFF9EA/s);
   assert.match(css, /\.jackpot-wheel-separators\s*\{[^}]*#C9B183[^}]*\.18deg/s);
-  assert.match(css, /\.jackpot-pointer::after\s*\{[^}]*background:\s*#343434/s);
+  assert.match(css, /\.jackpot-wheel-stage \.jackpot-pointer::after\s*\{\s*content:\s*none;/);
+  assert.match(css, /\.jackpot-pointer > i\s*\{[^}]*background:\s*#343434/s);
 });
 
 test("wheel spin rotation and timing stay unchanged", () => {
@@ -95,11 +98,49 @@ test("wheel spin rotation and timing stay unchanged", () => {
   assert.match(consoleSource, /"--jackpot-stop": `\$\{activeWinner \? winnerAngle\(activeWinner\.winnerParticipantId\) : 1800\}deg`/);
 });
 
+test("wheel center and gloss are static siblings outside the rotating face", () => {
+  assert.match(consoleSource, /<div className="jackpot-wheel-frame">[\s\S]*?<div\s+key=\{spinning \? activeWinner\?\.resultToken \|\| "spinning" : "idle"\}[\s\S]*?className=\{`jackpot-wheel/);
+  assert.match(consoleSource, /<div className="jackpot-wheel-gloss" aria-hidden="true"\s*\/>\s*<div className="jackpot-wheel-center" aria-hidden="true">[\s\S]*?jackpot-wheel-center-sparkle/);
+  assert.match(css, /\.jackpot-wheel-frame\s*\{[^}]*container-type:\s*inline-size/s);
+  assert.match(css, /\.jackpot-wheel-gloss\s*\{[^}]*position:\s*absolute[^}]*z-index:\s*3/s);
+  assert.match(css, /\.jackpot-wheel-frame \.jackpot-wheel-center\s*\{[^}]*z-index:\s*5/s);
+  assert.match(css, /\.jackpot-wheel-frame \.jackpot-wheel-name\s*\{[^}]*rotate\(var\(--name-angle\)\) translateY\(-35\.5cqi\);/s);
+});
+
+test("drawing button keeps its ink fill and uses a reduced-motion-aware gold shimmer", () => {
+  assert.match(consoleSource, /className=\{`jackpot-spin-button \$\{spinning \? "is-spinning" : ""\}`\}/);
+  assert.match(consoleSource, /spinning \? "DRAWING…"/);
+  assert.match(css, /\.jackpot-spin-button\.is-spinning:disabled[\s\S]*?background:\s*var\(--jp-ink\)/);
+  assert.match(css, /\.jackpot-spin-button\.is-spinning::after[\s\S]*?animation:\s*jackpot-button-shimmer 3\.8s ease-in-out infinite/);
+  assert.match(css, /@media \(prefers-reduced-motion: reduce\)\s*\{\s*\.jackpot-spin-button\.is-spinning::after\s*\{\s*animation:\s*none;/);
+});
+
 test("wheel initials remain visible in radial ink serif styling at control and live sizes", () => {
   assert.match(consoleSource, /wheelNames\.map\(\(participant, index\) => \([\s\S]*?\{initials\(participant\.customer_name\)\}/);
   assert.match(css, /\.jackpot-wheel-name\s*\{[^}]*color:\s*var\(--jp-ink\)[^}]*font-family:\s*var\(--font-beauty\), Georgia, serif[^}]*font-size:\s*18px/s);
   assert.match(css, /\.jackpot-live-shell \.jackpot-wheel-name\s*\{[^}]*font-size:\s*24px/s);
   assert.match(css, /@media screen and \(max-width: 760px\)\s*\{[^}]*\.jackpot-live-shell \.jackpot-wheel-name\s*\{\s*font-size:\s*18px/s);
+});
+
+test("salon wheel uses four cycling nail assets inside the rotating face", () => {
+  assert.match(consoleSource, /const wheelNailAssets = \[[\s\S]*?jackpot-nail-pink\.webp[\s\S]*?jackpot-nail-nude\.webp[\s\S]*?jackpot-nail-french\.webp[\s\S]*?jackpot-nail-rose-gold\.webp/);
+  assert.match(consoleSource, /className="jackpot-wheel-nail-tip"[\s\S]*?wheelNailAssets\[index % wheelNailAssets\.length\]/);
+  assert.match(consoleSource, /className=\{`jackpot-wheel \$\{spinning \? "is-spinning" : ""\}`\}[\s\S]*?className="jackpot-wheel-nail-tip"[\s\S]*?className="jackpot-wheel-name"/);
+  assert.match(css, /\.jackpot-wheel-frame \.jackpot-wheel\s*\{[^}]*radial-gradient\(circle, #FFFFFF 35%, #F6EFE3 100%\)/s);
+  assert.match(css, /\.jackpot-wheel-frame \.jackpot-wheel::before\s*\{[^}]*radial-gradient\(circle, #F8E8EB 35%, #EBCFD5 100%\)[^}]*mask:\s*repeating-conic-gradient/s);
+  assert.match(css, /\.jackpot-wheel-frame \.jackpot-wheel-nail-tip\s*\{[^}]*width:\s*4\.5cqi;[^}]*height:\s*8\.1667cqi;[^}]*translateY\(-44cqi\)/s);
+});
+
+test("salon stand, contact shadow, brush pointer and polish eyebrow are static", () => {
+  assert.match(consoleSource, /className="jackpot-wheel-stage"[\s\S]*?className="jackpot-pointer"[\s\S]*?jackpot-pointer-handle[\s\S]*?jackpot-pointer-ferrule[\s\S]*?jackpot-pointer-brush[\s\S]*?jackpot-wheel-contact-shadow[\s\S]*?jackpot-wheel-stand[\s\S]*?className="jackpot-wheel-frame"/);
+  assert.match(consoleSource, /<PillBottle className="jackpot-prize-eyebrow-icon"/);
+  assert.match(consoleSource, /className="jackpot-winner-nail-burst"[\s\S]*?wheelNailAssets\.map/);
+  assert.match(css, /\.jackpot-wheel-stand\s*\{[^}]*top:\s*calc\(100% - \.7cqi\)[^}]*z-index:\s*1/s);
+  assert.match(css, /\.jackpot-wheel-contact-shadow\s*\{[^}]*radial-gradient\(ellipse/s);
+  assert.match(css, /\.jackpot-root:not\(\.is-live\) \.jackpot-wheel-stand,[\s\S]*?\.jackpot-root:not\(\.is-live\) \.jackpot-wheel-contact-shadow \{ display: none;/);
+  assert.match(css, /\.jackpot-live-shell \.jackpot-wheel-panel\s*\{[^}]*top:\s*47\.5926vh;[^}]*left:\s*26\.40625vw;[^}]*width:\s*min\(55\.5556vw, 55\.5556vh\)/s);
+  assert.match(css, /\.jackpot-live-shell \.jackpot-prize-card\s*\{[^}]*top:\s*23\.1482vh;[^}]*left:\s*57\.8125vw;[^}]*width:\s*min\(32\.292vw, 620px\)[^}]*background:\s*rgba\(255, 253, 249, \.78\)[^}]*blur\(8px\)/s);
+  assert.match(css, /\.jackpot-live-progress i\s*\{[^}]*border-radius:\s*50% 50% 50% 50% \/ 62% 62% 38% 38%/s);
 });
 
 test("fullscreen stats wrap labels, use lining tabular numerals, and keep ready status spaced", () => {
