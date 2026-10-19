@@ -39,6 +39,7 @@ export function HomeHero() {
               <strong>RM{currentOffer.offerPrice}</strong>
               <span className="home-hero-offer-save">{offer.save}</span>
             </p>
+            <p className="home-hero-offer-extras">{offer.otherOffersLine}</p>
             <p className="home-hero-offer-includes">{offer.includes}</p>
             <div className="home-hero-actions">
               <HomeLink

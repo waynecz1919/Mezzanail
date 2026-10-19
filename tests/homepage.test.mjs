@@ -140,6 +140,21 @@ test("homepage uses the approved palette, typography and restrained buttons", ()
   assert.match(globals, /\.mn-button--text/);
 });
 
+test("the homepage offer card includes one compact localized line for the extra offers", () => {
+  for (const copy of [
+    "Also: Gelish Pedicure RM98 · Mani + Pedi RM138",
+    "另有：Gelish 足部 RM98 · 手足套餐 RM138",
+    "Juga: Pedikur Gelish RM98 · Mani + Pedi RM138",
+  ]) {
+    assert.ok(currentOfferConfig.includes(copy), `offer line missing: ${copy}`);
+  }
+  assert.match(homeHero, /<p className="home-hero-offer-extras">\{offer\.otherOffersLine\}<\/p>/);
+  const offerLineRule = globals.match(/\.home-hero-offer-extras\s*\{([^}]*)\}/)?.[1] ?? "";
+  assert.match(offerLineRule, /font-size:\s*12px/);
+  assert.match(offerLineRule, /color:\s*var\(--color-ink\)/);
+  assert.match(offerLineRule, /white-space:\s*nowrap/);
+});
+
 test("public eyebrow is at least 11px and mobile offer title uses separate lines", () => {
   assert.match(globals, /\.public-site \.mn-eyebrow\s*\{\s*font-size:\s*11px;/);
   assert.match(homeHero, /className="home-hero-offer-separator"/);

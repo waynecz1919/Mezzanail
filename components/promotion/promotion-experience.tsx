@@ -72,6 +72,18 @@ export function PromotionExperience() {
   const qrViewTracked = useRef(false);
   const copy = promotionCopy[language];
   const campaignDetails = promotionCampaignDetails[language];
+  const offerRows = [
+    {
+      id: currentOffer.id,
+      originalPrice: currentOffer.originalPrice,
+      offerPrice: currentOffer.offerPrice,
+      copy: currentOffer.copy[language],
+    },
+    ...currentOffer.extras.map((extra) => ({
+      ...extra,
+      copy: extra.copy[language],
+    })),
+  ];
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -256,37 +268,47 @@ export function PromotionExperience() {
                 {currentOffer.copy[language].eyebrow}
               </p>
               <h1 id="current-offer-heading">{currentOffer.copy[language].title}</h1>
-              <p className="promotion-current-offer-service">
-                {currentOffer.copy[language].service}
-              </p>
-              <p className="promotion-current-offer-price">
-                <s>RM{currentOffer.originalPrice}</s>
-                <strong>RM{currentOffer.offerPrice}</strong>
-                <span>{currentOffer.copy[language].save}</span>
-              </p>
+              <div className="promotion-current-offer-list">
+                {offerRows.map((offer) => (
+                  <article
+                    className={`promotion-current-offer-option${offer.id === currentOffer.id ? " promotion-current-offer-option--primary" : ""}`}
+                    key={offer.id}
+                  >
+                    <div className="promotion-current-offer-option-copy">
+                      <h2>{offer.copy.service}</h2>
+                      <p>{offer.copy.includes}</p>
+                    </div>
+                    <p className="promotion-current-offer-option-price">
+                      <s>RM{offer.originalPrice}</s>
+                      <strong>RM{offer.offerPrice}</strong>
+                      <span>{offer.copy.save}</span>
+                    </p>
+                    <a
+                      className="promotion-current-offer-action"
+                      href={getOfferWhatsappUrl(language, offer.id)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${currentOffer.copy[language].action}: ${offer.copy.service}`}
+                      onClick={() =>
+                        window.gtag?.("event", "whatsapp_click", {
+                          destination: "whatsapp",
+                          content_label: `${offer.id}_promotion`,
+                          language,
+                        })
+                      }
+                    >
+                      <MessageCircle size={18} aria-hidden="true" />
+                      {currentOffer.copy[language].action}
+                    </a>
+                  </article>
+                ))}
+              </div>
               <ul className="promotion-current-offer-facts">
-                <li>{currentOffer.copy[language].includes}</li>
                 <li>{currentOffer.copy[language].validity}</li>
               </ul>
               <p className="promotion-current-offer-terms">
                 {currentOffer.copy[language].terms}
               </p>
-              <a
-                className="promotion-current-offer-action"
-                href={getOfferWhatsappUrl(language)}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() =>
-                  window.gtag?.("event", "whatsapp_click", {
-                    destination: "whatsapp",
-                    content_label: `${currentOffer.id}_promotion`,
-                    language,
-                  })
-                }
-              >
-                <MessageCircle size={18} aria-hidden="true" />
-                {currentOffer.copy[language].action}
-              </a>
             </div>
           </div>
         </section>
