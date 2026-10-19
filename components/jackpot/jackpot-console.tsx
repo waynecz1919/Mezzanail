@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import {
   Check,
   ChevronRight,
@@ -90,6 +91,18 @@ function initials(name: string) {
   return parts.slice(0, 2).map((part) => part[0]?.toUpperCase()).join("") || "MN";
 }
 
+export function formatLiveWinnerName(name: string) {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length < 2) return name.trim();
+  return `${parts[0]} ${parts[parts.length - 1][0].toUpperCase()}.`;
+}
+
+function formatLocalLiveDateTime(date: Date) {
+  const day = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric" }).format(date);
+  const time = new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit" }).format(date);
+  return `${day} · ${time}`;
+}
+
 function winnerAngle(participantId: string) {
   let hash = 0;
   for (const character of participantId) hash = (hash * 31 + character.charCodeAt(0)) % 360;
@@ -110,6 +123,7 @@ export function JackpotConsole({
   const [state, setState] = useState(initialState);
   const [tab, setTab] = useState<Tab>("draw");
   const [liveMode, setLiveMode] = useState(false);
+  const [liveClock, setLiveClock] = useState<Date | null>(null);
   const [winner, setWinner] = useState<WinnerResult | null>(null);
   const [spinning, setSpinning] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -137,6 +151,14 @@ export function JackpotConsole({
       if (animationTimer.current) window.clearTimeout(animationTimer.current);
     };
   }, [state.role]);
+
+  useEffect(() => {
+    if (!liveMode) return;
+    const updateClock = () => setLiveClock(new Date());
+    updateClock();
+    const timer = window.setInterval(updateClock, 60_000);
+    return () => window.clearInterval(timer);
+  }, [liveMode]);
 
   const currentPrize = useMemo(
     () => state.prizes.find((prize) => prize.status === "active" && prize.remaining_quantity > 0)
@@ -339,9 +361,16 @@ export function JackpotConsole({
         <header className="jackpot-header">
           <div className="jackpot-shell jackpot-header-inner">
             <div className="jackpot-brand">
-              <span className="jackpot-monogram">M</span>
+              <Image
+                className="jackpot-wordmark"
+                src="/brand/mezzanail-nail-studio-wordmark.png"
+                alt="Mezzanail Nail Studio"
+                width={3456}
+                height={1152}
+                unoptimized
+              />
               <div>
-                <p>MEZZANAIL · 7TH ANNIVERSARY</p>
+                <p>7TH ANNIVERSARY</p>
                 <h1>Jackpot Control Room</h1>
               </div>
             </div>
@@ -370,11 +399,31 @@ export function JackpotConsole({
       )}
 
       <div className={liveMode ? "jackpot-live-shell" : "jackpot-shell jackpot-content"}>
+        {liveMode && (
+          <>
+            <div className="jackpot-live-frame" aria-hidden="true">
+              <i /><i /><i /><i />
+            </div>
+            <Image
+              className="jackpot-live-wordmark"
+              src="/brand/mezzanail-nail-studio-wordmark.png"
+              alt="Mezzanail Nail Studio"
+              width={3456}
+              height={1152}
+              unoptimized
+            />
+            <div className="jackpot-live-meta">
+              <span>LIVE DRAW</span>
+              <time dateTime={liveClock?.toISOString()}>{liveClock ? formatLocalLiveDateTime(liveClock) : ""}</time>
+              <small>DRAW {completedUnits + 1} · AUDIT RECORDED</small>
+            </div>
+          </>
+        )}
         {(tab === "draw" || liveMode) && (
           <section className="jackpot-stage" aria-labelledby="jackpot-title">
             <header className="jackpot-stage-header">
               <div>
-                <p>MEZZANAIL 7TH ANNIVERSARY</p>
+                <p>{liveMode ? "7TH ANNIVERSARY · FINAL LUCKY DRAW" : "MEZZANAIL 7TH ANNIVERSARY"}</p>
                 <h2 id="jackpot-title">{currentPrize?.is_jackpot ? "Final Jackpot Draw" : "Final Celebration Lucky Wheel"}</h2>
               </div>
               {!liveMode && (
@@ -392,7 +441,10 @@ export function JackpotConsole({
                   className={`jackpot-wheel ${spinning ? "is-spinning" : ""}`}
                   style={wheelStyle}
                 >
+                  <div className="jackpot-wheel-ring" aria-hidden="true" />
                   <div className="jackpot-wheel-rim" />
+                  <div className="jackpot-wheel-separators" aria-hidden="true" />
+                  <div className="jackpot-wheel-ticks" aria-hidden="true" />
                   {wheelNames.map((participant, index) => (
                     <span
                       className="jackpot-wheel-name"
@@ -406,50 +458,88 @@ export function JackpotConsole({
                     <span>7</span><small>YEARS</small>
                   </div>
                 </div>
-                <div className="jackpot-drawing-state" aria-live="polite">
-                  {spinning ? "DRAWING · SECURE RESULT RECEIVED" : openDraw ? "WINNER AWAITING CONFIRMATION" : "READY FOR THE NEXT DRAW"}
-                </div>
+                {!liveMode && (
+                  <div className="jackpot-drawing-state" aria-live="polite">
+                    {spinning ? "DRAWING · SECURE RESULT RECEIVED" : openDraw ? "WINNER AWAITING CONFIRMATION" : "READY FOR THE NEXT DRAW"}
+                  </div>
+                )}
               </div>
 
               <aside className="jackpot-prize-card">
-                <p>CURRENT PRIZE</p>
+                <p>CURRENT PRIZE{liveMode ? ` · ${completedUnits + 1} OF ${totalUnits}` : ""}</p>
                 <div className="jackpot-prize-icon"><Gift size={30} /></div>
                 <h3>{currentPrize?.prize_name || "Set up prizes to begin"}</h3>
-                <span>{currentPrize?.is_jackpot ? "JACKPOT GRAND PRIZE" : currentPrize?.prize_description || "Anniversary draw prize"}</span>
+                {currentPrize && (
+                  currentPrize.is_jackpot ? (
+                    <span>JACKPOT GRAND PRIZE</span>
+                  ) : currentPrize.prize_description === currentPrize.prize_name ? null : (
+                    <span>{currentPrize.prize_description || "Anniversary draw prize"}</span>
+                  )
+                )}
                 <dl>
-                  <div><dt>Remaining</dt><dd>{currentPrize?.remaining_quantity ?? 0}</dd></div>
-                  <div><dt>Participants</dt><dd>{state.summary.eligibleParticipants}</dd></div>
-                  <div><dt>Eligible Tickets</dt><dd>{state.summary.remainingTickets}</dd></div>
-                  <div><dt>Progress</dt><dd>{completedUnits}/{totalUnits}</dd></div>
+                  <div><dd>{currentPrize?.remaining_quantity ?? 0}</dd><dt>Remaining</dt></div>
+                  <div><dd>{state.summary.eligibleParticipants}</dd><dt>Participants</dt></div>
+                  <div><dd>{state.summary.remainingTickets}</dd><dt>{liveMode ? "Tickets" : "Eligible Tickets"}</dt></div>
+                  <div><dd>{completedUnits}/{totalUnits}</dd><dt>Progress</dt></div>
                 </dl>
                 {isAdmin && (
-                  <button
-                    className="jackpot-spin-button"
-                    type="button"
-                    onClick={spin}
-                    disabled={
-                      spinning
-                      || busy
-                      || Boolean(openDraw)
-                      || !state.campaign.participant_list_locked
-                      || !currentPrize
-                    }
-                  >
-                    {spinning || busy ? <RefreshCw className="jackpot-spin-icon" size={24} /> : <Sparkles size={23} />}
-                    {spinning ? "DRAWING" : busy ? "PLEASE WAIT" : "SPIN"}
-                  </button>
+                  <>
+                    <button
+                      className="jackpot-spin-button"
+                      type="button"
+                      onClick={spin}
+                      disabled={
+                        spinning
+                        || busy
+                        || Boolean(openDraw)
+                        || !state.campaign.participant_list_locked
+                        || !currentPrize
+                      }
+                    >
+                      {spinning || busy ? <RefreshCw className="jackpot-spin-icon" size={24} /> : <Sparkles size={23} />}
+                      {spinning ? "DRAWING" : busy ? "PLEASE WAIT" : "SPIN"}
+                    </button>
+                    {!spinning && !busy && (Boolean(openDraw) || !state.campaign.participant_list_locked || !currentPrize) && (
+                      <p className="jackpot-spin-help" role="status">
+                        {openDraw
+                          ? "Confirm or redraw the current winner first"
+                          : !state.campaign.participant_list_locked
+                            ? "Lock the participant list to enable SPIN"
+                            : "Add a prize to begin"}
+                      </p>
+                    )}
+                  </>
                 )}
                 {!isAdmin && <p className="jackpot-view-only"><ShieldCheck size={16} /> Staff live view · controls locked</p>}
+                {liveMode && (
+                  <>
+                    <p className="jackpot-live-ready" aria-live="polite">
+                      {spinning ? "DRAWING · SECURE RESULT RECEIVED" : openDraw ? "WINNER AWAITING CONFIRMATION" : "READY FOR THE NEXT DRAW"}
+                    </p>
+                    <p className="jackpot-live-fairness">
+                      Each eligible ticket has an equal chance. Results are generated securely and recorded.<br />
+                      每一张合资格抽奖票都拥有同等中奖机会。结果由系统安全产生并完整记录。
+                    </p>
+                    <div className="jackpot-live-progress" aria-label={`${completedUnits} of ${totalUnits} prizes drawn`}>
+                      <div>{Array.from({ length: totalUnits }, (_, index) => <i className={index < completedUnits ? "is-done" : ""} key={index} />)}</div>
+                      <span>{completedUnits} / {totalUnits} PRIZES DRAWN</span>
+                    </div>
+                  </>
+                )}
               </aside>
             </div>
 
-            <div className="jackpot-progress">
-              <span style={{ width: `${totalUnits ? (completedUnits / totalUnits) * 100 : 0}%` }} />
-            </div>
-            <p className="jackpot-fairness">
-              Each eligible ticket has an equal chance of being selected. Winners are generated securely by the system and recorded for audit.<br />
-              每一张合资格抽奖票都拥有同等中奖机会。中奖结果由系统安全随机产生，并保留完整记录。
-            </p>
+            {!liveMode && (
+              <>
+                <div className="jackpot-progress">
+                  <span style={{ width: `${totalUnits ? (completedUnits / totalUnits) * 100 : 0}%` }} />
+                </div>
+                <p className="jackpot-fairness">
+                  Each eligible ticket has an equal chance of being selected. Winners are generated securely by the system and recorded for audit.<br />
+                  每一张合资格抽奖票都拥有同等中奖机会。中奖结果由系统安全随机产生，并保留完整记录。
+                </p>
+              </>
+            )}
           </section>
         )}
 
@@ -487,15 +577,15 @@ export function JackpotConsole({
       )}
 
       {activeWinner && !spinning && (
-        <div className="jackpot-winner-overlay" role="dialog" aria-modal="true" aria-labelledby="winner-title">
+        <div className={`jackpot-winner-overlay ${liveMode ? "is-live" : ""}`} role="dialog" aria-modal="true" aria-labelledby="winner-title">
           <div className={`jackpot-winner-card ${activeWinner.isJackpot ? "is-grand" : ""}`}>
-            <div className="jackpot-winner-medal"><Medal size={34} /></div>
-            <p>CONGRATULATIONS</p>
-            <h2 id="winner-title">{activeWinner.displayName}</h2>
+            <div className="jackpot-winner-medal"><Medal size={36} /></div>
+            <p>CONGRATULATIONS · 恭喜中奖</p>
+            <h2 id="winner-title">{liveMode ? formatLiveWinnerName(activeWinner.displayName) : activeWinner.displayName}</h2>
             <dl>
+              <div><dt>Prize</dt><dd>{activeWinner.prizeName}</dd></div>
               <div><dt>Member ID</dt><dd>{activeWinner.memberIdMasked}</dd></div>
               <div><dt>Phone</dt><dd>****{activeWinner.phoneLast4}</dd></div>
-              <div><dt>Prize</dt><dd>{activeWinner.prizeName}</dd></div>
             </dl>
             {isAdmin ? (
               <div className="jackpot-winner-actions">
