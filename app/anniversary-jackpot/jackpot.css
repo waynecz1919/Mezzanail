@@ -485,7 +485,7 @@ body:has(.jackpot-root) .analytics-consent { display: none !important; }
 }
 
 @media screen {
-  .jackpot-live-wordmark { width: auto; height: clamp(44px, 7.5vh, 76px); aspect-ratio: 3 / 1; object-fit: contain; object-position: center; }
+  .jackpot-live-wordmark { width: auto; height: clamp(52px, 9vh, 84px); aspect-ratio: 3 / 1; object-fit: contain; object-position: center; }
   .jackpot-live-shell .jackpot-prize-card {
     display: flex;
     flex-direction: column;
@@ -986,7 +986,7 @@ body:has(.jackpot-root.is-live) {
   .jackpot-live-shell .jackpot-live-wordmark {
     top: clamp(20px, 3.2vh, 38px);
     width: auto;
-    height: clamp(44px, 7.5vh, 76px);
+    height: clamp(52px, 9vh, 84px);
     aspect-ratio: 3 / 1;
     object-fit: contain;
     object-position: center;
@@ -1000,7 +1000,7 @@ body:has(.jackpot-root.is-live) {
   }
   .jackpot-live-shell .jackpot-prize-card {
     box-sizing: border-box;
-    top: 47.5926vh;
+    top: calc(57.15vh - 4.5px);
     height: auto;
     min-height: 0;
     justify-content: flex-start;
@@ -1047,6 +1047,14 @@ body:has(.jackpot-root.is-live) {
   .jackpot-live-progress > div { gap: clamp(4px, .52vw, 10px); }
   .jackpot-live-progress i { width: clamp(7px, .52vw, 10px); height: clamp(9px, 1.55vh, 18px); }
   .jackpot-live-progress > span { font-size: clamp(12px, 1.8vh, 14px); }
+}
+
+@media screen and (min-width: 761px) and (max-height: 800px) {
+  .jackpot-live-shell .jackpot-prize-card { top: calc(58vh - 4.5px); }
+}
+
+@media screen and (min-width: 761px) and (min-height: 1077px) {
+  .jackpot-live-shell .jackpot-prize-card { top: calc(50vh + 72.5px); }
 }
 
 @media screen and (max-width: 760px) {
@@ -1145,17 +1153,21 @@ body:has(.jackpot-root.is-live) { width: 100%; max-width: 100%; overflow-x: clip
   height: 2.15cqi;
   box-shadow: 0 0 6px 2px rgba(255, 252, 232, .98), 0 0 15px 5px rgba(255, 226, 166, .9), inset 0 1px 3px #FFFDF4;
 }
-.jackpot-wheel-medallion {
+.jackpot-wheel-center-badge-box {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  inset: 4.5cqi;
   z-index: 8;
-  width: 42%;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+.jackpot-wheel-center-badge {
+  display: block;
+  width: 52%;
   height: auto;
   aspect-ratio: 1;
   object-fit: contain;
   filter: drop-shadow(0 3px 5px rgba(49, 40, 28, .38));
-  transform: translate(-50%, -50%);
 }
 .jackpot-wheel-frame .jackpot-wheel-nail-tip {
   transform: translate(-50%, -50%) rotate(var(--name-angle)) translateY(-41.3cqi);

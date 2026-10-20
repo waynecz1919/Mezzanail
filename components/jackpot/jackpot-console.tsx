@@ -694,14 +694,16 @@ export function JackpotConsole({
                     </div>
                     <div className="jackpot-wheel-rim" aria-hidden="true" />
                     <div className="jackpot-wheel-gloss" aria-hidden="true" />
-                    <Image
-                      className="jackpot-wheel-medallion"
-                      src="/campaigns/7th-anniversary/jackpot-medallion.svg"
-                      alt="Mezzanail 7th anniversary medallion"
-                      width={300}
-                      height={300}
-                      unoptimized
-                    />
+                    <div className="jackpot-wheel-center-badge-box">
+                      <Image
+                        className="jackpot-wheel-center-badge"
+                        src="/campaigns/7th-anniversary/jackpot-center-badge.webp"
+                        alt="Mezzanail 7th Anniversary emblem"
+                        width={800}
+                        height={800}
+                        unoptimized
+                      />
+                    </div>
                   </div>
                 </div>
                 {!liveMode && (

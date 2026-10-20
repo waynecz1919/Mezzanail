@@ -83,7 +83,7 @@ test("wordmarks preserve the full 3:1 logo in fullscreen", () => {
   assert.match(css, /\.jackpot-wordmark\s*\{\s*width:\s*212px/);
   const liveWordmark = cssRules(".jackpot-live-shell .jackpot-live-wordmark");
   assert.match(liveWordmark, /width:\s*auto/);
-  assert.match(liveWordmark, /height:\s*clamp\(44px, 7\.5vh, 76px\)/);
+  assert.match(liveWordmark, /height:\s*clamp\(52px, 9vh, 84px\)/);
   assert.match(liveWordmark, /aspect-ratio:\s*3\s*\/\s*1/);
   assert.match(liveWordmark, /object-fit:\s*contain/);
   assert.match(css, /filter:\s*brightness\(0\) invert\(\.2\)/);
@@ -108,12 +108,19 @@ test("wheel spin rotation and timing stay unchanged", () => {
 
 test("anniversary medallion, gloss, rim and bulbs are static siblings outside the rotating face", () => {
   assert.match(consoleSource, /<div className="jackpot-wheel-frame">[\s\S]*?<div\s+key=\{spinning \? activeWinner\?\.resultToken \|\| "spinning" : "idle"\}[\s\S]*?className=\{`jackpot-wheel/);
-  assert.match(consoleSource, /<div className="jackpot-wheel-gloss" aria-hidden="true"\s*\/>\s*<Image\s+className="jackpot-wheel-medallion"\s+src="\/campaigns\/7th-anniversary\/jackpot-medallion\.svg"\s+alt="Mezzanail 7th anniversary medallion"/);
+  assert.match(consoleSource, /<div className="jackpot-wheel-gloss" aria-hidden="true"\s*\/>\s*<div className="jackpot-wheel-center-badge-box">\s*<Image\s+className="jackpot-wheel-center-badge"\s+src="\/campaigns\/7th-anniversary\/jackpot-center-badge\.webp"\s+alt="Mezzanail 7th Anniversary emblem"/);
   assert.match(consoleSource, /className="jackpot-wheel-bulbs" aria-hidden="true">\s*\{Array\.from\(\{ length: 24 \}/);
   assert.match(consoleSource, /jackpot-wheel-bulbs[\s\S]*?className=\{`jackpot-wheel/);
   assert.match(css, /\.jackpot-wheel-frame\s*\{[^}]*container-type:\s*inline-size/s);
   assert.match(css, /\.jackpot-wheel-gloss\s*\{[^}]*position:\s*absolute[^}]*z-index:\s*3/s);
-  assert.match(css, /\.jackpot-wheel-medallion\s*\{[^}]*z-index:\s*8[^}]*width:\s*42%[^}]*transform:\s*translate\(-50%, -50%\)/s);
+  assert.match(css, /\.jackpot-wheel-center-badge-box\s*\{[^}]*inset:\s*4\.5cqi[^}]*z-index:\s*8[^}]*display:\s*grid/s);
+  assert.match(css, /\.jackpot-wheel-center-badge\s*\{[^}]*width:\s*52%[^}]*aspect-ratio:\s*1[^}]*object-fit:\s*contain/s);
+  assert.doesNotMatch(css, /\.jackpot-wheel-center-badge\s*\{[^}]*rotate\(/s);
+  const faceStart = consoleSource.indexOf("className={`jackpot-wheel");
+  const rimStart = consoleSource.indexOf('<div className="jackpot-wheel-rim"', faceStart);
+  const faceEnd = consoleSource.lastIndexOf("</div>", rimStart);
+  const badgeStart = consoleSource.indexOf('<div className="jackpot-wheel-center-badge-box">', rimStart);
+  assert.ok(faceStart >= 0 && faceEnd > faceStart && badgeStart > faceEnd, "the badge must be a static sibling after the rotating face");
   assert.match(css, /\.jackpot-wheel-bulbs span:nth-child\(3n\)\s*\{[^}]*width:\s*2\.15cqi/);
   assert.match(css, /\.jackpot-wheel-frame \.jackpot-wheel-name\s*\{[^}]*rotate\(var\(--name-angle\)\) translateY\(-30cqi\);/s);
 });
@@ -234,7 +241,7 @@ test("round six synchronizes browser fullscreen with live mode and fits the requ
   assert.match(css, /\.jackpot-live-wordmark\s*\{\s*top:\s*clamp\(20px, 3\.2vh, 38px\)/);
   assert.match(css, /\.jackpot-root\.is-live\s*\{\s*height:\s*100dvh;\s*min-height:\s*0;\s*overflow:\s*hidden;/);
   const prizeCard = cssRules(".jackpot-live-shell .jackpot-prize-card");
-  assert.match(prizeCard, /top:\s*47\.5926vh/);
+  assert.match(prizeCard, /top:\s*calc\(57\.15vh - 4\.5px\)/);
   assert.match(prizeCard, /height:\s*auto/);
   assert.match(prizeCard, /min-height:\s*0/);
   assert.match(prizeCard, /transform:\s*translateY\(-50%\)/);
@@ -247,17 +254,46 @@ test("round seven keeps fullscreen branding clear and prize card content-sized",
   const prizeCard = cssRules(".jackpot-live-shell .jackpot-prize-card");
   assert.match(liveWordmark, /object-fit:\s*contain/);
   assert.match(liveWordmark, /aspect-ratio:\s*3\s*\/\s*1/);
-  assert.match(liveWordmark, /height:\s*clamp\(44px, 7\.5vh, 76px\)/);
+  assert.match(liveWordmark, /height:\s*clamp\(52px, 9vh, 84px\)/);
   assert.match(prizeCard, /height:\s*auto/);
-  assert.match(prizeCard, /top:\s*47\.5926vh/);
+  assert.match(prizeCard, /top:\s*calc\(57\.15vh - 4\.5px\)/);
   assert.match(prizeCard, /transform:\s*translateY\(-50%\)/);
 
   for (const height of [585, 636, 768]) {
     const logoTop = Math.max(20, Math.min(height * 0.032, 38));
-    const logoHeight = Math.max(44, Math.min(height * 0.075, 76));
+    const logoHeight = Math.max(52, Math.min(height * 0.09, 84));
     const kickerTop = height <= 800 ? height * 0.16 + 10 : height * 0.143 + 10;
     assert.ok(logoTop + logoHeight < kickerTop, `wordmark overlaps the kicker at ${height}px`);
   }
+});
+
+test("round eight positions the prize card below the header band and uses the approved centre badge", () => {
+  const prizeCard = cssRules(".jackpot-live-shell .jackpot-prize-card");
+  const liveWordmark = cssRules(".jackpot-live-shell .jackpot-live-wordmark");
+  const stageHeader = cssRules(".jackpot-live-shell .jackpot-stage-header");
+  assert.match(prizeCard, /height:\s*auto/);
+  assert.match(prizeCard, /top:\s*calc\(57\.15vh - 4\.5px\)/);
+  assert.match(css, /@media screen and \(min-width: 761px\) and \(max-height: 800px\)\s*\{\s*\.jackpot-live-shell \.jackpot-prize-card \{ top: calc\(58vh - 4\.5px\); \}/);
+  assert.match(stageHeader, /top:\s*clamp\(78px, calc\(14\.3vh \+ 10px\), 164px\)/);
+  assert.match(stageHeader, /top:\s*calc\(16vh \+ 10px\)/);
+  assert.match(liveWordmark, /height:\s*clamp\(52px, 9vh, 84px\)/);
+  assert.match(liveWordmark, /aspect-ratio:\s*3\s*\/\s*1/);
+  assert.match(liveWordmark, /object-fit:\s*contain/);
+
+  for (const height of [589, 636, 768]) {
+    const headerBottom = height * 0.16 + 27;
+    const contentTop = headerBottom + 16;
+    const contentBottom = height - 52;
+    const cardCenter = height * 0.58 - 4.5;
+    assert.ok(cardCenter > contentTop && cardCenter < contentBottom, `card center leaves no room below the header at ${height}px`);
+  }
+
+  const badge = readFileSync(new URL("../public/campaigns/7th-anniversary/jackpot-center-badge.webp", import.meta.url));
+  const sha256 = createHash("sha256").update(badge).digest("hex").toUpperCase();
+  assert.equal(sha256, "08D09D0B80555759F2376ABBE54D01F0D8BC15BF8F5091B09A10AAF04155D298");
+  assert.match(consoleSource, /<div className="jackpot-wheel-center-badge-box">\s*<Image\s+className="jackpot-wheel-center-badge"\s+src="\/campaigns\/7th-anniversary\/jackpot-center-badge\.webp"/);
+  assert.doesNotMatch(consoleSource, /jackpot-wheel-center-badge[\s\S]{0,500}className=\{`jackpot-wheel/);
+  assert.doesNotMatch(consoleSource, /jackpot-wheel-center-badge[\s\S]*?jackpot-wheel-center"/);
 });
 
 test("round five Web Audio sounds have an accessible remembered toggle and no campaign audio files", () => {
