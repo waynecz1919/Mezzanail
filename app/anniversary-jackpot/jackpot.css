@@ -485,10 +485,9 @@ body:has(.jackpot-root) .analytics-consent { display: none !important; }
 }
 
 @media screen {
-  .jackpot-live-wordmark { width: 339px; height: 84px; object-fit: cover; object-position: center 38%; }
+  .jackpot-live-wordmark { width: auto; height: clamp(44px, 7.5vh, 76px); aspect-ratio: 3 / 1; object-fit: contain; object-position: center; }
   .jackpot-live-shell .jackpot-prize-card {
     display: flex;
-    min-height: clamp(460px, 59vh, 640px);
     flex-direction: column;
     padding: clamp(20px, 4.4vh, 44px) clamp(18px, 2.3vw, 44px) clamp(18px, 3.9vh, 40px);
   }
@@ -986,7 +985,11 @@ body:has(.jackpot-root.is-live) {
 @media screen and (min-width: 761px) {
   .jackpot-live-shell .jackpot-live-wordmark {
     top: clamp(20px, 3.2vh, 38px);
-    height: clamp(32px, 5.2vh, 56px);
+    width: auto;
+    height: clamp(44px, 7.5vh, 76px);
+    aspect-ratio: 3 / 1;
+    object-fit: contain;
+    object-position: center;
   }
   .jackpot-live-shell .jackpot-stage-header {
     top: clamp(78px, calc(14.3vh + 10px), 164px);
@@ -997,11 +1000,12 @@ body:has(.jackpot-root.is-live) {
   }
   .jackpot-live-shell .jackpot-prize-card {
     box-sizing: border-box;
-    top: 23.1482vh;
-    height: min(640px, calc(100dvh - 23.1482vh - clamp(14px, 2vh, 24px)));
+    top: 47.5926vh;
+    height: auto;
     min-height: 0;
     justify-content: flex-start;
-    overflow: hidden;
+    overflow: visible;
+    transform: translateY(-50%);
     padding: clamp(12px, 3.2vh, 34px) clamp(16px, 2.3vw, 44px) clamp(12px, 2.8vh, 30px);
   }
   .jackpot-live-shell .jackpot-prize-card h3 {

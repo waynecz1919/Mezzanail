@@ -6,6 +6,10 @@ import test from "node:test";
 const read = (path) => readFileSync(new URL("../" + path, import.meta.url), "utf8");
 const css = read("app/anniversary-jackpot/jackpot.css");
 const consoleSource = read("components/jackpot/jackpot-console.tsx");
+const cssRules = (selector) => [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)]
+  .filter(([, header]) => header.trim() === selector)
+  .map(([, , declarations]) => declarations)
+  .join("\n");
 
 test("jackpot palette contains none of the retired rose and wine colours", () => {
   const retiredColours = [
@@ -75,9 +79,13 @@ test("fullscreen recording view includes local clock, audit marker and private w
   assert.match(consoleSource, /READY FOR THE NEXT DRAW/);
 });
 
-test("wordmarks scale to the reviewed control-room and fullscreen widths", () => {
+test("wordmarks preserve the full 3:1 logo in fullscreen", () => {
   assert.match(css, /\.jackpot-wordmark\s*\{\s*width:\s*212px/);
-  assert.match(css, /\.jackpot-live-wordmark\s*\{\s*width:\s*339px/);
+  const liveWordmark = cssRules(".jackpot-live-shell .jackpot-live-wordmark");
+  assert.match(liveWordmark, /width:\s*auto/);
+  assert.match(liveWordmark, /height:\s*clamp\(44px, 7\.5vh, 76px\)/);
+  assert.match(liveWordmark, /aspect-ratio:\s*3\s*\/\s*1/);
+  assert.match(liveWordmark, /object-fit:\s*contain/);
   assert.match(css, /filter:\s*brightness\(0\) invert\(\.2\)/);
 });
 
@@ -111,8 +119,8 @@ test("anniversary medallion, gloss, rim and bulbs are static siblings outside th
 });
 
 test("anniversary medallion matches the Owner-provided SVG exactly", () => {
-  const asset = readFileSync(new URL("../public/campaigns/7th-anniversary/jackpot-medallion.svg", import.meta.url));
-  const sha256 = createHash("sha256").update(asset).digest("hex").toUpperCase();
+  const asset = readFileSync(new URL("../public/campaigns/7th-anniversary/jackpot-medallion.svg", import.meta.url), "utf8");
+  const sha256 = createHash("sha256").update(asset.replace(/\r\n/g, "\n")).digest("hex").toUpperCase();
 
   assert.equal(sha256, "019CA4E01C4611BCF6C439F6039D7BE3BFB19DF810AB1ABC3E0084E09DEA6BC8");
   assert.doesNotMatch(consoleSource, /jackpot-wheel-center" aria-hidden/);
@@ -209,7 +217,6 @@ test("fairness copy is readable and the ready status keeps tracked caps", () => 
 });
 
 test("fullscreen placard fits short viewports and mobile control title stays on one line", () => {
-  assert.match(css, /min-height:\s*clamp\(460px, 59vh, 640px\)/);
   assert.match(css, /\.jackpot-live-shell \.jackpot-prize-card h3\s*\{[^}]*font-size:\s*clamp\(36px, min\(5\.6vh, 3\.2vw\), 66px\)/s);
   assert.match(css, /\.jackpot-live-progress\s*\{[^}]*margin-top:\s*clamp\(8px, 1\.85vh, 20px\)/s);
   assert.match(css, /@media screen and \(max-height: 800px\) and \(min-height: 761px\) and \(min-width: 761px\)\s*\{[^}]*jackpot-stage-header \{ top: 16vh/s);
@@ -226,7 +233,31 @@ test("round six synchronizes browser fullscreen with live mode and fits the requ
   assert.match(consoleSource, /aria-label="Exit Full Screen"/);
   assert.match(css, /\.jackpot-live-wordmark\s*\{\s*top:\s*clamp\(20px, 3\.2vh, 38px\)/);
   assert.match(css, /\.jackpot-root\.is-live\s*\{\s*height:\s*100dvh;\s*min-height:\s*0;\s*overflow:\s*hidden;/);
-  assert.match(css, /\.jackpot-live-shell \.jackpot-prize-card\s*\{\s*box-sizing:\s*border-box;\s*top:\s*23\.1482vh;\s*height:\s*min\(640px, calc\(100dvh - 23\.1482vh - clamp\(14px, 2vh, 24px\)\)\)/);
+  const prizeCard = cssRules(".jackpot-live-shell .jackpot-prize-card");
+  assert.match(prizeCard, /top:\s*47\.5926vh/);
+  assert.match(prizeCard, /height:\s*auto/);
+  assert.match(prizeCard, /min-height:\s*0/);
+  assert.match(prizeCard, /transform:\s*translateY\(-50%\)/);
+  assert.match(prizeCard, /overflow:\s*visible/);
+  assert.doesNotMatch(css, /min-height:\s*clamp\(460px, 59vh, 640px\)/);
+});
+
+test("round seven keeps fullscreen branding clear and prize card content-sized", () => {
+  const liveWordmark = cssRules(".jackpot-live-shell .jackpot-live-wordmark");
+  const prizeCard = cssRules(".jackpot-live-shell .jackpot-prize-card");
+  assert.match(liveWordmark, /object-fit:\s*contain/);
+  assert.match(liveWordmark, /aspect-ratio:\s*3\s*\/\s*1/);
+  assert.match(liveWordmark, /height:\s*clamp\(44px, 7\.5vh, 76px\)/);
+  assert.match(prizeCard, /height:\s*auto/);
+  assert.match(prizeCard, /top:\s*47\.5926vh/);
+  assert.match(prizeCard, /transform:\s*translateY\(-50%\)/);
+
+  for (const height of [585, 636, 768]) {
+    const logoTop = Math.max(20, Math.min(height * 0.032, 38));
+    const logoHeight = Math.max(44, Math.min(height * 0.075, 76));
+    const kickerTop = height <= 800 ? height * 0.16 + 10 : height * 0.143 + 10;
+    assert.ok(logoTop + logoHeight < kickerTop, `wordmark overlaps the kicker at ${height}px`);
+  }
 });
 
 test("round five Web Audio sounds have an accessible remembered toggle and no campaign audio files", () => {
