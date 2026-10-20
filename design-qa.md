@@ -60,6 +60,18 @@ final result: passed
 
 ---
 
+# Jackpot UI Review Round 3 QA Status
+
+- Source reference: `C:\Users\mezza\Downloads\jackpot-salon-closeup.png`.
+- Automated checks passed for the supplied medallion asset hash, static center placement, 24 static rim bulbs, the unchanged wheel rotation rule, all four cycling nail assets, and the overflow/layout CSS rules.
+- `pnpm test`: 171 passed; `pnpm lint` and `pnpm typecheck` passed.
+- Browser screenshots and live viewport measurements were not captured. The local preview remained blocked by the browser security policy, and the Owner chose to continue without browser screenshots.
+- `document.documentElement.scrollWidth === window.innerWidth` at 1920×1080 and 1366×768 is therefore unverified; no visual comparison is claimed for this round.
+
+final result: blocked
+
+---
+
 # Anniversary Jackpot Campaign Palette — Design QA
 
 **Source visual truth**
@@ -171,5 +183,55 @@ None for this preview round.
 ## Follow-up polish
 
 No P3 item is required before stakeholder review.
+
+final result: passed
+
+---
+
+# Jackpot Salon Wheel Visual QA
+
+## Source and implementation
+
+- Full-view source: `C:\Users\mezza\Downloads\jackpot-salon-live.png` (SHA-256 `7122595d57b5da352474d97199468ec96df802df477fc8f44193f4a069ee95a9`, 1920×1080).
+- Wheel close-up source: `C:\Users\mezza\Downloads\jackpot-salon-closeup.png` (680×750).
+- Full-view implementation: `C:\Users\mezza\Downloads\jackpot-ui\addendum2-fullscreen-1920x1080.jpg` (1920×1080 output, 1920×1080 CSS viewport, DPR 1).
+- Focused implementation comparison: crop at `(167,154)` with size 680×750 from the full-view implementation; compared with the 680×750 close-up source.
+- Side-by-side evidence: `C:\Users\mezza\Downloads\jackpot-ui\qa-side-by-side-live-1920.png` and `C:\Users\mezza\Downloads\jackpot-ui\qa-side-by-side-wheel-closeup.png`.
+- State: local jackpot preview, idle draw for full-view and close-up comparisons; synthetic local preview data only. The source screenshot contains a different draw state and participant/prize values, so only layout, styling, and assets were compared.
+
+## Comparison
+
+- Background: the committed salon background matches the approved source asset exactly (SHA-256 `bf56ede301c0be6b75b9c26ebd5999d9b849a0f544c512aba5b8ea0ae4d31625`). Silk background is removed from the branch.
+- Full view at 1920×1080: wheel stage is 600×600 at `(207,214)`, giving centre `(507,514)`; its stand reaches the podium near y=855. The prize panel is at `(1110,250)`, 620px wide, and ends at y=887. All content fits the 1920×1080 page without scrolling.
+- Responsive fit at 1366×768: wheel stage is 426.7px; the prize panel ends at y=700.5; document size remains 1366×768. The progress markers and all panel content remain visible.
+- Wheel close-up: radial initials, gold rim and ticks, ivory/blush radial segments, four cycling nail finishes, thin separators, static gloss, static pointer, and upright centre medallion match the written target. The centre treatment intentionally remains the requested ink disc, gold ring, “7”, “YEARS”, and sparkle rather than reproducing the source image’s additional medallion lettering.
+- Typography: display headings use the existing beauty serif; wheel initials use the radial serif treatment. Stat numerals use lining and tabular figures. The smaller labels and fairness copy retain the existing sans-serif and muted treatment.
+- Spacing and layout: the written pixel positions and sizes in the Owner’s addendum are followed. They intentionally take precedence over approximate positions inferred from the full-view screenshot.
+- Color and contrast: ink `#343434` on placard `#FFFDF9` is 12.25:1; gold text `#7A6338` on `#FFFDF9` is 5.63:1; muted `#6B655E` on `#FFFDF9` is 5.67:1; white on the ink button is 12.45:1. Wheel initials `#3A3632` on the blush and ivory segment colors are 10.11:1 and 10.48:1.
+- Image quality: the background is 1920×1080. Nail art is four 270×490 WebP assets (pink 19,364 bytes; nude 18,980; French 15,048; rose-gold 44,074). The 280×140 stand asset is 8,884 bytes. The source background supplies the salon props; the UI does not add polish-bottle illustrations on the podium.
+- Copy: the local fixture’s prize and counts differ from the sample screenshot by design. The visible live-screen labels and the 18px space before “READY FOR THE NEXT DRAW” remain readable.
+
+## Findings and iteration history
+
+- [P2, fixed] The first desktop control-room comparison showed the added stand and contact shadow running into the “READY FOR THE NEXT DRAW” caption. The stand and shadow are now hidden outside Full Screen mode. The post-fix 1440px full-page and 390px viewport captures show the caption unobstructed.
+- No remaining P0, P1, or P2 visual findings.
+- Intentional mock difference: the local winner fixture uses its seeded display name rather than the example name in the earlier screenshot request. The winner card format is first name plus last initial; member and phone fields remain masked in screenshots.
+
+## Browser verification
+
+- Screenshots: `C:\Users\mezza\Downloads\jackpot-ui\addendum2-fullscreen-1920x1080.jpg`, `...\addendum2-fullscreen-1366x768.jpg`, `...\addendum2-mid-spin-1920x1080.jpg`, `...\addendum2-winner-1920x1080.jpg`, `...\addendum2-control-room-1440x900.jpg`, `...\addendum2-control-room-1440-full-page.jpg`, `...\addendum2-control-room-390x844.jpg`, and `...\addendum2-winner-390x844.jpg`.
+- Mid-spin proof: the wheel face is rotating while the centre transform remains a translation only; the button reads “DRAWING…” and remains disabled. The local preview spin generated zero requests to `/api/anniversary-jackpot/*`.
+- Analytics: no consent banner is present on the jackpot page and no Google Analytics or Google Tag Manager script is loaded (0 matching scripts).
+- Browser console: 0 errors observed.
+- Full-view and focused comparison used images with matching pixel dimensions and DPR 1. The control-room 1440×900 viewport and 390×844 mobile viewport were separately captured after the layout fix.
+
+## Implementation checklist
+
+- [x] Exact salon background installed; silk asset removed.
+- [x] Static centre, gloss, pointer, and stand; only the specified wheel face elements rotate.
+- [x] Full-screen fit checked at 1920×1080 and 1366×768.
+- [x] Control-room layout checked at 1440px and 390px.
+- [x] Local preview winner checked at desktop and mobile sizes; no API request was made.
+- [x] No unresolved P0/P1/P2 visual findings.
 
 final result: passed
