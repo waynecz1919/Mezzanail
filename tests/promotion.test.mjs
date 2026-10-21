@@ -151,7 +151,7 @@ test("promotion metadata uses the active offer and its uncropped social image", 
   assert.match(page, /const promotionTitle = `\$\{currentOffer\.copy\.en\.title\}/);
   assert.match(page, /const promotionOgDescription = `\$\{currentOffer\.copy\.en\.title\}/);
   assert.match(page, /const promotionDescription = `\$\{promotionOgDescription\} Also Gelish Pedicure RM98 and Gelish Manicure \+ Pedicure RM138\.`/);
-  assert.match(page, /const promotionOgImage = "\/campaigns\/deepavali-2026\/og-1200x630\.jpg"/);
+  assert.match(page, /const promotionOgImage = "https:\/\/www\.mezzanail\.com\/campaigns\/deepavali-2026\/og-1200x630\.jpg"/);
   assert.match(page, /title: promotionTitle/);
   assert.match(page, /description: promotionDescription/);
   assert.match(page, /openGraph:\s*\{[\s\S]*?description: promotionOgDescription/);
