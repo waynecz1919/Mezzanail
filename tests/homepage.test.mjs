@@ -87,6 +87,26 @@ test("find-us landmark is localized and rendered with a decorative map pin", () 
   assert.match(globals, /@media \(max-width: 767px\) \{[\s\S]*?\.public-site \.home-studio \.studio-actions \.mn-button\s*\{[^}]*height: 52px;[^}]*min-height: 52px;/);
 });
 
+test("find-us parking is localized, uses a decorative car icon, and matches the landmark style", () => {
+  for (const parking of [
+    "Parking available right in front of the studio.",
+    "店门口可以停车。",
+    "Tempat letak kereta tersedia di hadapan studio.",
+  ]) {
+    assert.ok(findUsDirections.includes(parking));
+  }
+  assert.match(findUsDirections, /<p className="find-us-landmark find-us-parking">\s*<Car size=\{15\} aria-hidden="true"\s*\/>\s*<span>\{copy\.parking\}<\/span>/);
+});
+
+test("mobile public footer reserves space above the floating chat button", () => {
+  const mobileRuleStart = globals.indexOf("/* WEBSITE PHASE 1.5 - mobile homepage compaction */");
+  const approvedRefinementsStart = globals.indexOf("/* WEBSITE PHASE 1.5 - approved full-pass refinements. */");
+  const mobileRules = globals.slice(mobileRuleStart, approvedRefinementsStart);
+
+  assert.match(mobileRules, /^\/\* WEBSITE PHASE 1\.5 - mobile homepage compaction \*\/\s*@media \(max-width: 767px\)/);
+  assert.match(mobileRules, /.public-site \.official-footer\s*\{[^}]*padding-bottom:\s*calc\(var\(--public-bottom-nav-height\) \+ 48px \+ env\(safe-area-inset-bottom\)\)/);
+});
+
 test("homepage content is centralised and does not expose prices", () => {
   for (const category of [
     "Hand Care",
