@@ -8,10 +8,12 @@ export default async function JackpotLoginPage() {
   const session = await getStaffSession();
   if (session) redirect("/anniversary-jackpot");
   return (
-    <StaffLoginForm
-      redirectTo="/anniversary-jackpot"
-      title="Anniversary Jackpot"
-      subtitle="Owner, Admin & Staff Login"
-    />
+    <div className="jackpot-login-bg">
+      <StaffLoginForm
+        redirectTo="/anniversary-jackpot"
+        title="Anniversary Jackpot"
+        subtitle="Owner, Admin & Staff Login"
+      />
+    </div>
   );
 }
