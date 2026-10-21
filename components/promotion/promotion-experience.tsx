@@ -35,6 +35,7 @@ import {
 } from "@/lib/promotion/referral";
 import { getWhatsAppShareUrl } from "@/lib/promotion/share-message";
 import { useOfferActive } from "@/components/offer/use-offer-active";
+import { FindUsDirections } from "@/components/find-us-directions";
 import { currentOffer, getOfferWhatsappUrl } from "@/config/current-offer";
 
 const PROMOTION_LANGUAGE_STORAGE_KEY = "mezzanail_promotion_language";
@@ -322,6 +323,8 @@ export function PromotionExperience() {
           </div>
         </section>
       )}
+
+      <FindUsDirections locale={language} promotion />
 
       {!campaignEnded && (
       <section className="promotion-hero" aria-labelledby="promotion-title">

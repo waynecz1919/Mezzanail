@@ -6,10 +6,11 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  ArrowRight, CalendarCheck, ChevronDown, ExternalLink, Facebook, Gift,
+  ArrowRight, CalendarCheck, ChevronDown, Facebook, Gift,
   Globe2, Home, Instagram, MapPin, Menu, MessageCircle, Phone, Sparkles, X,
 } from "lucide-react";
 import { Reveal } from "@/components/hyperframe/motion";
+import { FindUsDirections } from "@/components/find-us-directions";
 import { GoogleReviewsPreview } from "@/components/home/GoogleReviewsPreview";
 import type { HomepageStartingPrices } from "@/lib/homepage-service-prices";
 import { HomeHero } from "@/components/home/HomeHero";
@@ -29,9 +30,9 @@ import { getWhatsappUrl, isConfiguredUrl, siteConfig } from "@/lib/site";
 import { useOfferActive } from "@/components/offer/use-offer-active";
 
 const contactCopy = {
-  en: { directions: "Get Directions", call: "Call Us", whatsapp: "WhatsApp Us", social: "Official channels", qr: "Scan to WhatsApp", xhs: "Xiaohongshu", account: "Account ID", pending: "Official profile link pending" },
-  zh: { directions: "导航到店", call: "致电我们", whatsapp: "WhatsApp 联系", social: "官方平台", qr: "扫码 WhatsApp", xhs: "小红书", account: "小红书号", pending: "官方主页链接待补" },
-  ms: { directions: "Dapatkan Arah", call: "Hubungi Kami", whatsapp: "WhatsApp Kami", social: "Saluran rasmi", qr: "Imbas untuk WhatsApp", xhs: "Xiaohongshu", account: "ID akaun", pending: "Pautan profil rasmi belum tersedia" },
+  en: { call: "Call Us", whatsapp: "WhatsApp Us", social: "Official channels", qr: "Scan to WhatsApp", xhs: "Xiaohongshu", account: "Account ID", pending: "Official profile link pending" },
+  zh: { call: "致电我们", whatsapp: "WhatsApp 联系", social: "官方平台", qr: "扫码 WhatsApp", xhs: "小红书", account: "小红书号", pending: "官方主页链接待补" },
+  ms: { call: "Hubungi Kami", whatsapp: "WhatsApp Kami", social: "Saluran rasmi", qr: "Imbas untuk WhatsApp", xhs: "Xiaohongshu", account: "ID akaun", pending: "Pautan profil rasmi belum tersedia" },
 } as const;
 
 function trackPublicAction(event: string, destination: string, contentLabel: string) {
@@ -161,8 +162,8 @@ function ContactVisitSection() {
   const c = contactCopy[locale];
   return <section className="section surface"><div className="shell">
     <div className="contact-visit-grid">
-      <Reveal className="card p-7 sm:p-9"><BrandLogo/><h2 className="mt-8 text-3xl font-semibold tracking-[-.04em]">Contact & Visit Us</h2><div className="mt-8 grid gap-6 text-sm leading-7"><div><span className="eyebrow">{t.contact.address}</span><p className="mt-2">{siteConfig.address.lines.map(line=><span className="block" key={line}>{line}</span>)}</p></div><div><span className="eyebrow">{t.contact.hours}</span><p className="mt-2">{siteConfig.businessHours}</p></div><div><span className="eyebrow">{t.contact.phone}</span><p className="mt-2"><a href={siteConfig.phoneLink}>{siteConfig.phoneDisplay}</a><br/><a href={siteConfig.mobileLink}>{siteConfig.mobileDisplay}</a></p></div></div><div className="mt-8 grid gap-3 sm:grid-cols-3"><a href={siteConfig.googleMapsDirectionsUrl} target="_blank" rel="noopener noreferrer" className="btn btn-ghost"><MapPin size={16}/>{c.directions}</a><a href={siteConfig.phoneLink} className="btn btn-ghost"><Phone size={16}/>{c.call}</a><a href={getWhatsappUrl(locale)} target="_blank" rel="noopener noreferrer" className="btn btn-gold"><MessageCircle size={16}/>{c.whatsapp}</a></div></Reveal>
-      <Reveal delay={.06} className="map-frame"><iframe src={siteConfig.googleMapsEmbedUrl} title={`${siteConfig.brandName} location on Google Maps`} loading="lazy" referrerPolicy="no-referrer-when-downgrade"/><a href={siteConfig.googleMapsDirectionsUrl} target="_blank" rel="noopener noreferrer" className="map-action">{c.directions}<ExternalLink size={15}/></a></Reveal>
+      <Reveal className="card p-7 sm:p-9"><BrandLogo/><h2 className="mt-8 text-3xl font-semibold tracking-[-.04em]">Contact & Visit Us</h2><div className="mt-8 grid gap-6 text-sm leading-7"><div><span className="eyebrow">{t.contact.address}</span><p className="mt-2">{siteConfig.address.lines.map(line=><span className="block" key={line}>{line}</span>)}</p></div><div><span className="eyebrow">{t.contact.hours}</span><p className="mt-2">{siteConfig.businessHours}</p></div><div><span className="eyebrow">{t.contact.phone}</span><p className="mt-2"><a href={siteConfig.phoneLink}>{siteConfig.phoneDisplay}</a><br/><a href={siteConfig.mobileLink}>{siteConfig.mobileDisplay}</a></p></div></div><div className="mt-8 grid gap-3 sm:grid-cols-2"><a href={siteConfig.phoneLink} className="btn btn-ghost"><Phone size={16}/>{c.call}</a><a href={getWhatsappUrl(locale)} target="_blank" rel="noopener noreferrer" className="btn btn-gold"><MessageCircle size={16}/>{c.whatsapp}</a></div></Reveal>
+      <FindUsDirections locale={locale} />
     </div>
     <Reveal className="mt-6 card p-7 sm:p-9"><div className="eyebrow">{c.social}</div><div className="social-contact-grid mt-7">
       <ExternalOrPending href={siteConfig.facebookUrl} className="social-action" ariaLabel={`${siteConfig.brandName} Facebook`}><Facebook size={20}/><span>Facebook</span></ExternalOrPending>
