@@ -133,6 +133,14 @@ test("homepage Google rating and localized review notes match the owner-approved
   }
 });
 
+test("Google rating is grouped on one line, with the note below and the number in ink", () => {
+  assert.match(globals, /\.google-rating\s*\{[^}]*display:\s*flex;[^}]*flex-wrap:\s*wrap;[^}]*align-items:\s*baseline;[^}]*column-gap:\s*8px/);
+  assert.match(globals, /\.google-rating strong\s*\{[^}]*color:\s*var\(--color-ink\)/);
+  assert.match(globals, /\.google-rating small\s*\{[^}]*flex-basis:\s*100%/);
+  assert.match(globals, /\.public-site \.review-stars,[\s\S]*?\.public-site \.google-rating\s*\{[\s\S]*?color:\s*var\(--color-gold\)/);
+  assert.match(googleReviews, /className="google-rating"[\s\S]*?<Star aria-hidden="true" size=\{20\} fill="currentColor" \/>[\s\S]*?<strong>\{copy\.rating\}<\/strong>[\s\S]*?<span>\/ 5<\/span>[\s\S]*?<small>\{copy\.ratingNote\}<\/small>/);
+});
+
 test("hero eyebrow, heading, lede and booking action are localized in en, zh and ms", () => {
   for (const copy of [
     "Nail Studio · Melaka",

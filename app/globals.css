@@ -215,7 +215,7 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
 .why-mezzanail-item{min-height:280px;padding:34px 42px 16px 0}.why-mezzanail-item+.why-mezzanail-item{border-left:1px solid color-mix(in srgb,var(--mn-wine) 22%,var(--mn-border));padding-left:42px}
 .why-mezzanail-item>span{color:var(--mn-wine);font-size:44px;font-weight:400;line-height:1;font-variant-numeric:tabular-nums}.why-mezzanail-item h3{margin:65px 0 0;color:var(--mn-wine);font-size:30px;font-weight:500}.why-mezzanail-item p{max-width:300px;margin:15px 0 0;color:var(--mn-muted);font-size:15px;line-height:1.75}
 
-.home-reviews{background:var(--mn-background)}.google-rating{display:grid;grid-template-columns:auto auto auto;align-items:center;column-gap:8px;min-width:230px;border-left:1px solid var(--mn-border);padding-left:34px;color:var(--mn-champagne)}.google-rating strong{color:var(--mn-wine);font-family:var(--font-beauty),Georgia,serif;font-size:38px;font-weight:500}.google-rating span{color:var(--mn-muted);font-size:13px}.google-rating small{grid-column:1/-1;margin-top:2px;color:var(--mn-muted);font-size:10px;letter-spacing:.08em;text-transform:uppercase}
+.home-reviews{background:var(--mn-background)}.google-rating{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:flex-start;column-gap:8px;row-gap:2px;min-width:230px;border-left:1px solid var(--mn-border);padding-left:34px;color:var(--mn-champagne)}.google-rating>svg{flex:none;align-self:center}.google-rating strong{color:var(--color-ink);font-family:var(--font-beauty),Georgia,serif;font-size:38px;font-weight:500}.google-rating span{color:var(--mn-muted);font-size:13px}.google-rating small{flex-basis:100%;margin-top:2px;color:var(--mn-muted);font-size:10px;letter-spacing:.08em;text-transform:uppercase}
 .reviews-grid{display:grid;margin-top:44px;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--mn-border);border-bottom:1px solid var(--mn-border)}
 .review-quote{display:flex;min-height:260px;flex-direction:column;justify-content:space-between;margin:0;padding:34px}.review-quote+.review-quote{border-left:1px solid var(--mn-border)}.review-quote blockquote{margin:0;color:var(--mn-text);font-family:var(--font-beauty),Georgia,serif;font-size:22px;font-weight:500;line-height:1.45}.review-quote figcaption{display:grid;justify-items:start;gap:8px;margin-top:28px;color:var(--mn-wine);font-size:10px;font-weight:750;letter-spacing:.08em;text-transform:uppercase}.review-source,.review-quote figcaption>a{display:inline-flex;min-height:44px;align-items:center;gap:7px}.review-quote figcaption>a{text-decoration:underline;text-underline-offset:3px}.review-stars{display:flex;gap:3px;color:#d49b32}.reviews-action{margin-top:30px}
 
@@ -2098,7 +2098,6 @@ body:has(.promotion-site:not(.promotion-terms-page)) .analytics-consent-actions 
   }
 
   .public-site .google-rating {
-    grid-template-columns: auto auto auto;
     min-width: 0;
     border: 0;
     padding: 0;

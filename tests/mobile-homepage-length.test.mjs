@@ -20,9 +20,11 @@ const markerIndex = css.indexOf(phaseMarker);
 const refinementsIndex = css.indexOf(approvedRefinementsMarker);
 const mobileRules = css.slice(markerIndex, refinementsIndex);
 const baselineVisitStyles = baselineCss.match(/\.contact-visit-grid\{[\s\S]*?(?=\.social-contact-grid\{)/)?.[0] ?? "";
+const baselineRatingStyles = baselineCss.match(/\.home-reviews\{[\s\S]*?(?=\.reviews-grid\{)/)?.[0] ?? "";
 const normalizeApprovedDirectionsStyles = (source) =>
   source
     .replace(/\.contact-visit-grid\{[\s\S]*?(?=\.social-contact-grid\{)/, baselineVisitStyles)
+    .replace(/\.home-reviews\{[\s\S]*?(?=\.reviews-grid\{)/, baselineRatingStyles)
     .replace(".find-us-map{height:280px}.find-us-directions-actions{grid-template-columns:1fr}", ".map-frame{min-height:420px}")
     .replace(
       /\n?\.promotion-site \.find-us-directions--promotion\s*\{[^}]*\}\s*\.promotion-site \.find-us-directions--promotion \.find-us-map\s*\{[^}]*\}\n?/g,
