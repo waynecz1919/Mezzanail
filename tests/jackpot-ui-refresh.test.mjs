@@ -103,7 +103,8 @@ test("wheel has the gold rim, ivory inner line, light ticks and segment separato
 test("wheel spin rotation and timing stay unchanged", () => {
   assert.match(css, /\.jackpot-wheel\.is-spinning\s*\{\s*animation:\s*jackpot-wheel-spin 12\.8s cubic-bezier\(\.12, \.66, \.08, 1\) forwards;\s*\}/);
   assert.match(css, /@keyframes jackpot-wheel-spin\s*\{\s*from\s*\{\s*transform:\s*rotate\(0\);\s*\}\s*to\s*\{\s*transform:\s*rotate\(var\(--jackpot-stop\)\);\s*\}\s*\}/);
-  assert.match(consoleSource, /"--jackpot-stop": `\$\{activeWinner \? winnerAngle\(activeWinner\.winnerParticipantId\) : 1800\}deg`/);
+  assert.match(consoleSource, /"--jackpot-stop": `\$\{wheelView\.stopAngle\}deg`/);
+  assert.match(css, /\.jackpot-wheel\.is-stopped\s*\{\s*transform:\s*rotate\(var\(--jackpot-stop\)\);\s*\}/);
 });
 
 test("anniversary medallion, gloss, rim and bulbs are static siblings outside the rotating face", () => {
@@ -123,6 +124,7 @@ test("anniversary medallion, gloss, rim and bulbs are static siblings outside th
   assert.ok(faceStart >= 0 && faceEnd > faceStart && badgeStart > faceEnd, "the badge must be a static sibling after the rotating face");
   assert.match(css, /\.jackpot-wheel-bulbs span:nth-child\(3n\)\s*\{[^}]*width:\s*2\.15cqi/);
   assert.match(css, /\.jackpot-wheel-frame \.jackpot-wheel-name\s*\{[^}]*rotate\(var\(--name-angle\)\) translateY\(-30cqi\);/s);
+  assert.match(css, /\.jackpot-wheel-frame \.jackpot-wheel-name\.is-dense\s*\{[^}]*font-size:\s*clamp\(13px, 3\.2cqi, 15px\)[^}]*translateY\(-27cqi\)/s);
 });
 
 test("anniversary medallion matches the Owner-provided SVG exactly", () => {
@@ -146,11 +148,15 @@ test("round five scales the gold rim in both layouts and keeps bulbs centred on 
   assert.match(css, /\.jackpot-wheel-frame \.jackpot-wheel-rim\s*\{\s*inset:\s*4\.5cqi;[^}]*border:\s*1\.5px solid #FBF8EF/s);
   assert.match(css, /\.jackpot-wheel-frame::after\s*\{\s*inset:\s*calc\(4\.5cqi - 2px\);/);
   assert.match(css, /\.jackpot-wheel-bulbs span\s*\{[^}]*translateY\(-47\.7cqi\)/s);
-  assert.match(css, /\.jackpot-wheel-frame \.jackpot-wheel-nail-tip\s*\{\s*transform:\s*translate\(-50%, -50%\) rotate\(var\(--name-angle\)\) translateY\(-41\.3cqi\);/);
+  assert.match(css, /\.jackpot-wheel-frame \.jackpot-wheel-nail-tip\s*\{\s*transform:\s*translate\(-50%, -50%\) rotate\(var\(--name-angle\)\) translateY\(-35\.5cqi\);/);
   assert.match(css, /\.jackpot-wheel-frame \.jackpot-wheel-name\s*\{[^}]*rotate\(var\(--name-angle\)\) translateY\(-30cqi\);/s);
   assert.match(css, /\.jackpot-wheel-bulbs span:nth-child\(3n\)\s*\{[^}]*width:\s*2\.15cqi/);
-  assert.match(consoleSource, /state\.participants\.filter\(\(participant\) => participant\.eligible\)\.slice\(0, 8\)/);
-  assert.match(consoleSource, /wheelNames\.map\(\(participant, index\) => \([\s\S]*?className="jackpot-wheel-nail-tip"[\s\S]*?wheelNailAssets\[index % wheelNailAssets\.length\][\s\S]*?style=\{\{ "--name-angle": `\$\{index \* 45\}deg` \} as React\.CSSProperties\}[\s\S]*?className="jackpot-wheel-name"[\s\S]*?style=\{\{ "--name-angle": `\$\{index \* 45\}deg` \} as React\.CSSProperties\}[\s\S]*?\{initials\(participant\.customer_name\)\}/);
+  assert.doesNotMatch(consoleSource, /slice\(0,\s*8\)/);
+  assert.match(consoleSource, /buildWheelTicketSegments\(state\.participants, state\.draws, state\.campaign, wheelPrize, openDraw\?\.id\)/);
+  assert.match(consoleSource, /wheelView\.segments\.map\(\(segment, index\) => \{[\s\S]*?const segmentAngle = 360 \/ wheelView\.segments\.length;[\s\S]*?index \* segmentAngle[\s\S]*?initials\(segment\.participant\.customer_name\)/);
+  assert.match(consoleSource, /wheelView\.segments\.length <= 16/);
+  assert.match(consoleSource, /backgroundImage: buildWheelFaceGradient\(wheelView\.segments\.length\)/);
+  assert.match(consoleSource, /backgroundImage: buildWheelSeparatorGradient\(wheelView\.segments\.length\)/);
 });
 
 test("fullscreen header gains ten pixels below the wordmark at review viewports", () => {
@@ -174,7 +180,7 @@ test("drawing button keeps its ink fill and uses a reduced-motion-aware gold shi
 });
 
 test("wheel initials remain visible in radial ink serif styling at control and live sizes", () => {
-  assert.match(consoleSource, /wheelNames\.map\(\(participant, index\) => \([\s\S]*?\{initials\(participant\.customer_name\)\}/);
+  assert.match(consoleSource, /wheelView\.segments\.map\(\(segment, index\) => \{[\s\S]*?\{initials\(segment\.participant\.customer_name\)\}/);
   assert.match(css, /\.jackpot-wheel-name\s*\{[^}]*color:\s*var\(--jp-ink\)[^}]*font-family:\s*var\(--font-beauty\), Georgia, serif[^}]*font-size:\s*18px/s);
   assert.match(css, /\.jackpot-live-shell \.jackpot-wheel-name\s*\{[^}]*font-size:\s*24px/s);
   assert.match(css, /@media screen and \(max-width: 760px\)\s*\{[^}]*\.jackpot-live-shell \.jackpot-wheel-name\s*\{\s*font-size:\s*18px/s);
@@ -183,10 +189,11 @@ test("wheel initials remain visible in radial ink serif styling at control and l
 test("salon wheel uses four cycling nail assets inside the rotating face", () => {
   assert.match(consoleSource, /const wheelNailAssets = \[[\s\S]*?jackpot-nail-pink\.webp[\s\S]*?jackpot-nail-nude\.webp[\s\S]*?jackpot-nail-french\.webp[\s\S]*?jackpot-nail-rose-gold\.webp/);
   assert.match(consoleSource, /className="jackpot-wheel-nail-tip"[\s\S]*?wheelNailAssets\[index % wheelNailAssets\.length\]/);
-  assert.match(consoleSource, /className=\{`jackpot-wheel \$\{spinning \? "is-spinning" : ""\}`\}[\s\S]*?className="jackpot-wheel-nail-tip"[\s\S]*?className="jackpot-wheel-name"/);
+  assert.match(consoleSource, /className=\{`jackpot-wheel \$\{spinning \? "is-spinning" : ""\} \$\{activeWinner && !spinning \? "is-stopped" : ""\}`\}[\s\S]*?className="jackpot-wheel-nail-tip"[\s\S]*?className=\{`jackpot-wheel-name/);
   assert.match(css, /\.jackpot-wheel-frame \.jackpot-wheel\s*\{[^}]*radial-gradient\(circle, #FFFFFF 35%, #F6EFE3 100%\)/s);
-  assert.match(css, /\.jackpot-wheel-frame \.jackpot-wheel::before\s*\{[^}]*radial-gradient\(circle, #F8E8EB 35%, #EBCFD5 100%\)[^}]*mask:\s*repeating-conic-gradient/s);
-  assert.match(css, /\.jackpot-wheel-frame \.jackpot-wheel-nail-tip\s*\{[^}]*width:\s*4\.5cqi;[^}]*height:\s*8\.1667cqi;[^}]*translateY\(-41\.3cqi\)/s);
+  assert.match(css, /\.jackpot-wheel-frame \.jackpot-wheel::before\s*\{[^}]*radial-gradient\(circle, transparent 32%, rgba\(77, 57, 48, \.12\) 100%\)[^}]*mask:\s*none/s);
+  assert.match(css, /\.jackpot-wheel-frame \.jackpot-wheel-nail-tip\s*\{[^}]*width:\s*4\.5cqi;[^}]*height:\s*8\.1667cqi;/s);
+  assert.match(css, /\.jackpot-wheel-frame \.jackpot-wheel-nail-tip\s*\{\s*transform:\s*translate\(-50%, -50%\) rotate\(var\(--name-angle\)\) translateY\(-35\.5cqi\);/);
 });
 
 test("salon stand, contact shadow, brush pointer and polish eyebrow are static", () => {

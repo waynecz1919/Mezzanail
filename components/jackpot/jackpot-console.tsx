@@ -45,13 +45,28 @@ import {
 import type {
   ImportSummary,
   JackpotDraw,
+  JackpotParticipant,
   JackpotPrize,
   JackpotState,
   WinnerResult,
 } from "@/lib/jackpot/types";
+import {
+  buildWheelFaceGradient,
+  buildWheelSeparatorGradient,
+  buildWheelTicketSegments,
+  calculateWheelStopAngle,
+  chooseWinnerSegmentIndex,
+} from "./wheel-logic.mjs";
+import type { WheelSegment } from "./wheel-logic.mjs";
 
 type Tab = "draw" | "participants" | "prizes" | "winners" | "audit";
 type DrawResponse = { winner: WinnerResult; idempotent: boolean };
+type WheelSnapshot = {
+  drawId: string;
+  segments: WheelSegment<JackpotParticipant>[];
+  winningSegmentId: string;
+  stopAngle: number;
+};
 
 const wheelNailAssets = [
   "jackpot-nail-pink.webp",
@@ -112,12 +127,6 @@ function formatLocalLiveDateTime(date: Date) {
   const day = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric" }).format(date);
   const time = new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit" }).format(date);
   return `${day} · ${time}`;
-}
-
-function winnerAngle(participantId: string) {
-  let hash = 0;
-  for (const character of participantId) hash = (hash * 31 + character.charCodeAt(0)) % 360;
-  return 7200 + hash;
 }
 
 function StatusBadge({ status }: { status: JackpotDraw["status"] }) {
@@ -202,6 +211,7 @@ export function JackpotConsole({
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [liveClock, setLiveClock] = useState<Date | null>(null);
   const [winner, setWinner] = useState<WinnerResult | null>(null);
+  const [wheelSnapshot, setWheelSnapshot] = useState<WheelSnapshot | null>(null);
   const [spinning, setSpinning] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -258,53 +268,6 @@ export function JackpotConsole({
   }, [liveMode]);
 
   useEffect(() => {
-    if (!spinning) return;
-    const wheel = document.querySelector<HTMLElement>(".jackpot-wheel.is-spinning");
-    if (!wheel) return;
-
-    let animationFrame = 0;
-    let previousAngle: number | null = null;
-    let unwrappedAngle = 0;
-    let previousBoundary = 0;
-    let lastTickAt = Number.NEGATIVE_INFINITY;
-
-    const readRotation = () => {
-      const transform = window.getComputedStyle(wheel).transform;
-      if (transform === "none") return 0;
-      const matrix = new DOMMatrixReadOnly(transform);
-      return Math.atan2(matrix.b, matrix.a) * (180 / Math.PI);
-    };
-
-    const trackBoundaries = (timestamp: number) => {
-      const angle = readRotation();
-      if (previousAngle === null) {
-        previousAngle = angle;
-        unwrappedAngle = angle;
-        previousBoundary = Math.floor(unwrappedAngle / 45);
-      } else {
-        let delta = angle - previousAngle;
-        if (delta < -180) delta += 360;
-        if (delta > 180) delta -= 360;
-        previousAngle = angle;
-        unwrappedAngle += delta;
-        const boundary = Math.floor(unwrappedAngle / 45);
-        if (boundary !== previousBoundary) {
-          previousBoundary = boundary;
-          if (timestamp - lastTickAt >= 40) {
-            const context = audioContextRef.current;
-            if (soundEnabledRef.current && context?.state === "running") playWheelTick(context);
-            lastTickAt = timestamp;
-          }
-        }
-      }
-      animationFrame = window.requestAnimationFrame(trackBoundaries);
-    };
-
-    animationFrame = window.requestAnimationFrame(trackBoundaries);
-    return () => window.cancelAnimationFrame(animationFrame);
-  }, [spinning]);
-
-  useEffect(() => {
     if (!liveMode) return;
     const updateClock = () => setLiveClock(new Date());
     updateClock();
@@ -321,10 +284,6 @@ export function JackpotConsole({
   const openDraw = useMemo(
     () => state.draws.find((draw) => draw.status === "pending" || draw.status === "unreachable") || null,
     [state.draws],
-  );
-  const wheelNames = useMemo(
-    () => state.participants.filter((participant) => participant.eligible).slice(0, 8),
-    [state.participants],
   );
   const completedUnits = state.prizes.reduce(
     (total, prize) => total + (prize.quantity - prize.remaining_quantity),
@@ -345,6 +304,82 @@ export function JackpotConsole({
       drawnAt: openDraw.drawn_at,
       status: openDraw.status,
     } : null), [openDraw, winner]);
+
+  const wheelPrize = openDraw
+    ? state.prizes.find((prize) => prize.id === openDraw.prize_id) || currentPrize
+    : currentPrize;
+  const baseWheelSegments = useMemo(
+    () => wheelPrize
+      ? buildWheelTicketSegments(state.participants, state.draws, state.campaign, wheelPrize, openDraw?.id)
+      : [],
+    [state.participants, state.draws, state.campaign, wheelPrize, openDraw?.id],
+  );
+  const wheelView = useMemo(() => {
+    if (!activeWinner) {
+      return { segments: baseWheelSegments, winningSegmentIndex: -1, stopAngle: 0 };
+    }
+
+    const savedSnapshot = wheelSnapshot?.drawId === activeWinner.drawId ? wheelSnapshot : null;
+    const segments = savedSnapshot?.segments || baseWheelSegments;
+    const winningSegmentIndex = savedSnapshot
+      ? segments.findIndex((segment) => segment.id === savedSnapshot.winningSegmentId)
+      : chooseWinnerSegmentIndex(segments, activeWinner.winnerParticipantId);
+
+    return {
+      segments,
+      winningSegmentIndex,
+      stopAngle: savedSnapshot?.stopAngle
+        ?? (winningSegmentIndex >= 0 ? calculateWheelStopAngle(winningSegmentIndex, segments.length) : 0),
+    };
+  }, [activeWinner, baseWheelSegments, wheelSnapshot]);
+
+  useEffect(() => {
+    if (!spinning || wheelView.segments.length === 0) return;
+    const wheel = document.querySelector<HTMLElement>(".jackpot-wheel.is-spinning");
+    if (!wheel) return;
+
+    const segmentAngle = 360 / wheelView.segments.length;
+    let animationFrame = 0;
+    let previousAngle: number | null = null;
+    let unwrappedAngle = 0;
+    let previousBoundary = 0;
+    let lastTickAt = Number.NEGATIVE_INFINITY;
+
+    const readRotation = () => {
+      const transform = window.getComputedStyle(wheel).transform;
+      if (transform === "none") return 0;
+      const matrix = new DOMMatrixReadOnly(transform);
+      return Math.atan2(matrix.b, matrix.a) * (180 / Math.PI);
+    };
+
+    const trackBoundaries = (timestamp: number) => {
+      const angle = readRotation();
+      if (previousAngle === null) {
+        previousAngle = angle;
+        unwrappedAngle = angle;
+        previousBoundary = Math.floor(unwrappedAngle / segmentAngle);
+      } else {
+        let delta = angle - previousAngle;
+        if (delta < -180) delta += 360;
+        if (delta > 180) delta -= 360;
+        previousAngle = angle;
+        unwrappedAngle += delta;
+        const boundary = Math.floor(unwrappedAngle / segmentAngle);
+        if (boundary !== previousBoundary) {
+          previousBoundary = boundary;
+          if (timestamp - lastTickAt >= 40) {
+            const context = audioContextRef.current;
+            if (soundEnabledRef.current && context?.state === "running") playWheelTick(context);
+            lastTickAt = timestamp;
+          }
+        }
+      }
+      animationFrame = window.requestAnimationFrame(trackBoundaries);
+    };
+
+    animationFrame = window.requestAnimationFrame(trackBoundaries);
+    return () => window.cancelAnimationFrame(animationFrame);
+  }, [spinning, wheelView.segments.length]);
 
   useEffect(() => {
     if (spinning) {
@@ -406,7 +441,28 @@ export function JackpotConsole({
     }
   }
 
-  function showWinnerAfterAnimation(nextWinner: WinnerResult) {
+  function showWinnerAfterAnimation(
+    nextWinner: WinnerResult,
+    segments: WheelSegment<JackpotParticipant>[],
+  ) {
+    const winningSegmentIndex = chooseWinnerSegmentIndex(segments, nextWinner.winnerParticipantId);
+    if (winningSegmentIndex < 0) {
+      setWinner(nextWinner);
+      setSpinning(false);
+      setWheelSnapshot(null);
+      setError("The displayed ticket pool is out of date. Refresh to review the pending winner.");
+      void loadState();
+      return;
+    }
+
+    const winningSegment = segments[winningSegmentIndex];
+    const stopAngle = calculateWheelStopAngle(winningSegmentIndex, segments.length);
+    setWheelSnapshot({
+      drawId: nextWinner.drawId,
+      segments,
+      winningSegmentId: winningSegment.id,
+      stopAngle,
+    });
     setWinner(nextWinner);
     setSpinning(true);
     if (animationTimer.current) window.clearTimeout(animationTimer.current);
@@ -418,13 +474,18 @@ export function JackpotConsole({
 
   async function spin() {
     if (!currentPrize || spinning || busy || openDraw) return;
+    const drawSegments = baseWheelSegments;
+    if (!drawSegments.length) {
+      setError("There are no eligible tickets for this prize.");
+      return;
+    }
     prepareAudioFromSpinGesture();
     setBusy(true);
     setError("");
     try {
       if (previewMode) {
-        const eligible = state.participants.filter((participant) => participant.eligible);
-        const participant = eligible[state.draws.length % eligible.length];
+        const selectedTicket = drawSegments[state.draws.length % drawSegments.length];
+        const participant = selectedTicket?.participant;
         if (!participant) throw new Error("No eligible preview participant.");
         showWinnerAfterAnimation({
           drawId: crypto.randomUUID(),
@@ -440,7 +501,7 @@ export function JackpotConsole({
           resultToken: crypto.randomUUID(),
           drawnAt: new Date().toISOString(),
           status: "pending",
-        });
+        }, drawSegments);
         return;
       }
       const result = await api<DrawResponse>("/api/anniversary-jackpot/draw", {
@@ -450,7 +511,7 @@ export function JackpotConsole({
           requestId: crypto.randomUUID(),
         }),
       });
-      showWinnerAfterAnimation(result.winner);
+      showWinnerAfterAnimation(result.winner, drawSegments);
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Unable to draw a winner.");
     } finally {
@@ -464,15 +525,40 @@ export function JackpotConsole({
     setError("");
     try {
       if (previewMode) {
-        setWinner(action === "unreachable" ? { ...activeWinner, status: "unreachable" } : null);
+        if (action === "unreachable") {
+          setWinner({ ...activeWinner, status: "unreachable" });
+        } else {
+          const confirmedDraw: JackpotDraw = {
+            id: activeWinner.drawId,
+            prize_id: activeWinner.prizeId,
+            participant_id: activeWinner.winnerParticipantId,
+            request_id: activeWinner.resultToken,
+            draw_sequence: state.draws.length + 1,
+            status: "confirmed",
+            drawn_at: activeWinner.drawnAt,
+            drawn_by: state.staffId,
+            confirmed_at: new Date().toISOString(),
+            confirmed_by: state.staffId,
+            void_reason: null,
+            prize_name: activeWinner.prizeName,
+            is_jackpot: activeWinner.isJackpot,
+            customer_name: activeWinner.displayName,
+            member_id_masked: activeWinner.memberIdMasked,
+            phone_last4: activeWinner.phoneLast4,
+          };
+          setState((current) => ({ ...current, draws: [...current.draws, confirmedDraw] }));
+          setWheelSnapshot(null);
+          setWinner(null);
+        }
         return;
       }
       await api(`/api/anniversary-jackpot/draws/${activeWinner.drawId}`, {
         method: "PATCH",
         body: JSON.stringify({ action }),
       });
-      setWinner(action === "unreachable" ? { ...activeWinner, status: "unreachable" } : null);
       await loadState();
+      setWinner(action === "unreachable" ? { ...activeWinner, status: "unreachable" } : null);
+      if (action === "confirm") setWheelSnapshot(null);
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Unable to update this winner.");
     } finally {
@@ -496,10 +582,19 @@ export function JackpotConsole({
     setError("");
     try {
       if (previewMode) {
-        const eligible = state.participants.filter(
-          (participant) => participant.eligible && participant.id !== activeWinner.winnerParticipantId,
+        const oldDraw: Pick<JackpotDraw, "id" | "prize_id" | "participant_id" | "status"> = {
+          id: activeWinner.drawId,
+          prize_id: activeWinner.prizeId,
+          participant_id: activeWinner.winnerParticipantId,
+          status: activeWinner.status,
+        };
+        const redrawSegments = buildWheelTicketSegments(
+          state.participants,
+          [...state.draws, oldDraw],
+          state.campaign,
+          state.prizes.find((prize) => prize.id === activeWinner.prizeId) || currentPrize!,
         );
-        const participant = eligible[(state.draws.length + 1) % eligible.length];
+        const participant = redrawSegments[(state.draws.length + 1) % redrawSegments.length]?.participant;
         if (!participant) throw new Error("No eligible preview participant.");
         setRedrawOpen(false);
         showWinnerAfterAnimation({
@@ -514,9 +609,13 @@ export function JackpotConsole({
           resultToken: crypto.randomUUID(),
           drawnAt: new Date().toISOString(),
           status: "pending",
-        });
+        }, redrawSegments);
         return;
       }
+      const redrawPrize = state.prizes.find((prize) => prize.id === activeWinner.prizeId) || currentPrize;
+      const redrawSegments = redrawPrize
+        ? buildWheelTicketSegments(state.participants, state.draws, state.campaign, redrawPrize)
+        : [];
       const result = await api<DrawResponse>(
         `/api/anniversary-jackpot/draws/${activeWinner.drawId}/redraw`,
         {
@@ -530,7 +629,7 @@ export function JackpotConsole({
       );
       setRedrawOpen(false);
       await loadState();
-      showWinnerAfterAnimation(result.winner);
+      showWinnerAfterAnimation(result.winner, redrawSegments);
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Unable to redraw.");
     } finally {
@@ -539,7 +638,8 @@ export function JackpotConsole({
   }
 
   const wheelStyle = {
-    "--jackpot-stop": `${activeWinner ? winnerAngle(activeWinner.winnerParticipantId) : 1800}deg`,
+    "--jackpot-stop": `${wheelView.stopAngle}deg`,
+    backgroundImage: buildWheelFaceGradient(wheelView.segments.length),
   } as React.CSSProperties;
 
   const tabs: Array<{ id: Tab; label: string; icon: React.ReactNode; admin?: boolean }> = [
@@ -667,30 +767,44 @@ export function JackpotConsole({
                     </div>
                     <div
                       key={spinning ? activeWinner?.resultToken || "spinning" : "idle"}
-                      className={`jackpot-wheel ${spinning ? "is-spinning" : ""}`}
+                      className={`jackpot-wheel ${spinning ? "is-spinning" : ""} ${activeWinner && !spinning ? "is-stopped" : ""}`}
                       style={wheelStyle}
+                      data-segment-count={wheelView.segments.length}
                     >
-                      <div className="jackpot-wheel-separators" aria-hidden="true" />
-                      {wheelNames.map((participant, index) => (
-                        <Fragment key={participant.id}>
-                          <Image
-                            className="jackpot-wheel-nail-tip"
-                            src={`/campaigns/7th-anniversary/${wheelNailAssets[index % wheelNailAssets.length]}`}
-                            alt=""
-                            width={270}
-                            height={490}
-                            unoptimized
-                            aria-hidden="true"
-                            style={{ "--name-angle": `${index * 45}deg` } as React.CSSProperties}
-                          />
-                          <span
-                            className="jackpot-wheel-name"
-                            style={{ "--name-angle": `${index * 45}deg` } as React.CSSProperties}
-                          >
-                            {initials(participant.customer_name)}
-                          </span>
-                        </Fragment>
-                      ))}
+                      <div
+                        className="jackpot-wheel-separators"
+                        aria-hidden="true"
+                        style={{ backgroundImage: buildWheelSeparatorGradient(wheelView.segments.length) }}
+                      />
+                      {wheelView.segments.map((segment, index) => {
+                        const segmentAngle = 360 / wheelView.segments.length;
+                        const angleStyle = { "--name-angle": `${index * segmentAngle}deg` } as React.CSSProperties;
+                        return (
+                          <Fragment key={segment.id}>
+                            {wheelView.segments.length <= 16 && (
+                              <Image
+                                className="jackpot-wheel-nail-tip"
+                                src={`/campaigns/7th-anniversary/${wheelNailAssets[index % wheelNailAssets.length]}`}
+                                alt=""
+                                width={270}
+                                height={490}
+                                unoptimized
+                                aria-hidden="true"
+                                style={angleStyle}
+                              />
+                            )}
+                            <span
+                              className={`jackpot-wheel-name ${wheelView.segments.length > 16 ? "is-dense" : ""}`}
+                              style={angleStyle}
+                              data-ticket-number={segment.ticketNumber}
+                              data-participant-id={segment.participantId}
+                              aria-label={segment.participant.customer_name}
+                            >
+                              {initials(segment.participant.customer_name)}
+                            </span>
+                          </Fragment>
+                        );
+                      })}
                     </div>
                     <div className="jackpot-wheel-rim" aria-hidden="true" />
                     <div className="jackpot-wheel-gloss" aria-hidden="true" />

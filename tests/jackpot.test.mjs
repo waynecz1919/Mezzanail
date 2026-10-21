@@ -78,11 +78,12 @@ test("draw requests are idempotent and concurrent draws are database-guarded", (
 
 test("the frontend receives the server result before starting animation", () => {
   assert.match(consolePage, /const result = await api<DrawResponse>\("\/api\/anniversary-jackpot\/draw"/);
-  assert.match(consolePage, /showWinnerAfterAnimation\(result\.winner\)/);
+  assert.match(consolePage, /showWinnerAfterAnimation\(result\.winner, drawSegments\)/);
   assert.match(consolePage, /setBusy\(true\)/);
   assert.match(consolePage, /disabled=\{[\s\S]*spinning[\s\S]*busy[\s\S]*openDraw/);
   assert.match(css, /12\.8s cubic-bezier/);
-  assert.match(consolePage, /return 7200 \+ hash/);
+  assert.match(consolePage, /calculateWheelStopAngle\(winningSegmentIndex, segments\.length\)/);
+  assert.doesNotMatch(consolePage, /winnerAngle\(/);
   assert.match(consolePage, /}, 12800\)/);
 });
 
