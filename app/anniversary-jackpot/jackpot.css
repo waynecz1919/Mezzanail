@@ -1190,3 +1190,110 @@ body:has(.jackpot-root.is-live) { width: 100%; max-width: 100%; overflow-x: clip
   letter-spacing: .2em;
   text-transform: uppercase;
 }
+
+/* Jackpot staff login: keep the shared redeem form scoped to this page. */
+body:has(.jackpot-login-bg) .analytics-consent {
+  display: none !important;
+}
+
+body:has(.jackpot-login-bg) {
+  overflow-x: hidden;
+}
+
+.jackpot-login-bg {
+  box-sizing: border-box;
+  display: flex;
+  min-height: 100vh;
+  min-height: 100svh;
+  align-items: center;
+  justify-content: flex-end;
+  overflow: hidden;
+  padding-inline: clamp(24px, 7vw, 120px);
+  background-color: #fff6ee;
+  background-image: url("/campaigns/7th-anniversary/jackpot-login-bg-desktop.webp");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.jackpot-login-bg > .redeem-root.redeem-login-shell {
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  min-height: 0;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0;
+  background: transparent;
+}
+
+.jackpot-login-bg .redeem-login-card {
+  box-sizing: border-box;
+  width: min(380px, 100%);
+  margin: 0;
+  transform: translateY(-9vh);
+  border-color: rgba(182, 155, 104, .42);
+  background: rgba(255, 252, 248, .86);
+  padding: 12px 18px 14px;
+  box-shadow: 0 18px 54px rgba(66, 44, 28, .2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.jackpot-login-bg .redeem-mark,
+.jackpot-login-bg .redeem-security-note {
+  display: none;
+}
+
+.jackpot-login-bg .redeem-kicker {
+  display: none;
+}
+
+.jackpot-login-bg .redeem-login-card h1 {
+  margin-top: 0;
+  font-size: clamp(24px, 2vw, 28px);
+}
+
+.jackpot-login-bg .redeem-login-card .redeem-subtitle {
+  margin-top: 4px;
+  font-size: 11px;
+}
+
+.jackpot-login-bg .redeem-form {
+  gap: 8px;
+}
+
+.jackpot-login-bg .redeem-form label {
+  gap: 3px;
+}
+
+.jackpot-login-bg .redeem-form input {
+  min-height: 40px;
+  font-size: 16px;
+}
+
+.jackpot-login-bg .redeem-primary {
+  min-height: 44px;
+}
+
+@media (max-width: 767px) {
+  .jackpot-login-bg {
+    align-items: flex-end;
+    justify-content: center;
+    padding: 16px;
+    background-image: url("/campaigns/7th-anniversary/jackpot-login-bg-mobile.webp");
+    background-position: center top;
+  }
+
+  .jackpot-login-bg > .redeem-root.redeem-login-shell {
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .jackpot-login-bg .redeem-login-card {
+    width: 100%;
+    max-width: 420px;
+    transform: none;
+    padding: 16px 18px 18px;
+  }
+}
