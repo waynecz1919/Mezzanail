@@ -6,7 +6,7 @@ import { anniversaryCampaign } from "@/lib/promotion/campaign-config";
 const promotionTitle = `${currentOffer.copy.en.title} – ${currentOffer.copy.en.service} RM${currentOffer.offerPrice} | Mezzanail`;
 const promotionOgDescription = `${currentOffer.copy.en.title} at Mezzanail Nail Studio, Melaka: ${currentOffer.copy.en.service} RM${currentOffer.offerPrice} (usual RM${currentOffer.originalPrice}), ${currentOffer.copy.en.includes[0].toLowerCase()}${currentOffer.copy.en.includes.slice(1)}. ${currentOffer.copy.en.validity}.`;
 const promotionDescription = `${promotionOgDescription} Also Gelish Pedicure RM98 and Gelish Manicure + Pedicure RM138.`;
-const promotionOgImage = "/campaigns/deepavali-2026/og-1200x630.jpg";
+const promotionOgImage = "https://www.mezzanail.com/campaigns/deepavali-2026/og-1200x630.jpg";
 
 export const metadata: Metadata = {
   metadataBase: new URL(anniversaryCampaign.promotionUrl),
