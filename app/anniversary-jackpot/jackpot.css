@@ -1276,6 +1276,44 @@ body:has(.jackpot-login-bg) {
   min-height: 44px;
 }
 
+@media (min-width: 768px) {
+  .jackpot-login-bg .redeem-login-card {
+    width: min(360px, 100%);
+    transform: translateY(-7vh);
+    padding: 18px;
+  }
+
+  .jackpot-login-bg .redeem-login-card h1 {
+    margin: 0;
+    font-size: 22px;
+    line-height: 1.15;
+  }
+
+  .jackpot-login-bg .redeem-form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .jackpot-login-bg .redeem-form label {
+    min-width: 0;
+  }
+
+  .jackpot-login-bg .redeem-form input {
+    min-height: 44px;
+    padding-inline: 10px;
+  }
+
+  .jackpot-login-bg .redeem-form .redeem-error {
+    grid-column: 1 / -1;
+    margin: 0;
+    padding: 8px 10px;
+  }
+
+  .jackpot-login-bg .redeem-primary {
+    grid-column: 1 / -1;
+  }
+}
+
 @media (max-width: 767px) {
   .jackpot-login-bg {
     align-items: flex-end;
