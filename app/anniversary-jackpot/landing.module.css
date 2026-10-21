@@ -1,0 +1,49 @@
+.viewport {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  min-height: 100vh;
+  min-height: 100svh;
+  place-items: center;
+  overflow: hidden;
+  background: #f8eee6;
+}
+
+.artboard {
+  position: relative;
+  width: min(100vw, 177.78958vh);
+  width: min(100vw, 177.78958svh);
+  aspect-ratio: 1672 / 941;
+  background-image: url("/campaigns/7th-anniversary/anniversary-jackpot-landing-approved.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.staffLogin {
+  position: absolute;
+  top: 2.9%;
+  right: 1.4%;
+  display: block;
+  width: 11.6%;
+  min-width: 44px;
+  height: 5.8%;
+  min-height: 44px;
+  border-radius: 999px;
+  background: transparent;
+}
+
+.staffLogin:focus-visible {
+  outline: 2px solid #79441f;
+  outline-offset: 3px;
+}
+
+.screenReaderOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}

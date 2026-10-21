@@ -18,8 +18,14 @@ const auth = read("lib/redeem/auth.ts");
 const config = read("next.config.ts");
 const css = read("app/anniversary-jackpot/jackpot.css");
 
-test("jackpot route is private and reuses role-based staff authentication", () => {
-  assert.match(read("app/anniversary-jackpot/page.tsx"), /getStaffSession/);
+test("jackpot public landing stays separate from the private staff console", () => {
+  const landingPage = read("app/anniversary-jackpot/page.tsx");
+  const staffPage = read("app/anniversary-jackpot/staff/page.tsx");
+  const loginPage = read("app/anniversary-jackpot/login/page.tsx");
+  assert.doesNotMatch(landingPage, /getStaffSession|loadJackpotState|JackpotConsole/);
+  assert.match(staffPage, /getStaffSession/);
+  assert.match(staffPage, /if \(!session\) redirect\("\/anniversary-jackpot\/login"\)/);
+  assert.match(loginPage, /redirectTo="\/anniversary-jackpot\/staff"/);
   assert.match(read("app/anniversary-jackpot/layout.tsx"), /index: false/);
   assert.match(config, /\/anniversary-jackpot\/:path\*/);
   assert.match(config, /\/api\/anniversary-jackpot\/:path\*/);

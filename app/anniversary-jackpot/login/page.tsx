@@ -6,10 +6,10 @@ export const dynamic = "force-dynamic";
 
 export default async function JackpotLoginPage() {
   const session = await getStaffSession();
-  if (session) redirect("/anniversary-jackpot");
+  if (session) redirect("/anniversary-jackpot/staff");
   return (
     <StaffLoginForm
-      redirectTo="/anniversary-jackpot"
+      redirectTo="/anniversary-jackpot/staff"
       title="Anniversary Jackpot"
       subtitle="Owner, Admin & Staff Login"
     />
