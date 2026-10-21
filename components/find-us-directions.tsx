@@ -2,24 +2,27 @@ import { MapPin, Navigation } from "lucide-react";
 import type { Locale } from "@/lib/i18n";
 import { siteConfig } from "@/lib/site";
 
-const locationCopy: Record<Locale, { eyebrow: string; heading: string; google: string; waze: string }> = {
+const locationCopy: Record<Locale, { eyebrow: string; heading: string; google: string; waze: string; landmark: string }> = {
   en: {
     eyebrow: "VISIT OUR STUDIO",
     heading: "Find us / Get directions",
     google: "Navigate with Google Maps",
     waze: "Navigate with Waze",
+    landmark: "Upstairs (1st floor) above Restoran Fogai, in the 7-Eleven row, opposite Caring Pharmacy · Taman Cheng Baru",
   },
   zh: {
     eyebrow: "到店信息",
     heading: "找到我们 / 获取路线",
     google: "使用 Google Maps 导航",
     waze: "使用 Waze 导航",
+    landmark: "Restoran Fogai 楼上（二楼），7-Eleven 那排店，Caring Pharmacy 对面 · Taman Cheng Baru",
   },
   ms: {
     eyebrow: "LAWATI STUDIO KAMI",
     heading: "Cari kami / Dapatkan arah",
     google: "Navigasi dengan Google Maps",
     waze: "Navigasi dengan Waze",
+    landmark: "Tingkat 1, di atas Restoran Fogai, sebaris dengan 7-Eleven, bertentangan Caring Pharmacy · Taman Cheng Baru",
   },
 };
 
@@ -80,7 +83,10 @@ export function FindUsDirections({
             <span>{copy.waze}</span>
           </a>
         </div>
-        <p className="find-us-landmark">LANDMARK_TEXT_FROM_WAYNE</p>
+        <p className="find-us-landmark">
+          <MapPin size={15} aria-hidden="true" />
+          <span>{copy.landmark}</span>
+        </p>
       </div>
     </section>
   );

@@ -21,6 +21,7 @@ const whyMezzanail = read("components/home/WhyMezzanail.tsx");
 const googleReviews = read("components/home/GoogleReviewsPreview.tsx");
 const membershipBanner = read("components/home/MembershipBanner.tsx");
 const studioBooking = read("components/home/StudioLocationBooking.tsx");
+const findUsDirections = read("components/find-us-directions.tsx");
 
 test("homepage renders the approved quiet-luxury section order", () => {
   const orderedComponents = [
@@ -51,6 +52,39 @@ test("homepage navigation is concise and jobs remain in the footer", () => {
   assert.doesNotMatch(navigation, /\/job|\/#app/);
   assert.match(officialSite, /<Link href="\/job">\{t\.nav\.jobs\}<\/Link>/);
   assert.match(officialSite, /siteConfig\.bookingUrl/);
+});
+
+test("homepage visit actions are ordered and retain their tracking labels", () => {
+  const actions = studioBooking.match(/<div className="studio-actions">([\s\S]*?)<\/div>/)?.[1] ?? "";
+  const links = [...actions.matchAll(/<HomeLink([\s\S]*?)<\/HomeLink>/g)].map((match) => match[1]);
+
+  assert.equal(links.length, 3);
+  assert.match(links[0], /href=\{siteConfig\.bookingUrl\}/);
+  assert.match(links[0], /variant="primary"/);
+  assert.match(links[1], /href=\{getWhatsappUrl\(locale\)\}/);
+  assert.match(links[1], /variant="secondary"/);
+  assert.match(links[1], /<MessageCircle/);
+  assert.match(links[1], /event="whatsapp_click"/);
+  assert.match(links[1], /eventLabel="studio_section"/);
+  assert.match(links[2], /href=\{siteConfig\.googleMapsDirectionsUrl\}/);
+  assert.match(links[2], /variant="secondary"/);
+  assert.match(links[2], /event="open_maps_click"/);
+  assert.match(links[2], /eventLabel="studio_location"/);
+});
+
+test("find-us landmark is localized and rendered with a decorative map pin", () => {
+  for (const landmark of [
+    "Upstairs (1st floor) above Restoran Fogai, in the 7-Eleven row, opposite Caring Pharmacy · Taman Cheng Baru",
+    "Restoran Fogai 楼上（二楼），7-Eleven 那排店，Caring Pharmacy 对面 · Taman Cheng Baru",
+    "Tingkat 1, di atas Restoran Fogai, sebaris dengan 7-Eleven, bertentangan Caring Pharmacy · Taman Cheng Baru",
+  ]) {
+    assert.ok(findUsDirections.includes(landmark));
+  }
+  assert.match(findUsDirections, /<MapPin size=\{15\} aria-hidden="true"\s*\/>/);
+  assert.match(findUsDirections, /<span>\{copy\.landmark\}<\/span>/);
+  assert.match(globals, /\.find-us-landmark\s*\{[^}]*white-space:\s*normal/);
+  assert.match(globals, /\.find-us-landmark svg\s*\{[^}]*flex:\s*none/);
+  assert.match(globals, /@media \(max-width: 767px\) \{[\s\S]*?\.public-site \.home-studio \.studio-actions \.mn-button\s*\{[^}]*height: 52px;[^}]*min-height: 52px;/);
 });
 
 test("homepage content is centralised and does not expose prices", () => {

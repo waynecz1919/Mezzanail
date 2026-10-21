@@ -37,16 +37,6 @@ export function StudioLocationBooking({ locale }: { locale: Locale }) {
           </dl>
           <div className="studio-actions">
             <HomeLink
-              href={siteConfig.googleMapsDirectionsUrl}
-              variant="secondary"
-              event="open_maps_click"
-              eventLabel="studio_location"
-              external
-            >
-              {copy.mapAction}
-              <ArrowUpRight aria-hidden="true" size={16} />
-            </HomeLink>
-            <HomeLink
               href={siteConfig.bookingUrl}
               variant="primary"
               event="book_appointment_click"
@@ -58,13 +48,23 @@ export function StudioLocationBooking({ locale }: { locale: Locale }) {
             </HomeLink>
             <HomeLink
               href={getWhatsappUrl(locale)}
-              variant="text"
+              variant="secondary"
               event="whatsapp_click"
               eventLabel="studio_section"
               external
             >
               <MessageCircle aria-hidden="true" size={16} />
               {copy.whatsappAction}
+            </HomeLink>
+            <HomeLink
+              href={siteConfig.googleMapsDirectionsUrl}
+              variant="secondary"
+              event="open_maps_click"
+              eventLabel="studio_location"
+              external
+            >
+              {copy.mapAction}
+              <ArrowUpRight aria-hidden="true" size={16} />
             </HomeLink>
           </div>
         </div>
