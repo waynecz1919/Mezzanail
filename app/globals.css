@@ -2204,6 +2204,10 @@ body:has(.promotion-site:not(.promotion-terms-page)) .analytics-consent-actions 
     line-height: 1.5;
   }
 
+  .public-site .official-footer {
+    padding-bottom: calc(var(--public-bottom-nav-height) + 48px + env(safe-area-inset-bottom));
+  }
+
   .public-site .official-footer .shell > .grid:first-child {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px 16px;
