@@ -15,34 +15,70 @@ const sharedImages = {
   ],
 } as const;
 
-type HomepageHeroImage = {
+export type HomepageHeroImage = {
   src: string;
   width: number;
   height: number;
+  objectPosition?: string;
   alt: Record<"en" | "zh" | "ms", string>;
 };
 
 type HomepageImages = {
-  heroImage: HomepageHeroImage | null;
+  heroImages: readonly HomepageHeroImage[];
   studioImage: string | null;
 };
 
 export const homepage: HomepageImages = {
-  // HOW TO CHANGE THE HERO PHOTO:
-  // - Use a new file name for each replacement.
-  // - Keep src, width, and height matched to the image file.
-  // - Provide EN, ZH, and MS alt text.
-  // - Say "by Mezzanail" only for real client work.
-  heroImage: {
-    src: "/home/hero-2026-10-bridal.webp",
-    width: 1280,
-    height: 1280,
-    alt: {
-      en: "Bride in a lace gown with French-tip almond nails, hands clasped behind her back",
-      zh: "身穿蕾丝婚纱的新娘，双手背在身后，法式杏仁甲",
-      ms: "Pengantin bergaun renda dengan kuku badam French tip, tangan digenggam di belakang",
+  // HOW TO CHANGE THE HERO SLIDES:
+  // - Replace files in /public/brand/hero/ and update this array only.
+  // - Keep src, width, height, objectPosition and EN/ZH/MS alt text matched to each image.
+  // - The first slide is priority-loaded; later slides lazy-load after page load.
+  heroImages: [
+    {
+      src: "/brand/hero/hero-1.jpg",
+      width: 1122,
+      height: 1402,
+      objectPosition: "60% 70%",
+      alt: {
+        en: "Soft nude gel nails with gold accents at Mezzanail Nail Studio, Melaka",
+        zh: "马六甲 Mezzanail Nail Studio 的柔和裸粉凝胶美甲与精致金色点缀",
+        ms: "Kuku gel nude lembut dengan aksen emas di Mezzanail Nail Studio, Melaka",
+      },
     },
-  },
+    {
+      src: "/brand/hero/hero-2.jpg",
+      width: 1080,
+      height: 1350,
+      objectPosition: "58% 68%",
+      alt: {
+        en: "Elegant gel manicure at Mezzanail Nail Studio, Melaka",
+        zh: "马六甲 Mezzanail Nail Studio 的精致凝胶美甲",
+        ms: "Manikur gel elegan di Mezzanail Nail Studio, Melaka",
+      },
+    },
+    {
+      src: "/brand/hero/hero-3.jpg",
+      width: 1080,
+      height: 1350,
+      objectPosition: "62% 70%",
+      alt: {
+        en: "Premium nail work at Mezzanail Nail Studio, Melaka",
+        zh: "马六甲 Mezzanail Nail Studio 的高品质美甲作品",
+        ms: "Hasil kuku premium di Mezzanail Nail Studio, Melaka",
+      },
+    },
+    {
+      src: "/brand/hero/hero-4.jpg",
+      width: 1080,
+      height: 1350,
+      objectPosition: "60% 72%",
+      alt: {
+        en: "Refined nail art at Mezzanail Nail Studio, Melaka",
+        zh: "马六甲 Mezzanail Nail Studio 的精致美甲设计",
+        ms: "Seni kuku halus di Mezzanail Nail Studio, Melaka",
+      },
+    },
+  ],
   studioImage: null,
 };
 
