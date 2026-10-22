@@ -54,7 +54,7 @@ test("homepage navigation is concise and jobs remain in the footer", () => {
   assert.match(officialSite, /siteConfig\.bookingUrl/);
 });
 
-test("homepage visit actions are ordered and retain their tracking labels", () => {
+test("homepage visit actions are ordered without duplicate WhatsApp tracking", () => {
   const actions = studioBooking.match(/<div className="studio-actions">([\s\S]*?)<\/div>/)?.[1] ?? "";
   const links = [...actions.matchAll(/<HomeLink([\s\S]*?)<\/HomeLink>/g)].map((match) => match[1]);
 
@@ -64,8 +64,7 @@ test("homepage visit actions are ordered and retain their tracking labels", () =
   assert.match(links[1], /href=\{getWhatsappUrl\(locale\)\}/);
   assert.match(links[1], /variant="secondary"/);
   assert.match(links[1], /<MessageCircle/);
-  assert.match(links[1], /event="whatsapp_click"/);
-  assert.match(links[1], /eventLabel="studio_section"/);
+  assert.doesNotMatch(links[1], /whatsapp_click/);
   assert.match(links[2], /href=\{siteConfig\.googleMapsDirectionsUrl\}/);
   assert.match(links[2], /variant="secondary"/);
   assert.match(links[2], /event="open_maps_click"/);
@@ -244,7 +243,6 @@ test("homepage analytics include only approved interaction context", () => {
     "membership_click",
     "open_maps_click",
     "book_appointment_click",
-    "whatsapp_click",
   ]) {
     assert.match(`${homeLink}\n${officialSite}`, new RegExp(event));
   }

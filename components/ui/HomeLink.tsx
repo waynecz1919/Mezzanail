@@ -9,8 +9,7 @@ export type HomepageAnalyticsEvent =
   | "google_reviews_click"
   | "membership_click"
   | "open_maps_click"
-  | "book_appointment_click"
-  | "whatsapp_click";
+  | "book_appointment_click";
 
 type HomeLinkProps = {
   href: string;

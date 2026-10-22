@@ -45,8 +45,6 @@ export function HomeHero() {
               <HomeLink
                 href={getOfferWhatsappUrl(locale)}
                 variant="primary"
-                event="whatsapp_click"
-                eventLabel={`${currentOffer.id}_homepage_hero`}
                 external
               >
                 {offer.action}

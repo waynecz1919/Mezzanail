@@ -290,13 +290,6 @@ export function PromotionExperience() {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={`${currentOffer.copy[language].action}: ${offer.copy.service}`}
-                      onClick={() =>
-                        window.gtag?.("event", "whatsapp_click", {
-                          destination: "whatsapp",
-                          content_label: `${offer.id}_promotion`,
-                          language,
-                        })
-                      }
                     >
                       <MessageCircle size={18} aria-hidden="true" />
                       {currentOffer.copy[language].action}
