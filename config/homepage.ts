@@ -125,6 +125,7 @@ const english = {
     title: "Signature Services",
     subtitle: "Selected nail artistry and considered care",
     action: "Explore Services",
+    viewAll: "View all services",
     items: [
       { title: "Hand Care", serviceCategoryId: "manicure", body: "Refined manicure rituals, gel colour and a precise finish.", href: "/services", image: sharedImages.services[0], alt: "Soft pink manicure on hands with dried lavender", featured: true },
       { title: "Foot Care", serviceCategoryId: "pedicure", body: "Comfort-led pedicure care designed to restore and refresh.", href: "/services", image: sharedImages.services[1], alt: "French pedicure with a white lily", featured: true },
@@ -168,7 +169,7 @@ const english = {
   studio: {
     eyebrow: "VISIT THE STUDIO",
     title: "Mezzanail Nail Studio",
-    subtitle: "Your next considered appointment begins here.",
+    subtitle: "Your next appointment begins here.",
     addressLabel: "Studio",
     hoursLabel: "Opening hours",
     phoneLabel: "Contact",
@@ -194,6 +195,7 @@ export const homepageContent = {
       eyebrow: "精选护理",
       subtitle: "精选美甲与护理服务",
       action: "查看服务",
+      viewAll: "查看全部服务",
       items: [
         { ...english.services.items[0], title: "Hand Care", body: "精致修甲、凝胶色彩与细腻收尾。" },
         { ...english.services.items[1], title: "Foot Care", body: "兼顾舒适、焕新与整洁效果的足部护理。" },
@@ -237,7 +239,7 @@ export const homepageContent = {
     studio: {
       ...english.studio,
       eyebrow: "到访门店",
-      subtitle: "下一次精致体验，从这里开始。",
+      subtitle: "您的下一次预约，从这里开始。",
       addressLabel: "门店",
       hoursLabel: "营业时间",
       phoneLabel: "联系方式",
@@ -260,6 +262,7 @@ export const homepageContent = {
       eyebrow: "PENJAGAAN PILIHAN",
       subtitle: "Seni kuku dan penjagaan terpilih",
       action: "Teroka Servis",
+      viewAll: "Lihat semua servis",
       items: [
         { ...english.services.items[0], title: "Hand Care", body: "Ritual manicure, warna gel dan kemasan yang teliti." },
         { ...english.services.items[1], title: "Foot Care", body: "Pedicure yang mengutamakan keselesaan dan kesegaran." },

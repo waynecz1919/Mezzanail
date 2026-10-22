@@ -1,14 +1,16 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowUpRight, CalendarDays, MessageCircle } from "lucide-react";
+import { ArrowUpRight, CalendarDays, Car, MapPin, MessageCircle } from "lucide-react";
 import { homepage, homepageContent } from "@/config/homepage";
 import type { Locale } from "@/lib/i18n";
 import { getWhatsappUrl, siteConfig } from "@/lib/site";
 import { HomeLink } from "@/components/ui/HomeLink";
+import { locationCopy } from "@/components/find-us-directions";
 
 export function StudioLocationBooking({ locale }: { locale: Locale }) {
   const copy = homepageContent[locale].studio;
+  const location = locationCopy[locale];
 
   return (
     <section className="home-studio mn-home-section" id="studio" aria-labelledby="studio-title">
@@ -21,7 +23,19 @@ export function StudioLocationBooking({ locale }: { locale: Locale }) {
           <dl className="studio-details">
             <div>
               <dt>{copy.addressLabel}</dt>
-              <dd>{siteConfig.address.lines.map((line) => <span key={line}>{line}</span>)}</dd>
+              <dd>
+                {siteConfig.address.lines.map((line) => <span key={line}>{line}</span>)}
+                <div className="studio-location-notes">
+                  <p className="find-us-landmark">
+                    <MapPin size={15} aria-hidden="true" />
+                    <span>{location.landmark}</span>
+                  </p>
+                  <p className="find-us-landmark find-us-parking">
+                    <Car size={15} aria-hidden="true" />
+                    <span>{location.parking}</span>
+                  </p>
+                </div>
+              </dd>
             </div>
             <div>
               <dt>{copy.hoursLabel}</dt>

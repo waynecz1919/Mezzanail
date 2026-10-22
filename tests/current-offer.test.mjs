@@ -235,7 +235,8 @@ test("the homepage hero slideshow uses the supplied localized images in approved
   assert.match(heroSlideshow, /onActiveIndexChange\?\.\(reducedMotion \? 0 : activeIndex\)/);
   assert.match(heroSlideshow, /if \(reducedMotion \|\| paused \|\| !readyForLazySlides \|\| images\.length < 2\) return/);
   assert.match(heroStyles, /\.image\s*\{[^}]*object-fit:\s*contain/);
-  assert.match(heroStyles, /@media \(max-width: 430px\)\s*\{[\s\S]*?\.image\s*\{\s*object-fit:\s*cover/);
+  assert.match(heroStyles, /@media \(max-width: 767px\)\s*\{[\s\S]*?\.slideshow\s*\{[^}]*height:\s*52svh/);
+  assert.match(heroStyles, /@media \(max-width: 767px\)\s*\{[\s\S]*?\.image\s*\{\s*object-fit:\s*cover/);
   assert.match(heroStyles, /\.desktopSlogans\s*\{\s*display:\s*grid;[\s\S]*?grid-template-areas:\s*"slogan"/);
   assert.match(heroStyles, /\.mobileSlogans\s*\{\s*display:\s*grid;[\s\S]*?grid-template-areas:\s*"slogan"/);
   assert.match(heroStyles, /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.mobileSlogans \.sloganActive\s*\{\s*transition:\s*none/);
