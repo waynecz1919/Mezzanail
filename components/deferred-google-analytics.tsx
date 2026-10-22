@@ -16,6 +16,23 @@ type StoredConsent = {
   savedAt: number;
 };
 
+function hasAnalyticsConsent() {
+  try {
+    const stored = JSON.parse(
+      window.localStorage.getItem(CONSENT_KEY) || "null",
+    ) as StoredConsent | null;
+    const current =
+      stored &&
+      (stored.choice === "granted" || stored.choice === "denied") &&
+      Date.now() - stored.savedAt < CONSENT_MAX_AGE
+        ? stored
+        : null;
+    return current?.choice === "granted";
+  } catch {
+    return false;
+  }
+}
+
 const consentCopy = {
   en: {
     eyebrow: "PRIVACY CHOICE",
@@ -87,7 +104,71 @@ export function DeferredGoogleAnalytics({ gaId }: { gaId: string }) {
       queueMicrotask(() => setShowSettings(true));
     }
 
+    function trackLinkClick(event: MouseEvent) {
+      if (!hasAnalyticsConsent()) return;
+      const analyticsWindow = window as Window & {
+        gtag?: (...args: unknown[]) => void;
+      };
+      if (!analyticsWindow.gtag) return;
+
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      const anchor = target.closest<HTMLAnchorElement>("a[href]");
+      if (!anchor) return;
+
+      let url: URL;
+      try {
+        url = new URL(anchor.href, window.location.href);
+      } catch {
+        return;
+      }
+
+      const pagePath = window.location.pathname;
+      const linkUrl = anchor.href;
+      const host = url.hostname.toLowerCase();
+      if (
+        url.protocol === "whatsapp:" ||
+        host === "wa.me" ||
+        host.endsWith(".wa.me") ||
+        host === "api.whatsapp.com" ||
+        host.endsWith(".api.whatsapp.com")
+      ) {
+        const linkText =
+          anchor.innerText.trim() ||
+          anchor.getAttribute("aria-label")?.trim() ||
+          anchor.title.trim();
+        analyticsWindow.gtag("event", "whatsapp_click", {
+          link_url: linkUrl,
+          page_path: pagePath,
+          link_text: linkText,
+          transport_type: "beacon",
+        });
+        return;
+      }
+
+      if (url.protocol === "tel:") {
+        analyticsWindow.gtag("event", "phone_click", {
+          link_url: linkUrl,
+          page_path: pagePath,
+          transport_type: "beacon",
+        });
+        return;
+      }
+
+      if (
+        host === "booking.tunai.io" &&
+        /^\/mezzanail(?:\/|$)/i.test(url.pathname)
+      ) {
+        analyticsWindow.gtag("event", "booking_click", {
+          link_url: linkUrl,
+          page_path: pagePath,
+          transport_type: "beacon",
+        });
+      }
+    }
+
     window.addEventListener("mezzanail:open-analytics-settings", openSettings);
+    document.addEventListener("click", trackLinkClick, true);
     try {
       const stored = JSON.parse(
         window.localStorage.getItem(CONSENT_KEY) || "null",
@@ -106,6 +187,7 @@ export function DeferredGoogleAnalytics({ gaId }: { gaId: string }) {
 
     return () => {
       window.removeEventListener("mezzanail:open-analytics-settings", openSettings);
+      document.removeEventListener("click", trackLinkClick, true);
     };
   }, [gaId, pathname]);
 

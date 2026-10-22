@@ -49,8 +49,6 @@ export function StudioLocationBooking({ locale }: { locale: Locale }) {
             <HomeLink
               href={getWhatsappUrl(locale)}
               variant="secondary"
-              event="whatsapp_click"
-              eventLabel="studio_section"
               external
             >
               <MessageCircle aria-hidden="true" size={16} />
