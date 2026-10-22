@@ -24,6 +24,7 @@ const googleReviews = read("components/home/GoogleReviewsPreview.tsx");
 const membershipBanner = read("components/home/MembershipBanner.tsx");
 const studioBooking = read("components/home/StudioLocationBooking.tsx");
 const findUsDirections = read("components/find-us-directions.tsx");
+const deferredAnalytics = read("components/deferred-google-analytics.tsx");
 
 test("homepage renders the approved quiet-luxury section order", () => {
   const orderedComponents = [
@@ -56,6 +57,18 @@ test("homepage navigation is concise and jobs remain in the footer", () => {
   assert.match(officialSite, /siteConfig\.bookingUrl/);
 });
 
+test("mobile navigation is Services, Offers, WhatsApp, and Book with the existing click tracking", () => {
+  const mobileNav = officialSite.match(/function MobileNav\(\)\s*\{([\s\S]*?)\n\}/)?.[1] ?? "";
+  const labels = [...mobileNav.matchAll(/<span>(.*?)<\/span>/g)].map((match) => match[1]);
+
+  assert.deepEqual(labels, ["{t.nav.services}", "{t.nav.promo}", "WhatsApp", "{t.nav.book}"]);
+  assert.match(mobileNav, /href=\{getWhatsappUrl\(locale\)\}|href=\{whatsappUrl\}/);
+  assert.match(mobileNav, /<MessageCircle size=\{18\}\s*\/>/);
+  assert.match(officialSite, /<Link href="\/" className="official-header-brand"/);
+  assert.match(deferredAnalytics, /analyticsWindow\.gtag\("event", "whatsapp_click"/);
+  assert.match(globals, /@media \(max-width: 767px\)\s*\{[\s\S]*?\.public-site \.whatsapp-float\s*\{\s*display:\s*none/);
+});
+
 test("homepage visit actions are ordered without duplicate WhatsApp tracking", () => {
   const actions = studioBooking.match(/<div className="studio-actions">([\s\S]*?)<\/div>/)?.[1] ?? "";
   const links = [...actions.matchAll(/<HomeLink([\s\S]*?)<\/HomeLink>/g)].map((match) => match[1]);
@@ -71,6 +84,63 @@ test("homepage visit actions are ordered without duplicate WhatsApp tracking", (
   assert.match(links[2], /variant="secondary"/);
   assert.match(links[2], /event="open_maps_click"/);
   assert.match(links[2], /eventLabel="studio_location"/);
+});
+
+test("the signature-services mobile grid gains a localized sixth View all card", () => {
+  assert.match(signatureServices, /href="\/services"[\s\S]*?className="signature-service-card signature-service-view-all"/);
+  assert.match(signatureServices, /<ArrowRight size=\{28\}\s*\/>/);
+  for (const label of ["View all services", "查看全部服务", "Lihat semua servis"]) {
+    assert.ok(homepageConfig.includes(label), `missing localized View all label: ${label}`);
+  }
+  assert.match(globals, /@media \(max-width: 767px\)\s*\{[\s\S]*?\.public-site \.signature-service-view-all\s*\{\s*display:\s*block/);
+});
+
+test("the mobile offer strip shows the full price then localized includes before booking", () => {
+  const strip = homeHero.match(/<div className=\{styles\.mobileOfferStrip\}[\s\S]*?<\/div>\s*\) : null\}/)?.[0] ?? "";
+  assert.match(strip, /\{offer\.title\} · \{offer\.service\}/);
+  assert.match(strip, /className=\{styles\.mobileOfferPrice\}[\s\S]*?RM\{currentOffer\.offerPrice\}[\s\S]*?<s>\(RM\{currentOffer\.originalPrice\}\)<\/s>/);
+  assert.match(strip, /className=\{styles\.mobileOfferIncludes\}>\{offer\.includes\}/);
+  assert.match(strip, /className=\{styles\.mobileOfferIncludes\}>\{offer\.includes\}[\s\S]*?<HomeLink href=\{getOfferWhatsappUrl\(locale\)\}/);
+  assert.match(homeHeroStyles, /@media \(max-width: 767px\)[\s\S]*?height: 52svh;[\s\S]*?min-height: 0/);
+  assert.match(homeHeroStyles, /mobileOfferStrip \.mobileOfferIncludes\s*\{[^}]*font-size: 12px/);
+  assert.match(homeHeroStyles, /\.mobileOfferDetails\s*\{[^}]*padding: 24px 20px 24px/);
+});
+
+test("mobile nail-work gallery keeps complete source artwork and moves Instagram below it", () => {
+  const gridPosition = selectedNailWork.indexOf('className="selected-work-grid"');
+  const mobileActionPosition = selectedNailWork.indexOf('selected-work-action--mobile');
+  assert.ok(gridPosition >= 0 && mobileActionPosition > gridPosition);
+  assert.match(selectedNailWork, /selected-work-action--desktop/);
+  assert.match(selectedNailWork, /className="selected-work-image-frame"/);
+  assert.match(globals, /@media \(max-width: 767px\)\s*\{[\s\S]*?\.public-site \.selected-work-image-frame\s*\{[^}]*aspect-ratio:\s*1;[\s\S]*?\.public-site \.selected-work-image-frame img\s*\{[^}]*object-fit:\s*contain !important/);
+  assert.match(globals, /\.public-site \.selected-work-item > span\s*\{[^}]*position:\s*static/);
+});
+
+test("mobile Membership uses compact vertical padding", () => {
+  assert.match(globals, /@media \(max-width: 767px\)\s*\{[\s\S]*?\.public-site \.membership-banner\s*\{[^}]*min-height:\s*0;[^}]*padding-block:\s*48px/);
+});
+
+test("the studio appointment copy and mobile location notes are localized", () => {
+  for (const text of [
+    "Your next appointment begins here.",
+    "您的下一次预约，从这里开始。",
+    "Janji temu anda yang seterusnya bermula di sini.",
+  ]) {
+    assert.ok(homepageConfig.includes(text), `studio copy missing: ${text}`);
+  }
+  assert.doesNotMatch(homepageConfig, /studio:\s*\{[\s\S]{0,220}considered/);
+  assert.match(studioBooking, /locationCopy\[locale\]/);
+  assert.match(studioBooking, /className="studio-location-notes"/);
+  assert.match(studioBooking, /<MapPin size=\{15\} aria-hidden="true"\s*\/>/);
+  assert.match(studioBooking, /<Car size=\{15\} aria-hidden="true"\s*\/>/);
+  assert.match(globals, /@media \(max-width: 767px\)\s*\{[\s\S]*?\.public-site \.studio-location-notes\s*\{\s*display:\s*grid/);
+});
+
+test("mobile legal links keep their wording and use decorative dot separators", () => {
+  assert.match(officialSite, /footer-legal-links[\s\S]*?footer-legal-separator/);
+  assert.match(officialSite, /className="footer-legal-separator" aria-hidden="true">·<\/span>/);
+  assert.match(globals, /@media \(max-width: 767px\)\s*\{[\s\S]*?\.public-site \.footer-legal-links\s*\{[^}]*justify-content:\s*space-between/);
+  assert.match(globals, /\.public-site \.official-footer\s*\{[^}]*padding-bottom:\s*calc\(var\(--public-bottom-nav-height\) \+ 48px \+ env\(safe-area-inset-bottom\)\)/);
 });
 
 test("find-us landmark is localized and rendered with a decorative map pin", () => {
@@ -256,7 +326,8 @@ test("mobile hero text meets the public minimum and shows the localized offer st
   assert.match(globals, /\.public-site \.mn-eyebrow\s*\{\s*font-size:\s*11px;/);
   assert.match(homeHeroStyles, /\.mobileOverlayCopy :global\(\.mn-eyebrow\)\s*\{[^}]*font-size:\s*11px/);
   assert.match(homeHero, /className=\{styles\.mobileOfferStrip\}/);
-  assert.match(homeHero, /\{offer\.title\} · \{offer\.service\} <strong>RM\{currentOffer\.offerPrice\}<\/strong>/);
+  assert.match(homeHero, /className=\{styles\.mobileOfferPrice\}[\s\S]*?RM\{currentOffer\.offerPrice\}/);
+  assert.match(homeHero, /className=\{styles\.mobileOfferIncludes\}>\{offer\.includes\}/);
 });
 
 test("homepage analytics include only approved interaction context", () => {
