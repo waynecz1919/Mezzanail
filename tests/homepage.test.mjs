@@ -13,6 +13,7 @@ const navigation = read("config/navigation.ts");
 const globals = read("app/globals.css");
 const homeLink = read("components/ui/HomeLink.tsx");
 const homeHero = read("components/home/HomeHero.tsx");
+const homeHeroSlideshow = read("components/home/HomeHeroSlideshow.tsx");
 const homeHeroStyles = read("components/home/HomeHero.module.css");
 const homepagePage = read("app/page.tsx");
 const sectionHeading = read("components/ui/SectionHeading.tsx");
@@ -139,7 +140,8 @@ test("homepage title is absolute while description, canonical and H1 stay unchan
   assert.match(homepagePage, /title: "Premium Nail Care in Melaka"/);
   assert.match(homepagePage, /description:\s*"Visit Mezzanail Nail Studio in Melaka for manicure, pedicure, nail extensions, callus care and waxing\. Book online or enquire through WhatsApp\."/);
   assert.match(homepagePage, /path: "\/"/);
-  assert.match(homeHero, /<h1 id="home-hero-title">\{heroCopy\.title\}<\/h1>/);
+  assert.match(homeHero, /<h1 className="sr-only" id="home-hero-title">\{heroCopy\.title\}<\/h1>/);
+  assert.equal((homeHero.match(/<h1\b/g) ?? []).length, 1);
 });
 
 test("homepage Google rating and localized review notes match the owner-approved values", () => {
@@ -161,7 +163,7 @@ test("Google rating is grouped on one line, with the note below and the number i
   assert.match(googleReviews, /className="google-rating"[\s\S]*?<Star aria-hidden="true" size=\{20\} fill="currentColor" \/>[\s\S]*?<strong>\{copy\.rating\}<\/strong>[\s\S]*?<span>\/ 5<\/span>[\s\S]*?<small>\{copy\.ratingNote\}<\/small>/);
 });
 
-test("hero eyebrow, heading, lede and booking action are localized in en, zh and ms", () => {
+test("hero eyebrow, accessible title and booking action are localized in en, zh and ms", () => {
   for (const copy of [
     "Nail Studio · Melaka",
     "美甲工作室 · 马六甲",
@@ -181,8 +183,30 @@ test("hero eyebrow, heading, lede and booking action are localized in en, zh and
   assert.match(homeHero, /const heroCopy = homepageContent\[locale\]\.hero/);
   assert.match(homeHero, /\{heroCopy\.eyebrow\}/);
   assert.match(homeHero, /\{heroCopy\.title\}/);
-  assert.match(homeHero, /\{heroCopy\.lede\}/);
   assert.match(homeHero, /\{heroCopy\.bookNow\}/);
+  assert.doesNotMatch(homeHero, /heroCopy\.lede/);
+});
+
+test("premium slogans rotate with the four images without adding headings or live announcements", () => {
+  for (const slogan of [
+    "Artistry at your fingertips.", "指尖上的艺术", "Seni di hujung jari.",
+    "Precision in every stroke.", "每一笔，都是讲究", "Teliti dalam setiap sapuan.",
+    "Effortless elegance, every day.", "优雅，成为日常", "Anggun, setiap hari.",
+    "Luxury, from heel to toe.", "从足尖开始的宠爱", "Kemewahan dari tumit ke hujung jari.",
+  ]) {
+    assert.ok(homepageConfig.includes(slogan), `slogan missing: ${slogan}`);
+  }
+  assert.match(homeHero, /<h1 className="sr-only" id="home-hero-title">\{heroCopy\.title\}<\/h1>/);
+  assert.equal((homeHero.match(/<h1\b/g) ?? []).length, 1);
+  assert.match(homeHero, /aria-hidden=\{index !== activeIndex\}/);
+  assert.match(homeHero, /className=\{styles\.desktopSlogans\}/);
+  assert.match(homeHero, /className=\{styles\.mobileSlogans\}/);
+  assert.match(homeHeroSlideshow, /onActiveIndexChange\?\.\(reducedMotion \? 0 : activeIndex\)/);
+  assert.doesNotMatch(homeHero + homeHeroSlideshow, /aria-live/);
+  assert.doesNotMatch(homeHero, /heroCopy\.lede/);
+  assert.match(homeHeroStyles, /desktopSlogans \.sloganActive[\s\S]*?transition: opacity 1s ease/);
+  assert.match(homeHeroStyles, /mobileSlogans \.sloganActive[\s\S]*?transition: opacity 1s ease/);
+  assert.match(homeHeroStyles, /@media \(prefers-reduced-motion: reduce\)[\s\S]*?mobileSlogans \.sloganActive[\s\S]*?transition: none/);
 });
 
 test("only the hero eyebrow remains among the homepage section labels", () => {

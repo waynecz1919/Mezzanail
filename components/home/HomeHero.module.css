@@ -19,23 +19,33 @@
   margin: 0 0 18px;
 }
 
-.desktopCopy h1 {
+.desktopSlogans {
+  display: grid;
+  grid-template-areas: "slogan";
+  width: 100%;
+  margin: 0;
+}
+
+.desktopSlogans .slogan,
+.desktopSlogans .sloganActive {
+  grid-area: slogan;
   max-width: 620px;
   margin: 0;
   font-family: var(--font-beauty), Georgia, serif;
-  font-size: clamp(56px, 6.8vw, 90px);
+  font-size: clamp(54px, 5.5vw, 76px);
   font-weight: 400;
-  line-height: .94;
-  letter-spacing: -.055em;
+  line-height: .98;
+  letter-spacing: -.05em;
   text-wrap: balance;
+  transition: opacity 1s ease;
 }
 
-.lede {
-  max-width: 550px;
-  margin: 22px 0 0;
-  color: var(--color-ink);
-  font-size: 17px;
-  line-height: 1.7;
+.slogan {
+  opacity: 0;
+}
+
+.sloganActive {
+  opacity: 1;
 }
 
 .mediaWrap {
@@ -207,6 +217,7 @@
 }
 
 .mobileOverlayCopy,
+.mobileSlogans,
 .mobileOfferStrip,
 .mobileOfferDetails {
   display: none;
@@ -290,16 +301,26 @@
     letter-spacing: .16em;
   }
 
-  .mobileOverlayCopy h1 {
+  .mobileSlogans {
+    display: grid;
+    grid-template-areas: "slogan";
+    width: 100%;
+    margin: 0;
+  }
+
+  .mobileSlogans .slogan,
+  .mobileSlogans .sloganActive {
+    grid-area: slogan;
     margin: 0;
     color: #fff;
     font-family: var(--font-beauty), Georgia, serif;
-    font-size: clamp(38px, 11vw, 48px);
+    font-size: clamp(36px, 10vw, 44px);
     font-weight: 400;
     line-height: .98;
     letter-spacing: -.045em;
     text-shadow: 0 2px 14px rgba(0,0,0,.28);
     text-wrap: balance;
+    transition: opacity 1s ease;
   }
 
   .dots {
@@ -371,7 +392,11 @@
 
 @media (prefers-reduced-motion: reduce) {
   .slide,
-  .slideActive {
+  .slideActive,
+  .desktopSlogans .slogan,
+  .desktopSlogans .sloganActive,
+  .mobileSlogans .slogan,
+  .mobileSlogans .sloganActive {
     transition: none;
   }
 }

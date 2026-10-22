@@ -1,18 +1,44 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { useLanguage } from "@/components/providers";
 import { useOfferActive } from "@/components/offer/use-offer-active";
 import { HomeLink } from "@/components/ui/HomeLink";
 import { currentOffer, getOfferWhatsappUrl } from "@/config/current-offer";
-import { homepage, homepageContent } from "@/config/homepage";
+import { homepage, homepageContent, type HomepageHeroImage } from "@/config/homepage";
+import type { Locale } from "@/lib/i18n";
 import { siteConfig } from "@/lib/site";
 import { HomeHeroSlideshow } from "./HomeHeroSlideshow";
 import styles from "./HomeHero.module.css";
 
+type HeroSlogansProps = {
+  images: readonly HomepageHeroImage[];
+  locale: Locale;
+  activeIndex: number;
+  className: string;
+};
+
+function HeroSlogans({ images, locale, activeIndex, className }: HeroSlogansProps) {
+  return (
+    <div className={className}>
+      {images.map((image, index) => (
+        <p
+          key={image.src}
+          className={index === activeIndex ? styles.sloganActive : styles.slogan}
+          aria-hidden={index !== activeIndex}
+        >
+          {image.slogan[locale]}
+        </p>
+      ))}
+    </div>
+  );
+}
+
 export function HomeHero() {
   const { locale } = useLanguage();
   const offerActive = useOfferActive();
+  const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const heroImages = homepage.heroImages;
   const heroCopy = homepageContent[locale].hero;
   const offer = currentOffer.copy[locale];
@@ -23,9 +49,15 @@ export function HomeHero() {
         className={styles.hero}
         aria-labelledby="home-hero-title"
       >
+        <h1 className="sr-only" id="home-hero-title">{heroCopy.title}</h1>
         <div className={styles.desktopCopy}>
           <p className="mn-eyebrow">{heroCopy.eyebrow}</p>
-          <h1 id="home-hero-title">{heroCopy.title}</h1>
+          <HeroSlogans
+            images={heroImages}
+            locale={locale}
+            activeIndex={activeSlideIndex}
+            className={styles.desktopSlogans}
+          />
 
           {offerActive ? (
             <div className={styles.desktopOffer} role="group" aria-labelledby="home-hero-offer-title">
@@ -62,7 +94,6 @@ export function HomeHero() {
             </div>
           ) : null}
 
-          <p className={styles.lede}>{heroCopy.lede}</p>
           {offerActive ? null : (
             <HomeLink
               href={siteConfig.bookingUrl}
@@ -77,10 +108,19 @@ export function HomeHero() {
         </div>
 
         <div className={styles.mediaWrap}>
-          <HomeHeroSlideshow images={heroImages} locale={locale} />
+          <HomeHeroSlideshow
+            images={heroImages}
+            locale={locale}
+            onActiveIndexChange={setActiveSlideIndex}
+          />
           <div className={styles.mobileOverlayCopy}>
             <p className="mn-eyebrow">{heroCopy.eyebrow}</p>
-            <h1>{heroCopy.title}</h1>
+            <HeroSlogans
+              images={heroImages}
+              locale={locale}
+              activeIndex={activeSlideIndex}
+              className={styles.mobileSlogans}
+            />
           </div>
         </div>
 

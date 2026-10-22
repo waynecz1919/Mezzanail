@@ -170,13 +170,14 @@ test("ZH and MS service names stay in English for offers and homepage service ca
 test("the homepage hero slideshow uses the supplied localized images in approved order", () => {
   const slides = [
     {
-      src: "/brand/hero/hero-1.jpg",
-      position: "60% 70%",
+      src: "/brand/hero/hero-1-v2.jpg",
+      position: "50% 70%",
       alt: [
         "Macro view of nude-pink nails with fine gold line art",
         "裸粉色美甲与细致金线设计的近景",
         "Pandangan dekat kuku merah jambu nude dengan garisan seni emas halus",
       ],
+      slogan: ["Artistry at your fingertips.", "指尖上的艺术", "Seni di hujung jari."],
     },
     {
       src: "/brand/hero/hero-2.jpg",
@@ -186,6 +187,7 @@ test("the homepage hero slideshow uses the supplied localized images in approved
         "美甲师戴着黑色手套为顾客涂抹指甲油",
         "Jurukuku bersarung tangan hitam sedang menyapu pengilat kuku",
       ],
+      slogan: ["Precision in every stroke.", "每一笔，都是讲究", "Teliti dalam setiap sapuan."],
     },
     {
       src: "/brand/hero/hero-3.jpg",
@@ -195,6 +197,7 @@ test("the homepage hero slideshow uses the supplied localized images in approved
         "双手展示法式美甲并捧着拿铁",
         "Dua tangan berkuku French tip memegang latte",
       ],
+      slogan: ["Effortless elegance, every day.", "优雅，成为日常", "Anggun, setiap hari."],
     },
     {
       src: "/brand/hero/hero-4.jpg",
@@ -204,11 +207,12 @@ test("the homepage hero slideshow uses the supplied localized images in approved
         "修饰整齐的双脚放在水疗毛巾上，旁边是花瓣泡脚盆",
         "Pedicure dengan kedua-dua kaki di atas tuala spa di sisi rendaman kaki berkelopak",
       ],
+      slogan: ["Luxury, from heel to toe.", "从足尖开始的宠爱", "Kemewahan dari tumit ke hujung jari."],
     },
   ];
   const heroImageList = homepageConfig.match(/heroImages:\s*\[([\s\S]*?)\n  \],/)?.[1] ?? "";
 
-  assert.equal((heroImageList.match(/src:\s*"\/brand\/hero\/hero-\d\.jpg"/g) ?? []).length, 4);
+  assert.equal((heroImageList.match(/src:\s*"\/brand\/hero\/hero-(?:1-v2|[234])\.jpg"/g) ?? []).length, 4);
   let previousImageIndex = -1;
   for (const slide of slides) {
     const imageIndex = heroImageList.indexOf(`src: "${slide.src}"`);
@@ -216,18 +220,27 @@ test("the homepage hero slideshow uses the supplied localized images in approved
     previousImageIndex = imageIndex;
     assert.ok(heroImageList.includes(`objectPosition: "${slide.position}"`));
     for (const alt of slide.alt) assert.ok(heroImageList.includes(alt));
+    for (const slogan of slide.slogan) assert.ok(heroImageList.includes(slogan));
 
     const filePath = `public${slide.src}`;
     assert.equal(existsSync(filePath), true, `${filePath} exists`);
     assert.equal(statSync(filePath).size < 200 * 1024, true, `${filePath} is under 200 KB`);
   }
+  assert.match(heroImageList, /src:\s*"\/brand\/hero\/hero-1-v2\.jpg",\s*width:\s*816,\s*height:\s*1020,\s*objectPosition:\s*"50% 70%"/);
   assert.match(heroImageList, /width:\s*1024,\s*height:\s*1280/);
-  assert.match(hero, /<HomeHeroSlideshow images=\{heroImages\} locale=\{locale\} \/>/);
+  assert.match(hero, /<HomeHeroSlideshow[\s\S]*?images=\{heroImages\}[\s\S]*?locale=\{locale\}[\s\S]*?onActiveIndexChange=\{setActiveSlideIndex\}/);
   assert.match(heroSlideshow, /alt=\{image\.alt\[locale\]\}/);
   assert.match(heroSlideshow, /priority=\{index === 0\}/);
   assert.match(heroSlideshow, /loading=\{index === 0 \? undefined : "lazy"\}/);
+  assert.match(heroSlideshow, /onActiveIndexChange\?\.\(reducedMotion \? 0 : activeIndex\)/);
+  assert.match(heroSlideshow, /if \(reducedMotion \|\| paused \|\| !readyForLazySlides \|\| images\.length < 2\) return/);
   assert.match(heroStyles, /\.image\s*\{[^}]*object-fit:\s*contain/);
   assert.match(heroStyles, /@media \(max-width: 430px\)\s*\{[\s\S]*?\.image\s*\{\s*object-fit:\s*cover/);
+  assert.match(heroStyles, /\.desktopSlogans\s*\{\s*display:\s*grid;[\s\S]*?grid-template-areas:\s*"slogan"/);
+  assert.match(heroStyles, /\.mobileSlogans\s*\{\s*display:\s*grid;[\s\S]*?grid-template-areas:\s*"slogan"/);
+  assert.match(heroStyles, /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.mobileSlogans \.sloganActive\s*\{\s*transition:\s*none/);
+  assert.match(hero, /aria-hidden=\{index !== activeIndex\}/);
+  assert.doesNotMatch(hero + heroSlideshow, /aria-live/);
 });
 
 test("the hero offer and promotion section hide themselves after the offer ends", () => {
@@ -238,7 +251,9 @@ test("the hero offer and promotion section hide themselves after the offer ends"
     "the desktop RM68 offer must sit in the hero copy, before the photo",
   );
   assert.match(hero, /<strong>RM\{currentOffer\.offerPrice\}<\/strong>/);
-  assert.match(hero, /<h1 id="home-hero-title">\{heroCopy\.title\}<\/h1>/);
+  assert.match(hero, /<h1 className="sr-only" id="home-hero-title">\{heroCopy\.title\}<\/h1>/);
+  assert.equal((hero.match(/<h1\b/g) ?? []).length, 1, "the homepage hero has exactly one H1");
+  assert.doesNotMatch(hero, /heroCopy\.lede/);
   assert.match(hero, /className=\{styles\.mobileOfferStrip\}/);
   assert.match(promotion, /\{offerActive && \(/);
   assert.match(promotion, /id="current-offer"/);

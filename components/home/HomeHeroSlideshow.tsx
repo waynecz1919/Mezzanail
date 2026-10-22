@@ -9,9 +9,10 @@ import styles from "./HomeHero.module.css";
 type Props = {
   images: readonly HomepageHeroImage[];
   locale: Locale;
+  onActiveIndexChange?: (index: number) => void;
 };
 
-export function HomeHeroSlideshow({ images, locale }: Props) {
+export function HomeHeroSlideshow({ images, locale, onActiveIndexChange }: Props) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [readyForLazySlides, setReadyForLazySlides] = useState(false);
   const [paused, setPaused] = useState(false);
@@ -38,12 +39,16 @@ export function HomeHeroSlideshow({ images, locale }: Props) {
   }, []);
 
   useEffect(() => {
-    if (reducedMotion || paused || images.length < 2) return;
+    onActiveIndexChange?.(reducedMotion ? 0 : activeIndex);
+  }, [activeIndex, onActiveIndexChange, reducedMotion]);
+
+  useEffect(() => {
+    if (reducedMotion || paused || !readyForLazySlides || images.length < 2) return;
     const interval = window.setInterval(() => {
       setActiveIndex((index) => (index + 1) % images.length);
     }, 5000);
     return () => window.clearInterval(interval);
-  }, [images.length, paused, reducedMotion]);
+  }, [images.length, paused, readyForLazySlides, reducedMotion]);
 
   useEffect(() => () => {
     if (resumeTimer.current) clearTimeout(resumeTimer.current);
@@ -68,6 +73,7 @@ export function HomeHeroSlideshow({ images, locale }: Props) {
   if (!images.length) return null;
 
   const visibleImages = reducedMotion || !readyForLazySlides ? images.slice(0, 1) : images;
+  const displayedIndex = reducedMotion ? 0 : activeIndex;
 
   return (
     <div
@@ -90,7 +96,7 @@ export function HomeHeroSlideshow({ images, locale }: Props) {
     >
       <div className={styles.slides}>
         {visibleImages.map((image, index) => {
-          const active = reducedMotion ? index === 0 : index === activeIndex;
+          const active = index === displayedIndex;
           return (
             <div
               key={image.src}
