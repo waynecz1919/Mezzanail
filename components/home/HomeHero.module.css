@@ -1,0 +1,377 @@
+.hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, .96fr) minmax(0, 1.04fr);
+  gap: clamp(28px, 5vw, 72px);
+  width: min(1280px, 100%);
+  min-height: min(640px, calc(100svh - 80px));
+  align-items: center;
+  margin-inline: auto;
+  padding: clamp(48px, 8vh, 88px) clamp(24px, 4.6vw, 64px);
+}
+
+.desktopCopy {
+  min-width: 0;
+  max-width: 640px;
+}
+
+.desktopCopy :global(.mn-eyebrow) {
+  margin: 0 0 18px;
+}
+
+.desktopCopy h1 {
+  max-width: 620px;
+  margin: 0;
+  font-family: var(--font-beauty), Georgia, serif;
+  font-size: clamp(56px, 6.8vw, 90px);
+  font-weight: 400;
+  line-height: .94;
+  letter-spacing: -.055em;
+  text-wrap: balance;
+}
+
+.lede {
+  max-width: 550px;
+  margin: 22px 0 0;
+  color: var(--color-ink);
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.mediaWrap {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  justify-self: end;
+}
+
+.slideshow {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 26px;
+  background: #e9dfd6;
+}
+
+.slides {
+  position: absolute;
+  inset: 0;
+}
+
+.slide,
+.slideActive {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.slideActive {
+  opacity: 1;
+}
+
+.image {
+  object-fit: contain;
+  object-position: center;
+}
+
+.topGradient {
+  display: none;
+}
+
+.dots {
+  position: absolute;
+  z-index: 4;
+  right: 14px;
+  bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.dotButton,
+.dotActive {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.dot {
+  display: block;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.62);
+  box-shadow: 0 1px 5px rgba(0,0,0,.2);
+}
+
+.dotActive .dot {
+  width: 18px;
+  background: #fff;
+}
+
+.desktopOffer {
+  margin-top: 24px;
+  border: 1px solid color-mix(in srgb, var(--color-gold) 55%, transparent);
+  border-radius: 18px;
+  background: var(--color-white);
+  padding: 20px 22px 14px;
+  color: var(--color-ink);
+  text-align: left;
+}
+
+.offerLabel {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.offerTitle {
+  margin: 10px 0 0;
+  font-family: var(--font-beauty), Georgia, serif;
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+.offerPrice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  margin: 6px 0 0;
+}
+
+.offerPrice s {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.offerPrice strong {
+  color: #9a7138;
+  font-family: var(--font-beauty), Georgia, serif;
+  font-size: clamp(54px, 5vw, 68px);
+  font-weight: 600;
+  line-height: 1;
+}
+
+.offerSave {
+  border: 1px solid var(--color-ink);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.offerMeta,
+.offerIncludes,
+.offerExtras {
+  margin: 7px 0 0;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.offerExtras {
+  font-weight: 650;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.actions :global(.mn-button) {
+  min-height: 52px;
+  margin: 0;
+}
+
+.detailsLink {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  margin-top: 4px;
+  color: var(--color-ink);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.mobileOverlayCopy,
+.mobileOfferStrip,
+.mobileOfferDetails {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    justify-items: center;
+    min-height: 0;
+  }
+
+  .desktopCopy {
+    width: min(100%, 680px);
+  }
+
+  .mediaWrap {
+    width: min(100%, 520px);
+    justify-self: center;
+  }
+}
+
+@media (max-width: 430px) {
+  .hero {
+    display: block;
+    width: 100%;
+    padding: 0;
+    background: var(--color-white);
+  }
+
+  .desktopCopy {
+    display: none;
+  }
+
+  .mediaWrap {
+    width: 100%;
+    max-width: none;
+  }
+
+  .slideshow {
+    width: 100%;
+    height: 60svh;
+    min-height: 500px;
+    max-height: 650px;
+    aspect-ratio: auto;
+    border-radius: 0;
+    background: #3d3936;
+  }
+
+  .image {
+    object-fit: cover;
+  }
+
+  .topGradient {
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: 2;
+    display: block;
+    height: 48%;
+    background: linear-gradient(180deg, rgba(26,24,23,.68) 0%, rgba(26,24,23,.34) 58%, rgba(26,24,23,0) 100%);
+    pointer-events: none;
+  }
+
+  .mobileOverlayCopy {
+    position: absolute;
+    z-index: 3;
+    top: clamp(38px, 7svh, 74px);
+    left: 0;
+    display: block;
+    width: min(88%, 360px);
+    padding: 0 22px;
+    color: #fff;
+    text-align: left;
+  }
+
+  .mobileOverlayCopy :global(.mn-eyebrow) {
+    margin: 0 0 12px;
+    color: rgba(255,255,255,.9);
+    font-size: 10px;
+    letter-spacing: .16em;
+  }
+
+  .mobileOverlayCopy h1 {
+    margin: 0;
+    color: #fff;
+    font-family: var(--font-beauty), Georgia, serif;
+    font-size: clamp(38px, 11vw, 48px);
+    font-weight: 400;
+    line-height: .98;
+    letter-spacing: -.045em;
+    text-shadow: 0 2px 14px rgba(0,0,0,.28);
+    text-wrap: balance;
+  }
+
+  .dots {
+    right: 10px;
+    bottom: 8px;
+  }
+
+  .mobileOfferStrip {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 15px 18px 17px;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 28%, transparent);
+    background: #fffaf7;
+    color: var(--color-ink);
+  }
+
+  .mobileOfferStrip p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  .mobileOfferStrip strong {
+    color: #9a7138;
+  }
+
+  .mobileOfferStrip :global(.mn-button) {
+    width: 100%;
+    min-height: 48px;
+    margin: 0;
+  }
+
+  .mobileOfferDetails {
+    display: block;
+    padding: 28px 20px 36px;
+    border-bottom: 1px solid var(--line);
+    background: var(--color-white);
+    color: var(--color-ink);
+  }
+
+  .mobileOfferDetailsInner {
+    display: grid;
+    gap: 14px;
+    max-width: 390px;
+    margin-inline: auto;
+  }
+
+  .mobileOfferDetails p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .mobileOfferDetails .offerExtras {
+    font-weight: 700;
+  }
+
+  .mobileOfferDetails .actions {
+    display: grid;
+    margin-top: 4px;
+  }
+
+  .mobileOfferDetails .actions :global(.mn-button) {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide,
+  .slideActive {
+    transition: none;
+  }
+}
