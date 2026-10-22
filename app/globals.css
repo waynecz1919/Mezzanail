@@ -2628,6 +2628,8 @@ body:has(.promotion-site:not(.promotion-terms-page)) .analytics-consent-actions 
   .public-site .selected-work-item,
   .public-site .selected-work-item.is-primary {
     display: flex;
+    width: 100%;
+    min-width: 100%;
     height: auto;
     flex-direction: column;
     gap: 0;
@@ -2635,6 +2637,11 @@ body:has(.promotion-site:not(.promotion-terms-page)) .analytics-consent-actions 
     border-radius: 0;
     background: transparent;
     aspect-ratio: auto;
+  }
+
+  .public-site .selected-work-grid {
+    width: 100%;
+    padding-right: 0;
   }
 
   .public-site .selected-work-image-frame {

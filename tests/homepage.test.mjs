@@ -112,6 +112,8 @@ test("mobile nail-work gallery keeps complete source artwork and moves Instagram
   assert.ok(gridPosition >= 0 && mobileActionPosition > gridPosition);
   assert.match(selectedNailWork, /selected-work-action--desktop/);
   assert.match(selectedNailWork, /className="selected-work-image-frame"/);
+  assert.match(globals, /@media \(max-width: 767px\)[\s\S]*?\.public-site \.selected-work-grid\s*\{[^}]*width:\s*100%;[^}]*padding-right:\s*0/);
+  assert.match(globals, /\.public-site \.selected-work-item,\s*\.public-site \.selected-work-item\.is-primary\s*\{[^}]*width:\s*100%;[^}]*min-width:\s*100%/);
   assert.match(globals, /@media \(max-width: 767px\)\s*\{[\s\S]*?\.public-site \.selected-work-image-frame\s*\{[^}]*aspect-ratio:\s*1;[\s\S]*?\.public-site \.selected-work-image-frame img\s*\{[^}]*object-fit:\s*contain !important/);
   assert.match(globals, /\.public-site \.selected-work-item > span\s*\{[^}]*position:\s*static/);
 });
