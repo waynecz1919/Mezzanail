@@ -2114,7 +2114,7 @@ body:has(.promotion-site:not(.promotion-terms-page)) .analytics-consent-actions 
 
   .public-site .reviews-grid {
     display: flex;
-    width: calc(100% + 19px);
+    width: calc(100% + 18px);
     gap: 12px;
     margin-top: 16px;
     overflow-x: auto;
