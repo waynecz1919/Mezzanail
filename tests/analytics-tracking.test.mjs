@@ -10,6 +10,16 @@ const studio = read("components/home/StudioLocationBooking.tsx");
 const officialSite = read("components/official-site.tsx");
 const promotion = read("components/promotion/promotion-experience.tsx");
 
+test("GA4 queues arguments objects after consent, matching Google's gtag shim", () => {
+  assert.match(
+    analytics,
+    /analyticsWindow\.dataLayer = analyticsWindow\.dataLayer \|\| \[\];\s*analyticsWindow\.gtag = function gtag\(\)\s*\{\s*analyticsWindow\.dataLayer!\.push\(arguments\);\s*\};/,
+  );
+  assert.doesNotMatch(analytics, /function gtag\(\.\.\.args/);
+  assert.match(analytics, /if \(current\?\.choice === "granted"\) loadAnalytics\(\)/);
+  assert.match(analytics, /if \(choice === "granted"\) \{\s*window\.location\.reload\(\);/);
+});
+
 test("delegated contact and booking events are consent-gated and use beacon transport", () => {
   assert.match(analytics, /document\.addEventListener\("click", trackLinkClick, true\)/);
   assert.match(analytics, /document\.removeEventListener\("click", trackLinkClick, true\)/);

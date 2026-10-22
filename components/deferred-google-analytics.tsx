@@ -76,11 +76,9 @@ export function DeferredGoogleAnalytics({ gaId }: { gaId: string }) {
         gtag?: (...args: unknown[]) => void;
       };
       analyticsWindow.dataLayer = analyticsWindow.dataLayer || [];
-      analyticsWindow.gtag =
-        analyticsWindow.gtag ||
-        function gtag(...args: unknown[]) {
-          analyticsWindow.dataLayer?.push(args);
-        };
+      analyticsWindow.gtag = function gtag() {
+        analyticsWindow.dataLayer!.push(arguments);
+      };
       analyticsWindow.gtag("js", new Date());
       analyticsWindow.gtag("config", gaId, {
         allow_google_signals: false,
