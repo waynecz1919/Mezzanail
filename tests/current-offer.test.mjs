@@ -191,7 +191,7 @@ test("the homepage hero slideshow uses the supplied localized images in approved
     },
     {
       src: "/brand/hero/hero-3.jpg",
-      position: "55% 65%",
+      position: "90% 65%",
       alt: [
         "Two hands with French-tip nails holding a latte",
         "双手展示法式美甲并捧着拿铁",

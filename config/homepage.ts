@@ -71,7 +71,7 @@ export const homepage: HomepageImages = {
       src: "/brand/hero/hero-3.jpg",
       width: 1024,
       height: 1280,
-      objectPosition: "55% 65%",
+      objectPosition: "90% 65%",
       alt: {
         en: "Two hands with French-tip nails holding a latte",
         zh: "双手展示法式美甲并捧着拿铁",
