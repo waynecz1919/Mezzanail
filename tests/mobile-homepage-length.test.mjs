@@ -65,6 +65,7 @@ test("Google reviews keep the rating and all-reviews action around a swipe carou
   assert.ok(ratingPosition >= 0 && ratingPosition < carouselPosition);
   assert.ok(carouselPosition < actionPosition);
   assert.match(mobileRules, /\.public-site \.reviews-grid\s*\{[^}]*display:\s*flex;[\s\S]*scroll-snap-type:\s*x mandatory;/);
+  assert.match(mobileRules, /\.public-site \.reviews-grid\s*\{[^}]*width:\s*calc\(100% \+ 18px\)/);
   assert.match(mobileRules, /\.public-site \.reviews-grid \.review-quote\s*\{[^}]*flex:\s*0 0 85%;/);
   assert.match(mobileRules, /\.public-site \.reviews-action\s*\{[^}]*width:\s*100%;/);
   assert.match(mobileRules, /\.public-site \.reviews-grid \.review-quote\s*\{[^}]*min-height:\s*0/);
