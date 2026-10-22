@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Manrope, Noto_Sans_SC } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { Providers } from "@/components/providers";
 import { DeferredGoogleAnalytics } from "@/components/deferred-google-analytics";
 import { isConfiguredUrl, siteConfig, siteUrl } from "@/lib/site";
@@ -62,5 +63,5 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       },
     ],
   };
-  return <html lang="en" className="light" style={{ colorScheme: "light" }} suppressHydrationWarning><body className={`${manrope.variable} ${beautyDisplay.variable} ${chineseSans.variable}`}><Providers>{children}<DeferredGoogleAnalytics gaId={GOOGLE_ANALYTICS_ID} /></Providers><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}/></body></html>;
+  return <html lang="en" className="light" style={{ colorScheme: "light" }} suppressHydrationWarning><body className={`${manrope.variable} ${beautyDisplay.variable} ${chineseSans.variable}`}><Providers>{children}<Analytics /><DeferredGoogleAnalytics gaId={GOOGLE_ANALYTICS_ID} /></Providers><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}/></body></html>;
 }
