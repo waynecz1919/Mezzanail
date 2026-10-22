@@ -13,6 +13,7 @@ const navigation = read("config/navigation.ts");
 const globals = read("app/globals.css");
 const homeLink = read("components/ui/HomeLink.tsx");
 const homeHero = read("components/home/HomeHero.tsx");
+const homeHeroStyles = read("components/home/HomeHero.module.css");
 const homepagePage = read("app/page.tsx");
 const sectionHeading = read("components/ui/SectionHeading.tsx");
 const signatureServices = read("components/home/SignatureServices.tsx");
@@ -193,7 +194,7 @@ test("only the hero eyebrow remains among the homepage section labels", () => {
   assert.doesNotMatch(membershipBanner, /className="mn-eyebrow"/);
   assert.doesNotMatch(studioBooking, /className="mn-eyebrow"/);
   assert.match(homeHero, /\{heroCopy\.eyebrow\}/);
-  assert.match(homeHero, /home-hero-offer-label/);
+  assert.match(homeHero, /className=\{styles\.offerLabel\}/);
 });
 
 test("homepage uses the approved palette, typography and restrained buttons", () => {
@@ -220,19 +221,18 @@ test("the homepage offer card includes one compact localized line for the extra 
   ]) {
     assert.ok(currentOfferConfig.includes(copy), `offer line missing: ${copy}`);
   }
-  assert.match(homeHero, /<p className="home-hero-offer-extras">\{offer\.otherOffersLine\}<\/p>/);
-  const offerLineRule = globals.match(/\.home-hero-offer-extras\s*\{([^}]*)\}/)?.[1] ?? "";
-  assert.match(offerLineRule, /font-size:\s*12px/);
-  assert.match(offerLineRule, /color:\s*var\(--color-ink\)/);
-  assert.match(offerLineRule, /white-space:\s*nowrap/);
+  assert.match(homeHero, /<p className=\{styles\.offerExtras\}>\{offer\.otherOffersLine\}<\/p>/);
+  const offerLineRule = homeHeroStyles.match(/\.offerExtras\s*\{([^}]*)\}/)?.[1] ?? "";
+  assert.match(offerLineRule, /font-size:\s*13px/);
+  assert.match(homeHeroStyles, /\.desktopOffer\s*\{[^}]*color:\s*var\(--color-ink\)/);
+  assert.match(homeHeroStyles, /\.mobileOfferDetails\s*\{[^}]*color:\s*var\(--color-ink\)/);
 });
 
-test("public eyebrow is at least 11px and mobile offer title uses separate lines", () => {
+test("mobile hero text meets the public minimum and shows the localized offer strip", () => {
   assert.match(globals, /\.public-site \.mn-eyebrow\s*\{\s*font-size:\s*11px;/);
-  assert.match(homeHero, /className="home-hero-offer-separator"/);
-  assert.match(homeHero, /className="home-hero-offer-service"/);
-  assert.match(globals, /\.public-site \.home-hero-offer-separator\s*\{\s*display:\s*none;/);
-  assert.match(globals, /\.public-site \.home-hero-offer-service\s*\{\s*display:\s*block;/);
+  assert.match(homeHeroStyles, /\.mobileOverlayCopy :global\(\.mn-eyebrow\)\s*\{[^}]*font-size:\s*11px/);
+  assert.match(homeHero, /className=\{styles\.mobileOfferStrip\}/);
+  assert.match(homeHero, /\{offer\.title\} · \{offer\.service\} <strong>RM\{currentOffer\.offerPrice\}<\/strong>/);
 });
 
 test("homepage analytics include only approved interaction context", () => {

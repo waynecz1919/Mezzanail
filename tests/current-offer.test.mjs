@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, statSync } from "node:fs";
 import test from "node:test";
 import { pathToFileURL } from "node:url";
 
@@ -8,9 +8,10 @@ const offerPath = "config/current-offer.ts";
 const offerSource = read(offerPath);
 const servicesSource = read("lib/services.ts");
 const hero = read("components/home/HomeHero.tsx");
+const heroSlideshow = read("components/home/HomeHeroSlideshow.tsx");
+const heroStyles = read("components/home/HomeHero.module.css");
 const homepageConfig = read("config/homepage.ts");
 const promotion = read("components/promotion/promotion-experience.tsx");
-const globals = read("app/globals.css");
 
 async function loadOffer() {
   try {
@@ -166,36 +167,79 @@ test("ZH and MS service names stay in English for offers and homepage service ca
   }
 });
 
-test("the homepage hero photo is swappable, localized, and uncropped", () => {
-  const heroImageBlock = homepageConfig.match(/heroImage:\s*\{([\s\S]*?)\n  \},/)?.[1] ?? "";
-  const src = heroImageBlock.match(/src:\s*"([^"]+)"/)?.[1] ?? "";
-  const width = heroImageBlock.match(/width:\s*(\d+)/)?.[1];
-  const height = heroImageBlock.match(/height:\s*(\d+)/)?.[1];
+test("the homepage hero slideshow uses the supplied localized images in approved order", () => {
+  const slides = [
+    {
+      src: "/brand/hero/hero-1.jpg",
+      position: "60% 70%",
+      alt: [
+        "Macro view of nude-pink nails with fine gold line art",
+        "裸粉色美甲与细致金线设计的近景",
+        "Pandangan dekat kuku merah jambu nude dengan garisan seni emas halus",
+      ],
+    },
+    {
+      src: "/brand/hero/hero-2.jpg",
+      position: "65% 70%",
+      alt: [
+        "Nail artist in black gloves applying polish during a manicure",
+        "美甲师戴着黑色手套为顾客涂抹指甲油",
+        "Jurukuku bersarung tangan hitam sedang menyapu pengilat kuku",
+      ],
+    },
+    {
+      src: "/brand/hero/hero-3.jpg",
+      position: "55% 65%",
+      alt: [
+        "Two hands with French-tip nails holding a latte",
+        "双手展示法式美甲并捧着拿铁",
+        "Dua tangan berkuku French tip memegang latte",
+      ],
+    },
+    {
+      src: "/brand/hero/hero-4.jpg",
+      position: "70% 75%",
+      alt: [
+        "Pedicure with polished toes resting on a spa towel beside a petal foot bath",
+        "修饰整齐的双脚放在水疗毛巾上，旁边是花瓣泡脚盆",
+        "Pedicure dengan kedua-dua kaki di atas tuala spa di sisi rendaman kaki berkelopak",
+      ],
+    },
+  ];
+  const heroImageList = homepageConfig.match(/heroImages:\s*\[([\s\S]*?)\n  \],/)?.[1] ?? "";
 
-  assert.match(src, /^\/home\/hero-[^/]+\.webp$/);
-  assert.equal(existsSync(`public${src}`), true);
-  assert.equal(Number(width), 1280);
-  assert.equal(Number(height), 1280);
-  assert.match(heroImageBlock, /en: "Bride in a lace gown with French-tip almond nails, hands clasped behind her back"/);
-  assert.match(heroImageBlock, /zh: "身穿蕾丝婚纱的新娘，双手背在身后，法式杏仁甲"/);
-  assert.match(heroImageBlock, /ms: "Pengantin bergaun renda dengan kuku badam French tip, tangan digenggam di belakang"/);
-  assert.match(hero, /alt=\{heroImage\.alt\[locale\]\}/);
-  assert.doesNotMatch(hero, /\bfill\b/);
-  assert.match(hero, /<figure\s+className="home-hero-media"\s+style=\{\{\s*aspectRatio:\s*`\$\{heroImage\.width\} \/ \$\{heroImage\.height\}`\s*\}\}/);
-  assert.doesNotMatch(globals, /\.home-hero-media\s*\{[^}]*aspect-ratio\s*:/);
-  assert.match(globals, /\.home-hero-image \{[^}]*object-fit: contain/);
-  assert.doesNotMatch(globals, /\.home-hero-image \{[^}]*object-fit: cover/);
+  assert.equal((heroImageList.match(/src:\s*"\/brand\/hero\/hero-\d\.jpg"/g) ?? []).length, 4);
+  let previousImageIndex = -1;
+  for (const slide of slides) {
+    const imageIndex = heroImageList.indexOf(`src: "${slide.src}"`);
+    assert.ok(imageIndex > previousImageIndex, `${slide.src} is in the approved order`);
+    previousImageIndex = imageIndex;
+    assert.ok(heroImageList.includes(`objectPosition: "${slide.position}"`));
+    for (const alt of slide.alt) assert.ok(heroImageList.includes(alt));
+
+    const filePath = `public${slide.src}`;
+    assert.equal(existsSync(filePath), true, `${filePath} exists`);
+    assert.equal(statSync(filePath).size < 200 * 1024, true, `${filePath} is under 200 KB`);
+  }
+  assert.match(heroImageList, /width:\s*1024,\s*height:\s*1280/);
+  assert.match(hero, /<HomeHeroSlideshow images=\{heroImages\} locale=\{locale\} \/>/);
+  assert.match(heroSlideshow, /alt=\{image\.alt\[locale\]\}/);
+  assert.match(heroSlideshow, /priority=\{index === 0\}/);
+  assert.match(heroSlideshow, /loading=\{index === 0 \? undefined : "lazy"\}/);
+  assert.match(heroStyles, /\.image\s*\{[^}]*object-fit:\s*contain/);
+  assert.match(heroStyles, /@media \(max-width: 430px\)\s*\{[\s\S]*?\.image\s*\{\s*object-fit:\s*cover/);
 });
 
 test("the hero offer and promotion section hide themselves after the offer ends", () => {
   assert.match(hero, /const offerActive = useOfferActive\(\)/);
-  assert.match(hero, /\{offerActive \? \(\s*<div className="home-hero-offer"/);
+  assert.match(hero, /\{offerActive \? \(\s*<div className=\{styles\.desktopOffer\}/);
   assert.ok(
-    hero.indexOf('className="home-hero-offer"') < hero.indexOf("home-hero-media"),
-    "the RM68 offer must sit in the hero copy, before the photo",
+    hero.indexOf("className={styles.desktopOffer}") < hero.indexOf("<HomeHeroSlideshow"),
+    "the desktop RM68 offer must sit in the hero copy, before the photo",
   );
-  assert.match(hero, /RM\{currentOffer\.offerPrice\}/);
+  assert.match(hero, /<strong>RM\{currentOffer\.offerPrice\}<\/strong>/);
   assert.match(hero, /<h1 id="home-hero-title">\{heroCopy\.title\}<\/h1>/);
+  assert.match(hero, /className=\{styles\.mobileOfferStrip\}/);
   assert.match(promotion, /\{offerActive && \(/);
   assert.match(promotion, /id="current-offer"/);
   assert.ok(
@@ -209,8 +253,8 @@ test("all three offers share the active-date gate on the homepage and promotion 
   const { isOfferActive, currentOffer } = await loadOffer();
   assert.equal(isOfferActive(new Date("2026-11-09T00:00:00+08:00")), false);
   assert.equal(currentOffer.extras.length + 1, 3);
-  assert.match(hero, /\{offerActive \? \(\s*<div className="home-hero-offer"/);
-  assert.match(hero, /home-hero-offer-extras/);
+  assert.match(hero, /\{offerActive \? \(\s*<div className=\{styles\.desktopOffer\}/);
+  assert.match(hero, /className=\{styles\.offerExtras\}>\{offer\.otherOffersLine\}<\/p>/);
   assert.match(promotion, /\{offerActive && \(\s*<section[\s\S]*?className="promotion-current-offer"/);
   assert.match(promotion, /offerRows\.map\(\(offer\) =>/);
 });

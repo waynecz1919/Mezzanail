@@ -286,7 +286,7 @@
   .mobileOverlayCopy :global(.mn-eyebrow) {
     margin: 0 0 12px;
     color: rgba(255,255,255,.9);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: .16em;
   }
 
