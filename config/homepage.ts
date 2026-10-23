@@ -15,34 +15,91 @@ const sharedImages = {
   ],
 } as const;
 
-type HomepageHeroImage = {
+export type HomepageHeroImage = {
   src: string;
   width: number;
   height: number;
+  objectPosition?: string;
   alt: Record<"en" | "zh" | "ms", string>;
+  slogan: Record<"en" | "zh" | "ms", string>;
 };
 
 type HomepageImages = {
-  heroImage: HomepageHeroImage | null;
+  heroImages: readonly HomepageHeroImage[];
   studioImage: string | null;
 };
 
 export const homepage: HomepageImages = {
-  // HOW TO CHANGE THE HERO PHOTO:
-  // - Use a new file name for each replacement.
-  // - Keep src, width, and height matched to the image file.
-  // - Provide EN, ZH, and MS alt text.
-  // - Say "by Mezzanail" only for real client work.
-  heroImage: {
-    src: "/home/hero-2026-10-bridal.webp",
-    width: 1280,
-    height: 1280,
-    alt: {
-      en: "Bride in a lace gown with French-tip almond nails, hands clasped behind her back",
-      zh: "身穿蕾丝婚纱的新娘，双手背在身后，法式杏仁甲",
-      ms: "Pengantin bergaun renda dengan kuku badam French tip, tangan digenggam di belakang",
+  // HOW TO CHANGE THE HERO SLIDES:
+  // - Replace files in /public/brand/hero/ and update this array only.
+  // - Keep src, width, height, objectPosition and EN/ZH/MS alt text matched to each image.
+  // - The first slide is priority-loaded; later slides lazy-load after page load.
+  heroImages: [
+    {
+      src: "/brand/hero/hero-1-v2.jpg",
+      width: 816,
+      height: 1020,
+      objectPosition: "50% 70%",
+      alt: {
+        en: "Macro view of nude-pink nails with fine gold line art",
+        zh: "裸粉色美甲与细致金线设计的近景",
+        ms: "Pandangan dekat kuku merah jambu nude dengan garisan seni emas halus",
+      },
+      slogan: {
+        en: "Artistry at your fingertips.",
+        zh: "指尖上的艺术",
+        ms: "Seni di hujung jari.",
+      },
     },
-  },
+    {
+      src: "/brand/hero/hero-2.jpg",
+      width: 1024,
+      height: 1280,
+      objectPosition: "65% 70%",
+      alt: {
+        en: "Nail artist in black gloves applying polish during a manicure",
+        zh: "美甲师戴着黑色手套为顾客涂抹指甲油",
+        ms: "Jurukuku bersarung tangan hitam sedang menyapu pengilat kuku",
+      },
+      slogan: {
+        en: "Precision in every stroke.",
+        zh: "每一笔，都是讲究",
+        ms: "Teliti dalam setiap sapuan.",
+      },
+    },
+    {
+      src: "/brand/hero/hero-3.jpg",
+      width: 1024,
+      height: 1280,
+      objectPosition: "90% 65%",
+      alt: {
+        en: "Two hands with French-tip nails holding a latte",
+        zh: "双手展示法式美甲并捧着拿铁",
+        ms: "Dua tangan berkuku French tip memegang latte",
+      },
+      slogan: {
+        en: "Effortless elegance, every day.",
+        zh: "优雅，成为日常",
+        ms: "Anggun, setiap hari.",
+      },
+    },
+    {
+      src: "/brand/hero/hero-4.jpg",
+      width: 1024,
+      height: 1280,
+      objectPosition: "70% 75%",
+      alt: {
+        en: "Pedicure with polished toes resting on a spa towel beside a petal foot bath",
+        zh: "修饰整齐的双脚放在水疗毛巾上，旁边是花瓣泡脚盆",
+        ms: "Pedicure dengan kedua-dua kaki di atas tuala spa di sisi rendaman kaki berkelopak",
+      },
+      slogan: {
+        en: "Luxury, from heel to toe.",
+        zh: "从足尖开始的宠爱",
+        ms: "Kemewahan dari tumit ke hujung jari.",
+      },
+    },
+  ],
   studioImage: null,
 };
 
