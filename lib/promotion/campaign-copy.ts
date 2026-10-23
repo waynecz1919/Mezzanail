@@ -392,7 +392,7 @@ export const termsCopy = {
     eyebrow: "Mezzanail 7th Anniversary",
     title: "Campaign Terms & Conditions",
     updated: "Last updated",
-    lastUpdatedDate: "27 July 2026",
+    lastUpdatedDate: "23 October 2026",
     intro:
       "These terms govern the Mezzanail 7th Anniversary Lucky Draw Campaign. By submitting an entry, a participant confirms that the entry is accurate and agrees to these terms.",
     sections: [
@@ -414,7 +414,7 @@ export const termsCopy = {
       },
       {
         title: "Prizes",
-        body: "Prizes include one Dyson Supersonic™ Travel Hair Dryer, one HUAWEI Watch Fit 5, one Xiaomi Robot Vacuum, beauty vouchers and weekly rewards. A prize is subject to availability, is non-transferable and cannot be exchanged for cash unless Mezzanail confirms otherwise in writing. If a stated prize becomes unavailable for reasons beyond Mezzanail’s reasonable control, a replacement of reasonably comparable value may be provided.",
+        body: "Prizes include one Dyson Supersonic™ Travel Hair Dryer, one Apple Watch SE 3, one Xiaomi Robot Vacuum, beauty vouchers and weekly rewards. A prize is subject to availability, is non-transferable and cannot be exchanged for cash unless Mezzanail confirms otherwise in writing. If a stated prize becomes unavailable for reasons beyond Mezzanail’s reasonable control, a replacement of reasonably comparable value may be provided.",
       },
       {
         title: "Winner selection and notification",
@@ -449,7 +449,7 @@ export const termsCopy = {
     eyebrow: "Mezzanail 七周年",
     title: "活动条款与细则",
     updated: "最后更新",
-    lastUpdatedDate: "2026年7月27日",
+    lastUpdatedDate: "2026年10月23日",
     intro:
       "本条款适用于 Mezzanail 七周年幸运抽奖活动。提交参与资料即表示参加者确认资料准确，并同意遵守本条款。",
     sections: [
@@ -471,7 +471,7 @@ export const termsCopy = {
       },
       {
         title: "活动奖品",
-        body: "奖品包括一台 Dyson Supersonic™ 旅行吹风机、一只 HUAWEI Watch Fit 5、一台 Xiaomi 扫地机器人、美容礼券及每周奖励。奖品须视供应情况而定，不可转让或兑换现金，除非 Mezzanail 另行书面确认。若因合理控制范围外的原因无法提供指定奖品，可提供合理相近价值的替代奖品。",
+        body: "奖品包括一台 Dyson Supersonic™ 旅行吹风机、一只 Apple Watch SE 3、一台 Xiaomi 扫地机器人、美容礼券及每周奖励。奖品须视供应情况而定，不可转让或兑换现金，除非 Mezzanail 另行书面确认。若因合理控制范围外的原因无法提供指定奖品，可提供合理相近价值的替代奖品。",
       },
       {
         title: "抽选与通知得主",
@@ -506,7 +506,7 @@ export const termsCopy = {
     eyebrow: "Ulang Tahun Ke-7 Mezzanail",
     title: "Terma & Syarat Kempen",
     updated: "Kemas kini terakhir",
-    lastUpdatedDate: "27 Julai 2026",
+    lastUpdatedDate: "23 Oktober 2026",
     intro:
       "Terma ini mengawal Kempen Cabutan Bertuah Ulang Tahun Ke-7 Mezzanail. Dengan menghantar penyertaan, peserta mengesahkan maklumat adalah tepat dan bersetuju dengan terma ini.",
     sections: [
@@ -528,7 +528,7 @@ export const termsCopy = {
       },
       {
         title: "Hadiah",
-        body: "Hadiah termasuk satu Dyson Supersonic™ Travel Hair Dryer, satu HUAWEI Watch Fit 5, satu Xiaomi Robot Vacuum, baucar kecantikan dan ganjaran mingguan. Hadiah tertakluk pada ketersediaan, tidak boleh dipindah milik atau ditukar dengan wang tunai kecuali disahkan secara bertulis. Jika hadiah tidak tersedia atas sebab di luar kawalan munasabah, hadiah gantian bernilai munasabah setanding boleh diberikan.",
+        body: "Hadiah termasuk satu Dyson Supersonic™ Travel Hair Dryer, satu Apple Watch SE 3, satu Xiaomi Robot Vacuum, baucar kecantikan dan ganjaran mingguan. Hadiah tertakluk pada ketersediaan, tidak boleh dipindah milik atau ditukar dengan wang tunai kecuali disahkan secara bertulis. Jika hadiah tidak tersedia atas sebab di luar kawalan munasabah, hadiah gantian bernilai munasabah setanding boleh diberikan.",
       },
       {
         title: "Pemilihan dan pemberitahuan pemenang",

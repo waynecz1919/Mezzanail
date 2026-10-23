@@ -18,6 +18,14 @@ const homepageMetadata = createPublicMetadata({
 export const metadata: Metadata = {
   ...homepageMetadata,
   title: { absolute: "Premium Nail Care in Melaka | Mezzanail Nail Studio" },
+  openGraph: {
+    ...homepageMetadata.openGraph,
+    title: "Premium Nail Care in Melaka | Mezzanail Nail Studio",
+  },
+  twitter: {
+    ...homepageMetadata.twitter,
+    title: "Premium Nail Care in Melaka | Mezzanail Nail Studio",
+  },
 };
 
 export default function HomePage() {
