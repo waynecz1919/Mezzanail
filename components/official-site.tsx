@@ -3,11 +3,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowRight, CalendarCheck, ChevronDown, Facebook, Gift,
-  Globe2, Home, Instagram, MapPin, Menu, MessageCircle, Phone, Sparkles, X,
+  Globe2, Instagram, MapPin, Menu, MessageCircle, Phone, Sparkles, X,
 } from "lucide-react";
 import { Reveal } from "@/components/hyperframe/motion";
 import { FindUsDirections } from "@/components/find-us-directions";
@@ -114,17 +114,26 @@ function SiteHeader() {
 function SiteFooter() {
   const { locale, t } = useOfficial();
   const whatsapp = getWhatsappUrl(locale);
+  const legalLinks = [
+    ["/privacy", t.footer.privacy],
+    ["/terms", t.footer.terms],
+    ["/cookies", "Cookies"],
+    ["/privacy/job-applicants", "Applicant Privacy"],
+    ["/membership/terms", "Membership Terms"],
+    ["/promotion/terms", "Promotion Terms"],
+  ] as const;
   return <footer className="official-footer"><div className="shell"><div className="grid gap-12 border-b border-white/15 py-16 md:grid-cols-[1.4fr_repeat(3,1fr)]">
     <div><BrandLogo inverse/><p className="mt-5 max-w-xs text-sm leading-7 text-white/55">{t.footer.line}</p></div>
     <div><h3>{t.footer.explore}</h3><Link href="/about">{t.nav.story}</Link><Link href="/services">{t.nav.services}</Link><Link href="/promotion">{t.nav.promo}</Link><NavigationLink href={MEMBER_CENTER_URL}>{t.nav.rewards}</NavigationLink><Link href="/job">{t.nav.jobs}</Link></div>
     <div><h3>{t.footer.connect}</h3><ExternalOrPending href={siteConfig.instagramUrl} ariaLabel={`${siteConfig.brandName} Instagram`}>Instagram</ExternalOrPending><ExternalOrPending href={siteConfig.facebookUrl} ariaLabel={`${siteConfig.brandName} Facebook`}>Facebook</ExternalOrPending><ExternalOrPending href={siteConfig.xiaohongshuUrl} ariaLabel={`${siteConfig.brandName} Xiaohongshu`}>Xiaohongshu</ExternalOrPending></div>
     <div><h3>{t.footer.studio}</h3><Link href="/contact">{t.nav.contact}</Link><a href={siteConfig.googleMapsDirectionsUrl} target="_blank" rel="noopener noreferrer">Google Maps</a><a href={whatsapp} target="_blank" rel="noopener noreferrer">WhatsApp</a><a href={siteConfig.phoneLink}>{siteConfig.phoneDisplay}</a></div>
-  </div><div className="flex flex-col gap-4 py-7 text-[11px] text-white/42 sm:flex-row sm:items-center sm:justify-between"><span>© 2026 {siteConfig.brandName}. All rights reserved.</span><div className="flex flex-wrap gap-x-5 gap-y-2"><Link href="/privacy">{t.footer.privacy}</Link><Link href="/terms">{t.footer.terms}</Link><Link href="/cookies">Cookies</Link><Link href="/privacy/job-applicants">Applicant Privacy</Link><Link href="/membership/terms">Membership Terms</Link><Link href="/promotion/terms">Promotion Terms</Link></div></div></div></footer>;
+  </div><div className="flex flex-col gap-4 py-7 text-[11px] text-white/42 sm:flex-row sm:items-center sm:justify-between"><span>© 2026 {siteConfig.brandName}. All rights reserved.</span><div className="footer-legal-links flex flex-wrap gap-x-5 gap-y-2">{legalLinks.map(([href, label], index) => <Fragment key={href}>{index > 0 ? <span className="footer-legal-separator" aria-hidden="true">·</span> : null}<Link href={href}>{label}</Link></Fragment>)}</div></div></div></footer>;
 }
 
 function MobileNav() {
-  const { t } = useOfficial();
-  return <nav className="mobile-official-nav" aria-label="Mobile quick navigation"><Link href="/"><Home size={18}/><span>{t.nav.home}</span></Link><Link href="/services"><Sparkles size={18}/><span>{t.nav.services}</span></Link><Link href="/promotion"><Gift size={18}/><span>{t.nav.promo}</span></Link><a href={siteConfig.bookingUrl} target="_blank" rel="noopener noreferrer" className="mobile-book" onClick={() => trackPublicAction("book_appointment_click", siteConfig.bookingUrl, "mobile_quick_nav")}><CalendarCheck size={18}/><span>{t.nav.book}</span></a></nav>;
+  const { locale, t } = useOfficial();
+  const whatsappUrl = getWhatsappUrl(locale);
+  return <nav className="mobile-official-nav" aria-label="Mobile quick navigation"><Link href="/services"><Sparkles size={18}/><span>{t.nav.services}</span></Link><Link href="/promotion"><Gift size={18}/><span>{t.nav.promo}</span></Link><a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="mobile-whatsapp" aria-label="WhatsApp Mezzanail Nail Studio"><MessageCircle size={18}/><span>WhatsApp</span></a><a href={siteConfig.bookingUrl} target="_blank" rel="noopener noreferrer" className="mobile-book" onClick={() => trackPublicAction("book_appointment_click", siteConfig.bookingUrl, "mobile_quick_nav")}><CalendarCheck size={18}/><span>{t.nav.book}</span></a></nav>;
 }
 
 export function OfficialFrame({ children, publicSite = false }: {children: React.ReactNode; publicSite?: boolean}) {

@@ -2,7 +2,7 @@ import { Car, MapPin, Navigation } from "lucide-react";
 import type { Locale } from "@/lib/i18n";
 import { siteConfig } from "@/lib/site";
 
-const locationCopy: Record<Locale, { eyebrow: string; heading: string; google: string; waze: string; landmark: string; parking: string }> = {
+export const locationCopy: Record<Locale, { eyebrow: string; heading: string; google: string; waze: string; landmark: string; parking: string }> = {
   en: {
     eyebrow: "VISIT OUR STUDIO",
     heading: "Find us / Get directions",

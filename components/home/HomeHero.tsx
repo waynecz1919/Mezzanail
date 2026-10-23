@@ -126,10 +126,14 @@ export function HomeHero() {
 
         {offerActive ? (
           <div className={styles.mobileOfferStrip} role="group" aria-label={offer.title}>
-            <p>
-              {offer.title} · {offer.service} <strong>RM{currentOffer.offerPrice}</strong>{" "}
-              <s>(RM{currentOffer.originalPrice})</s>
-            </p>
+            <div className={styles.mobileOfferText}>
+              <p>{offer.title} · {offer.service}</p>
+              <p className={styles.mobileOfferPrice}>
+                <strong>RM{currentOffer.offerPrice}</strong>{" "}
+                <s>(RM{currentOffer.originalPrice})</s>
+              </p>
+              <p className={styles.mobileOfferIncludes}>{offer.includes}</p>
+            </div>
             <HomeLink href={getOfferWhatsappUrl(locale)} variant="primary" external>
               {offer.action}
             </HomeLink>
@@ -141,7 +145,6 @@ export function HomeHero() {
         <section className={styles.mobileOfferDetails} aria-label={offer.details}>
           <div className={styles.mobileOfferDetailsInner}>
             <p className={styles.offerExtras}>{offer.otherOffersLine}</p>
-            <p>{offer.includes}</p>
             <div className={styles.actions}>
               <HomeLink
                 href={siteConfig.bookingUrl}

@@ -25,6 +25,7 @@ export function SelectedNailWork({ locale }: { locale: Locale }) {
           <HomeLink
             href={siteConfig.instagramUrl}
             variant="secondary"
+            className="selected-work-action selected-work-action--desktop"
             event="nail_work_click"
             eventLabel="instagram_gallery"
             external
@@ -53,22 +54,36 @@ export function SelectedNailWork({ locale }: { locale: Locale }) {
                 });
               }}
             >
-              <Image
-                src={src}
-                alt={`${siteConfig.brandName} — ${copy.categories[index]}`}
-                fill
-                sizes={
-                  index === 0
-                    ? "(max-width: 767px) 82vw, (max-width: 1279px) 50vw, 590px"
-                    : "(max-width: 767px) 82vw, (max-width: 1279px) 35vw, 290px"
-                }
-                className="object-cover"
-                loading="lazy"
-              />
+              <div className="selected-work-image-frame" aria-hidden="true">
+                <Image
+                  src={src}
+                  alt={`${siteConfig.brandName} — ${copy.categories[index]}`}
+                  fill
+                  sizes={
+                    index === 0
+                      ? "(max-width: 767px) 82vw, (max-width: 1279px) 50vw, 590px"
+                      : "(max-width: 767px) 82vw, (max-width: 1279px) 35vw, 290px"
+                  }
+                  className="object-cover"
+                  loading="lazy"
+                />
+              </div>
               <span>{copy.categories[index]}</span>
             </a>
           ))}
         </div>
+        <HomeLink
+          href={siteConfig.instagramUrl}
+          variant="secondary"
+          className="selected-work-action selected-work-action--mobile"
+          event="nail_work_click"
+          eventLabel="instagram_gallery"
+          external
+          ariaLabel={`${siteConfig.brandName} Instagram`}
+        >
+          {copy.action}
+          <ArrowUpRight aria-hidden="true" size={16} />
+        </HomeLink>
       </div>
     </section>
   );

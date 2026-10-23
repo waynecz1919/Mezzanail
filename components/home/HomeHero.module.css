@@ -241,7 +241,7 @@
   }
 }
 
-@media (max-width: 430px) {
+@media (max-width: 767px) {
   .hero {
     display: block;
     width: 100%;
@@ -260,9 +260,9 @@
 
   .slideshow {
     width: 100%;
-    height: 60svh;
-    min-height: 500px;
-    max-height: 650px;
+    height: 52svh;
+    min-height: 0;
+    max-height: none;
     aspect-ratio: auto;
     border-radius: 0;
     background: #3d3936;
@@ -331,8 +331,8 @@
   .mobileOfferStrip {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 12px;
-    padding: 15px 18px 17px;
+    gap: 9px;
+    padding: 13px 18px 14px;
     border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 28%, transparent);
     background: #fffaf7;
     color: var(--color-ink);
@@ -340,9 +340,27 @@
 
   .mobileOfferStrip p {
     margin: 0;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     line-height: 1.35;
+  }
+
+  .mobileOfferText {
+    display: grid;
+    gap: 2px;
+  }
+
+  .mobileOfferStrip .mobileOfferPrice {
+    font-size: 14px;
+  }
+
+  .mobileOfferStrip .mobileOfferPrice strong {
+    font-size: 20px;
+  }
+
+  .mobileOfferStrip .mobileOfferIncludes {
+    font-size: 12px;
+    font-weight: 500;
   }
 
   .mobileOfferStrip strong {
@@ -357,7 +375,7 @@
 
   .mobileOfferDetails {
     display: block;
-    padding: 28px 20px 36px;
+    padding: 24px 20px 24px;
     border-bottom: 1px solid var(--line);
     background: var(--color-white);
     color: var(--color-ink);
@@ -365,7 +383,7 @@
 
   .mobileOfferDetailsInner {
     display: grid;
-    gap: 14px;
+    gap: 10px;
     max-width: 390px;
     margin-inline: auto;
   }

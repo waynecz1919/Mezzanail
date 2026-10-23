@@ -2114,7 +2114,7 @@ body:has(.promotion-site:not(.promotion-terms-page)) .analytics-consent-actions 
 
   .public-site .reviews-grid {
     display: flex;
-    width: calc(100% + 19px);
+    width: calc(100% + 18px);
     gap: 12px;
     margin-top: 16px;
     overflow-x: auto;
@@ -2559,5 +2559,156 @@ body:has(.promotion-site:not(.promotion-terms-page)) .analytics-consent-actions 
 
   .promotion-site .promotion-current-offer-option .promotion-current-offer-action {
     justify-self: stretch;
+  }
+}
+
+/* WEBSITE PR #29 - mobile homepage polish; desktop remains unchanged. */
+.selected-work-image-frame {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.selected-work-action--mobile,
+.footer-legal-separator,
+.studio-location-notes,
+.signature-service-view-all {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .public-site .whatsapp-float {
+    display: none;
+  }
+
+  .public-site .mobile-official-nav {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .public-site .signature-service-view-all {
+    display: block;
+    color: var(--mn-text);
+    text-decoration: none;
+  }
+
+  .public-site .signature-service-view-all-image {
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--mn-border);
+    background: var(--color-cream);
+    color: var(--color-ink);
+  }
+
+  .public-site .signature-service-view-all .signature-service-copy h3 {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    line-height: 1.15;
+  }
+
+  .public-site .membership-banner {
+    min-height: 0;
+    gap: 24px;
+    padding-block: 48px;
+  }
+
+  .selected-work-action--desktop {
+    display: none;
+  }
+
+  .selected-work-action--mobile {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin-top: 14px;
+  }
+
+  .public-site .selected-work-item,
+  .public-site .selected-work-item.is-primary {
+    display: flex;
+    width: 100%;
+    min-width: 100%;
+    height: auto;
+    flex-direction: column;
+    gap: 0;
+    overflow: visible;
+    border-radius: 0;
+    background: transparent;
+    aspect-ratio: auto;
+  }
+
+  .public-site .selected-work-grid {
+    width: 100%;
+    padding-right: 0;
+  }
+
+  .public-site .selected-work-image-frame {
+    position: relative;
+    flex: none;
+    width: 100%;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 14px;
+    background: var(--mn-background);
+  }
+
+  .public-site .selected-work-image-frame img {
+    object-fit: contain !important;
+    object-position: center !important;
+    transform: none !important;
+  }
+
+  .public-site .selected-work-item > span {
+    position: static;
+    display: flex;
+    width: 100%;
+    min-height: 40px;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: visible;
+    margin-top: 6px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    padding: 0;
+    color: var(--mn-muted);
+    font-size: 11px;
+    letter-spacing: .02em;
+    text-align: left;
+    text-overflow: clip;
+    white-space: normal;
+    opacity: 1;
+    transform: none;
+    backdrop-filter: none;
+  }
+
+  .public-site .selected-work-item:hover > span,
+  .public-site .selected-work-item:focus-visible > span {
+    transform: none;
+  }
+
+  .public-site .studio-location-notes {
+    display: grid;
+    gap: 4px;
+    margin-top: 4px;
+  }
+
+  .public-site .studio-location-notes .find-us-landmark {
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  .public-site .footer-legal-links {
+    justify-content: space-between;
+    column-gap: 4px;
+    row-gap: 0;
+  }
+
+  .public-site .footer-legal-separator {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
   }
 }
