@@ -53,6 +53,7 @@ export function SignatureServices({
                         : "(max-width: 767px) 44vw, (max-width: 1279px) 48vw, 390px"
                     }
                     className="object-cover"
+                    style={item.title === "Waxing" ? { objectPosition: "center 40%" } : undefined}
                     loading="lazy"
                   />
                 </div>

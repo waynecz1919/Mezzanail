@@ -206,10 +206,8 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
 .signature-service-copy p{max-width:400px;margin:11px 0 6px;color:var(--mn-muted);font-size:14px;line-height:1.7}.signature-service-index{position:absolute;right:0;bottom:14px;color:var(--mn-champagne);font-size:11px;font-weight:750;letter-spacing:.12em}
 
 .home-selected-work{background:var(--mn-surface)}.selected-work-heading,.reviews-heading{display:flex;align-items:end;justify-content:space-between;gap:40px}.selected-work-heading>.mn-button{flex:none}
-.selected-work-grid{display:grid;margin-top:44px;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px}.selected-work-item{position:relative;grid-column:span 3;overflow:hidden;border-radius:14px;background:var(--mn-surface-soft);aspect-ratio:4/5}
-.selected-work-item.is-primary{grid-column:span 6;grid-row:span 2}.selected-work-item img{transition:transform .22s ease}.selected-work-item:hover img{transform:scale(1.015)}
-.selected-work-item>span{position:absolute;right:12px;bottom:12px;left:12px;display:flex;min-height:42px;align-items:center;justify-content:center;overflow:hidden;border:1px solid rgba(255,255,255,.38);border-radius:9px;background:rgba(45,17,25,.72);padding:8px 12px;color:#fff;font-size:11px;font-weight:700;letter-spacing:.08em;white-space:nowrap;text-overflow:ellipsis;opacity:0;transform:translateY(4px);transition:opacity .2s,transform .2s;backdrop-filter:blur(8px)}
-.selected-work-item:hover>span,.selected-work-item:focus-visible>span{opacity:1;transform:none}
+.selected-work-grid{display:grid;margin-top:44px;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px}.selected-work-item{position:relative;display:block;grid-column:span 3;overflow:hidden;border-radius:14px;background:var(--mn-surface-soft);aspect-ratio:4/5}
+.selected-work-item.is-primary{grid-column:span 6;grid-row:span 2}
 
 .home-why{background:var(--mn-blush-soft)}.why-mezzanail-grid{display:grid;margin-top:46px;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid color-mix(in srgb,var(--mn-wine) 35%,var(--mn-border))}
 .why-mezzanail-item{min-height:280px;padding:34px 42px 16px 0}.why-mezzanail-item+.why-mezzanail-item{border-left:1px solid color-mix(in srgb,var(--mn-wine) 22%,var(--mn-border));padding-left:42px}
@@ -238,7 +236,7 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
   .official-footer h3~a,.official-footer h3~span{display:flex;min-height:44px;align-items:center;margin-top:0}.official-footer>div>div:last-child a{display:inline-flex;min-height:44px;align-items:center}.studio-details dd a{display:inline-flex;min-height:44px;align-items:center}
   .mn-home-shell{width:min(100% - 38px,560px)}.mn-home-section{padding:68px 0}.mn-section-title{font-size:clamp(31px,9vw,38px);line-height:1.04}.mn-section-subtitle{margin-top:13px;font-size:14px}.mn-button{min-height:48px;padding-inline:21px;font-size:14px}
   .home-signature-services{padding-top:66px}.signature-services-grid{margin-top:30px;grid-template-columns:1fr;gap:44px}.signature-service-card,.signature-service-card.is-featured{grid-column:auto}.signature-service-image,.signature-service-card.is-featured .signature-service-image{aspect-ratio:4/3}.signature-service-copy{margin-top:16px;padding-top:15px}.signature-service-copy h3{font-size:23px}.signature-service-copy p{font-size:14px}
-  .selected-work-heading,.reviews-heading{align-items:flex-start;flex-direction:column;gap:26px}.selected-work-heading>.mn-button{width:100%}.selected-work-grid{display:flex;width:calc(100% + 19px);margin-top:30px;gap:14px;overflow-x:auto;padding-right:19px;padding-bottom:10px;scroll-snap-type:x mandatory;overscroll-behavior-inline:contain;scrollbar-width:none}.selected-work-grid::-webkit-scrollbar{display:none}.selected-work-item,.selected-work-item.is-primary{width:82%;min-width:82%;grid-column:auto;grid-row:auto;scroll-snap-align:start}.selected-work-item>span{opacity:1;transform:none}
+  .selected-work-heading,.reviews-heading{align-items:flex-start;flex-direction:column;gap:26px}.selected-work-heading>.mn-button{width:100%}.selected-work-grid{display:flex;width:calc(100% + 19px);margin-top:30px;gap:14px;overflow-x:auto;padding-right:19px;padding-bottom:10px;scroll-snap-type:x mandatory;overscroll-behavior-inline:contain;scrollbar-width:none}.selected-work-grid::-webkit-scrollbar{display:none}.selected-work-item,.selected-work-item.is-primary{width:82%;min-width:82%;grid-column:auto;grid-row:auto;scroll-snap-align:start}
   .why-mezzanail-grid{grid-template-columns:1fr;margin-top:32px}.why-mezzanail-item{min-height:0;padding:29px 0 34px}.why-mezzanail-item+.why-mezzanail-item{border-top:1px solid color-mix(in srgb,var(--mn-wine) 22%,var(--mn-border));border-left:0;padding-left:0}.why-mezzanail-item>span{font-size:36px}.why-mezzanail-item h3{margin-top:32px;font-size:27px}.why-mezzanail-item p{font-size:14px}
   .google-rating{border-top:1px solid var(--mn-border);border-left:0;padding-top:24px;padding-left:0}.reviews-grid{grid-template-columns:1fr;margin-top:32px}.review-quote{min-height:0;padding:28px 4px}.review-quote+.review-quote{border-top:1px solid var(--mn-border);border-left:0}.review-quote blockquote{font-size:21px}.reviews-action{width:100%}
   .home-membership{padding-top:0}.membership-banner{min-height:430px;align-items:flex-start;flex-direction:column;justify-content:center;gap:34px;padding:44px 27px}.membership-banner h2{font-size:38px}.membership-banner .mn-button{width:100%}
@@ -248,7 +246,7 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
   .mn-home-shell{width:calc(100% - 36px)}.membership-banner{padding-inline:23px}.studio-copy h2,.membership-banner h2{font-size:34px}
 }
 @media(prefers-reduced-motion:reduce){
-  .signature-service-image img,.selected-work-item img,.selected-work-item>span,.mn-button,.mn-button--text svg{transition:none}
+  .signature-service-image img,.mn-button,.mn-button--text svg{transition:none}
 }
 
 /* Public legal documents and analytics choice */
@@ -1094,12 +1092,6 @@ html[lang="zh-CN"] .signature-service-copy h3{font-family:var(--font-cjk),sans-s
 
 .public-site .service-search input {
   min-height: 44px;
-}
-
-.public-site .selected-work-item>span {
-  border-color: var(--color-white);
-  background: color-mix(in srgb, var(--color-ink) 72%, transparent);
-  color: var(--color-white);
 }
 
 .public-site .review-stars,
@@ -2559,5 +2551,52 @@ body:has(.promotion-site:not(.promotion-terms-page)) .analytics-consent-actions 
 
   .promotion-site .promotion-current-offer-option .promotion-current-offer-action {
     justify-self: stretch;
+  }
+}
+
+/* Six equal inspiration tiles; the mobile layout is a two-column grid. */
+.public-site .home-selected-work .selected-work-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.public-site .home-selected-work .selected-work-card {
+  min-width: 0;
+  margin: 0;
+}
+
+.public-site .home-selected-work .selected-work-item {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  grid-column: auto;
+  grid-row: auto;
+  aspect-ratio: 1;
+}
+
+.public-site .home-selected-work .selected-work-caption {
+  margin: 8px 0 0;
+  color: var(--color-ink);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  line-height: 1.4;
+  text-align: center;
+}
+
+@media (max-width: 767px) {
+  .public-site .home-selected-work .selected-work-grid {
+    display: grid;
+    width: auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    overflow: visible;
+    padding: 0;
+    scroll-snap-type: none;
+  }
+
+  .public-site .home-selected-work .selected-work-item {
+    width: auto;
+    min-width: 0;
+    scroll-snap-align: none;
   }
 }

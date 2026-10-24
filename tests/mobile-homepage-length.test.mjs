@@ -30,12 +30,21 @@ const normalizeApprovedDirectionsStyles = (source) =>
       /\n?\.promotion-site \.find-us-directions--promotion\s*\{[^}]*\}\s*\.promotion-site \.find-us-directions--promotion \.find-us-map\s*\{[^}]*\}\n?/g,
       "",
     );
-const desktopCssBeforeMobileRules = normalizeApprovedDirectionsStyles(css.slice(0, markerIndex));
+const normalizeApprovedGalleryStyles = (source) =>
+  source
+    .replace(/\.home-selected-work\{[\s\S]*?(?=\.home-why\{)/, ".home-selected-work-gallery-approved\n")
+    .replace(/\.selected-work-item>span\{opacity:1;transform:none\}/g, "")
+    .replace(/,\.selected-work-item img,\.selected-work-item>span/g, "")
+    .replace(/\.public-site \.selected-work-item>span\s*\{[^}]*\}\s*/g, "");
+const normalizeApprovedStyles = (source) =>
+  normalizeApprovedGalleryStyles(normalizeApprovedDirectionsStyles(source));
+const desktopCssBeforeMobileRules = normalizeApprovedStyles(css.slice(0, markerIndex));
+const baselineDesktopCss = normalizeApprovedStyles(baselineCss);
 
-test("desktop CSS remains unchanged apart from the approved directions block", () => {
+test("desktop CSS remains unchanged apart from approved directions and gallery caption styling", () => {
   assert.ok(markerIndex >= 0, "the mobile-only rules are present");
   assert.ok(baselineVisitStyles, "the production contact styles are available for comparison");
-  assert.equal(desktopCssBeforeMobileRules.trimEnd(), baselineCss.trimEnd());
+  assert.equal(desktopCssBeforeMobileRules.trimEnd(), baselineDesktopCss.trimEnd());
   assert.match(
     mobileRules,
     /^\/\* WEBSITE PHASE 1\.5 - mobile homepage compaction \*\/\s*@media\s*\(max-width:\s*767px\)\s*\{[\s\S]*\}\s*$/,
@@ -84,7 +93,7 @@ test("the mobile footer uses two link columns and preserves 44px targets", () =>
 });
 
 test("the homepage compaction remains scoped to widths at or below 767px", () => {
-  assert.equal(desktopCssBeforeMobileRules.trimEnd(), baselineCss.trimEnd());
+  assert.equal(desktopCssBeforeMobileRules.trimEnd(), baselineDesktopCss.trimEnd());
   assert.match(mobileRules, /@media\s*\(max-width:\s*767px\)/);
   assert.doesNotMatch(mobileRules, /@media\s*\(min-width/);
 });
