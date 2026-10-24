@@ -160,9 +160,19 @@ test("style inspiration uses the six supplied images, square grids, and non-clie
 
   assert.match(selectedNailWork, /homepageNailWorkImages\.map\(\(\{ src, alt \}, index\) =>/);
   assert.match(selectedNailWork, /alt=\{alt\}/);
+  assert.match(selectedNailWork, /<figure className="selected-work-card" key=\{src\}>/);
+  assert.match(selectedNailWork, /<\/a>\s*<figcaption className="selected-work-caption">\s*\{copy\.categories\[index\]\}\s*<\/figcaption>\s*<\/figure>/);
+  assert.doesNotMatch(selectedNailWork, /<span>\{copy\.categories\[index\]\}<\/span>/);
   assert.doesNotMatch(selectedNailWork, /siteConfig\.brandName\} — \$\{copy\.categories/);
+  assert.doesNotMatch(globals, /\.selected-work-item[^{}]*>span/);
   assert.match(globals, /\.public-site \.home-selected-work \.selected-work-grid\s*\{[^}]*grid-template-columns:\s*repeat\(3,/);
   assert.match(globals, /\.public-site \.home-selected-work \.selected-work-item\s*\{[^}]*aspect-ratio:\s*1/);
+  const captionStyle = globals.match(/\.public-site \.home-selected-work \.selected-work-caption\s*\{[^}]*\}/)?.[0];
+  assert.ok(captionStyle, "style inspiration labels use a dedicated caption below each image");
+  assert.match(captionStyle, /margin:\s*8px 0 0/);
+  assert.match(captionStyle, /font-size:\s*12px/);
+  assert.match(captionStyle, /color:\s*var\(--color-ink\)/);
+  assert.doesNotMatch(captionStyle, /background|border/);
   assert.match(globals, /@media \(max-width: 767px\)\s*\{\s*\.public-site \.home-selected-work \.selected-work-grid\s*\{[^}]*display:\s*grid;[^}]*grid-template-columns:\s*repeat\(2,/);
   assert.doesNotMatch(selectedNailWork, /is-primary/);
 });

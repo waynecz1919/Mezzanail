@@ -36,33 +36,36 @@ export function SelectedNailWork({ locale }: { locale: Locale }) {
         </div>
         <div className="selected-work-grid" aria-label={copy.title}>
           {homepageNailWorkImages.map(({ src, alt }, index) => (
-            <a
-              href={siteConfig.instagramUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="selected-work-item"
-              aria-label={`${copy.categories[index]} — ${copy.action}`}
-              key={src}
-              onClick={() => {
-                const analyticsWindow = window as Window & {
-                  gtag?: (...args: unknown[]) => void;
-                };
-                analyticsWindow.gtag?.("event", "nail_work_click", {
-                  content_label: copy.categories[index],
-                  destination: siteConfig.instagramUrl,
-                });
-              }}
-            >
-              <Image
-                src={src}
-                alt={alt}
-                fill
-                sizes="(max-width: 767px) 46vw, 33vw"
-                className="object-cover"
-                loading="lazy"
-              />
-              <span>{copy.categories[index]}</span>
-            </a>
+            <figure className="selected-work-card" key={src}>
+              <a
+                href={siteConfig.instagramUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="selected-work-item"
+                aria-label={`${copy.categories[index]} — ${copy.action}`}
+                onClick={() => {
+                  const analyticsWindow = window as Window & {
+                    gtag?: (...args: unknown[]) => void;
+                  };
+                  analyticsWindow.gtag?.("event", "nail_work_click", {
+                    content_label: copy.categories[index],
+                    destination: siteConfig.instagramUrl,
+                  });
+                }}
+              >
+                <Image
+                  src={src}
+                  alt={alt}
+                  fill
+                  sizes="(max-width: 767px) 46vw, 33vw"
+                  className="object-cover"
+                  loading="lazy"
+                />
+              </a>
+              <figcaption className="selected-work-caption">
+                {copy.categories[index]}
+              </figcaption>
+            </figure>
           ))}
         </div>
       </div>
