@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import test from "node:test";
 
 const read = (filePath) => readFileSync(filePath, "utf8");
@@ -133,6 +133,51 @@ test("homepage content is centralised and does not expose prices", () => {
   }
   assert.doesNotMatch(homepageConfig, /title: "(?:Precision|Comfort|Confidence)"/);
   assert.doesNotMatch(homepageConfig, /RM\s?\d|price:/i);
+});
+
+test("style inspiration uses the six supplied images, square grids, and non-client-work alt text", () => {
+  for (const copy of [
+    "Style Inspiration",
+    "款式灵感",
+    "Inspirasi Gaya",
+    "Ideas for your next set — see our real client work on Instagram.",
+    "为你的下一次美甲找灵感 —— 真实客人作品请看我们的 Instagram。",
+    "Idea untuk set kuku anda seterusnya — lihat hasil kerja sebenar kami di Instagram.",
+    "Sheer nude almond nails with a fine gold line",
+    "Short almond nails with a thin classic French tip",
+    "Pink chrome nails with a pearl sheen",
+    "Taupe nails with tortoiseshell accents",
+    "Glossy espresso brown short nails",
+    "Soft nude-pink pedicure",
+  ]) {
+    assert.ok(homepageConfig.includes(copy), `style inspiration copy or alt text missing: ${copy}`);
+  }
+
+  for (const image of ["g1.webp", "g2.webp", "g3.webp", "g4.webp", "g5.webp", "g6.webp"]) {
+    assert.ok(homepageConfig.includes(`/images/inspiration/${image}`));
+    assert.ok(existsSync(`public/images/inspiration/${image}`), `${image} must exist in public/`);
+  }
+
+  assert.match(selectedNailWork, /homepageNailWorkImages\.map\(\(\{ src, alt \}, index\) =>/);
+  assert.match(selectedNailWork, /alt=\{alt\}/);
+  assert.doesNotMatch(selectedNailWork, /siteConfig\.brandName\} — \$\{copy\.categories/);
+  assert.match(globals, /\.public-site \.home-selected-work \.selected-work-grid\s*\{[^}]*grid-template-columns:\s*repeat\(3,/);
+  assert.match(globals, /\.public-site \.home-selected-work \.selected-work-item\s*\{[^}]*aspect-ratio:\s*1/);
+  assert.match(globals, /@media \(max-width: 767px\)\s*\{\s*\.public-site \.home-selected-work \.selected-work-grid\s*\{[^}]*display:\s*grid;[^}]*grid-template-columns:\s*repeat\(2,/);
+  assert.doesNotMatch(selectedNailWork, /is-primary/);
+});
+
+test("homepage service cards use the supplied photos and preserve the real Callus Removal image", () => {
+  for (const image of [
+    "/images/services/hand-care.webp",
+    "/images/services/foot-care.webp",
+    "/images/services/nail-extensions.webp",
+    "/images/services/waxing.webp",
+    "/services/homepage/callus-removal-before-after-4x3.png",
+  ]) {
+    assert.ok(homepageConfig.includes(image), `service image missing: ${image}`);
+  }
+  assert.match(signatureServices, /style=\{item\.title === "Waxing" \? \{ objectPosition: "center 40%" \} : undefined\}/);
 });
 
 test("homepage title is absolute while description, canonical and H1 stay unchanged", () => {

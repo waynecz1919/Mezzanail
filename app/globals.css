@@ -2561,3 +2561,32 @@ body:has(.promotion-site:not(.promotion-terms-page)) .analytics-consent-actions 
     justify-self: stretch;
   }
 }
+
+/* Six equal inspiration tiles; the mobile layout is a two-column grid. */
+.public-site .home-selected-work .selected-work-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.public-site .home-selected-work .selected-work-item {
+  grid-column: auto;
+  grid-row: auto;
+  aspect-ratio: 1;
+}
+
+@media (max-width: 767px) {
+  .public-site .home-selected-work .selected-work-grid {
+    display: grid;
+    width: auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    overflow: visible;
+    padding: 0;
+    scroll-snap-type: none;
+  }
+
+  .public-site .home-selected-work .selected-work-item {
+    width: auto;
+    min-width: 0;
+    scroll-snap-align: none;
+  }
+}
